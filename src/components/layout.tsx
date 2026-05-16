@@ -22,6 +22,7 @@ export function SiteHeader() {
         <nav className="hidden items-center gap-8 md:flex">
           <a href="/#solution" className="text-sm font-medium text-foreground/80 hover:text-primary">Solution</a>
           <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">Piliers</a>
+          <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">Dictionnaire</Link>
           <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">Culture</a>
           <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">Vision</a>
           <a href="/#contact" className="text-sm font-medium text-foreground/80 hover:text-primary">Contact</a>
