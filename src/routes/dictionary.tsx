@@ -1,8 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, Heart, History, Search, Star, Volume2, X } from "lucide-react";
+import { BookOpen, Heart, History, Search, Star, Volume2, X, Cloud } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/use-auth";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -52,13 +53,16 @@ function readSet(key: string): string[] {
 function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const { user } = useAuth();
+  const qc = useQueryClient();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [history, setHistory] = useState<string[]>([]);
 
   useEffect(() => {
+    if (user) return;
     setFavorites(readSet(FAV_KEY));
     setHistory(readSet(HIST_KEY));
-  }, []);
+  }, [user]);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary"],
@@ -71,6 +75,72 @@ function DictionaryPage() {
       return data as Entry[];
     },
   });
+
+  const { data: cloudFavs } = useQuery({
+    queryKey: ["user_favorites", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("user_favorites").select("entry_id");
+      if (error) throw error;
+      return data.map((r) => r.entry_id);
+    },
+  });
+
+  const { data: cloudHist } = useQuery({
+    queryKey: ["user_history", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("user_history")
+        .select("entry_id, viewed_at")
+        .order("viewed_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      const seen = new Set<string>();
+      const ids: string[] = [];
+      for (const r of data) {
+        if (!seen.has(r.entry_id)) {
+          seen.add(r.entry_id);
+          ids.push(r.entry_id);
+        }
+      }
+      return ids;
+    },
+  });
+
+  useEffect(() => {
+    if (user && cloudFavs) setFavorites(cloudFavs);
+  }, [user, cloudFavs]);
+  useEffect(() => {
+    if (user && cloudHist) setHistory(cloudHist);
+  }, [user, cloudHist]);
+
+  // Migrate local -> cloud on first login
+  useEffect(() => {
+    if (!user) return;
+    const localFavs = readSet(FAV_KEY);
+    const localHist = readSet(HIST_KEY);
+    if (localFavs.length === 0 && localHist.length === 0) return;
+    (async () => {
+      if (localFavs.length) {
+        await supabase
+          .from("user_favorites")
+          .upsert(
+            localFavs.map((entry_id) => ({ user_id: user.id, entry_id })),
+            { onConflict: "user_id,entry_id", ignoreDuplicates: true },
+          );
+      }
+      if (localHist.length) {
+        await supabase
+          .from("user_history")
+          .insert(localHist.map((entry_id) => ({ user_id: user.id, entry_id })));
+      }
+      localStorage.removeItem(FAV_KEY);
+      localStorage.removeItem(HIST_KEY);
+      qc.invalidateQueries({ queryKey: ["user_favorites", user.id] });
+      qc.invalidateQueries({ queryKey: ["user_history", user.id] });
+    })();
+  }, [user, qc]);
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -101,25 +171,43 @@ function DictionaryPage() {
     return history.map((id) => map.get(id)).filter(Boolean) as Entry[];
   }, [entries, history]);
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) => {
-      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+  const toggleFavorite = async (id: string) => {
+    const isFav = favorites.includes(id);
+    const next = isFav ? favorites.filter((x) => x !== id) : [...favorites, id];
+    setFavorites(next);
+    if (user) {
+      if (isFav) {
+        await supabase
+          .from("user_favorites")
+          .delete()
+          .eq("entry_id", id)
+          .eq("user_id", user.id);
+      } else {
+        await supabase.from("user_favorites").insert({ user_id: user.id, entry_id: id });
+      }
+    } else {
       localStorage.setItem(FAV_KEY, JSON.stringify(next));
-      return next;
-    });
+    }
   };
 
-  const pushHistory = (id: string) => {
+  const pushHistory = async (id: string) => {
     setHistory((prev) => {
       const next = [id, ...prev.filter((x) => x !== id)].slice(0, 30);
-      localStorage.setItem(HIST_KEY, JSON.stringify(next));
+      if (!user) localStorage.setItem(HIST_KEY, JSON.stringify(next));
       return next;
     });
+    if (user) {
+      await supabase.from("user_history").insert({ user_id: user.id, entry_id: id });
+    }
   };
 
-  const clearHistory = () => {
-    localStorage.removeItem(HIST_KEY);
+  const clearHistory = async () => {
     setHistory([]);
+    if (user) {
+      await supabase.from("user_history").delete().eq("user_id", user.id);
+    } else {
+      localStorage.removeItem(HIST_KEY);
+    }
   };
 
   const speak = (text: string) => {
@@ -150,6 +238,26 @@ function DictionaryPage() {
             </p>
           </div>
         </div>
+
+        {!user ? (
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-4 py-3 text-sm">
+            <div className="flex items-center gap-2 text-earth">
+              <Cloud className="h-4 w-4" />
+              <span>Connectez-vous pour synchroniser vos favoris et votre historique sur tous vos appareils.</span>
+            </div>
+            <Link
+              to="/auth"
+              className="rounded-md bg-earth px-3 py-1.5 text-xs font-medium text-cream hover:opacity-90"
+            >
+              Se connecter
+            </Link>
+          </div>
+        ) : (
+          <div className="mb-6 flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-4 py-2 text-xs text-muted-foreground">
+            <Cloud className="h-3.5 w-3.5 text-[var(--gold)]" />
+            Vos favoris et votre historique sont synchronisés sur votre compte.
+          </div>
+        )}
 
         <div className="sticky top-16 z-30 -mx-4 mb-6 border-b border-border/60 bg-background/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
           <div className="relative">
