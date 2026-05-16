@@ -53,13 +53,16 @@ function readSet(key: string): string[] {
 function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const { user } = useAuth();
+  const qc = useQueryClient();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [history, setHistory] = useState<string[]>([]);
 
   useEffect(() => {
+    if (user) return;
     setFavorites(readSet(FAV_KEY));
     setHistory(readSet(HIST_KEY));
-  }, []);
+  }, [user]);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["dictionary"],
@@ -72,6 +75,72 @@ function DictionaryPage() {
       return data as Entry[];
     },
   });
+
+  const { data: cloudFavs } = useQuery({
+    queryKey: ["user_favorites", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase.from("user_favorites").select("entry_id");
+      if (error) throw error;
+      return data.map((r) => r.entry_id);
+    },
+  });
+
+  const { data: cloudHist } = useQuery({
+    queryKey: ["user_history", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("user_history")
+        .select("entry_id, viewed_at")
+        .order("viewed_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      const seen = new Set<string>();
+      const ids: string[] = [];
+      for (const r of data) {
+        if (!seen.has(r.entry_id)) {
+          seen.add(r.entry_id);
+          ids.push(r.entry_id);
+        }
+      }
+      return ids;
+    },
+  });
+
+  useEffect(() => {
+    if (user && cloudFavs) setFavorites(cloudFavs);
+  }, [user, cloudFavs]);
+  useEffect(() => {
+    if (user && cloudHist) setHistory(cloudHist);
+  }, [user, cloudHist]);
+
+  // Migrate local -> cloud on first login
+  useEffect(() => {
+    if (!user) return;
+    const localFavs = readSet(FAV_KEY);
+    const localHist = readSet(HIST_KEY);
+    if (localFavs.length === 0 && localHist.length === 0) return;
+    (async () => {
+      if (localFavs.length) {
+        await supabase
+          .from("user_favorites")
+          .upsert(
+            localFavs.map((entry_id) => ({ user_id: user.id, entry_id })),
+            { onConflict: "user_id,entry_id", ignoreDuplicates: true },
+          );
+      }
+      if (localHist.length) {
+        await supabase
+          .from("user_history")
+          .insert(localHist.map((entry_id) => ({ user_id: user.id, entry_id })));
+      }
+      localStorage.removeItem(FAV_KEY);
+      localStorage.removeItem(HIST_KEY);
+      qc.invalidateQueries({ queryKey: ["user_favorites", user.id] });
+      qc.invalidateQueries({ queryKey: ["user_history", user.id] });
+    })();
+  }, [user, qc]);
 
   const categories = useMemo(() => {
     const set = new Set<string>();
@@ -102,25 +171,43 @@ function DictionaryPage() {
     return history.map((id) => map.get(id)).filter(Boolean) as Entry[];
   }, [entries, history]);
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) => {
-      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
+  const toggleFavorite = async (id: string) => {
+    const isFav = favorites.includes(id);
+    const next = isFav ? favorites.filter((x) => x !== id) : [...favorites, id];
+    setFavorites(next);
+    if (user) {
+      if (isFav) {
+        await supabase
+          .from("user_favorites")
+          .delete()
+          .eq("entry_id", id)
+          .eq("user_id", user.id);
+      } else {
+        await supabase.from("user_favorites").insert({ user_id: user.id, entry_id: id });
+      }
+    } else {
       localStorage.setItem(FAV_KEY, JSON.stringify(next));
-      return next;
-    });
+    }
   };
 
-  const pushHistory = (id: string) => {
+  const pushHistory = async (id: string) => {
     setHistory((prev) => {
       const next = [id, ...prev.filter((x) => x !== id)].slice(0, 30);
-      localStorage.setItem(HIST_KEY, JSON.stringify(next));
+      if (!user) localStorage.setItem(HIST_KEY, JSON.stringify(next));
       return next;
     });
+    if (user) {
+      await supabase.from("user_history").insert({ user_id: user.id, entry_id: id });
+    }
   };
 
-  const clearHistory = () => {
-    localStorage.removeItem(HIST_KEY);
+  const clearHistory = async () => {
     setHistory([]);
+    if (user) {
+      await supabase.from("user_history").delete().eq("user_id", user.id);
+    } else {
+      localStorage.removeItem(HIST_KEY);
+    }
   };
 
   const speak = (text: string) => {
