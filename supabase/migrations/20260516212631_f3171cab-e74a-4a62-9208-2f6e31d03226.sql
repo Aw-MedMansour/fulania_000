@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Authenticated users can insert entries" ON public.dictionary_entries;
