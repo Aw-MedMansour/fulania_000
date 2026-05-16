@@ -239,8 +239,27 @@ function DictionaryPage() {
           </div>
         </div>
 
+        {!user ? (
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-4 py-3 text-sm">
+            <div className="flex items-center gap-2 text-earth">
+              <Cloud className="h-4 w-4" />
+              <span>Connectez-vous pour synchroniser vos favoris et votre historique sur tous vos appareils.</span>
+            </div>
+            <Link
+              to="/auth"
+              className="rounded-md bg-earth px-3 py-1.5 text-xs font-medium text-cream hover:opacity-90"
+            >
+              Se connecter
+            </Link>
+          </div>
+        ) : (
+          <div className="mb-6 flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-4 py-2 text-xs text-muted-foreground">
+            <Cloud className="h-3.5 w-3.5 text-[var(--gold)]" />
+            Vos favoris et votre historique sont synchronisés sur votre compte.
+          </div>
+        )}
+
         <div className="sticky top-16 z-30 -mx-4 mb-6 border-b border-border/60 bg-background/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
-          <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={query}
