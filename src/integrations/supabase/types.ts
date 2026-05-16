@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      dictionary_entries: {
+        Row: {
+          arabic: string | null
+          category: string | null
+          created_at: string
+          english: string | null
+          example_french: string | null
+          example_pulaar: string | null
+          french: string
+          id: string
+          pronunciation: string | null
+          pulaar: string
+        }
+        Insert: {
+          arabic?: string | null
+          category?: string | null
+          created_at?: string
+          english?: string | null
+          example_french?: string | null
+          example_pulaar?: string | null
+          french: string
+          id?: string
+          pronunciation?: string | null
+          pulaar: string
+        }
+        Update: {
+          arabic?: string | null
+          category?: string | null
+          created_at?: string
+          english?: string | null
+          example_french?: string | null
+          example_pulaar?: string | null
+          french?: string
+          id?: string
+          pronunciation?: string | null
+          pulaar?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
