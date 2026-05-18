@@ -2,13 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import {
-  BookOpen,
-  Calendar,
   Flame,
   Heart,
   History,
   TrendingUp,
-  User,
   ArrowLeft,
   Star,
   Eye,
