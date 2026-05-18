@@ -33,23 +33,14 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           {user ? (
-            <>
-              <Link
-                to="/profile"
-                className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              >
-                <UserIcon className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Profil</span>
-              </Link>
-              <button
-                onClick={() => supabase.auth.signOut()}
-                className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-                title={user.email ?? ""}
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Déconnexion</span>
-              </button>
-            </>
+            <button
+              onClick={() => supabase.auth.signOut()}
+              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
+              title={user.email ?? ""}
+            >
+              <LogOut className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Déconnexion</span>
+            </button>
           ) : (
             <Link
               to="/auth"
