@@ -134,7 +134,23 @@ function ChatPage() {
 
       {/* Messages */}
       <div ref={scrollRef} className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto px-4 py-8">
-        {messages.length === 0 ? (
+        {!authLoading && !session ? (
+          <div className="mx-auto max-w-md py-16 text-center">
+            <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <LogIn className="h-7 w-7" />
+            </div>
+            <h1 className="mt-6 font-display text-2xl font-semibold">Connexion requise</h1>
+            <p className="mt-3 text-muted-foreground">
+              Connectez-vous pour discuter avec FulanIA.
+            </p>
+            <Link
+              to="/auth"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              Se connecter
+            </Link>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="mx-auto max-w-2xl py-12 text-center">
             <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <Sparkles className="h-7 w-7" />
