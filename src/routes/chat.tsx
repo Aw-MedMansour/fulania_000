@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Send, Sparkles, Loader2, LogIn } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { SiteFooter } from "@/components/layout";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
