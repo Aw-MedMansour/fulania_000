@@ -22,6 +22,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
 function ChatPage() {
+  const { session, loading: authLoading } = useAuth();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,6 +37,13 @@ function ChatPage() {
     const content = text.trim();
     if (!content || loading) return;
     setError(null);
+
+    const { data: { session: current } } = await supabase.auth.getSession();
+    if (!current?.access_token) {
+      setError("Veuillez vous connecter pour utiliser l'assistant.");
+      return;
+    }
+
     const next: Msg[] = [...messages, { role: "user", content }];
     setMessages(next);
     setInput("");
@@ -44,8 +52,11 @@ function ChatPage() {
     try {
       const resp = await fetch(FUNCTION_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${current.access_token}`,
+        },
+        body: JSON.stringify({ messages: next.slice(-20) }),
       });
 
       if (!resp.ok || !resp.body) {
