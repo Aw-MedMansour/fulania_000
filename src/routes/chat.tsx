@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Send, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, Send, Sparkles, Loader2, LogIn } from "lucide-react";
 import { SiteFooter } from "@/components/layout";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/chat")({
   component: ChatPage,
@@ -20,6 +22,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
 function ChatPage() {
+  const { session, loading: authLoading } = useAuth();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -34,6 +37,13 @@ function ChatPage() {
     const content = text.trim();
     if (!content || loading) return;
     setError(null);
+
+    const { data: { session: current } } = await supabase.auth.getSession();
+    if (!current?.access_token) {
+      setError("Veuillez vous connecter pour utiliser l'assistant.");
+      return;
+    }
+
     const next: Msg[] = [...messages, { role: "user", content }];
     setMessages(next);
     setInput("");
@@ -42,8 +52,11 @@ function ChatPage() {
     try {
       const resp = await fetch(FUNCTION_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${current.access_token}`,
+        },
+        body: JSON.stringify({ messages: next.slice(-20) }),
       });
 
       if (!resp.ok || !resp.body) {
@@ -121,7 +134,23 @@ function ChatPage() {
 
       {/* Messages */}
       <div ref={scrollRef} className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto px-4 py-8">
-        {messages.length === 0 ? (
+        {!authLoading && !session ? (
+          <div className="mx-auto max-w-md py-16 text-center">
+            <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <LogIn className="h-7 w-7" />
+            </div>
+            <h1 className="mt-6 font-display text-2xl font-semibold">Connexion requise</h1>
+            <p className="mt-3 text-muted-foreground">
+              Connectez-vous pour discuter avec FulanIA.
+            </p>
+            <Link
+              to="/auth"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+            >
+              Se connecter
+            </Link>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="mx-auto max-w-2xl py-12 text-center">
             <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <Sparkles className="h-7 w-7" />
