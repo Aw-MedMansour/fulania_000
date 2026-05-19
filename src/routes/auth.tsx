@@ -60,7 +60,7 @@ function AuthPage() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto flex max-w-md flex-col px-4 py-16 sm:px-6">
-        <h1 className="font-display text-3xl font-semibold text-earth">Bienvenue</h1>
+        <h1 className="font-display text-3xl font-semibold text-earth">Connexion à FulanIA</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Connectez-vous pour synchroniser vos favoris et votre historique entre vos appareils.
         </p>
@@ -112,10 +112,11 @@ function AuthPage() {
 function Field({
   label, type, value, onChange,
 }: { label: string; type: string; value: string; onChange: (v: string) => void }) {
+  const id = `field-${label.toLowerCase().replace(/\s+/g, '-')}-${type}`;
   return (
     <div className="space-y-1.5">
-      <Label>{label}</Label>
-      <Input type={type} required value={value} onChange={(e) => onChange(e.target.value)} />
+      <Label htmlFor={id}>{label}</Label>
+      <Input id={id} type={type} required value={value} onChange={(e) => onChange(e.target.value)} />
     </div>
   );
 }

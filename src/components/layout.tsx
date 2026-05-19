@@ -37,6 +37,7 @@ export function SiteHeader() {
               onClick={() => supabase.auth.signOut()}
               className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
               title={user.email ?? ""}
+              aria-label="Déconnexion"
             >
               <LogOut className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Déconnexion</span>
@@ -45,6 +46,7 @@ export function SiteHeader() {
             <Link
               to="/auth"
               className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
+              aria-label="Connexion"
             >
               <UserIcon className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">Connexion</span>
@@ -53,6 +55,7 @@ export function SiteHeader() {
           <Link
             to="/chat"
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
+            aria-label="Essayer l'assistant FulanIA"
           >
             <Sparkles className="h-4 w-4" />
             <span className="hidden sm:inline">Essayer</span>

@@ -263,9 +263,11 @@ function DictionaryPage() {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
+              id="dict-search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Rechercher en pulaar, français, arabe ou anglais…"
+              aria-label="Rechercher un mot"
               className="h-12 pl-10 pr-10 text-base"
             />
             {query && (
@@ -459,7 +461,7 @@ function EntryCard({
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex items-baseline gap-2">
-            <h3 className="font-display text-xl font-semibold text-earth">{entry.pulaar}</h3>
+            <h2 className="font-display text-xl font-semibold text-earth">{entry.pulaar}</h2>
             {entry.pronunciation && (
               <span className="text-xs italic text-muted-foreground">/{entry.pronunciation}/</span>
             )}
