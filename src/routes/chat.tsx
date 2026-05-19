@@ -134,6 +134,7 @@ function ChatPage() {
 
       {/* Messages */}
       <div ref={scrollRef} className="mx-auto w-full max-w-4xl flex-1 overflow-y-auto px-4 py-8">
+        <h1 className="sr-only">Assistant FulanIA — Chat sur la langue et la culture Peule</h1>
         {!authLoading && !session ? (
           <div className="mx-auto max-w-md py-16 text-center">
             <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
@@ -204,6 +205,7 @@ function ChatPage() {
           className="mx-auto flex max-w-4xl items-end gap-2 px-4 py-4"
         >
           <textarea
+            id="chat-message"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -214,6 +216,7 @@ function ChatPage() {
             }}
             rows={1}
             placeholder="Écrivez en français, Pulaar, arabe…"
+            aria-label="Votre message"
             className="max-h-40 flex-1 resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           <button
