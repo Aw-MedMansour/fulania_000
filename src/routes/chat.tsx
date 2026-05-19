@@ -252,13 +252,23 @@ function MessageBubble({ role, content }: Msg) {
           {isUser ? "Vo" : "F"}
         </div>
         <div
-          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
+          className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${
             isUser
-              ? "bg-primary text-primary-foreground"
+              ? "bg-primary text-primary-foreground whitespace-pre-wrap"
               : "border border-border bg-card text-foreground"
           }`}
         >
-          {content || <span className="opacity-50">…</span>}
+          {content ? (
+            isUser ? (
+              content
+            ) : (
+              <div className="prose prose-sm max-w-none prose-p:my-2 prose-p:leading-relaxed prose-strong:text-earth prose-strong:font-semibold prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-headings:font-display prose-headings:text-earth prose-headings:mt-3 prose-headings:mb-1.5 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:bg-muted prose-code:text-foreground prose-code:before:content-none prose-code:after:content-none">
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </div>
+            )
+          ) : (
+            <span className="opacity-50">…</span>
+          )}
         </div>
       </div>
     </div>
