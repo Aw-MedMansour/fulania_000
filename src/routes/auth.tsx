@@ -21,9 +21,21 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/chat" });
+    let active = true;
+    const goToChat = () => navigate({ to: "/chat", replace: true });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) goToChat();
     });
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (active && data.session) goToChat();
+    });
+
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const onSignIn = async (e: React.FormEvent) => {
@@ -33,7 +45,7 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Bienvenue !");
-    navigate({ to: "/chat" });
+    navigate({ to: "/chat", replace: true });
   };
 
   const onSignUp = async (e: React.FormEvent) => {
@@ -54,6 +66,7 @@ function AuthPage() {
       redirect_uri: window.location.origin + "/chat",
     });
     if (r.error) toast.error("Échec de la connexion Google");
+    else if (!r.redirected) navigate({ to: "/chat", replace: true });
   };
 
   return (
