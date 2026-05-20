@@ -22,7 +22,7 @@ function AuthPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dictionary" });
+      if (data.session) navigate({ to: "/chat" });
     });
   }, [navigate]);
 
@@ -33,7 +33,7 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Bienvenue !");
-    navigate({ to: "/dictionary" });
+    navigate({ to: "/chat" });
   };
 
   const onSignUp = async (e: React.FormEvent) => {
@@ -42,7 +42,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: `${window.location.origin}/dictionary` },
+      options: { emailRedirectTo: `${window.location.origin}/chat` },
     });
     setLoading(false);
     if (error) return toast.error(error.message);
@@ -51,7 +51,7 @@ function AuthPage() {
 
   const onGoogle = async () => {
     const r = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/dictionary",
+      redirect_uri: window.location.origin + "/chat",
     });
     if (r.error) toast.error("Échec de la connexion Google");
   };
