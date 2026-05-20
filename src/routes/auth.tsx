@@ -1,24 +1,50 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Eye,
+  EyeOff,
+  Loader2,
+  Mail,
+  Lock,
+  Sparkles,
+  ShieldCheck,
+  Languages,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
-import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import portraitImg from "@/assets/culture-portrait.jpg";
+import patternImg from "@/assets/pattern.jpg";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Connexion | FulanIA" }] }),
+  head: () => ({
+    meta: [
+      { title: "Connexion à FulanIA — Assistant IA Peul" },
+      {
+        name: "description",
+        content:
+          "Connectez-vous à FulanIA pour discuter avec l'assistant Peul, explorer le dictionnaire Pulaar et synchroniser vos favoris.",
+      },
+    ],
+  }),
   component: AuthPage,
 });
 
 function AuthPage() {
   const navigate = useNavigate();
+  const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -44,7 +70,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Bienvenue !");
+    toast.success("On y va !");
     navigate({ to: "/chat", replace: true });
   };
 
@@ -62,74 +88,279 @@ function AuthPage() {
   };
 
   const onGoogle = async () => {
+    setOauthLoading(true);
     const r = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin + "/chat",
     });
+    setOauthLoading(false);
     if (r.error) toast.error("Échec de la connexion Google");
     else if (!r.redirected) navigate({ to: "/chat", replace: true });
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <SiteHeader />
-      <main className="mx-auto flex max-w-md flex-col px-4 py-16 sm:px-6">
-        <h1 className="font-display text-3xl font-semibold text-earth">Connexion à FulanIA</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Connectez-vous pour synchroniser vos favoris et votre historique entre vos appareils.
-        </p>
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Subtle background pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "420px" }}
+        aria-hidden
+      />
 
-        <Button onClick={onGoogle} variant="outline" className="mt-6 h-11">
-          Continuer avec Google
-        </Button>
+      <div className="relative mx-auto grid min-h-screen max-w-7xl lg:grid-cols-[1.05fr_1fr]">
+        {/* ============= LEFT — Brand panel ============= */}
+        <aside className="relative hidden overflow-hidden bg-earth text-cream lg:flex lg:flex-col lg:justify-between">
+          <img
+            src={portraitImg}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 h-full w-full object-cover opacity-25"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-earth via-earth/90 to-earth/60" />
+          <div
+            className="absolute inset-0 opacity-[0.08]"
+            style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "300px" }}
+            aria-hidden
+          />
 
-        <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-wider text-muted-foreground">
-          <div className="h-px flex-1 bg-border" /> ou <div className="h-px flex-1 bg-border" />
-        </div>
+          <div className="relative z-10 flex items-center gap-2.5 p-10">
+            <Link to="/" className="group flex items-center gap-2.5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[var(--gold)] text-earth shadow-lg transition group-hover:scale-105">
+                <span className="font-display text-xl font-bold">F</span>
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-display text-xl font-semibold tracking-tight">FulanIA</span>
+                <span className="text-[10px] uppercase tracking-[0.18em] text-cream/60">
+                  Pulaagu &amp; IA
+                </span>
+              </div>
+            </Link>
+          </div>
 
-        <Tabs defaultValue="signin">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="signin">Connexion</TabsTrigger>
-            <TabsTrigger value="signup">Créer un compte</TabsTrigger>
-          </TabsList>
+          <div className="relative z-10 px-10 pb-10">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/40 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] backdrop-blur">
+              <Sparkles className="h-3 w-3" />
+              Bienvenue, jaaraama
+            </div>
+            <h2 className="mt-6 max-w-md font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance xl:text-5xl">
+              Le griot du XXI<sup>e</sup> siècle vous attend.
+            </h2>
+            <p className="mt-5 max-w-md text-cream/75">
+              Connectez-vous pour discuter en Pulaar avec FulanIA, retrouver vos favoris et
+              poursuivre votre apprentissage là où vous l'avez laissé.
+            </p>
 
-          <TabsContent value="signin">
-            <form onSubmit={onSignIn} className="space-y-4 pt-4">
-              <Field label="Email" type="email" value={email} onChange={setEmail} />
-              <Field label="Mot de passe" type="password" value={password} onChange={setPassword} />
-              <Button type="submit" disabled={loading} className="w-full">
-                Se connecter
-              </Button>
-            </form>
-          </TabsContent>
+            <ul className="mt-8 space-y-3 text-sm">
+              {[
+                { icon: Sparkles, label: "Assistant IA disponible 24h/24" },
+                { icon: BookOpen, label: "Dictionnaire Pulaar interactif" },
+                { icon: Languages, label: "Pulaar · Français · Arabe · Anglais" },
+              ].map(({ icon: Icon, label }) => (
+                <li key={label} className="flex items-center gap-3 text-cream/85">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)]">
+                    <Icon className="h-4 w-4" />
+                  </span>
+                  {label}
+                </li>
+              ))}
+            </ul>
 
-          <TabsContent value="signup">
-            <form onSubmit={onSignUp} className="space-y-4 pt-4">
-              <Field label="Email" type="email" value={email} onChange={setEmail} />
-              <Field label="Mot de passe" type="password" value={password} onChange={setPassword} />
-              <Button type="submit" disabled={loading} className="w-full">
-                Créer mon compte
-              </Button>
-            </form>
-          </TabsContent>
-        </Tabs>
+            <figure className="mt-10 max-w-md border-l-2 border-[var(--gold)] pl-5">
+              <blockquote className="font-display text-lg italic text-cream/90">
+                « Pulaagu ko ngallu mawngu. »
+              </blockquote>
+              <figcaption className="mt-1.5 text-xs uppercase tracking-widest text-cream/55">
+                La culture Peule est une grande richesse
+              </figcaption>
+            </figure>
+          </div>
+        </aside>
 
-        <Link to="/" className="mt-8 text-center text-sm text-muted-foreground hover:text-foreground">
-          ← Retour à l'accueil
-        </Link>
-      </main>
-      <SiteFooter />
+        {/* ============= RIGHT — Form panel ============= */}
+        <main className="relative flex min-h-screen flex-col justify-between px-5 py-8 sm:px-10 sm:py-12 lg:px-14">
+          {/* Mobile brand bar */}
+          <div className="mb-8 flex items-center justify-between lg:hidden">
+            <Link to="/" className="flex items-center gap-2.5" aria-label="Retour à l'accueil FulanIA">
+              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
+                <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
+              </div>
+              <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
+            </Link>
+            <Link
+              to="/"
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" /> Accueil
+            </Link>
+          </div>
+
+          <div className="mx-auto w-full max-w-md flex-1">
+            <div className="text-center lg:text-left">
+              <span className="text-xs uppercase tracking-[0.2em] text-primary">
+                {tab === "signin" ? "Connexion" : "Créer un compte"}
+              </span>
+              <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-earth sm:text-4xl">
+                {tab === "signin" ? "Heureux de vous revoir." : "Rejoignez FulanIA."}
+              </h1>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {tab === "signin"
+                  ? "Connectez-vous pour reprendre la conversation avec FulanIA."
+                  : "Créez votre compte gratuit pour discuter avec l'assistant Peul."}
+              </p>
+            </div>
+
+            <Button
+              onClick={onGoogle}
+              variant="outline"
+              disabled={oauthLoading}
+              className="mt-7 h-11 w-full gap-3 border-border/80 bg-card text-sm font-medium shadow-sm hover:bg-accent"
+            >
+              {oauthLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <GoogleIcon className="h-[18px] w-[18px]" />
+              )}
+              Continuer avec Google
+            </Button>
+
+            <div className="my-6 flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              <div className="h-px flex-1 bg-border" />
+              ou avec votre email
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
+              <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
+                <TabsTrigger value="signin">Connexion</TabsTrigger>
+                <TabsTrigger value="signup">Créer un compte</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="signin">
+                <form onSubmit={onSignIn} className="space-y-4 pt-5">
+                  <EmailField value={email} onChange={setEmail} />
+                  <PasswordField
+                    value={password}
+                    onChange={setPassword}
+                    show={showPwd}
+                    onToggle={() => setShowPwd((s) => !s)}
+                    autoComplete="current-password"
+                  />
+                  <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Se connecter <ArrowRight className="h-4 w-4" /></>}
+                  </Button>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signup">
+                <form onSubmit={onSignUp} className="space-y-4 pt-5">
+                  <EmailField value={email} onChange={setEmail} />
+                  <PasswordField
+                    value={password}
+                    onChange={setPassword}
+                    show={showPwd}
+                    onToggle={() => setShowPwd((s) => !s)}
+                    autoComplete="new-password"
+                    hint="Minimum 6 caractères."
+                  />
+                  <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Créer mon compte <ArrowRight className="h-4 w-4" /></>}
+                  </Button>
+                  <p className="text-center text-xs text-muted-foreground">
+                    En continuant, vous acceptez d'utiliser FulanIA de manière respectueuse de la
+                    langue et de la culture Peules.
+                  </p>
+                </form>
+              </TabsContent>
+            </Tabs>
+
+            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+              <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
+              Vos données restent privées et sécurisées.
+            </div>
+          </div>
+
+          <footer className="mt-10 hidden text-center text-xs text-muted-foreground lg:block">
+            <Link to="/" className="inline-flex items-center gap-1 hover:text-foreground">
+              <ArrowLeft className="h-3 w-3" /> Retour à l'accueil
+            </Link>
+            <span className="mx-2 opacity-50">·</span>
+            © 2026 FulanIA
+          </footer>
+        </main>
+      </div>
     </div>
   );
 }
 
-function Field({
-  label, type, value, onChange,
-}: { label: string; type: string; value: string; onChange: (v: string) => void }) {
-  const id = `field-${label.toLowerCase().replace(/\s+/g, '-')}-${type}`;
+/* ───────── Sub-components ───────── */
+
+function EmailField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id}>{label}</Label>
-      <Input id={id} type={type} required value={value} onChange={(e) => onChange(e.target.value)} />
+      <Label htmlFor="auth-email">Email</Label>
+      <div className="relative">
+        <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          id="auth-email"
+          type="email"
+          required
+          autoComplete="email"
+          placeholder="vous@exemple.com"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-11 pl-9"
+        />
+      </div>
     </div>
+  );
+}
+
+function PasswordField({
+  value, onChange, show, onToggle, autoComplete, hint,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  show: boolean;
+  onToggle: () => void;
+  autoComplete: string;
+  hint?: string;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor="auth-password">Mot de passe</Label>
+      <div className="relative">
+        <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          id="auth-password"
+          type={show ? "text" : "password"}
+          required
+          minLength={6}
+          autoComplete={autoComplete}
+          placeholder="••••••••"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="h-11 pl-9 pr-10"
+        />
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={show ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+        >
+          {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+        </button>
+      </div>
+      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+    </div>
+  );
+}
+
+function GoogleIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden>
+      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.997 10.997 0 0 0 12 23z"/>
+      <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.78.43 3.46 1.18 4.94l3.66-2.84z"/>
+      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/>
+    </svg>
   );
 }
