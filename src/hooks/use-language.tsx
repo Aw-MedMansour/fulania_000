@@ -183,6 +183,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "Au moins 8 caractères, avec lettres et chiffres.",
     "auth.welcomeToast": "Bienvenue !",
     "auth.verifyMail": "Vérifiez votre boîte mail pour confirmer votre compte.",
+    "auth.pwdShow": "Afficher le mot de passe", "auth.pwdHide": "Masquer le mot de passe",
+    "auth.emailPh": "prenom.nom@domaine.com",
+    "auth.oauthErr": "Échec de la connexion",
+
+    "dialect.zone.pulaar": "Sénégal, Mauritanie",
+    "dialect.zone.pular": "Guinée",
+    "dialect.zone.fulfulde": "Cameroun, Mali, Niger",
+    "dialect.zone.fula": "Gambie, Sierra Leone, Nigeria",
+    "dialect.note.pulaar": "Fouta Toro, Halpulaar",
+    "dialect.note.pular": "Fouta Djallon",
+    "dialect.note.fulfulde": "Sahel",
+    "dialect.note.fula": "Afrique de l'Ouest",
+
+    "public.t1": "Locuteurs natifs", "public.d1": "Approfondir, retrouver des mots oubliés, transmettre aux enfants.",
+    "public.t2": "Diaspora Peule", "public.d2": "Reconnecter avec leurs racines, apprendre ou retrouver la langue.",
+    "public.t3": "Enfants & jeunes", "public.d3": "Apprendre la langue de leurs parents dans un format moderne et ludique.",
+    "public.t4": "Chercheurs & linguistes", "public.d4": "Accéder à une base de données culturelle et linguistique fiable.",
+    "public.t5": "Curieux & apprenants", "public.d5": "Découvrir une langue et une culture fascinantes.",
+    "public.t6": "ONG & institutions", "public.d6": "Outils pour des programmes éducatifs et culturels.",
+
+    "phase.1.t": "Lancement", "phase.1.b": "Assistant IA conversationnel, dictionnaire de base, site web vitrine.",
+    "phase.2.t": "Développement", "phase.2.b": "Système d'apprentissage par niveaux, reconnaissance vocale, contenu enrichi.",
+    "phase.3.t": "Expansion", "phase.3.b": "Application mobile iOS & Android, partenariats institutionnels, version multilingue complète.",
+    "phase.4.t": "Croissance", "phase.4.b": "Modèle IA entraîné spécifiquement sur le Pulaar, communauté de contributeurs.",
+
+    "vision.preserve": "Préserver", "vision.transmit": "Transmettre", "vision.educate": "Éduquer",
+    "vision.value": "Valoriser", "vision.gather": "Rassembler", "vision.include": "Inclure",
+
+    "contact.bio": "22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.",
+    "alt.hero": "Bergers Peuls dans le Sahel",
+    "alt.portrait": "Portrait Peul",
   },
 
   ff: {
