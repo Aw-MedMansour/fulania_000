@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Languages, Loader2, Volume2, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
+import { PageNav } from "@/components/page-nav";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
