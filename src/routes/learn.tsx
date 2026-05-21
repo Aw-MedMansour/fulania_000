@@ -362,3 +362,154 @@ function Empty({ text }: { text: string }) {
     </div>
   );
 }
+
+/* ------------------------------- AI LESSON ------------------------------ */
+
+type Lesson = {
+  title: string;
+  intro: string;
+  vocabulary: { pulaar: string; french: string; pronunciation: string | null }[];
+  dialogue?: { speaker: string; pulaar: string; french: string }[];
+  tips?: string[];
+};
+
+function AILessonView({ defaultTopic }: { defaultTopic: string }) {
+  const { t } = useLanguage();
+  const [topic, setTopic] = useState(defaultTopic ?? "");
+  const [level, setLevel] = useState<"debutant" | "intermediaire" | "avance">("debutant");
+  const [lesson, setLesson] = useState<Lesson | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const speak = (text: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "fr-FR";
+    u.rate = 0.8;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  };
+
+  const run = async () => {
+    const q = topic.trim();
+    if (!q) return;
+    setLoading(true);
+    setError(null);
+    setLesson(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-lesson`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token ?? ""}` },
+        body: JSON.stringify({ topic: q, level }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.error || "err");
+      setLesson(j.lesson);
+    } catch {
+      setError(t("ai.lesson.error"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-xl border border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
+            <Wand2 className="h-4 w-4" />
+          </div>
+          <p className="text-sm font-semibold text-earth">{t("ai.lesson.title")}</p>
+        </div>
+        <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto_auto]">
+          <Input
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            placeholder={t("ai.lesson.placeholder")}
+            className="h-11"
+          />
+          <select
+            value={level}
+            onChange={(e) => setLevel(e.target.value as any)}
+            className="h-11 rounded-md border border-input bg-background px-3 text-sm"
+            aria-label={t("ai.lesson.level")}
+          >
+            <option value="debutant">{t("ai.lesson.beg")}</option>
+            <option value="intermediaire">{t("ai.lesson.int")}</option>
+            <option value="avance">{t("ai.lesson.adv")}</option>
+          </select>
+          <Button onClick={run} disabled={loading || !topic.trim()} className="h-11">
+            {loading ? (
+              <><Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> {t("ai.lesson.loading")}</>
+            ) : (
+              <><Wand2 className="mr-1.5 h-4 w-4" /> {t("ai.lesson.cta")}</>
+            )}
+          </Button>
+        </div>
+        {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
+      </div>
+
+      {lesson && (
+        <article className="space-y-5 rounded-xl border border-border bg-card p-5">
+          <header>
+            <h3 className="font-display text-2xl font-semibold text-earth">{lesson.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{lesson.intro}</p>
+          </header>
+
+          <section>
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              {t("ai.lesson.vocab")}
+            </h4>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {lesson.vocabulary.map((v, i) => (
+                <div key={i} className="flex items-start justify-between gap-2 rounded-md border border-border bg-background p-3">
+                  <div>
+                    <p className="font-display font-semibold text-earth">{v.pulaar}</p>
+                    {v.pronunciation && <p className="text-xs italic text-muted-foreground">/{v.pronunciation}/</p>}
+                    <p className="mt-0.5 text-sm">{v.french}</p>
+                  </div>
+                  <button
+                    onClick={() => speak(v.pulaar)}
+                    className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                    aria-label="Listen"
+                  >
+                    <Volume2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {lesson.dialogue && lesson.dialogue.length > 0 && (
+            <section>
+              <h4 className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                {t("ai.lesson.dialog")}
+              </h4>
+              <div className="space-y-2">
+                {lesson.dialogue.map((d, i) => (
+                  <div key={i} className="rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[var(--terracotta)]">{d.speaker}</p>
+                    <p className="font-display italic text-earth">« {d.pulaar} »</p>
+                    <p className="text-xs text-muted-foreground">{d.french}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {lesson.tips && lesson.tips.length > 0 && (
+            <section>
+              <h4 className="mb-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                {t("ai.lesson.tips")}
+              </h4>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-foreground/80">
+                {lesson.tips.map((tip, i) => <li key={i}>{tip}</li>)}
+              </ul>
+            </section>
+          )}
+        </article>
+      )}
+    </div>
+  );
+}
