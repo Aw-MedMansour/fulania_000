@@ -820,6 +820,7 @@ export const translations: Record<Lang, Dict> = {
     "seo./culture.desc": "أمثال وقصص وتقاليد وموسيقى ومأكولات وألبسة الهالبولار: مكتبة حيّة لثقافة الفولان.",
     "nav.solution": "الحل", "nav.pillars": "الركائز", "nav.dictionary": "القاموس",
     "nav.learn": "تعلّم",
+    "nav.back": "رجوع", "nav.home": "الرئيسية", "nav.hub": "الفضاء",
     "learn.title": "تعلّم البولارية",
     "learn.subtitle": "دروس مواضيعية واختبارات وبطاقات — تعلّم بإيقاعك.",
     "learn.lessons": "دروس", "learn.flashcards": "بطاقات", "learn.quiz": "اختبار",
