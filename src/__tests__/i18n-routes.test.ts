@@ -25,7 +25,11 @@ const T_KEY_RE = /\bt\(\s*["'`]([^"'`]+)["'`]\s*[),]/g;
 function extractKeys(filePath: string): string[] {
   const src = readFileSync(resolve(process.cwd(), filePath), "utf8");
   const keys = new Set<string>();
-  for (const m of src.matchAll(T_KEY_RE)) keys.add(m[1]);
+  for (const m of src.matchAll(T_KEY_RE)) {
+    // ignore les clés dynamiques `t(\`prefix.${var}\`)` — testées séparément.
+    if (m[1].includes("${")) continue;
+    keys.add(m[1]);
+  }
   return [...keys];
 }
 
