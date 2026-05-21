@@ -96,7 +96,7 @@ function AuthPage() {
 
   useEffect(() => {
     let active = true;
-    const goToChat = () => navigate({ to: "/chat", replace: true });
+    const goToChat = () => navigate({ to: "/hub", replace: true });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session) goToChat();
@@ -142,7 +142,7 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success(t("auth.welcomeToast"));
-    navigate({ to: "/chat", replace: true });
+    navigate({ to: "/hub", replace: true });
   };
 
   const onSignUp = async (e: React.FormEvent) => {
@@ -152,7 +152,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signUp({
       email: email.trim(),
       password,
-      options: { emailRedirectTo: `${window.location.origin}/chat` },
+      options: { emailRedirectTo: `${window.location.origin}/hub` },
     });
     setLoading(false);
     if (error) return toast.error(error.message);
@@ -162,11 +162,11 @@ function AuthPage() {
   const onOAuth = async (provider: Provider) => {
     setOauthLoading(provider);
     const r = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin + "/chat",
+      redirect_uri: window.location.origin + "/hub",
     });
     setOauthLoading(null);
     if (r.error) toast.error(`${t("auth.oauthErr")} ${provider === "google" ? "Google" : "Apple"}`);
-    else if (!r.redirected) navigate({ to: "/chat", replace: true });
+    else if (!r.redirected) navigate({ to: "/hub", replace: true });
   };
 
   return (
