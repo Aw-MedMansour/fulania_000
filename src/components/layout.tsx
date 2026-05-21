@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { LogOut, Sparkles, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
+
+async function signOut() {
+  const { supabase } = await import("@/integrations/supabase/client");
+  await supabase.auth.signOut();
+}
+
 
 export function SiteHeader() {
   const { user } = useAuth();
