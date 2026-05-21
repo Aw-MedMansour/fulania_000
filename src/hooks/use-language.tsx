@@ -402,7 +402,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "Reenude", "vision.transmit": "Yettinde", "vision.educate": "Jannginde",
     "vision.value": "Teddinde", "vision.gather": "Renndinde", "vision.include": "Naatnude",
 
-    "contact.bio": "Duuɓi 22, ummiiɗo Lekseiba e Gorgol, jannginteeɗo Master Biotechnologie e Alaseri.",
+    "contact.bio": "Sukaaɓe duuɓi 22, ummiiɗo Lekseiba e diiwal Gorgol, Aw Mohamedou Mansour ko jannginteeɗo Master Biotechnologie e Alaseri jooni. Hay so o jangii ganndal saayansi, o jogiiɗo gootol miijo tiiɗngo: teknooloosi maa wallit pinle ɗen fof, hay ɗen ɓurɗe wonde caggal e aduna teknoloosi.\n\nKo e miijo ngon woni hol FulanIA umminorii — kuugal ko hawritta giɗɗum pinal Pulaagu e yiɗde teknooloosi, e tama'u sosde kuutorgal ngal yawta jamaaji.",
     "alt.hero": "Aynaaɓe Fulɓe e Saheli",
     "alt.portrait": "Mbaadi Pullo",
     "nf.title": "Hello yiytaaka",
