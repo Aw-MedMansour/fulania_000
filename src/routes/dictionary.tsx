@@ -447,6 +447,7 @@ function EntryCard({
   onSpeak: () => void;
   onVisit: () => void;
 }) {
+  const { t } = useLanguage();
   return (
     <article
       onClick={onVisit}
