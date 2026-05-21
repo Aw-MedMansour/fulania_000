@@ -161,7 +161,7 @@ function Index() {
 
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl" aria-hidden />
-            <img src={portraitImg} alt="Portrait Peul" loading="lazy" width={1024} height={1024} className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl" />
+            <img src={portraitImg} alt={t("alt.portrait")} loading="lazy" width={1024} height={1024} className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl" />
             <div className="absolute -bottom-6 -left-6 max-w-[240px] rounded-xl border border-border bg-card p-4 shadow-xl">
               <p className="font-display text-sm italic text-primary">« Pulaagu ko ngallu mawngu »</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("sol.quoteCaption")}</p>
