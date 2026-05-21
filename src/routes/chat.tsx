@@ -4,7 +4,7 @@ import { ArrowLeft, Send, Sparkles, Loader2, LogIn, Check, ChevronDown, Language
 import ReactMarkdown from "react-markdown";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
-import { LANGUAGES, DIALECTS, useLanguage, type Lang, type Dialect } from "@/hooks/use-language";
+import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/chat")({
   component: ChatPage,
