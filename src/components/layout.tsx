@@ -167,7 +167,7 @@ export function SiteFooter() {
               {t("footer.contact")}
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
-              <li>Aw Mohamedou Mansour</li>
+              <li>{t("author.name")}</li>
               <li>
                 <a href="mailto:awmedmansour@outlook.com" className="hover:text-[var(--gold)]">
                   awmedmansour@outlook.com
