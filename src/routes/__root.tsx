@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { LanguageProvider } from "@/hooks/use-language";
+import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 
 function NotFoundComponent() {
   const { t } = useLanguage();
