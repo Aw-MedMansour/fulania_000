@@ -18,7 +18,7 @@ const CHAT_LANG_KEY = "fulania.chat.lang";
 
 function ChatPage() {
   const { session, loading: authLoading } = useAuth();
-  const { t, lang: siteLang } = useLanguage();
+  const { t, lang: siteLang, dialect } = useLanguage();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
