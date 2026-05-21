@@ -422,7 +422,7 @@ function EmailField({
 }
 
 function PasswordField({
-  label = "Mot de passe", value, onChange, show, onToggle, autoComplete, hint, error,
+  label, value, onChange, show, onToggle, autoComplete, hint, error,
 }: {
   label?: string;
   value: string;
@@ -433,10 +433,11 @@ function PasswordField({
   hint?: string;
   error?: string | null;
 }) {
+  const { t } = useLanguage();
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-password">{label}</Label>
+      <Label htmlFor="auth-password">{label ?? t("auth.password")}</Label>
       <div className="relative">
         <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -455,7 +456,7 @@ function PasswordField({
         <button
           type="button"
           onClick={onToggle}
-          aria-label={show ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+          aria-label={show ? t("auth.pwdHide") : t("auth.pwdShow")}
           className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
