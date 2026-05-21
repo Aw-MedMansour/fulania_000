@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { LogOut, Sparkles, User as UserIcon } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { supabase } from "@/integrations/supabase/client";
+
+async function signOut() {
+  const { supabase } = await import("@/integrations/supabase/client");
+  await supabase.auth.signOut();
+}
+
 
 export function SiteHeader() {
   const { user } = useAuth();
@@ -34,7 +39,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           {user ? (
             <button
-              onClick={() => supabase.auth.signOut()}
+              onClick={() => signOut()}
               className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
               title={user.email ?? ""}
               aria-label="Déconnexion"
