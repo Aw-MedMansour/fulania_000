@@ -322,7 +322,7 @@ function Index() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
-              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">Aw Mohamedou Mansour</h2>
+              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
               <p className="mt-5 text-cream/80">
                 {t("contact.bio")}
               </p>
