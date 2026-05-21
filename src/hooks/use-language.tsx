@@ -506,6 +506,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "At least 8 characters, with letters and numbers.",
     "auth.welcomeToast": "Welcome!",
     "auth.verifyMail": "Check your inbox to confirm your account.",
+    "auth.pwdShow": "Show password", "auth.pwdHide": "Hide password",
+    "auth.emailPh": "first.last@domain.com",
+    "auth.oauthErr": "Sign-in failed",
+
+    "dialect.zone.pulaar": "Senegal, Mauritania",
+    "dialect.zone.pular": "Guinea",
+    "dialect.zone.fulfulde": "Cameroon, Mali, Niger",
+    "dialect.zone.fula": "Gambia, Sierra Leone, Nigeria",
+    "dialect.note.pulaar": "Fouta Toro, Halpulaar",
+    "dialect.note.pular": "Fouta Djallon",
+    "dialect.note.fulfulde": "Sahel",
+    "dialect.note.fula": "West Africa",
+
+    "public.t1": "Native speakers", "public.d1": "Deepen, rediscover forgotten words, pass them to children.",
+    "public.t2": "Fulani diaspora", "public.d2": "Reconnect with their roots, learn or rediscover the language.",
+    "public.t3": "Children & youth", "public.d3": "Learn their parents' language in a modern, playful format.",
+    "public.t4": "Researchers & linguists", "public.d4": "Access a reliable cultural and linguistic database.",
+    "public.t5": "Curious & learners", "public.d5": "Discover a fascinating language and culture.",
+    "public.t6": "NGOs & institutions", "public.d6": "Tools for educational and cultural programs.",
+
+    "phase.1.t": "Launch", "phase.1.b": "Conversational AI assistant, base dictionary, showcase website.",
+    "phase.2.t": "Development", "phase.2.b": "Tiered learning system, voice recognition, enriched content.",
+    "phase.3.t": "Expansion", "phase.3.b": "iOS & Android mobile app, institutional partnerships, full multilingual version.",
+    "phase.4.t": "Growth", "phase.4.b": "AI model trained specifically on Pulaar, community of contributors.",
+
+    "vision.preserve": "Preserve", "vision.transmit": "Transmit", "vision.educate": "Educate",
+    "vision.value": "Celebrate", "vision.gather": "Gather", "vision.include": "Include",
+
+    "contact.bio": "22 years old, from Lekseiba in the Gorgol region, Master's student in Biotechnology in Algeria.",
+    "alt.hero": "Fulani herders in the Sahel",
+    "alt.portrait": "Fulani portrait",
   },
 
   ar: {
