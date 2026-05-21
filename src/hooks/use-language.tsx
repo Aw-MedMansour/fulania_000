@@ -584,6 +584,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "22 years old, from Lekseiba in the Gorgol region, Master's student in Biotechnology in Algeria.",
     "alt.hero": "Fulani herders in the Sahel",
     "alt.portrait": "Fulani portrait",
+    "nf.title": "Page not found",
+    "nf.body": "The page you're looking for doesn't exist or has been moved.",
+    "nf.home": "Go home",
+    "err.title": "This page didn't load",
+    "err.body": "Something went wrong on our end. You can try refreshing or head back home.",
+    "err.retry": "Try again",
+    "err.home": "Go home",
   },
 
   ar: {
