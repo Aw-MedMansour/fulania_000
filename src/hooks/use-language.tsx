@@ -962,16 +962,25 @@ const translations: Record<Lang, Dict> = {
   },
 };
 
-type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (key: string) => string };
+type Ctx = {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  dialect: Dialect;
+  setDialect: (d: Dialect) => void;
+  t: (key: string) => string;
+};
 const LangCtx = createContext<Ctx | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
+  const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("fulania.lang") as Lang | null;
       if (stored && translations[stored]) setLangState(stored);
+      const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
+      if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
     } catch {}
   }, []);
 
@@ -987,14 +996,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLangState(l);
     try { localStorage.setItem("fulania.lang", l); } catch {}
   };
+  const setDialect = (d: Dialect) => {
+    setDialectState(d);
+    try { localStorage.setItem("fulania.dialect", d); } catch {}
+  };
 
   const t = (key: string) => translations[lang][key] ?? translations.fr[key] ?? key;
 
-  return <LangCtx.Provider value={{ lang, setLang, t }}>{children}</LangCtx.Provider>;
+  return <LangCtx.Provider value={{ lang, setLang, dialect, setDialect, t }}>{children}</LangCtx.Provider>;
 }
 
 export function useLanguage(): Ctx {
   const ctx = useContext(LangCtx);
-  if (!ctx) return { lang: "fr", setLang: () => {}, t: (k) => translations.fr[k] ?? k };
+  if (!ctx) return { lang: "fr", setLang: () => {}, dialect: "fouta_toro", setDialect: () => {}, t: (k) => translations.fr[k] ?? k };
   return ctx;
 }
