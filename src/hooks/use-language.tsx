@@ -359,6 +359,7 @@ export const translations: Record<Lang, Dict> = {
     "seo./culture.desc": "Tindi, daari, aadaaji, gimi, ñaamde e comci Halpulaar : ɓibliyotɛk wuurnde pinal Fulɓe.",
     "nav.solution": "Solisiyon", "nav.pillars": "Tugaale", "nav.dictionary": "Saggitorde",
     "nav.learn": "Janngude",
+    "nav.back": "Rutto", "nav.home": "Jaɓɓorgo", "nav.hub": "Nokku",
     "learn.title": "Janngu Pulaar",
     "learn.subtitle": "Janngirɗe, ƴeewndooji e karte janngirɗe — janngu no yiɗɗaa.",
     "learn.lessons": "Janngirɗe", "learn.flashcards": "Karte", "learn.quiz": "Ƴeewndo",
