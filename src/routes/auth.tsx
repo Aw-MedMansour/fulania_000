@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
+import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -83,6 +84,7 @@ type Provider = "google" | "apple";
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -139,7 +141,7 @@ function AuthPage() {
     });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Bienvenue !");
+    toast.success(t("auth.welcomeToast"));
     navigate({ to: "/chat", replace: true });
   };
 
@@ -154,7 +156,7 @@ function AuthPage() {
     });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("Vérifiez votre boîte mail pour confirmer votre compte.");
+    toast.success(t("auth.verifyMail"));
   };
 
   const onOAuth = async (provider: Provider) => {
@@ -209,21 +211,20 @@ function AuthPage() {
           <div className="relative z-10 px-10 pb-10">
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/40 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-[var(--gold)] backdrop-blur">
               <Sparkles className="h-3 w-3" />
-              Bienvenue, jaaraama
+              {t("auth.welcome")}
             </div>
             <h2 className="mt-6 max-w-md font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance xl:text-5xl">
-              Le griot du XXI<sup>e</sup> siècle vous attend.
+              {t("auth.heroTitle")}
             </h2>
             <p className="mt-5 max-w-md text-cream/75">
-              Connectez-vous pour discuter en Pulaar avec FulanIA, retrouver vos favoris et
-              poursuivre votre apprentissage là où vous l'avez laissé.
+              {t("auth.heroBody")}
             </p>
 
             <ul className="mt-8 space-y-3 text-sm">
               {[
-                { icon: Sparkles, label: "Assistant IA disponible 24h/24" },
-                { icon: BookOpen, label: "Dictionnaire Pulaar interactif" },
-                { icon: Languages, label: "Pulaar · Français · Arabe · Anglais" },
+                { icon: Sparkles, label: t("auth.benefit1") },
+                { icon: BookOpen, label: t("auth.benefit2") },
+                { icon: Languages, label: t("auth.benefit3") },
               ].map(({ icon: Icon, label }) => (
                 <li key={label} className="flex items-center gap-3 text-cream/85">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)]">
@@ -239,7 +240,7 @@ function AuthPage() {
                 « Pulaagu ko ngallu mawngu. »
               </blockquote>
               <figcaption className="mt-1.5 text-xs uppercase tracking-widest text-cream/55">
-                La culture Peule est une grande richesse
+                {t("sol.quoteCaption")}
               </figcaption>
             </figure>
           </div>
@@ -249,32 +250,27 @@ function AuthPage() {
         <main className="relative flex min-h-screen flex-col justify-between px-5 py-8 sm:px-10 sm:py-12 lg:px-14">
           {/* Mobile brand bar */}
           <div className="mb-8 flex items-center justify-between lg:hidden">
-            <Link to="/" className="flex items-center gap-2.5" aria-label="Retour à l'accueil FulanIA">
+            <Link to="/" className="flex items-center gap-2.5" aria-label={t("auth.backHome")}>
               <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
                 <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
               </div>
               <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
             </Link>
-            <Link
-              to="/"
-              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" /> Accueil
+            <Link to="/" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
+              <ArrowLeft className="h-3.5 w-3.5" /> {t("auth.home")}
             </Link>
           </div>
 
           <div className="mx-auto w-full max-w-md flex-1">
             <div className="text-center lg:text-left">
               <span className="text-xs uppercase tracking-[0.2em] text-primary">
-                {tab === "signin" ? "Connexion" : "Créer un compte"}
+                {tab === "signin" ? t("auth.tab.signin") : t("auth.tab.signup")}
               </span>
               <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight text-earth sm:text-4xl">
-                {tab === "signin" ? "Heureux de vous revoir." : "Rejoignez FulanIA."}
+                {tab === "signin" ? t("auth.signinTitle") : t("auth.signupTitle")}
               </h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                {tab === "signin"
-                  ? "Connectez-vous pour reprendre la conversation avec FulanIA."
-                  : "Créez votre compte gratuit pour discuter avec l'assistant Peul."}
+                {tab === "signin" ? t("auth.signinSub") : t("auth.signupSub")}
               </p>
             </div>
 
@@ -308,20 +304,21 @@ function AuthPage() {
 
             <div className="my-6 flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               <div className="h-px flex-1 bg-border" />
-              ou avec votre email
+              {t("auth.orEmail")}
               <div className="h-px flex-1 bg-border" />
             </div>
 
             <Tabs value={tab} onValueChange={(v) => { setTab(v as "signin" | "signup"); setEmailError(null); setPwdError(null); }}>
               <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
-                <TabsTrigger value="signin">Connexion</TabsTrigger>
-                <TabsTrigger value="signup">Créer un compte</TabsTrigger>
+                <TabsTrigger value="signin">{t("auth.tab.signin")}</TabsTrigger>
+                <TabsTrigger value="signup">{t("auth.tab.signup")}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin">
                 <form onSubmit={onSignIn} noValidate className="space-y-4 pt-5">
-                  <EmailField value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
+                  <EmailField label={t("auth.email")} value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
                   <PasswordField
+                    label={t("auth.password")}
                     value={password}
                     onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
@@ -330,29 +327,29 @@ function AuthPage() {
                     error={pwdError}
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
-                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Se connecter <ArrowRight className="h-4 w-4" /></>}
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>{t("auth.signinBtn")} <ArrowRight className="h-4 w-4" /></>}
                   </Button>
                 </form>
               </TabsContent>
 
               <TabsContent value="signup">
                 <form onSubmit={onSignUp} noValidate className="space-y-4 pt-5">
-                  <EmailField value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
+                  <EmailField label={t("auth.email")} value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
                   <PasswordField
+                    label={t("auth.password")}
                     value={password}
                     onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="new-password"
                     error={pwdError}
-                    hint="Au moins 8 caractères, avec lettres et chiffres."
+                    hint={t("auth.hintPwd")}
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
-                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Créer mon compte <ArrowRight className="h-4 w-4" /></>}
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>{t("auth.signupBtn")} <ArrowRight className="h-4 w-4" /></>}
                   </Button>
                   <p className="text-center text-xs text-muted-foreground">
-                    En continuant, vous acceptez d'utiliser FulanIA de manière respectueuse de la
-                    langue et de la culture Peules. Un email de confirmation vous sera envoyé.
+                    {t("auth.terms")}
                   </p>
                 </form>
               </TabsContent>
@@ -361,13 +358,13 @@ function AuthPage() {
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
-              Vos données restent privées et sécurisées.
+              {t("auth.privacy")}
             </div>
           </div>
 
           <footer className="mt-10 hidden text-center text-xs text-muted-foreground lg:block">
             <Link to="/" className="inline-flex items-center gap-1 hover:text-foreground">
-              <ArrowLeft className="h-3 w-3" /> Retour à l'accueil
+              <ArrowLeft className="h-3 w-3" /> {t("auth.backHome")}
             </Link>
             <span className="mx-2 opacity-50">·</span>
             © 2026 FulanIA
@@ -381,8 +378,9 @@ function AuthPage() {
 /* ───────── Sub-components ───────── */
 
 function EmailField({
-  value, onChange, error, hint,
+  label = "Email", value, onChange, error, hint,
 }: {
+  label?: string;
   value: string;
   onChange: (v: string) => void;
   error?: string | null;
@@ -392,7 +390,7 @@ function EmailField({
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-email">Email</Label>
+      <Label htmlFor="auth-email">{label}</Label>
       <div className="relative">
         <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -423,8 +421,9 @@ function EmailField({
 }
 
 function PasswordField({
-  value, onChange, show, onToggle, autoComplete, hint, error,
+  label = "Mot de passe", value, onChange, show, onToggle, autoComplete, hint, error,
 }: {
+  label?: string;
   value: string;
   onChange: (v: string) => void;
   show: boolean;
@@ -436,7 +435,7 @@ function PasswordField({
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-password">Mot de passe</Label>
+      <Label htmlFor="auth-password">{label}</Label>
       <div className="relative">
         <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input

@@ -8,17 +8,23 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM_PROMPT = `Tu es FulanIA, un assistant intelligent dédié à la langue et à la culture Peule (Fulɓe / Halpulaar).
+const BASE_SYSTEM_PROMPT = `Tu es FulanIA, un assistant intelligent dédié à la langue et à la culture Peule (Fulɓe / Halpulaar).
 
 Rôle:
 - Réponds aux questions sur la langue Pulaar/Pular/Fulfulde/Fula, l'histoire, les traditions, le Pulaaku, les figures historiques (El Hadj Oumar Tall, Thierno Souleymane Baal, les Almamy), les régions (Fouta Toro, Fouta Djallon), la musique (Hoddu, Riti), les rites et l'organisation sociale.
 - Donne des traductions, prononciations, exemples en contexte, proverbes et expressions idiomatiques.
-- Réponds dans la langue de l'utilisateur (français, pulaar, arabe, anglais). Quand on te parle Pulaar, réponds en Pulaar.
 - Sois culturellement respectueux, précis, et incarne les valeurs du Pulaaku: Semteende (pudeur), Munyal (patience), Hakkiilo (sagesse), Neddaaku (humanité).
 - Quand tu donnes des mots en Pulaar, utilise les caractères spéciaux (ɓ, ɗ, ƴ, ŋ) correctement.
 - Si tu n'es pas sûr, dis-le honnêtement plutôt que d'inventer.
 
 Style: chaleureux, pédagogue, comme un griot moderne. Concis par défaut, détaillé quand on te le demande.`;
+
+const LANG_INSTRUCTIONS: Record<string, string> = {
+  fr: "IMPORTANT: Réponds TOUJOURS en français, sauf si l'utilisateur demande explicitement une autre langue. Mots et exemples en Pulaar peuvent être inclus en complément.",
+  ff: "IMPORTANT: Jaabo SAHA fof e ɗemngal Pulaar/Fulfulde, huutoraa alkule ɓ, ɗ, ƴ, ŋ. Hay si neɗɗo winnduɗo wonaa Pulaar, jaabo e Pulaar tan, so wonaa o ɗaɓɓii ɗemngal ngoɗngal.",
+  en: "IMPORTANT: ALWAYS answer in English, unless the user explicitly asks for another language. Pulaar words and examples may be included as complements.",
+  ar: "IMPORTANT: أجب دائمًا باللغة العربية، إلا إذا طلب المستخدم صراحةً لغة أخرى. يمكن تضمين كلمات وأمثلة بالبولارية كملحقات.",
+};
 
 const MAX_MESSAGES = 20;
 const MAX_CONTENT_LENGTH = 2000;
@@ -29,12 +35,10 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // --- Authentication check ---
     const authHeader = req.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -47,30 +51,29 @@ Deno.serve(async (req) => {
       const { data: userData, error: userErr } = await supabase.auth.getUser();
       if (userErr || !userData?.user) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), {
-          status: 401,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
     }
 
-    // --- Input validation ---
     const body = await req.json();
     const messages = body?.messages;
+    const langRaw = typeof body?.lang === "string" ? body.lang : "fr";
+    const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
+
     if (!Array.isArray(messages) || messages.length === 0 || messages.length > MAX_MESSAGES) {
       return new Response(JSON.stringify({ error: "Requête invalide." }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
     const safeMessages = messages
-      .filter((m) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
-      .map((m) => ({ role: m.role, content: String(m.content).slice(0, MAX_CONTENT_LENGTH) }));
+      .filter((m: any) => m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string")
+      .map((m: any) => ({ role: m.role, content: String(m.content).slice(0, MAX_CONTENT_LENGTH) }));
 
     if (safeMessages.length === 0) {
       return new Response(JSON.stringify({ error: "Requête invalide." }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -78,10 +81,11 @@ Deno.serve(async (req) => {
     if (!LOVABLE_API_KEY) {
       console.error("LOVABLE_API_KEY not configured");
       return new Response(JSON.stringify({ error: "Service indisponible." }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+
+    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${LANG_INSTRUCTIONS[lang]}`;
 
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -93,7 +97,7 @@ Deno.serve(async (req) => {
         model: "google/gemini-2.5-flash",
         stream: true,
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: systemPrompt },
           ...safeMessages,
         ],
       }),
@@ -101,22 +105,19 @@ Deno.serve(async (req) => {
 
     if (resp.status === 429) {
       return new Response(JSON.stringify({ error: "Limite atteinte. Réessayez plus tard." }), {
-        status: 429,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     if (resp.status === 402) {
-      return new Response(JSON.stringify({ error: "Crédits IA épuisés. Ajoutez des crédits à votre espace Lovable." }), {
-        status: 402,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      return new Response(JSON.stringify({ error: "Crédits IA épuisés." }), {
+        status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     if (!resp.ok || !resp.body) {
       const text = await resp.text();
       console.error("Upstream AI gateway error:", resp.status, text);
-      return new Response(JSON.stringify({ error: "Une erreur est survenue. Veuillez réessayer." }), {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      return new Response(JSON.stringify({ error: "Une erreur est survenue." }), {
+        status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
@@ -129,9 +130,8 @@ Deno.serve(async (req) => {
     });
   } catch (e) {
     console.error("chat function error:", e);
-    return new Response(JSON.stringify({ error: "Une erreur est survenue. Veuillez réessayer." }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    return new Response(JSON.stringify({ error: "Une erreur est survenue." }), {
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
