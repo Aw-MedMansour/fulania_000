@@ -345,6 +345,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "Ko ɓuri alkule 8, e alkule e limooje.",
     "auth.welcomeToast": "Jaaraama!",
     "auth.verifyMail": "Ƴeewto email maa ngam teeŋtinde konte.",
+    "auth.pwdShow": "Hollir finndal", "auth.pwdHide": "Suuɗ finndal",
+    "auth.emailPh": "innde.yettoode@nokku.com",
+    "auth.oauthErr": "Naatugol horiima",
+
+    "dialect.zone.pulaar": "Senegaal, Muritani",
+    "dialect.zone.pular": "Gine",
+    "dialect.zone.fulfulde": "Kameruun, Maali, Nijeer",
+    "dialect.zone.fula": "Gammbi, Seraa Leon, Nijeriya",
+    "dialect.note.pulaar": "Fuuta Tooro, Halpulaar",
+    "dialect.note.pular": "Fuuta Jaloo",
+    "dialect.note.fulfulde": "Saheli",
+    "dialect.note.fula": "Afrik hirnaange",
+
+    "public.t1": "Wolwooɓe jibinaaɓe", "public.d1": "Luggidde, yiytude konnguɗi yejjitaaɗi, yettinde sukaaɓe.",
+    "public.t2": "Diaspora Fulɓe", "public.d2": "Hokkitaade e leñol mum, jannginde walla yiytude ɗemngal.",
+    "public.t3": "Sukaaɓe & jaaɓɓe", "public.d3": "Jannginde ɗemngal jinnaaɓe mum e mbaadi hesere e ɓolde.",
+    "public.t4": "Wiɗtooɓe & ekspeer ɗemɗe", "public.d4": "Heɓtugol e bayyinaale pinal e ɗemngal hoolniiɗo.",
+    "public.t5": "Yiɗɓe & jangooɓe", "public.d5": "Faamde ɗemngal e pinal welɗum.",
+    "public.t6": "ONG & jaaɓhaaɓhe", "public.d6": "Kuutorɗe wonande porogaramaaji jannde e pinal.",
+
+    "phase.1.t": "Fuɗɗoode", "phase.1.b": "Assistant IA, saggitorde, saayit web.",
+    "phase.2.t": "Ɓeydaari", "phase.2.b": "Sistem jannde, faamondiral sawtu, kabaruuji ɓesɗiɗi.",
+    "phase.3.t": "Yaajnande", "phase.3.b": "Aplikasiyoŋ mobile iOS e Android, wallidiiɓe, ɗemɗe heewɗe.",
+    "phase.4.t": "Mawnugol", "phase.4.b": "Modeel IA jannginaaɗo e Pulaar, renndo ballooɓe.",
+
+    "vision.preserve": "Reenude", "vision.transmit": "Yettinde", "vision.educate": "Jannginde",
+    "vision.value": "Teddinde", "vision.gather": "Renndinde", "vision.include": "Naatnude",
+
+    "contact.bio": "Duuɓi 22, ummiiɗo Lekseiba e Gorgol, jannginteeɗo Master Biotechnologie e Alaseri.",
+    "alt.hero": "Aynaaɓe Fulɓe e Saheli",
+    "alt.portrait": "Mbaadi Pullo",
   },
 
   en: {
