@@ -37,7 +37,7 @@ function LanguageSwitcher() {
         <Globe className="h-3.5 w-3.5" />
         <span className="hidden sm:inline">
           {current.code.toUpperCase()}
-          {lang === "ff" && <span className="ms-1 text-muted-foreground">· {currentDialect.code === "fouta_toro" ? "FT" : currentDialect.code === "fouta_djallon" ? "FJ" : currentDialect.code === "maasina" ? "MA" : "AD"}</span>}
+          <span className="ms-1 text-muted-foreground">· {currentDialect.code === "fouta_toro" ? "FT" : currentDialect.code === "fouta_djallon" ? "FJ" : currentDialect.code === "maasina" ? "MA" : "AD"}</span>
         </span>
         <ChevronDown className="h-3 w-3" />
       </button>
