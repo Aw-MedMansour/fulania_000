@@ -222,7 +222,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "Préserver", "vision.transmit": "Transmettre", "vision.educate": "Éduquer",
     "vision.value": "Valoriser", "vision.gather": "Rassembler", "vision.include": "Inclure",
 
-    "contact.bio": "22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.",
+    "contact.bio": "Jeune étudiant de 22 ans, originaire de Lekseiba dans la région du Gorgol, Aw Mohamedou Mansour est actuellement en Master Biotechnologie en Algérie. Malgré sa formation scientifique, il porte depuis plusieurs années une conviction profonde : la technologie doit servir toutes les cultures, y compris les plus marginalisées dans le monde numérique.\n\nC'est de cette conviction qu'est né FulanIA — un projet qui allie passion pour la culture Peule et ambition technologique, dans l'espoir de créer un outil qui traversera les générations.",
     "alt.hero": "Bergers Peuls dans le Sahel",
     "alt.portrait": "Portrait Peul",
     "nf.title": "Page introuvable",
@@ -402,7 +402,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "Reenude", "vision.transmit": "Yettinde", "vision.educate": "Jannginde",
     "vision.value": "Teddinde", "vision.gather": "Renndinde", "vision.include": "Naatnude",
 
-    "contact.bio": "Duuɓi 22, ummiiɗo Lekseiba e Gorgol, jannginteeɗo Master Biotechnologie e Alaseri.",
+    "contact.bio": "Sukaaɓe duuɓi 22, ummiiɗo Lekseiba e diiwal Gorgol, Aw Mohamedou Mansour ko jannginteeɗo Master Biotechnologie e Alaseri jooni. Hay so o jangii ganndal saayansi, o jogiiɗo gootol miijo tiiɗngo: teknooloosi maa wallit pinle ɗen fof, hay ɗen ɓurɗe wonde caggal e aduna teknoloosi.\n\nKo e miijo ngon woni hol FulanIA umminorii — kuugal ko hawritta giɗɗum pinal Pulaagu e yiɗde teknooloosi, e tama'u sosde kuutorgal ngal yawta jamaaji.",
     "alt.hero": "Aynaaɓe Fulɓe e Saheli",
     "alt.portrait": "Mbaadi Pullo",
     "nf.title": "Hello yiytaaka",
@@ -581,7 +581,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "Preserve", "vision.transmit": "Transmit", "vision.educate": "Educate",
     "vision.value": "Celebrate", "vision.gather": "Gather", "vision.include": "Include",
 
-    "contact.bio": "22 years old, from Lekseiba in the Gorgol region, Master's student in Biotechnology in Algeria.",
+    "contact.bio": "A 22-year-old student from Lekseiba in the Gorgol region, Aw Mohamedou Mansour is currently pursuing a Master's degree in Biotechnology in Algeria. Despite his scientific training, he has long held a deep conviction: technology must serve every culture, including those most marginalized in the digital world.\n\nIt is from this conviction that FulanIA was born — a project blending passion for Fulani culture with technological ambition, with the hope of creating a tool that will outlast generations.",
     "alt.hero": "Fulani herders in the Sahel",
     "alt.portrait": "Fulani portrait",
     "nf.title": "Page not found",
@@ -760,7 +760,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "الحفاظ", "vision.transmit": "النقل", "vision.educate": "التعليم",
     "vision.value": "التثمين", "vision.gather": "الجمع", "vision.include": "الإدماج",
 
-    "contact.bio": "22 عامًا، من لكصيبة بمنطقة كوركول، طالب ماستر في التقنيات الحيوية بالجزائر.",
+    "contact.bio": "طالب شاب يبلغ من العمر 22 عامًا، من لكصيبة بمنطقة كوركول، يتابع آو محمدُ منصور حاليًا دراسة الماستر في التقنيات الحيوية بالجزائر. ورغم تكوينه العلمي، يحمل منذ سنوات قناعة عميقة: التكنولوجيا يجب أن تخدم كل الثقافات، بما فيها تلك الأكثر تهميشًا في الفضاء الرقمي.\n\nمن هذه القناعة وُلد مشروع FulanIA — مشروع يجمع بين الشغف بالثقافة الفولانية والطموح التكنولوجي، أملًا في خلق أداة تعبر الأجيال.",
     "alt.hero": "رعاة فولانيون في الساحل",
     "alt.portrait": "صورة فولانية",
     "nf.title": "الصفحة غير موجودة",
