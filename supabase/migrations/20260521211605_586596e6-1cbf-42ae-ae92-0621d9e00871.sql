@@ -1,0 +1,1 @@
+ALTER VIEW public.donations_public_stats SET (security_invoker = true);
