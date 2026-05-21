@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
+import { PageNav } from "@/components/page-nav";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import patternImg from "@/assets/pattern.jpg";
@@ -95,18 +96,21 @@ function HubPage() {
           </div>
           <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
         </Link>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={async () => {
-            await supabase.auth.signOut();
-            navigate({ to: "/", replace: true });
-          }}
-          className="gap-1.5 text-muted-foreground"
-        >
-          <LogOut className="h-4 w-4" />
-          {t("btn.signout")}
-        </Button>
+        <div className="flex items-center gap-2">
+          <PageNav />
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={async () => {
+              await supabase.auth.signOut();
+              navigate({ to: "/", replace: true });
+            }}
+            className="gap-1.5 text-muted-foreground"
+          >
+            <LogOut className="h-4 w-4" />
+            <span className="hidden sm:inline">{t("btn.signout")}</span>
+          </Button>
+        </div>
       </header>
 
       <main className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-4 sm:px-8">
