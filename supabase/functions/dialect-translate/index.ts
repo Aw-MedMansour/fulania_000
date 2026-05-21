@@ -50,13 +50,8 @@ Deno.serve(async (req) => {
     if (!auth?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { global: { headers: { Authorization: auth } } });
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData?.user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+    // JWT déjà vérifié par la gateway Supabase (verify_jwt = true)
+
 
     const body = await req.json();
     const text = String(body?.text ?? "").trim().slice(0, 200);
