@@ -71,6 +71,14 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const word = String(body?.word ?? "").trim().slice(0, 80);
     const sourceLang = ["auto", "ff", "fr", "en", "ar"].includes(body?.sourceLang) ? body.sourceLang : "auto";
+    const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
+    const DIALECT_LABELS: Record<string, string> = {
+      fouta_toro: "Pulaar du Fuuta Tooro (Sénégal, Mauritanie, Mali)",
+      fouta_djallon: "Pular du Fuuta Jaloo (Guinée)",
+      maasina: "Fulfulde du Maasina (Mali, Burkina, Niger)",
+      aadamaawa: "Fulfulde de l'Aadamaawa (Nigeria, Cameroun, Tchad)",
+    };
+    const dialectLabel = DIALECT_LABELS[dialectRaw] ?? DIALECT_LABELS.fouta_toro;
     if (!word) {
       return new Response(JSON.stringify({ error: "Mot requis." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
@@ -82,7 +90,7 @@ Deno.serve(async (req) => {
           .join("\n")}\n=== Fin source ===`
       : "";
 
-    const userMsg = `Mot à traduire : « ${word} »\nLangue source supposée : ${sourceLang}\n${ctxBlock}\n\nProduis la fiche en appelant translation_card.`;
+    const userMsg = `Mot à traduire : « ${word} »\nLangue source supposée : ${sourceLang}\nDIALECTE CIBLE : ${dialectLabel} — donne la forme principale dans ce dialecte ; mentionne brièvement dans 'notes' si la forme diffère ailleurs.${ctxBlock}\n\nProduis la fiche en appelant translation_card.`;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {
