@@ -131,10 +131,8 @@ function ChatPage() {
       {/* Header */}
       <header className="flex-none border-b border-border/60 bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" />
-            <span className="hidden sm:inline">{t("chat.back")}</span>
-          </Link>
+          <PageNav />
+
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
               <span className="font-display text-base font-bold">F</span>
