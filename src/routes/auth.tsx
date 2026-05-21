@@ -165,7 +165,7 @@ function AuthPage() {
       redirect_uri: window.location.origin + "/chat",
     });
     setOauthLoading(null);
-    if (r.error) toast.error(`Échec de la connexion ${provider === "google" ? "Google" : "Apple"}`);
+    if (r.error) toast.error(`${t("auth.oauthErr")} ${provider === "google" ? "Google" : "Apple"}`);
     else if (!r.redirected) navigate({ to: "/chat", replace: true });
   };
 
