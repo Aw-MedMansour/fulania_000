@@ -2,3 +2,9 @@ project_id = "cmhzxjibieecwtglabip"
 
 [functions.chat]
 verify_jwt = true
+
+[functions.translate]
+verify_jwt = true
+
+[functions.generate-lesson]
+verify_jwt = true
