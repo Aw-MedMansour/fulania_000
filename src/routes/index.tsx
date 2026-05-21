@@ -352,7 +352,7 @@ function Index() {
                   <MapPin className="h-5 w-5 text-[var(--gold)]" />
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.address")}</p>
-                    <p className="text-cream">Boumerdes, Algérie</p>
+                    <p className="text-cream">{t("contact.location")}</p>
                   </div>
                 </div>
               </div>
