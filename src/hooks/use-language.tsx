@@ -466,6 +466,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Algeria",
     "problem.tool4": "AI assistants",
+    "problem.pulaar1": "Duolingo — 0 courses",
+    "problem.pulaar2": "Google Translate — not supported",
+    "problem.pulaar3": "Wikipedia — a few hundred articles",
+    "problem.pulaar4": "No dedicated AI assistant",
 
     "footer.tagline": "Artificial Intelligence serving the Fulani language and culture.",
     "footer.explore": "Explore", "footer.contact": "Contact",
