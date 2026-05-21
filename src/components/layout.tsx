@@ -178,7 +178,7 @@ export function SiteFooter() {
                   +213 780 30 64 86
                 </a>
               </li>
-              <li className="text-cream/60">Boumerdes, Algérie</li>
+              <li className="text-cream/60">{t("contact.location")}</li>
             </ul>
           </div>
         </div>
