@@ -51,7 +51,7 @@ function LanguageSwitcher() {
                 <button
                   role="option"
                   aria-selected={l.code === lang}
-                  onClick={() => { setLang(l.code); if (l.code !== "ff") setOpen(false); }}
+                  onClick={() => { setLang(l.code); setOpen(false); }}
                   className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
                 >
                   <span className="flex items-center gap-2">
