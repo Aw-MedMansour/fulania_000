@@ -2,18 +2,23 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Languages, Loader2, Volume2, Sparkles } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { useLanguage } from "@/hooks/use-language";
+import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/translate")({
-  head: () => ({
-    meta: [
-      { title: "Traduction multi-dialectique Pulaar — FulanIA" },
-      { name: "description", content: "Compare un mot ou une phrase dans les principales variantes du Pulaar/Fulfulde : Fouta Toro, Fouta Djallon, Macina, Adamawa." },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./translate.title") },
+        { name: "description", content: tFor(l, "seo./translate.desc") },
+        { property: "og:title", content: tFor(l, "seo./translate.title") },
+        { property: "og:description", content: tFor(l, "seo./translate.desc") },
+      ],
+    };
+  },
   component: TranslatePage,
 });
 

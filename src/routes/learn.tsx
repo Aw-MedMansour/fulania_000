@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { BookOpen, GraduationCap, Sparkles, RefreshCw, Check, X, Volume2, ArrowRight, ArrowLeft, Loader2, Wand2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useLanguage } from "@/hooks/use-language";
+import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -12,12 +12,17 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/learn")({
-  head: () => ({
-    meta: [
-      { title: "Apprendre le Pulaar — Leçons & Quiz | FulanIA" },
-      { name: "description", content: "Apprends le Pulaar avec des leçons thématiques, des quiz interactifs et des flashcards intelligentes." },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./learn.title") },
+        { name: "description", content: tFor(l, "seo./learn.desc") },
+        { property: "og:title", content: tFor(l, "seo./learn.title") },
+        { property: "og:description", content: tFor(l, "seo./learn.desc") },
+      ],
+    };
+  },
   component: LearnPage,
 });
 

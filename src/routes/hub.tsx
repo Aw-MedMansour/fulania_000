@@ -11,18 +11,23 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { useLanguage } from "@/hooks/use-language";
+import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import patternImg from "@/assets/pattern.jpg";
 
 export const Route = createFileRoute("/hub")({
-  head: () => ({
-    meta: [
-      { title: "Espace FulanIA — Choisis ton outil" },
-      { name: "description", content: "Accède à l'assistant IA, au dictionnaire, à l'apprentissage, au traducteur multi-dialectes et à la bibliothèque culturelle Peule." },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./hub.title") },
+        { name: "description", content: tFor(l, "seo./hub.desc") },
+        { property: "og:title", content: tFor(l, "seo./hub.title") },
+        { property: "og:description", content: tFor(l, "seo./hub.desc") },
+      ],
+    };
+  },
   component: HubPage,
 });
 

@@ -2,16 +2,21 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Library, Quote, BookMarked, Music2, Shirt, Utensils, Crown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
-import { useLanguage } from "@/hooks/use-language";
+import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/culture")({
-  head: () => ({
-    meta: [
-      { title: "Bibliothèque culturelle Peule — FulanIA" },
-      { name: "description", content: "Proverbes, contes, traditions, musique, cuisine et tenues Halpulaar : une bibliothèque vivante de la culture Peule." },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./culture.title") },
+        { name: "description", content: tFor(l, "seo./culture.desc") },
+        { property: "og:title", content: tFor(l, "seo./culture.title") },
+        { property: "og:description", content: tFor(l, "seo./culture.desc") },
+      ],
+    };
+  },
   component: CulturePage,
 });
 

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "@tanstack/react-router";
 
 export type Lang = "fr" | "ff" | "en" | "ar";
 export type Dialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
@@ -21,6 +22,23 @@ type Dict = Record<string, string>;
 
 export const translations: Record<Lang, Dict> = {
   fr: {
+    // SEO meta (titre + description par route)
+    "seo./.title": "FulanIA — IA au service de la langue et de la culture Peules",
+    "seo./.desc": "Le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver.",
+    "seo./auth.title": "Connexion à FulanIA — Assistant IA Peul",
+    "seo./auth.desc": "Connectez-vous à FulanIA pour discuter avec l'assistant Peul, explorer le dictionnaire Pulaar et synchroniser vos favoris.",
+    "seo./chat.title": "Assistant IA Pulaar — FulanIA",
+    "seo./chat.desc": "Discutez en Pulaar, français, anglais ou arabe avec l'assistant IA spécialisé dans la langue et la culture Halpulaar.",
+    "seo./dictionary.title": "Dictionnaire Pulaar ↔ FR ↔ AR ↔ EN — FulanIA",
+    "seo./dictionary.desc": "Dictionnaire interactif Pulaar — Français — Arabe — Anglais. Recherche, favoris, historique et exemples.",
+    "seo./learn.title": "Apprendre le Pulaar — Leçons & Quiz — FulanIA",
+    "seo./learn.desc": "Apprends le Pulaar avec des leçons thématiques, des quiz interactifs et des flashcards intelligentes.",
+    "seo./translate.title": "Traduction multi-dialectique Pulaar — FulanIA",
+    "seo./translate.desc": "Compare un mot ou une phrase dans les principales variantes du Pulaar/Fulfulde : Fouta Toro, Fouta Djallon, Macina, Adamawa.",
+    "seo./hub.title": "Espace FulanIA — Choisis ton outil",
+    "seo./hub.desc": "Accède à l'assistant IA, au dictionnaire, à l'apprentissage, au traducteur multi-dialectes et à la bibliothèque culturelle Peule.",
+    "seo./culture.title": "Bibliothèque culturelle Peule — FulanIA",
+    "seo./culture.desc": "Proverbes, contes, traditions, musique, cuisine et tenues Halpulaar : une bibliothèque vivante de la culture Peule.",
     // Hub
     "hub.tag": "Ton espace",
     "hub.hello": "Bienvenue",
@@ -320,6 +338,22 @@ export const translations: Record<Lang, Dict> = {
   },
 
   ff: {
+    "seo./.title": "FulanIA — Kuɓɓal kuuɓtidinngal e ɗemngal Pulaar e pinal Fulɓe",
+    "seo./.desc": "Kuɓɓal gadanal hesɗam ngam ɗemngal Pulaar/Fulfulde e pinal Fulɓe. Janngu, firtu, reenu.",
+    "seo./auth.title": "Naatu e FulanIA — Kuɓɓal Pulaar",
+    "seo./auth.desc": "Naatu e FulanIA ngam yeewtude e kuɓɓal, ƴeewu saggitorde Pulaar e reentinde ɓesnguuli maa.",
+    "seo./chat.title": "Kuɓɓal Pulaar — FulanIA",
+    "seo./chat.desc": "Yeewtu e Pulaar, Faransiyankoore, Engeleere maa Arab e kuɓɓal heertaaɗo ɗemngal e pinal Halpulaar.",
+    "seo./dictionary.title": "Saggitorde Pulaar ↔ FR ↔ AR ↔ EN — FulanIA",
+    "seo./dictionary.desc": "Saggitorde alyamaande Pulaar — Faransi — Arab — Engele. Yiilo, ɓesnguuli, daartol e misal.",
+    "seo./learn.title": "Janngude Pulaar — Janngooji e Doosɗe — FulanIA",
+    "seo./learn.desc": "Janngu Pulaar e janngooji teskaaɗi, doosɗe e karte janngingol.",
+    "seo./translate.title": "Firo hakkunde dialɛkti Pulaar — FulanIA",
+    "seo./translate.desc": "Ƴeewndo helmere maa konngol e dialɛkti mawɗi Pulaar/Fulfulde : Fuuta Tooro, Fuuta Jaloo, Maasina, Aadamaawa.",
+    "seo./hub.title": "Suudu FulanIA — Suɓo kuutorgal maa",
+    "seo./hub.desc": "Heɓ kuɓɓal IA, saggitorde, janngingol, pirtoowo dialɛkti e ɓibliyotɛk pinal Fulɓe.",
+    "seo./culture.title": "Ɓibliyotɛk pinal Fulɓe — FulanIA",
+    "seo./culture.desc": "Tindi, daari, aadaaji, gimi, ñaamde e comci Halpulaar : ɓibliyotɛk wuurnde pinal Fulɓe.",
     "nav.solution": "Solisiyon", "nav.pillars": "Tugaale", "nav.dictionary": "Saggitorde",
     "nav.learn": "Janngude",
     "learn.title": "Janngu Pulaar",
@@ -534,6 +568,22 @@ export const translations: Record<Lang, Dict> = {
   },
 
   en: {
+    "seo./.title": "FulanIA — AI for the Fulani language and culture",
+    "seo./.desc": "The first intelligent assistant dedicated to the Pulaar/Fulfulde language and Fulani culture. Learn, translate, preserve.",
+    "seo./auth.title": "Sign in to FulanIA — Fulani AI Assistant",
+    "seo./auth.desc": "Sign in to FulanIA to chat with the Fulani assistant, explore the Pulaar dictionary and sync your favorites.",
+    "seo./chat.title": "Pulaar AI Assistant — FulanIA",
+    "seo./chat.desc": "Chat in Pulaar, French, English or Arabic with the AI assistant specialized in Halpulaar language and culture.",
+    "seo./dictionary.title": "Pulaar ↔ FR ↔ AR ↔ EN Dictionary — FulanIA",
+    "seo./dictionary.desc": "Interactive Pulaar — French — Arabic — English dictionary. Search, favorites, history and examples.",
+    "seo./learn.title": "Learn Pulaar — Lessons & Quizzes — FulanIA",
+    "seo./learn.desc": "Learn Pulaar with thematic lessons, interactive quizzes and smart flashcards.",
+    "seo./translate.title": "Pulaar multi-dialect translation — FulanIA",
+    "seo./translate.desc": "Compare a word or phrase across the main Pulaar/Fulfulde variants: Fuuta Tooro, Fuuta Jaloo, Maasina, Aadamaawa.",
+    "seo./hub.title": "FulanIA Hub — Choose your tool",
+    "seo./hub.desc": "Access the AI assistant, dictionary, learning platform, multi-dialect translator and Fulani cultural library.",
+    "seo./culture.title": "Fulani Cultural Library — FulanIA",
+    "seo./culture.desc": "Proverbs, tales, traditions, music, food and dress of the Halpulaar: a living library of Fulani culture.",
     "nav.solution": "Solution", "nav.pillars": "Pillars", "nav.dictionary": "Dictionary",
     "nav.learn": "Learn",
     "learn.title": "Learn Pulaar",
@@ -747,6 +797,22 @@ export const translations: Record<Lang, Dict> = {
   },
 
   ar: {
+    "seo./.title": "فولانيا — ذكاء اصطناعي للغة وثقافة الفولان",
+    "seo./.desc": "أول مساعد ذكي مخصّص للغة البولار/الفولفولده وثقافة الفولان. تعلّم، ترجم، حافظ.",
+    "seo./auth.title": "تسجيل الدخول إلى فولانيا — مساعد الفولان الذكي",
+    "seo./auth.desc": "سجّل دخولك إلى فولانيا للدردشة مع مساعد الفولان، واستكشاف قاموس البولار، ومزامنة مفضّلاتك.",
+    "seo./chat.title": "مساعد البولار الذكي — فولانيا",
+    "seo./chat.desc": "تحدّث بالبولار أو الفرنسية أو الإنجليزية أو العربية مع مساعد ذكي متخصّص في لغة وثقافة الهالبولار.",
+    "seo./dictionary.title": "قاموس بولار ↔ فرنسي ↔ عربي ↔ إنجليزي — فولانيا",
+    "seo./dictionary.desc": "قاموس تفاعلي بولار — فرنسي — عربي — إنجليزي. بحث، مفضّلات، سجلّ وأمثلة.",
+    "seo./learn.title": "تعلّم البولار — دروس واختبارات — فولانيا",
+    "seo./learn.desc": "تعلّم البولار عبر دروس موضوعية واختبارات تفاعلية وبطاقات ذكية.",
+    "seo./translate.title": "ترجمة متعدّدة اللهجات البولارية — فولانيا",
+    "seo./translate.desc": "قارن كلمة أو جملة بين أهم لهجات البولار/الفولفولده: فوتا تورو، فوتا جالو، ماسينا، آدماوة.",
+    "seo./hub.title": "فضاء فولانيا — اختر أداتك",
+    "seo./hub.desc": "ادخل إلى المساعد الذكي والقاموس ومنصّة التعلّم ومترجم اللهجات والمكتبة الثقافية للفولان.",
+    "seo./culture.title": "المكتبة الثقافية للفولان — فولانيا",
+    "seo./culture.desc": "أمثال وقصص وتقاليد وموسيقى ومأكولات وألبسة الهالبولار: مكتبة حيّة لثقافة الفولان.",
     "nav.solution": "الحل", "nav.pillars": "الركائز", "nav.dictionary": "القاموس",
     "nav.learn": "تعلّم",
     "learn.title": "تعلّم البولارية",
@@ -971,28 +1037,46 @@ type Ctx = {
 };
 const LangCtx = createContext<Ctx | null>(null);
 
+// Module-level current language used by route head() functions (called outside React tree).
+// Always reflects the user's active language. SSR default is "fr".
+let _currentLang: Lang = "fr";
+export function getCurrentLang(): Lang {
+  return _currentLang;
+}
+export function tFor(lang: Lang, key: string): string {
+  return translations[lang][key] ?? translations.fr[key] ?? key;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
   const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
+  const router = useRouter();
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("fulania.lang") as Lang | null;
-      if (stored && translations[stored]) setLangState(stored);
+      if (stored && translations[stored]) {
+        setLangState(stored);
+        _currentLang = stored;
+      }
       const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
       if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
     } catch {}
   }, []);
 
   useEffect(() => {
+    _currentLang = lang;
     const entry = LANGUAGES.find((l) => l.code === lang);
     if (typeof document !== "undefined" && entry) {
       document.documentElement.lang = lang;
       document.documentElement.dir = entry.dir;
     }
-  }, [lang]);
+    // Re-run route head() so meta title/description follow the language change.
+    router.invalidate();
+  }, [lang, router]);
 
   const setLang = (l: Lang) => {
+    _currentLang = l;
     setLangState(l);
     try { localStorage.setItem("fulania.lang", l); } catch {}
   };
@@ -1000,6 +1084,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setDialectState(d);
     try { localStorage.setItem("fulania.dialect", d); } catch {}
     // Choisir un dialecte bascule automatiquement la langue principale en Pulaar
+    _currentLang = "ff";
     setLangState("ff");
     try { localStorage.setItem("fulania.lang", "ff"); } catch {}
     if (typeof document !== "undefined") {
@@ -1007,6 +1092,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       document.documentElement.dir = "ltr";
     }
   };
+
 
 
   const t = (key: string) => translations[lang][key] ?? translations.fr[key] ?? key;

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { BookOpen, Heart, History, Search, Sparkles, Star, Volume2, X, Cloud, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
-import { useLanguage } from "@/hooks/use-language";
+import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -13,16 +13,17 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/dictionary")({
-  head: () => ({
-    meta: [
-      { title: "Dictionnaire Pulaar ↔ FR ↔ AR ↔ EN | FulanIA" },
-      {
-        name: "description",
-        content:
-          "Dictionnaire interactif Pulaar — Français — Arabe — Anglais. Recherche, favoris, historique et exemples.",
-      },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./dictionary.title") },
+        { name: "description", content: tFor(l, "seo./dictionary.desc") },
+        { property: "og:title", content: tFor(l, "seo./dictionary.title") },
+        { property: "og:description", content: tFor(l, "seo./dictionary.desc") },
+      ],
+    };
+  },
   component: DictionaryPage,
 });
 
