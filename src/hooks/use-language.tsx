@@ -619,6 +619,9 @@ const translations: Record<Lang, Dict> = {
     "contact.callBody": "نبحث عن مطورين ولغويين وجامعي بيانات وشركاء مؤسسيين وسفراء ثقافيين وداعمين ماليين.",
     "contact.email": "البريد الإلكتروني", "contact.phone": "الهاتف / واتساب", "contact.address": "العنوان",
     "contact.tryAi": "جرّب المساعد الذكي",
+    "author.name": "آو محمدُ منصور",
+    "contact.location": "بومرداس، الجزائر",
+    "problem.tool4": "مساعدو الذكاء الاصطناعي",
 
     "footer.tagline": "الذكاء الاصطناعي في خدمة اللغة والثقافة الفولانية.",
     "footer.explore": "استكشاف", "footer.contact": "اتصل",
