@@ -530,3 +530,151 @@ function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" 
     </div>
   );
 }
+
+type AICard = {
+  pulaar: string;
+  pronunciation: string | null;
+  french: string;
+  english: string | null;
+  arabic: string | null;
+  category: string | null;
+  example_pulaar: string | null;
+  example_french: string | null;
+  notes: string | null;
+  confidence: "high" | "medium" | "low";
+};
+
+function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean }) {
+  const { t } = useLanguage();
+  const [card, setCard] = useState<AICard | null>(null);
+  const [sources, setSources] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [lastQuery, setLastQuery] = useState("");
+
+  const word = query.trim();
+  const canRun = word.length >= 2 && isAuthed;
+
+  useEffect(() => {
+    setCard(null);
+    setError(null);
+  }, [word]);
+
+  const run = async () => {
+    if (!canRun) return;
+    setLoading(true);
+    setError(null);
+    setLastQuery(word);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/translate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.access_token ?? ""}`,
+        },
+        body: JSON.stringify({ word, sourceLang: "auto" }),
+      });
+      const j = await res.json();
+      if (!res.ok) throw new Error(j?.error || "err");
+      setCard(j.card);
+      setSources(j.sources ?? []);
+    } catch {
+      setError(t("ai.translate.error"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!word) return null;
+
+  return (
+    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
+            <Sparkles className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-earth">{t("ai.translate.title")}</p>
+            <p className="text-xs text-muted-foreground">« {word} »</p>
+          </div>
+        </div>
+        {isAuthed ? (
+          <Button size="sm" onClick={run} disabled={loading || !canRun}>
+            {loading ? (
+              <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> {t("ai.translate.loading")}</>
+            ) : (
+              <><Sparkles className="mr-1.5 h-3.5 w-3.5" /> {t("ai.translate.cta")}</>
+            )}
+          </Button>
+        ) : (
+          <Link to="/auth"><Button size="sm" variant="outline">{t("dict.signin")}</Button></Link>
+        )}
+      </div>
+
+      {error && <p className="mt-3 text-xs text-destructive">{error}</p>}
+
+      {card && lastQuery === word && (
+        <article className="mt-4 rounded-lg border border-border bg-card p-4">
+          <div className="flex items-baseline justify-between gap-3">
+            <div>
+              <h3 className="font-display text-2xl font-semibold text-earth">{card.pulaar}</h3>
+              {card.pronunciation && (
+                <span className="text-xs italic text-muted-foreground">/{card.pronunciation}/</span>
+              )}
+            </div>
+            <span
+              className={cn(
+                "rounded-full px-2 py-0.5 text-[10px] font-medium",
+                card.confidence === "high" && "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300",
+                card.confidence === "medium" && "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300",
+                card.confidence === "low" && "bg-destructive/15 text-destructive",
+              )}
+            >
+              {t(`ai.translate.confidence.${card.confidence}`)}
+            </span>
+          </div>
+          {card.category && (
+            <Badge variant="outline" className="mt-1 text-[10px] capitalize">{card.category}</Badge>
+          )}
+
+          <dl className="mt-3 space-y-1.5 text-sm">
+            <Row label="FR" value={card.french} />
+            {card.arabic && <Row label="AR" value={card.arabic} dir="rtl" />}
+            {card.english && <Row label="EN" value={card.english} />}
+          </dl>
+
+          {card.example_pulaar && (
+            <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
+              <p className="font-display italic text-earth">« {card.example_pulaar} »</p>
+              {card.example_french && (
+                <p className="mt-0.5 text-muted-foreground">{card.example_french}</p>
+              )}
+            </div>
+          )}
+
+          {card.notes && (
+            <div className="mt-3 text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">{t("ai.translate.notes")} : </span>
+              {card.notes}
+            </div>
+          )}
+
+          <div className="mt-3 text-[11px] text-muted-foreground">
+            {sources.length > 0 ? (
+              <>
+                <span className="font-semibold text-foreground">{t("ai.translate.sources")} : </span>
+                {sources.map((s, i) => (
+                  <span key={i}>{i > 0 && " · "}<span className="text-earth">{s.pulaar}</span></span>
+                ))}
+              </>
+            ) : (
+              <span className="italic">{t("ai.translate.nosrc")}</span>
+            )}
+          </div>
+        </article>
+      )}
+    </div>
+  );
+}
