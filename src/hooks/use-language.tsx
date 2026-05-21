@@ -1125,7 +1125,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
 
 
-  const t = (key: string) => translations[lang][key] ?? translations.fr[key] ?? key;
+  const t = (key: string) => resolveTranslation(lang, key);
 
   return <LangCtx.Provider value={{ lang, setLang, dialect, setDialect, t }}>{children}</LangCtx.Provider>;
 }
