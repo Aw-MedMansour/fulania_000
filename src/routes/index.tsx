@@ -62,7 +62,7 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="Bergers Peuls dans le Sahel" className="h-full w-full object-cover" width={1920} height={1080} />
+          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} />
           <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/80 to-earth/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth/80 via-transparent to-transparent" />
         </div>
