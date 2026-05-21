@@ -134,7 +134,7 @@ function ChatPage() {
               </span>
             </div>
           </div>
-          <ChatLangSelector value={chatLang} onChange={setChatLang} label={t("chat.replyIn")} />
+          <ChatLangSelector value={chatLang} onChange={setChatLang} dialect={dialect} onDialectChange={setDialect} label={t("chat.replyIn")} />
         </div>
       </header>
 
