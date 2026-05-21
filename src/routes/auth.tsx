@@ -378,8 +378,9 @@ function AuthPage() {
 /* ───────── Sub-components ───────── */
 
 function EmailField({
-  value, onChange, error, hint,
+  label = "Email", value, onChange, error, hint,
 }: {
+  label?: string;
   value: string;
   onChange: (v: string) => void;
   error?: string | null;
@@ -389,7 +390,7 @@ function EmailField({
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-email">Email</Label>
+      <Label htmlFor="auth-email">{label}</Label>
       <div className="relative">
         <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -420,8 +421,9 @@ function EmailField({
 }
 
 function PasswordField({
-  value, onChange, show, onToggle, autoComplete, hint, error,
+  label = "Mot de passe", value, onChange, show, onToggle, autoComplete, hint, error,
 }: {
+  label?: string;
   value: string;
   onChange: (v: string) => void;
   show: boolean;
@@ -433,7 +435,7 @@ function PasswordField({
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-password">Mot de passe</Label>
+      <Label htmlFor="auth-password">{label}</Label>
       <div className="relative">
         <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
