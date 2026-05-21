@@ -85,6 +85,14 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const topic = String(body?.topic ?? "").trim().slice(0, 120);
     const level = ["debutant", "intermediaire", "avance"].includes(body?.level) ? body.level : "debutant";
+    const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
+    const DIALECT_LABELS: Record<string, string> = {
+      fouta_toro: "Pulaar du Fuuta Tooro (Sénégal, Mauritanie, Mali)",
+      fouta_djallon: "Pular du Fuuta Jaloo (Guinée)",
+      maasina: "Fulfulde du Maasina (Mali, Burkina, Niger)",
+      aadamaawa: "Fulfulde de l'Aadamaawa (Nigeria, Cameroun, Tchad)",
+    };
+    const dialectLabel = DIALECT_LABELS[dialectRaw] ?? DIALECT_LABELS.fouta_toro;
     if (!topic) return new Response(JSON.stringify({ error: "Thème requis." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
     const ctx = await fetchContext(supabase, topic);
@@ -102,7 +110,7 @@ Deno.serve(async (req) => {
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: SYSTEM },
-          { role: "user", content: `Thème : « ${topic} »\nNiveau : ${level}${ctxBlock}\n\nGénère la mini-leçon via mini_lesson.` },
+          { role: "user", content: `Thème : « ${topic} »\nNiveau : ${level}\nDIALECTE CIBLE : ${dialectLabel} — rédige le vocabulaire et le dialogue dans ce dialecte.${ctxBlock}\n\nGénère la mini-leçon via mini_lesson.` },
         ],
         tools: [TOOL],
         tool_choice: { type: "function", function: { name: "mini_lesson" } },
