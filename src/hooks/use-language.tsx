@@ -183,6 +183,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "Au moins 8 caractères, avec lettres et chiffres.",
     "auth.welcomeToast": "Bienvenue !",
     "auth.verifyMail": "Vérifiez votre boîte mail pour confirmer votre compte.",
+    "auth.pwdShow": "Afficher le mot de passe", "auth.pwdHide": "Masquer le mot de passe",
+    "auth.emailPh": "prenom.nom@domaine.com",
+    "auth.oauthErr": "Échec de la connexion",
+
+    "dialect.zone.pulaar": "Sénégal, Mauritanie",
+    "dialect.zone.pular": "Guinée",
+    "dialect.zone.fulfulde": "Cameroun, Mali, Niger",
+    "dialect.zone.fula": "Gambie, Sierra Leone, Nigeria",
+    "dialect.note.pulaar": "Fouta Toro, Halpulaar",
+    "dialect.note.pular": "Fouta Djallon",
+    "dialect.note.fulfulde": "Sahel",
+    "dialect.note.fula": "Afrique de l'Ouest",
+
+    "public.t1": "Locuteurs natifs", "public.d1": "Approfondir, retrouver des mots oubliés, transmettre aux enfants.",
+    "public.t2": "Diaspora Peule", "public.d2": "Reconnecter avec leurs racines, apprendre ou retrouver la langue.",
+    "public.t3": "Enfants & jeunes", "public.d3": "Apprendre la langue de leurs parents dans un format moderne et ludique.",
+    "public.t4": "Chercheurs & linguistes", "public.d4": "Accéder à une base de données culturelle et linguistique fiable.",
+    "public.t5": "Curieux & apprenants", "public.d5": "Découvrir une langue et une culture fascinantes.",
+    "public.t6": "ONG & institutions", "public.d6": "Outils pour des programmes éducatifs et culturels.",
+
+    "phase.1.t": "Lancement", "phase.1.b": "Assistant IA conversationnel, dictionnaire de base, site web vitrine.",
+    "phase.2.t": "Développement", "phase.2.b": "Système d'apprentissage par niveaux, reconnaissance vocale, contenu enrichi.",
+    "phase.3.t": "Expansion", "phase.3.b": "Application mobile iOS & Android, partenariats institutionnels, version multilingue complète.",
+    "phase.4.t": "Croissance", "phase.4.b": "Modèle IA entraîné spécifiquement sur le Pulaar, communauté de contributeurs.",
+
+    "vision.preserve": "Préserver", "vision.transmit": "Transmettre", "vision.educate": "Éduquer",
+    "vision.value": "Valoriser", "vision.gather": "Rassembler", "vision.include": "Inclure",
+
+    "contact.bio": "22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.",
+    "alt.hero": "Bergers Peuls dans le Sahel",
+    "alt.portrait": "Portrait Peul",
   },
 
   ff: {
@@ -314,6 +345,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "Ko ɓuri alkule 8, e alkule e limooje.",
     "auth.welcomeToast": "Jaaraama!",
     "auth.verifyMail": "Ƴeewto email maa ngam teeŋtinde konte.",
+    "auth.pwdShow": "Hollir finndal", "auth.pwdHide": "Suuɗ finndal",
+    "auth.emailPh": "innde.yettoode@nokku.com",
+    "auth.oauthErr": "Naatugol horiima",
+
+    "dialect.zone.pulaar": "Senegaal, Muritani",
+    "dialect.zone.pular": "Gine",
+    "dialect.zone.fulfulde": "Kameruun, Maali, Nijeer",
+    "dialect.zone.fula": "Gammbi, Seraa Leon, Nijeriya",
+    "dialect.note.pulaar": "Fuuta Tooro, Halpulaar",
+    "dialect.note.pular": "Fuuta Jaloo",
+    "dialect.note.fulfulde": "Saheli",
+    "dialect.note.fula": "Afrik hirnaange",
+
+    "public.t1": "Wolwooɓe jibinaaɓe", "public.d1": "Luggidde, yiytude konnguɗi yejjitaaɗi, yettinde sukaaɓe.",
+    "public.t2": "Diaspora Fulɓe", "public.d2": "Hokkitaade e leñol mum, jannginde walla yiytude ɗemngal.",
+    "public.t3": "Sukaaɓe & jaaɓɓe", "public.d3": "Jannginde ɗemngal jinnaaɓe mum e mbaadi hesere e ɓolde.",
+    "public.t4": "Wiɗtooɓe & ekspeer ɗemɗe", "public.d4": "Heɓtugol e bayyinaale pinal e ɗemngal hoolniiɗo.",
+    "public.t5": "Yiɗɓe & jangooɓe", "public.d5": "Faamde ɗemngal e pinal welɗum.",
+    "public.t6": "ONG & jaaɓhaaɓhe", "public.d6": "Kuutorɗe wonande porogaramaaji jannde e pinal.",
+
+    "phase.1.t": "Fuɗɗoode", "phase.1.b": "Assistant IA, saggitorde, saayit web.",
+    "phase.2.t": "Ɓeydaari", "phase.2.b": "Sistem jannde, faamondiral sawtu, kabaruuji ɓesɗiɗi.",
+    "phase.3.t": "Yaajnande", "phase.3.b": "Aplikasiyoŋ mobile iOS e Android, wallidiiɓe, ɗemɗe heewɗe.",
+    "phase.4.t": "Mawnugol", "phase.4.b": "Modeel IA jannginaaɗo e Pulaar, renndo ballooɓe.",
+
+    "vision.preserve": "Reenude", "vision.transmit": "Yettinde", "vision.educate": "Jannginde",
+    "vision.value": "Teddinde", "vision.gather": "Renndinde", "vision.include": "Naatnude",
+
+    "contact.bio": "Duuɓi 22, ummiiɗo Lekseiba e Gorgol, jannginteeɗo Master Biotechnologie e Alaseri.",
+    "alt.hero": "Aynaaɓe Fulɓe e Saheli",
+    "alt.portrait": "Mbaadi Pullo",
   },
 
   en: {
@@ -444,6 +506,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "At least 8 characters, with letters and numbers.",
     "auth.welcomeToast": "Welcome!",
     "auth.verifyMail": "Check your inbox to confirm your account.",
+    "auth.pwdShow": "Show password", "auth.pwdHide": "Hide password",
+    "auth.emailPh": "first.last@domain.com",
+    "auth.oauthErr": "Sign-in failed",
+
+    "dialect.zone.pulaar": "Senegal, Mauritania",
+    "dialect.zone.pular": "Guinea",
+    "dialect.zone.fulfulde": "Cameroon, Mali, Niger",
+    "dialect.zone.fula": "Gambia, Sierra Leone, Nigeria",
+    "dialect.note.pulaar": "Fouta Toro, Halpulaar",
+    "dialect.note.pular": "Fouta Djallon",
+    "dialect.note.fulfulde": "Sahel",
+    "dialect.note.fula": "West Africa",
+
+    "public.t1": "Native speakers", "public.d1": "Deepen, rediscover forgotten words, pass them to children.",
+    "public.t2": "Fulani diaspora", "public.d2": "Reconnect with their roots, learn or rediscover the language.",
+    "public.t3": "Children & youth", "public.d3": "Learn their parents' language in a modern, playful format.",
+    "public.t4": "Researchers & linguists", "public.d4": "Access a reliable cultural and linguistic database.",
+    "public.t5": "Curious & learners", "public.d5": "Discover a fascinating language and culture.",
+    "public.t6": "NGOs & institutions", "public.d6": "Tools for educational and cultural programs.",
+
+    "phase.1.t": "Launch", "phase.1.b": "Conversational AI assistant, base dictionary, showcase website.",
+    "phase.2.t": "Development", "phase.2.b": "Tiered learning system, voice recognition, enriched content.",
+    "phase.3.t": "Expansion", "phase.3.b": "iOS & Android mobile app, institutional partnerships, full multilingual version.",
+    "phase.4.t": "Growth", "phase.4.b": "AI model trained specifically on Pulaar, community of contributors.",
+
+    "vision.preserve": "Preserve", "vision.transmit": "Transmit", "vision.educate": "Educate",
+    "vision.value": "Celebrate", "vision.gather": "Gather", "vision.include": "Include",
+
+    "contact.bio": "22 years old, from Lekseiba in the Gorgol region, Master's student in Biotechnology in Algeria.",
+    "alt.hero": "Fulani herders in the Sahel",
+    "alt.portrait": "Fulani portrait",
   },
 
   ar: {
@@ -574,6 +667,37 @@ const translations: Record<Lang, Dict> = {
     "auth.hintPwd": "8 أحرف على الأقل، مع حروف وأرقام.",
     "auth.welcomeToast": "مرحبًا!",
     "auth.verifyMail": "تحقّق من بريدك لتأكيد حسابك.",
+    "auth.pwdShow": "إظهار كلمة المرور", "auth.pwdHide": "إخفاء كلمة المرور",
+    "auth.emailPh": "name@domain.com",
+    "auth.oauthErr": "فشل تسجيل الدخول",
+
+    "dialect.zone.pulaar": "السنغال، موريتانيا",
+    "dialect.zone.pular": "غينيا",
+    "dialect.zone.fulfulde": "الكاميرون، مالي، النيجر",
+    "dialect.zone.fula": "غامبيا، سيراليون، نيجيريا",
+    "dialect.note.pulaar": "فوتا تورو، هلبولار",
+    "dialect.note.pular": "فوتا جالون",
+    "dialect.note.fulfulde": "الساحل",
+    "dialect.note.fula": "غرب أفريقيا",
+
+    "public.t1": "الناطقون الأصليون", "public.d1": "تعميق المعرفة واستعادة الكلمات المنسية ونقلها للأطفال.",
+    "public.t2": "المهجر الفولاني", "public.d2": "إعادة الارتباط بالجذور وتعلّم اللغة أو استعادتها.",
+    "public.t3": "الأطفال والشباب", "public.d3": "تعلّم لغة آبائهم بشكل عصري وممتع.",
+    "public.t4": "الباحثون واللغويون", "public.d4": "الوصول إلى قاعدة بيانات لغوية وثقافية موثوقة.",
+    "public.t5": "الفضوليون والمتعلمون", "public.d5": "اكتشاف لغة وثقافة رائعة.",
+    "public.t6": "المنظمات والمؤسسات", "public.d6": "أدوات للبرامج التربوية والثقافية.",
+
+    "phase.1.t": "الإطلاق", "phase.1.b": "مساعد ذكي تحاوري، قاموس أساسي، موقع تعريفي.",
+    "phase.2.t": "التطوير", "phase.2.b": "نظام تعلّم بالمستويات، تعرّف صوتي، محتوى مُثرى.",
+    "phase.3.t": "التوسّع", "phase.3.b": "تطبيق جوال iOS وAndroid، شراكات مؤسسية، نسخة متعددة اللغات.",
+    "phase.4.t": "النمو", "phase.4.b": "نموذج ذكاء اصطناعي مدرَّب خصيصًا على البولارية، مجتمع مساهمين.",
+
+    "vision.preserve": "الحفاظ", "vision.transmit": "النقل", "vision.educate": "التعليم",
+    "vision.value": "التثمين", "vision.gather": "الجمع", "vision.include": "الإدماج",
+
+    "contact.bio": "22 عامًا، من لكصيبة بمنطقة كوركول، طالب ماستر في التقنيات الحيوية بالجزائر.",
+    "alt.hero": "رعاة فولانيون في الساحل",
+    "alt.portrait": "صورة فولانية",
   },
 };
 

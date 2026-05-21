@@ -14,15 +14,15 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const dialects = [
-  { name: "Pulaar", zone: "Sénégal, Mauritanie", speakers: "~5 M", note: "Fouta Toro, Halpulaar" },
-  { name: "Pular", zone: "Guinée", speakers: "~8 M", note: "Fouta Djallon" },
-  { name: "Fulfulde", zone: "Cameroun, Mali, Niger", speakers: "~15 M", note: "Sahel" },
-  { name: "Fula", zone: "Gambie, Sierra Leone, Nigeria", speakers: "~20 M", note: "Afrique de l'Ouest" },
-];
-
 function Index() {
   const { t } = useLanguage();
+
+  const dialects = [
+    { name: "Pulaar", zone: t("dialect.zone.pulaar"), speakers: "~5 M", note: t("dialect.note.pulaar") },
+    { name: "Pular", zone: t("dialect.zone.pular"), speakers: "~8 M", note: t("dialect.note.pular") },
+    { name: "Fulfulde", zone: t("dialect.zone.fulfulde"), speakers: "~15 M", note: t("dialect.note.fulfulde") },
+    { name: "Fula", zone: t("dialect.zone.fula"), speakers: "~20 M", note: t("dialect.note.fula") },
+  ];
 
   const pulaaku = [
     { word: "Semteende", meaning: t("pulaaku.semteende"), icon: Shield },
@@ -40,19 +40,19 @@ function Index() {
   ];
 
   const publics = [
-    { tag: "Locuteurs natifs", desc: "Approfondir, retrouver des mots oubliés, transmettre aux enfants." },
-    { tag: "Diaspora Peule", desc: "Reconnecter avec leurs racines, apprendre ou retrouver la langue." },
-    { tag: "Enfants & jeunes", desc: "Apprendre la langue de leurs parents dans un format moderne et ludique." },
-    { tag: "Chercheurs & linguistes", desc: "Accéder à une base de données culturelle et linguistique fiable." },
-    { tag: "Curieux & apprenants", desc: "Découvrir une langue et une culture fascinantes." },
-    { tag: "ONG & institutions", desc: "Outils pour des programmes éducatifs et culturels." },
+    { tag: t("public.t1"), desc: t("public.d1") },
+    { tag: t("public.t2"), desc: t("public.d2") },
+    { tag: t("public.t3"), desc: t("public.d3") },
+    { tag: t("public.t4"), desc: t("public.d4") },
+    { tag: t("public.t5"), desc: t("public.d5") },
+    { tag: t("public.t6"), desc: t("public.d6") },
   ];
 
   const phases = [
-    { id: 1, title: "Lancement", body: "Assistant IA conversationnel, dictionnaire de base, site web vitrine." },
-    { id: 2, title: "Développement", body: "Système d'apprentissage par niveaux, reconnaissance vocale, contenu enrichi." },
-    { id: 3, title: "Expansion", body: "Application mobile iOS & Android, partenariats institutionnels, version multilingue complète." },
-    { id: 4, title: "Croissance", body: "Modèle IA entraîné spécifiquement sur le Pulaar, communauté de contributeurs." },
+    { id: 1, title: t("phase.1.t"), body: t("phase.1.b") },
+    { id: 2, title: t("phase.2.t"), body: t("phase.2.b") },
+    { id: 3, title: t("phase.3.t"), body: t("phase.3.b") },
+    { id: 4, title: t("phase.4.t"), body: t("phase.4.b") },
   ];
 
   return (
@@ -62,7 +62,7 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt="Bergers Peuls dans le Sahel" className="h-full w-full object-cover" width={1920} height={1080} />
+          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} />
           <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/80 to-earth/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth/80 via-transparent to-transparent" />
         </div>
@@ -161,7 +161,7 @@ function Index() {
 
           <div className="relative">
             <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl" aria-hidden />
-            <img src={portraitImg} alt="Portrait Peul" loading="lazy" width={1024} height={1024} className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl" />
+            <img src={portraitImg} alt={t("alt.portrait")} loading="lazy" width={1024} height={1024} className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl" />
             <div className="absolute -bottom-6 -left-6 max-w-[240px] rounded-xl border border-border bg-card p-4 shadow-xl">
               <p className="font-display text-sm italic text-primary">« Pulaagu ko ngallu mawngu »</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("sol.quoteCaption")}</p>
@@ -286,12 +286,12 @@ function Index() {
               <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {[
-                  { icon: Shield, label: "Préserver" },
-                  { icon: Heart, label: "Transmettre" },
-                  { icon: GraduationCap, label: "Éduquer" },
-                  { icon: Globe, label: "Valoriser" },
-                  { icon: Users, label: "Rassembler" },
-                  { icon: Languages, label: "Inclure" },
+                  { icon: Shield, label: t("vision.preserve") },
+                  { icon: Heart, label: t("vision.transmit") },
+                  { icon: GraduationCap, label: t("vision.educate") },
+                  { icon: Globe, label: t("vision.value") },
+                  { icon: Users, label: t("vision.gather") },
+                  { icon: Languages, label: t("vision.include") },
                 ].map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm">
                     <Icon className="h-4 w-4 text-primary" />{label}
@@ -324,7 +324,7 @@ function Index() {
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">Aw Mohamedou Mansour</h2>
               <p className="mt-5 text-cream/80">
-                22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.
+                {t("contact.bio")}
               </p>
             </div>
 
