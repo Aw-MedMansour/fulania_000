@@ -14,31 +14,20 @@ type Msg = { role: "user" | "assistant"; content: string };
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
-const CHAT_LANG_KEY = "fulania.chat.lang";
 
 function ChatPage() {
   const { session, loading: authLoading } = useAuth();
-  const { t, lang: siteLang, dialect } = useLanguage();
+  const { t, lang: siteLang, setLang, dialect } = useLanguage();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [chatLang, setChatLangState] = useState<Lang>("ff");
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Init chat language from storage (default Pulaar priority)
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(CHAT_LANG_KEY) as Lang | null;
-      if (stored && LANGUAGES.find((l) => l.code === stored)) setChatLangState(stored);
-    } catch {}
-  }, []);
-
-  const setChatLang = (l: Lang) => {
-    setChatLangState(l);
-    try { localStorage.setItem(CHAT_LANG_KEY, l); } catch {}
-  };
+  // Chat language IS the global site language — single source of truth.
+  const chatLang = siteLang;
+  const setChatLang = setLang;
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });

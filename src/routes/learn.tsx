@@ -374,7 +374,7 @@ type Lesson = {
 };
 
 function AILessonView({ defaultTopic }: { defaultTopic: string }) {
-  const { t } = useLanguage();
+  const { t, dialect } = useLanguage();
   const [topic, setTopic] = useState(defaultTopic ?? "");
   const [level, setLevel] = useState<"debutant" | "intermediaire" | "avance">("debutant");
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -401,7 +401,7 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-lesson`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token ?? ""}` },
-        body: JSON.stringify({ topic: q, level }),
+        body: JSON.stringify({ topic: q, level, dialect }),
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j?.error || "err");
