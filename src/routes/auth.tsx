@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,6 +14,8 @@ import {
   Sparkles,
   ShieldCheck,
   Languages,
+  AlertCircle,
+  Check,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -22,6 +25,45 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
+
+/* ───────── Validation ─────────
+ * Strict email validation + disposable / invalid domain blocklist
+ * to ensure only real, deliverable addresses can register.
+ */
+const DISPOSABLE_DOMAINS = new Set([
+  "mailinator.com", "yopmail.com", "guerrillamail.com", "10minutemail.com",
+  "tempmail.com", "temp-mail.org", "trashmail.com", "throwawaymail.com",
+  "fakeinbox.com", "getnada.com", "dispostable.com", "maildrop.cc",
+  "sharklasers.com", "spam4.me", "mintemail.com", "mohmal.com",
+  "tempr.email", "fake-mail.net", "moakt.com", "emailondeck.com",
+  "tempmailo.com", "1secmail.com", "inboxbear.com", "harakirimail.com",
+  "test.com", "example.com", "exemple.com", "exemple.fr",
+]);
+
+const emailSchema = z
+  .string()
+  .trim()
+  .min(5, "Email trop court")
+  .max(254, "Email trop long")
+  .regex(
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    "Format d'email invalide",
+  )
+  .refine((v) => {
+    const domain = v.split("@")[1]?.toLowerCase() ?? "";
+    return !DISPOSABLE_DOMAINS.has(domain);
+  }, "Les adresses jetables ne sont pas acceptées")
+  .refine((v) => {
+    const local = v.split("@")[0] ?? "";
+    return !/^(test|fake|admin|noreply|no-reply)$/i.test(local);
+  }, "Veuillez utiliser une adresse email réelle");
+
+const passwordSchema = z
+  .string()
+  .min(8, "Au moins 8 caractères")
+  .max(72, "Mot de passe trop long")
+  .regex(/[A-Za-z]/, "Doit contenir une lettre")
+  .regex(/[0-9]/, "Doit contenir un chiffre");
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -37,6 +79,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+type Provider = "google" | "apple";
+
 function AuthPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
@@ -44,7 +88,9 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState<Provider | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [pwdError, setPwdError] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -64,21 +110,45 @@ function AuthPage() {
     };
   }, [navigate]);
 
+  // Live email validation hint (only after the user has typed @ + something)
+  const emailHint = useMemo(() => {
+    if (!email || !email.includes("@") || email.endsWith("@")) return null;
+    const r = emailSchema.safeParse(email);
+    return r.success ? null : r.error.issues[0]?.message ?? "Email invalide";
+  }, [email]);
+
+  const validateForm = (mode: "signin" | "signup"): boolean => {
+    const e = emailSchema.safeParse(email);
+    setEmailError(e.success ? null : e.error.issues[0]?.message ?? "Email invalide");
+    if (mode === "signup") {
+      const p = passwordSchema.safeParse(password);
+      setPwdError(p.success ? null : p.error.issues[0]?.message ?? "Mot de passe invalide");
+      return e.success && p.success;
+    }
+    setPwdError(password.length === 0 ? "Mot de passe requis" : null);
+    return e.success && password.length > 0;
+  };
+
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm("signin")) return;
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("On y va !");
+    toast.success("Bienvenue !");
     navigate({ to: "/chat", replace: true });
   };
 
   const onSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm("signup")) return;
     setLoading(true);
     const { error } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: { emailRedirectTo: `${window.location.origin}/chat` },
     });
@@ -87,13 +157,13 @@ function AuthPage() {
     toast.success("Vérifiez votre boîte mail pour confirmer votre compte.");
   };
 
-  const onGoogle = async () => {
-    setOauthLoading(true);
-    const r = await lovable.auth.signInWithOAuth("google", {
+  const onOAuth = async (provider: Provider) => {
+    setOauthLoading(provider);
+    const r = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin + "/chat",
     });
-    setOauthLoading(false);
-    if (r.error) toast.error("Échec de la connexion Google");
+    setOauthLoading(null);
+    if (r.error) toast.error(`Échec de la connexion ${provider === "google" ? "Google" : "Apple"}`);
     else if (!r.redirected) navigate({ to: "/chat", replace: true });
   };
 
