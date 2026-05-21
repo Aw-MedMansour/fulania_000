@@ -23,6 +23,7 @@ import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 import { SiteHeader, SiteFooter } from "@/components/layout";
+import { useLanguage } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/")({
   component: Index,
