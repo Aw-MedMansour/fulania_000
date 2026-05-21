@@ -405,6 +405,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "Duuɓi 22, ummiiɗo Lekseiba e Gorgol, jannginteeɗo Master Biotechnologie e Alaseri.",
     "alt.hero": "Aynaaɓe Fulɓe e Saheli",
     "alt.portrait": "Mbaadi Pullo",
+    "nf.title": "Hello yiytaaka",
+    "nf.body": "Hello ngo ɗaɓɓataa alaa walla ɗiwtinaama.",
+    "nf.home": "Yiltu hoore",
+    "err.title": "Hello ngo loowaaki",
+    "err.body": "Juumre waɗii e ɓanngal amen. Eto kadi walla yiltu hoore.",
+    "err.retry": "Eto kadi",
+    "err.home": "Hoore",
   },
 
   en: {
