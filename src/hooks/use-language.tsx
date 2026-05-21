@@ -634,6 +634,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "آو محمدُ منصور",
     "contact.location": "بومرداس، الجزائر",
     "problem.tool4": "مساعدو الذكاء الاصطناعي",
+    "problem.pulaar1": "Duolingo — لا توجد دورات",
+    "problem.pulaar2": "Google Translate — غير مدعومة",
+    "problem.pulaar3": "Wikipedia — بضع مئات من المقالات",
+    "problem.pulaar4": "لا يوجد مساعد ذكاء اصطناعي مخصص",
 
     "footer.tagline": "الذكاء الاصطناعي في خدمة اللغة والثقافة الفولانية.",
     "footer.explore": "استكشاف", "footer.contact": "اتصل",
