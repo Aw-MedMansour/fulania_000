@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "@tanstack/react-router";
 
 export type Lang = "fr" | "ff" | "en" | "ar";
 export type Dialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
@@ -1036,28 +1037,46 @@ type Ctx = {
 };
 const LangCtx = createContext<Ctx | null>(null);
 
+// Module-level current language used by route head() functions (called outside React tree).
+// Always reflects the user's active language. SSR default is "fr".
+let _currentLang: Lang = "fr";
+export function getCurrentLang(): Lang {
+  return _currentLang;
+}
+export function tFor(lang: Lang, key: string): string {
+  return translations[lang][key] ?? translations.fr[key] ?? key;
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
   const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
+  const router = useRouter();
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("fulania.lang") as Lang | null;
-      if (stored && translations[stored]) setLangState(stored);
+      if (stored && translations[stored]) {
+        setLangState(stored);
+        _currentLang = stored;
+      }
       const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
       if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
     } catch {}
   }, []);
 
   useEffect(() => {
+    _currentLang = lang;
     const entry = LANGUAGES.find((l) => l.code === lang);
     if (typeof document !== "undefined" && entry) {
       document.documentElement.lang = lang;
       document.documentElement.dir = entry.dir;
     }
-  }, [lang]);
+    // Re-run route head() so meta title/description follow the language change.
+    router.invalidate();
+  }, [lang, router]);
 
   const setLang = (l: Lang) => {
+    _currentLang = l;
     setLangState(l);
     try { localStorage.setItem("fulania.lang", l); } catch {}
   };
@@ -1065,6 +1084,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setDialectState(d);
     try { localStorage.setItem("fulania.dialect", d); } catch {}
     // Choisir un dialecte bascule automatiquement la langue principale en Pulaar
+    _currentLang = "ff";
     setLangState("ff");
     try { localStorage.setItem("fulania.lang", "ff"); } catch {}
     if (typeof document !== "undefined") {
@@ -1072,6 +1092,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       document.documentElement.dir = "ltr";
     }
   };
+
 
 
   const t = (key: string) => translations[lang][key] ?? translations.fr[key] ?? key;
