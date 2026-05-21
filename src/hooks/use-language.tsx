@@ -455,6 +455,9 @@ const translations: Record<Lang, Dict> = {
     "contact.callBody": "We are looking for developers, linguists, data collectors, institutional partners, cultural ambassadors and financial supporters.",
     "contact.email": "Email", "contact.phone": "Phone / WhatsApp", "contact.address": "Address",
     "contact.tryAi": "Try the AI assistant",
+    "author.name": "Aw Mohamedou Mansour",
+    "contact.location": "Boumerdes, Algeria",
+    "problem.tool4": "AI assistants",
 
     "footer.tagline": "Artificial Intelligence serving the Fulani language and culture.",
     "footer.explore": "Explore", "footer.contact": "Contact",
