@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
+import { PageNav } from "@/components/page-nav";
 
 export const Route = createFileRoute("/chat")({
   head: () => {
