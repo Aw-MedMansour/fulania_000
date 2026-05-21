@@ -17,7 +17,7 @@ const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
 function ChatPage() {
   const { session, loading: authLoading } = useAuth();
-  const { t, lang: siteLang, setLang, dialect } = useLanguage();
+  const { t, lang: siteLang, setLang, dialect, setDialect } = useLanguage();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
