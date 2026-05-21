@@ -13,7 +13,38 @@ type Dict = Record<string, string>;
 
 const translations: Record<Lang, Dict> = {
   fr: {
+    // Hub
+    "hub.tag": "Ton espace",
+    "hub.hello": "Bienvenue",
+    "hub.subtitle": "Choisis l'outil que tu veux utiliser. Tous tes outils FulanIA en un seul endroit.",
+    "hub.open": "Ouvrir",
+    "hub.back": "Espace",
+    "hub.f1.title": "Assistant IA",
+    "hub.f1.desc": "Discute en Pulaar, français, anglais ou arabe avec l'IA spécialisée Halpulaar.",
+    "hub.f2.title": "Dictionnaire",
+    "hub.f2.desc": "Cherche un mot Pulaar ↔ FR ↔ EN ↔ AR, écoute la prononciation, sauvegarde tes favoris.",
+    "hub.f3.title": "Apprentissage",
+    "hub.f3.desc": "Leçons thématiques, flashcards et quiz pour progresser à ton rythme.",
+    "hub.f4.title": "Traduction multi-dialectes",
+    "hub.f4.desc": "Compare un mot dans les variantes Fuuta Tooro, Fuuta Jaloo, Maasina et Aadamaawa.",
+    "hub.f5.title": "Bibliothèque culturelle",
+    "hub.f5.desc": "Proverbes, contes, traditions, musique et cuisine du monde Peul.",
+    // Dialect translator
+    "dt.title": "Compare les dialectes Pulaar",
+    "dt.subtitle": "Tape un mot ou une courte phrase : l'IA te donne la forme dans les quatre grandes variantes du Pulaar/Fulfulde.",
+    "dt.placeholder": "Ex. « bonjour », « eau », « comment vas-tu »…",
+    "dt.cta": "Comparer",
+    "dt.meaning": "Sens",
+    "dt.unknown": "Non disponible avec certitude",
+    // Culture library
+    "cult.title": "Bibliothèque culturelle Halpulaar",
+    "cult.subtitle": "Sagesses, récits et patrimoine vivant du monde Peul.",
+    "cult.tab.proverbs": "Proverbes",
+    "cult.tab.tales": "Contes & épopées",
+    "cult.tab.traditions": "Traditions",
+
     // Nav / header
+
     "nav.solution": "Solution",
     "nav.pillars": "Piliers",
     "nav.dictionary": "Dictionnaire",

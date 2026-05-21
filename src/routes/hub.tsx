@@ -1,0 +1,143 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import {
+  MessageSquareText,
+  BookOpen,
+  GraduationCap,
+  Languages,
+  Library,
+  ArrowRight,
+  LogOut,
+  Sparkles,
+} from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { useLanguage } from "@/hooks/use-language";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import patternImg from "@/assets/pattern.jpg";
+
+export const Route = createFileRoute("/hub")({
+  head: () => ({
+    meta: [
+      { title: "Espace FulanIA — Choisis ton outil" },
+      { name: "description", content: "Accède à l'assistant IA, au dictionnaire, à l'apprentissage, au traducteur multi-dialectes et à la bibliothèque culturelle Peule." },
+    ],
+  }),
+  component: HubPage,
+});
+
+function HubPage() {
+  const navigate = useNavigate();
+  const { session, user, loading } = useAuth();
+  const { t } = useLanguage();
+
+  useEffect(() => {
+    if (!loading && !session) navigate({ to: "/auth", replace: true });
+  }, [loading, session, navigate]);
+
+  const features = [
+    {
+      to: "/chat",
+      icon: MessageSquareText,
+      title: t("hub.f1.title"),
+      desc: t("hub.f1.desc"),
+      accent: "from-[var(--gold)]/30 to-[var(--gold)]/0",
+    },
+    {
+      to: "/dictionary",
+      icon: BookOpen,
+      title: t("hub.f2.title"),
+      desc: t("hub.f2.desc"),
+      accent: "from-emerald-500/25 to-transparent",
+    },
+    {
+      to: "/learn",
+      icon: GraduationCap,
+      title: t("hub.f3.title"),
+      desc: t("hub.f3.desc"),
+      accent: "from-sky-500/25 to-transparent",
+    },
+    {
+      to: "/translate",
+      icon: Languages,
+      title: t("hub.f4.title"),
+      desc: t("hub.f4.desc"),
+      accent: "from-rose-500/25 to-transparent",
+    },
+    {
+      to: "/culture",
+      icon: Library,
+      title: t("hub.f5.title"),
+      desc: t("hub.f5.desc"),
+      accent: "from-amber-500/25 to-transparent",
+    },
+  ];
+
+  const firstName = (user?.email ?? "").split("@")[0];
+
+  return (
+    <div className="relative min-h-screen bg-background">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "420px" }}
+        aria-hidden
+      />
+
+      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
+            <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
+          </div>
+          <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
+        </Link>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={async () => {
+            await supabase.auth.signOut();
+            navigate({ to: "/", replace: true });
+          }}
+          className="gap-1.5 text-muted-foreground"
+        >
+          <LogOut className="h-4 w-4" />
+          {t("btn.signout")}
+        </Button>
+      </header>
+
+      <main className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-4 sm:px-8">
+        <section className="mb-10 max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+            <Sparkles className="h-3 w-3" />
+            {t("hub.tag")}
+          </div>
+          <h1 className="mt-4 font-display text-3xl font-semibold tracking-tight text-earth sm:text-4xl">
+            {firstName ? `${t("hub.hello")}, ${firstName}` : t("hub.hello")}
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground sm:text-base">
+            {t("hub.subtitle")}
+          </p>
+        </section>
+
+        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map(({ to, icon: Icon, title, desc, accent }) => (
+            <Link
+              key={to}
+              to={to}
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:shadow-lg"
+            >
+              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-opacity group-hover:opacity-100`} aria-hidden />
+              <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-earth text-cream shadow-sm">
+                <Icon className="h-6 w-6" />
+              </div>
+              <h2 className="relative mt-5 font-display text-xl font-semibold text-earth">{title}</h2>
+              <p className="relative mt-1.5 text-sm text-muted-foreground">{desc}</p>
+              <span className="relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                {t("hub.open")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          ))}
+        </section>
+      </main>
+    </div>
+  );
+}
