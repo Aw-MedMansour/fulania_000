@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
+import { PageNav } from "@/components/page-nav";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import patternImg from "@/assets/pattern.jpg";
