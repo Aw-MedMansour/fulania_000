@@ -222,7 +222,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "Préserver", "vision.transmit": "Transmettre", "vision.educate": "Éduquer",
     "vision.value": "Valoriser", "vision.gather": "Rassembler", "vision.include": "Inclure",
 
-    "contact.bio": "22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.",
+    "contact.bio": "Jeune étudiant de 22 ans, originaire de Lekseiba dans la région du Gorgol, Aw Mohamedou Mansour est actuellement en Master Biotechnologie en Algérie. Malgré sa formation scientifique, il porte depuis plusieurs années une conviction profonde : la technologie doit servir toutes les cultures, y compris les plus marginalisées dans le monde numérique.\n\nC'est de cette conviction qu'est né FulanIA — un projet qui allie passion pour la culture Peule et ambition technologique, dans l'espoir de créer un outil qui traversera les générations.",
     "alt.hero": "Bergers Peuls dans le Sahel",
     "alt.portrait": "Portrait Peul",
     "nf.title": "Page introuvable",
