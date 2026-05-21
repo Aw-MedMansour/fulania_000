@@ -1,12 +1,20 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Lang = "fr" | "ff" | "en" | "ar";
+export type Dialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
 
 export const LANGUAGES: { code: Lang; label: string; native: string; flag: string; dir: "ltr" | "rtl" }[] = [
   { code: "fr", label: "Français", native: "Français", flag: "🇫🇷", dir: "ltr" },
   { code: "ff", label: "Pulaar", native: "Pulaar / Fulfulde", flag: "🌍", dir: "ltr" },
   { code: "en", label: "English", native: "English", flag: "🇬🇧", dir: "ltr" },
   { code: "ar", label: "العربية", native: "العربية", flag: "🇸🇦", dir: "rtl" },
+];
+
+export const DIALECTS: { code: Dialect; label: string; region: string }[] = [
+  { code: "fouta_toro", label: "Pulaar — Fuuta Tooro", region: "Sénégal · Mauritanie · Mali" },
+  { code: "fouta_djallon", label: "Pular — Fuuta Jaloo", region: "Guinée" },
+  { code: "maasina", label: "Fulfulde — Maasina", region: "Mali · Burkina · Niger" },
+  { code: "aadamaawa", label: "Fulfulde — Aadamaawa", region: "Nigeria · Cameroun · Tchad" },
 ];
 
 type Dict = Record<string, string>;
