@@ -380,7 +380,16 @@ function AuthPage() {
 
 /* ───────── Sub-components ───────── */
 
-function EmailField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function EmailField({
+  value, onChange, error, hint,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  error?: string | null;
+  hint?: string | null;
+}) {
+  const msg = error ?? hint ?? null;
+  const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
       <Label htmlFor="auth-email">Email</Label>
@@ -391,18 +400,30 @@ function EmailField({ value, onChange }: { value: string; onChange: (v: string) 
           type="email"
           required
           autoComplete="email"
-          placeholder="vous@exemple.com"
+          inputMode="email"
+          placeholder="prenom.nom@domaine.com"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-11 pl-9"
+          aria-invalid={invalid || undefined}
+          aria-describedby={msg ? "auth-email-msg" : undefined}
+          className={`h-11 pl-9 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
       </div>
+      {msg && (
+        <p
+          id="auth-email-msg"
+          className={`flex items-center gap-1.5 text-xs ${invalid ? "text-destructive" : "text-muted-foreground"}`}
+        >
+          {invalid ? <AlertCircle className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
+          {msg}
+        </p>
+      )}
     </div>
   );
 }
 
 function PasswordField({
-  value, onChange, show, onToggle, autoComplete, hint,
+  value, onChange, show, onToggle, autoComplete, hint, error,
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -410,7 +431,9 @@ function PasswordField({
   onToggle: () => void;
   autoComplete: string;
   hint?: string;
+  error?: string | null;
 }) {
+  const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
       <Label htmlFor="auth-password">Mot de passe</Label>
@@ -420,12 +443,14 @@ function PasswordField({
           id="auth-password"
           type={show ? "text" : "password"}
           required
-          minLength={6}
+          minLength={8}
           autoComplete={autoComplete}
           placeholder="••••••••"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-11 pl-9 pr-10"
+          aria-invalid={invalid || undefined}
+          aria-describedby={error || hint ? "auth-password-msg" : undefined}
+          className={`h-11 pl-9 pr-10 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
         <button
           type="button"
@@ -436,7 +461,15 @@ function PasswordField({
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </button>
       </div>
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {(error || hint) && (
+        <p
+          id="auth-password-msg"
+          className={`flex items-center gap-1.5 text-xs ${invalid ? "text-destructive" : "text-muted-foreground"}`}
+        >
+          {invalid && <AlertCircle className="h-3.5 w-3.5" />}
+          {error ?? hint}
+        </p>
+      )}
     </div>
   );
 }
@@ -451,3 +484,12 @@ function GoogleIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+function AppleIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M17.05 12.04c-.02-2.05 1.68-3.04 1.76-3.09-.96-1.4-2.45-1.6-2.98-1.62-1.27-.13-2.48.75-3.12.75-.65 0-1.64-.73-2.7-.71-1.39.02-2.68.81-3.4 2.06-1.45 2.51-.37 6.22 1.04 8.26.69.99 1.51 2.11 2.59 2.07 1.04-.04 1.43-.67 2.69-.67 1.26 0 1.6.67 2.7.65 1.12-.02 1.83-1.01 2.51-2.01.79-1.16 1.12-2.28 1.14-2.34-.02-.01-2.19-.84-2.21-3.34zM15.04 5.92c.57-.69.95-1.65.85-2.6-.82.03-1.81.54-2.4 1.23-.53.61-.99 1.59-.87 2.52.91.07 1.85-.46 2.42-1.15z"/>
+    </svg>
+  );
+}
+
