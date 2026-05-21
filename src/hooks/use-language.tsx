@@ -1043,8 +1043,38 @@ let _currentLang: Lang = "fr";
 export function getCurrentLang(): Lang {
   return _currentLang;
 }
+// Fallback chain: requested lang → FR → EN → key itself.
+// Logs a warning (once per lang+key) when a translation is missing or empty
+// so we surface incoherent UI without spamming the console.
+const FALLBACK_CHAIN: Lang[] = ["fr", "en"];
+const _missingLogged = new Set<string>();
+function resolveTranslation(lang: Lang, key: string): string {
+  const primary = translations[lang]?.[key];
+  if (primary && primary.trim() !== "") return primary;
+
+  for (const fb of FALLBACK_CHAIN) {
+    if (fb === lang) continue;
+    const v = translations[fb]?.[key];
+    if (v && v.trim() !== "") {
+      const sig = `${lang}::${key}`;
+      if (!_missingLogged.has(sig)) {
+        _missingLogged.add(sig);
+        console.warn(`[i18n] Missing translation for "${key}" in "${lang}" — falling back to "${fb}".`);
+      }
+      return v;
+    }
+  }
+
+  const sig = `!!${key}`;
+  if (!_missingLogged.has(sig)) {
+    _missingLogged.add(sig);
+    console.error(`[i18n] No translation found for "${key}" in any language. Returning key.`);
+  }
+  return key;
+}
+
 export function tFor(lang: Lang, key: string): string {
-  return translations[lang][key] ?? translations.fr[key] ?? key;
+  return resolveTranslation(lang, key);
 }
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
