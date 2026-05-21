@@ -107,6 +107,9 @@ const translations: Record<Lang, Dict> = {
     "contact.phone": "Téléphone / WhatsApp",
     "contact.address": "Adresse",
     "contact.tryAi": "Essayer l'assistant IA",
+    "author.name": "Aw Mohamedou Mansour",
+    "contact.location": "Boumerdes, Algérie",
+    "problem.tool4": "Assistants IA",
 
     // Footer
     "footer.tagline": "Intelligence Artificielle au service de la langue et de la culture Peules.",
