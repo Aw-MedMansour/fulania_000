@@ -110,6 +110,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Algérie",
     "problem.tool4": "Assistants IA",
+    "problem.pulaar1": "Duolingo — 0 cours",
+    "problem.pulaar2": "Google Translate — non supporté",
+    "problem.pulaar3": "Wikipedia — quelques centaines d'articles",
+    "problem.pulaar4": "Aucun assistant IA dédié",
 
     // Footer
     "footer.tagline": "Intelligence Artificielle au service de la langue et de la culture Peules.",
@@ -294,6 +298,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Alaseri",
     "problem.tool4": "Assistanɓe IA",
+    "problem.pulaar1": "Duolingo — alaa jaŋde",
+    "problem.pulaar2": "Google Translate — wallitaaka",
+    "problem.pulaar3": "Wikipedia — winndannde seeɗa",
+    "problem.pulaar4": "Alaa assistant IA keeriiɗo",
 
     "footer.tagline": "Hakkille kuɓɓinaaɗo ngam ɗemngal e pinal Fulɓe.",
     "footer.explore": "Yiilo", "footer.contact": "Heɓtugol",
@@ -458,6 +466,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Algeria",
     "problem.tool4": "AI assistants",
+    "problem.pulaar1": "Duolingo — 0 courses",
+    "problem.pulaar2": "Google Translate — not supported",
+    "problem.pulaar3": "Wikipedia — a few hundred articles",
+    "problem.pulaar4": "No dedicated AI assistant",
 
     "footer.tagline": "Artificial Intelligence serving the Fulani language and culture.",
     "footer.explore": "Explore", "footer.contact": "Contact",
@@ -622,6 +634,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "آو محمدُ منصور",
     "contact.location": "بومرداس، الجزائر",
     "problem.tool4": "مساعدو الذكاء الاصطناعي",
+    "problem.pulaar1": "Duolingo — لا توجد دورات",
+    "problem.pulaar2": "Google Translate — غير مدعومة",
+    "problem.pulaar3": "Wikipedia — بضع مئات من المقالات",
+    "problem.pulaar4": "لا يوجد مساعد ذكاء اصطناعي مخصص",
 
     "footer.tagline": "الذكاء الاصطناعي في خدمة اللغة والثقافة الفولانية.",
     "footer.explore": "استكشاف", "footer.contact": "اتصل",
