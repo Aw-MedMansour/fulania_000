@@ -1,13 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { BookOpen, GraduationCap, Sparkles, RefreshCw, Check, X, Volume2, ArrowRight, ArrowLeft } from "lucide-react";
+import { BookOpen, GraduationCap, Sparkles, RefreshCw, Check, X, Volume2, ArrowRight, ArrowLeft, Loader2, Wand2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/learn")({
@@ -102,6 +103,7 @@ function LearnPage() {
             <TabsTrigger value="lessons" className="gap-1.5"><BookOpen className="h-3.5 w-3.5" /> {t("learn.lessons")}</TabsTrigger>
             <TabsTrigger value="flashcards" className="gap-1.5"><Sparkles className="h-3.5 w-3.5" /> {t("learn.flashcards")}</TabsTrigger>
             <TabsTrigger value="quiz" className="gap-1.5"><GraduationCap className="h-3.5 w-3.5" /> {t("learn.quiz")}</TabsTrigger>
+            <TabsTrigger value="ai" className="gap-1.5"><Wand2 className="h-3.5 w-3.5" /> {t("ai.lesson.tab")}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="lessons" className="mt-6">
@@ -114,6 +116,10 @@ function LearnPage() {
 
           <TabsContent value="quiz" className="mt-6">
             <QuizView entries={catEntries} allEntries={entries} isLoading={isLoading} />
+          </TabsContent>
+
+          <TabsContent value="ai" className="mt-6">
+            <AILessonView defaultTopic={category} />
           </TabsContent>
         </Tabs>
       </main>
