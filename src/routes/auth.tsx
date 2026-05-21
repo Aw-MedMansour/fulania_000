@@ -278,19 +278,33 @@ function AuthPage() {
               </p>
             </div>
 
-            <Button
-              onClick={onGoogle}
-              variant="outline"
-              disabled={oauthLoading}
-              className="mt-7 h-11 w-full gap-3 border-border/80 bg-card text-sm font-medium shadow-sm hover:bg-accent"
-            >
-              {oauthLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <GoogleIcon className="h-[18px] w-[18px]" />
-              )}
-              Continuer avec Google
-            </Button>
+            <div className="mt-7 grid gap-2.5 sm:grid-cols-2">
+              <Button
+                onClick={() => onOAuth("google")}
+                variant="outline"
+                disabled={oauthLoading !== null}
+                className="h-11 gap-2.5 border-border/80 bg-card text-sm font-medium shadow-sm hover:bg-accent"
+              >
+                {oauthLoading === "google" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <GoogleIcon className="h-[18px] w-[18px]" />
+                )}
+                Google
+              </Button>
+              <Button
+                onClick={() => onOAuth("apple")}
+                disabled={oauthLoading !== null}
+                className="h-11 gap-2.5 bg-earth text-sm font-medium text-cream shadow-sm hover:bg-earth/90"
+              >
+                {oauthLoading === "apple" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <AppleIcon className="h-[18px] w-[18px]" />
+                )}
+                Apple
+              </Button>
+            </div>
 
             <div className="my-6 flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               <div className="h-px flex-1 bg-border" />
@@ -298,21 +312,22 @@ function AuthPage() {
               <div className="h-px flex-1 bg-border" />
             </div>
 
-            <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
+            <Tabs value={tab} onValueChange={(v) => { setTab(v as "signin" | "signup"); setEmailError(null); setPwdError(null); }}>
               <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
                 <TabsTrigger value="signin">Connexion</TabsTrigger>
                 <TabsTrigger value="signup">Créer un compte</TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin">
-                <form onSubmit={onSignIn} className="space-y-4 pt-5">
-                  <EmailField value={email} onChange={setEmail} />
+                <form onSubmit={onSignIn} noValidate className="space-y-4 pt-5">
+                  <EmailField value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
                   <PasswordField
                     value={password}
-                    onChange={setPassword}
+                    onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="current-password"
+                    error={pwdError}
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Se connecter <ArrowRight className="h-4 w-4" /></>}
@@ -321,26 +336,28 @@ function AuthPage() {
               </TabsContent>
 
               <TabsContent value="signup">
-                <form onSubmit={onSignUp} className="space-y-4 pt-5">
-                  <EmailField value={email} onChange={setEmail} />
+                <form onSubmit={onSignUp} noValidate className="space-y-4 pt-5">
+                  <EmailField value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
                   <PasswordField
                     value={password}
-                    onChange={setPassword}
+                    onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="new-password"
-                    hint="Minimum 6 caractères."
+                    error={pwdError}
+                    hint="Au moins 8 caractères, avec lettres et chiffres."
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Créer mon compte <ArrowRight className="h-4 w-4" /></>}
                   </Button>
                   <p className="text-center text-xs text-muted-foreground">
                     En continuant, vous acceptez d'utiliser FulanIA de manière respectueuse de la
-                    langue et de la culture Peules.
+                    langue et de la culture Peules. Un email de confirmation vous sera envoyé.
                   </p>
                 </form>
               </TabsContent>
             </Tabs>
+
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
