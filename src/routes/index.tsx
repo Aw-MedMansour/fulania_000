@@ -112,7 +112,7 @@ function Index() {
             <div className="rounded-2xl border border-border bg-card p-7">
               <h3 className="font-display text-lg font-semibold text-foreground">{t("problem.other")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
-                {["Duolingo — 40+", "Google Translate — 130+", "Wikipedia — 300+", "AI assistants"].map((x) => (
+                {["Duolingo — 40+", "Google Translate — 130+", "Wikipedia — 300+", t("problem.tool4")].map((x) => (
                   <li key={x} className="flex items-start gap-3">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald-700" />
                     <span className="text-foreground/80">{x}</span>
@@ -322,7 +322,7 @@ function Index() {
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
-              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">Aw Mohamedou Mansour</h2>
+              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
               <p className="mt-5 text-cream/80">
                 {t("contact.bio")}
               </p>
@@ -352,7 +352,7 @@ function Index() {
                   <MapPin className="h-5 w-5 text-[var(--gold)]" />
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.address")}</p>
-                    <p className="text-cream">Boumerdes, Algérie</p>
+                    <p className="text-cream">{t("contact.location")}</p>
                   </div>
                 </div>
               </div>

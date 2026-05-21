@@ -107,6 +107,9 @@ const translations: Record<Lang, Dict> = {
     "contact.phone": "Téléphone / WhatsApp",
     "contact.address": "Adresse",
     "contact.tryAi": "Essayer l'assistant IA",
+    "author.name": "Aw Mohamedou Mansour",
+    "contact.location": "Boumerdes, Algérie",
+    "problem.tool4": "Assistants IA",
 
     // Footer
     "footer.tagline": "Intelligence Artificielle au service de la langue et de la culture Peules.",
@@ -288,6 +291,9 @@ const translations: Record<Lang, Dict> = {
     "contact.callBody": "Min ɗaɓɓi cifotooɓe, ekspeer ɗemɗe, mooɓooɓe, wonɓe ballal e wallidiiɓe.",
     "contact.email": "Email", "contact.phone": "Noddorgal", "contact.address": "Ñiiɓirde",
     "contact.tryAi": "Eto assistant IA",
+    "author.name": "Aw Mohamedou Mansour",
+    "contact.location": "Boumerdes, Alaseri",
+    "problem.tool4": "Assistanɓe IA",
 
     "footer.tagline": "Hakkille kuɓɓinaaɗo ngam ɗemngal e pinal Fulɓe.",
     "footer.explore": "Yiilo", "footer.contact": "Heɓtugol",
@@ -449,6 +455,9 @@ const translations: Record<Lang, Dict> = {
     "contact.callBody": "We are looking for developers, linguists, data collectors, institutional partners, cultural ambassadors and financial supporters.",
     "contact.email": "Email", "contact.phone": "Phone / WhatsApp", "contact.address": "Address",
     "contact.tryAi": "Try the AI assistant",
+    "author.name": "Aw Mohamedou Mansour",
+    "contact.location": "Boumerdes, Algeria",
+    "problem.tool4": "AI assistants",
 
     "footer.tagline": "Artificial Intelligence serving the Fulani language and culture.",
     "footer.explore": "Explore", "footer.contact": "Contact",
@@ -610,6 +619,9 @@ const translations: Record<Lang, Dict> = {
     "contact.callBody": "نبحث عن مطورين ولغويين وجامعي بيانات وشركاء مؤسسيين وسفراء ثقافيين وداعمين ماليين.",
     "contact.email": "البريد الإلكتروني", "contact.phone": "الهاتف / واتساب", "contact.address": "العنوان",
     "contact.tryAi": "جرّب المساعد الذكي",
+    "author.name": "آو محمدُ منصور",
+    "contact.location": "بومرداس، الجزائر",
+    "problem.tool4": "مساعدو الذكاء الاصطناعي",
 
     "footer.tagline": "الذكاء الاصطناعي في خدمة اللغة والثقافة الفولانية.",
     "footer.explore": "استكشاف", "footer.contact": "اتصل",
