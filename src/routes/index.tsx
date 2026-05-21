@@ -23,6 +23,7 @@ import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 import { SiteHeader, SiteFooter } from "@/components/layout";
+import { useLanguage } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -87,6 +88,7 @@ const phases = [
 ];
 
 function Index() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
@@ -109,17 +111,16 @@ function Index() {
           <div className="max-w-2xl text-cream">
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/40 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--gold)] backdrop-blur">
               <Sparkles className="h-3 w-3" />
-              Premier assistant IA dédié à la culture Peule
+              {t("hero.badge")}
             </div>
 
             <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl">
-              L'intelligence artificielle au service du{" "}
-              <span className="italic text-[var(--gold)]">Pulaagu</span>.
+              {t("hero.title1")}{" "}
+              <span className="italic text-[var(--gold)]">{t("hero.title2")}</span>.
             </h1>
 
             <p className="mt-6 max-w-xl text-lg text-cream/85">
-              FulanIA préserve, transmet et valorise la langue Pulaar et la culture Halpulaar
-              grâce à l'IA. Un griot du XXI<sup>e</sup> siècle, accessible à tous, partout.
+              {t("hero.subtitle")}
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
@@ -127,34 +128,35 @@ function Index() {
                 to="/chat"
                 className="inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90"
               >
-                Discuter avec FulanIA
+                {t("btn.chat")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#solution"
                 className="inline-flex items-center gap-2 rounded-md border border-cream/30 px-6 py-3 text-sm font-medium text-cream backdrop-blur transition hover:bg-cream/10"
               >
-                Découvrir le projet
+                {t("btn.discover")}
               </a>
             </div>
 
             <dl className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-cream/20 pt-6">
               <div>
-                <dt className="text-xs uppercase tracking-widest text-cream/60">Locuteurs</dt>
+                <dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.speakers")}</dt>
                 <dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">50–60 M</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-widest text-cream/60">Pays</dt>
+                <dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.countries")}</dt>
                 <dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">20+</dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-widest text-cream/60">Dialectes</dt>
+                <dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.dialects")}</dt>
                 <dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">4</dd>
               </div>
             </dl>
           </div>
         </div>
       </section>
+
 
       {/* PROBLEM */}
       <section className="bg-secondary/40 bg-grain py-24">

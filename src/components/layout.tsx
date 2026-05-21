@@ -1,15 +1,72 @@
 import { Link } from "@tanstack/react-router";
-import { LogOut, Sparkles, User as UserIcon } from "lucide-react";
+import { Check, ChevronDown, Globe, LogOut, Sparkles, User as UserIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { LANGUAGES, useLanguage } from "@/hooks/use-language";
 
 async function signOut() {
   const { supabase } = await import("@/integrations/supabase/client");
   await supabase.auth.signOut();
 }
 
+function LanguageSwitcher() {
+  const { lang, setLang, t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
+        aria-label={t("lang.switcher")}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <Globe className="h-3.5 w-3.5" />
+        <span className="hidden sm:inline">{current.code.toUpperCase()}</span>
+        <ChevronDown className="h-3 w-3" />
+      </button>
+      {open && (
+        <ul
+          role="listbox"
+          className="absolute end-0 z-50 mt-2 w-48 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
+        >
+          {LANGUAGES.map((l) => (
+            <li key={l.code}>
+              <button
+                role="option"
+                aria-selected={l.code === lang}
+                onClick={() => { setLang(l.code); setOpen(false); }}
+                className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
+              >
+                <span className="flex items-center gap-2">
+                  <span aria-hidden>{l.flag}</span>
+                  <span>{l.native}</span>
+                </span>
+                {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const { user } = useAuth();
+  const { t } = useLanguage();
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -28,42 +85,43 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="/#solution" className="text-sm font-medium text-foreground/80 hover:text-primary">Solution</a>
-          <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">Piliers</a>
-          <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">Dictionnaire</Link>
-          <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">Culture</a>
-          <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">Vision</a>
-          <a href="/#contact" className="text-sm font-medium text-foreground/80 hover:text-primary">Contact</a>
+          <a href="/#solution" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.solution")}</a>
+          <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.pillars")}</a>
+          <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.dictionary")}</Link>
+          <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
+          <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
+          <a href="/#contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</a>
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           {user ? (
             <button
               onClick={() => signOut()}
               className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
               title={user.email ?? ""}
-              aria-label="Déconnexion"
+              aria-label={t("btn.signout")}
             >
               <LogOut className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Déconnexion</span>
+              <span className="hidden sm:inline">{t("btn.signout")}</span>
             </button>
           ) : (
             <Link
               to="/auth"
               className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              aria-label="Connexion"
+              aria-label={t("btn.signin")}
             >
               <UserIcon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Connexion</span>
+              <span className="hidden sm:inline">{t("btn.signin")}</span>
             </Link>
           )}
           <Link
             to="/chat"
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
-            aria-label="Essayer l'assistant FulanIA"
+            aria-label={t("btn.try")}
           >
             <Sparkles className="h-4 w-4" />
-            <span className="hidden sm:inline">Essayer</span>
+            <span className="hidden sm:inline">{t("btn.try")}</span>
           </Link>
         </div>
       </div>
@@ -72,6 +130,7 @@ export function SiteHeader() {
 }
 
 export function SiteFooter() {
+  const { t } = useLanguage();
   return (
     <footer className="border-t border-border/60 bg-earth text-cream">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -84,7 +143,7 @@ export function SiteFooter() {
               <span className="font-display text-xl font-semibold">FulanIA</span>
             </div>
             <p className="mt-4 max-w-xs text-sm text-cream/70">
-              Intelligence Artificielle au service de la langue et de la culture Peules.
+              {t("footer.tagline")}
             </p>
             <p className="mt-3 font-display text-sm italic text-[var(--gold)]">
               « Pulaagu ko ngallu mawngu »
@@ -93,19 +152,19 @@ export function SiteFooter() {
 
           <div>
             <h4 className="font-display text-sm uppercase tracking-widest text-[var(--gold)]">
-              Explorer
+              {t("footer.explore")}
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
-              <li><a href="/#solution" className="hover:text-[var(--gold)]">Notre solution</a></li>
-              <li><a href="/#piliers" className="hover:text-[var(--gold)]">Les 5 piliers</a></li>
-              <li><a href="/#culture" className="hover:text-[var(--gold)]">Langue &amp; culture</a></li>
-              <li><a href="/#vision" className="hover:text-[var(--gold)]">Vision &amp; feuille de route</a></li>
+              <li><a href="/#solution" className="hover:text-[var(--gold)]">{t("nav.solution")}</a></li>
+              <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
+              <li><a href="/#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
+              <li><a href="/#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-display text-sm uppercase tracking-widest text-[var(--gold)]">
-              Contact
+              {t("footer.contact")}
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
               <li>Aw Mohamedou Mansour</li>
@@ -125,7 +184,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-cream/10 pt-6 text-xs text-cream/60 sm:flex-row">
-          <p>© 2026 FulanIA — Tous droits réservés</p>
+          <p>© 2026 FulanIA — {t("footer.rights")}</p>
           <p className="font-display italic">Notre culture, notre force. L'intelligence, notre avenir.</p>
         </div>
       </div>
