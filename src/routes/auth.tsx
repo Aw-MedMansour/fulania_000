@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
 import {
   ArrowLeft,
   ArrowRight,
@@ -13,6 +14,8 @@ import {
   Sparkles,
   ShieldCheck,
   Languages,
+  AlertCircle,
+  Check,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -22,6 +25,45 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
+
+/* ───────── Validation ─────────
+ * Strict email validation + disposable / invalid domain blocklist
+ * to ensure only real, deliverable addresses can register.
+ */
+const DISPOSABLE_DOMAINS = new Set([
+  "mailinator.com", "yopmail.com", "guerrillamail.com", "10minutemail.com",
+  "tempmail.com", "temp-mail.org", "trashmail.com", "throwawaymail.com",
+  "fakeinbox.com", "getnada.com", "dispostable.com", "maildrop.cc",
+  "sharklasers.com", "spam4.me", "mintemail.com", "mohmal.com",
+  "tempr.email", "fake-mail.net", "moakt.com", "emailondeck.com",
+  "tempmailo.com", "1secmail.com", "inboxbear.com", "harakirimail.com",
+  "test.com", "example.com", "exemple.com", "exemple.fr",
+]);
+
+const emailSchema = z
+  .string()
+  .trim()
+  .min(5, "Email trop court")
+  .max(254, "Email trop long")
+  .regex(
+    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    "Format d'email invalide",
+  )
+  .refine((v) => {
+    const domain = v.split("@")[1]?.toLowerCase() ?? "";
+    return !DISPOSABLE_DOMAINS.has(domain);
+  }, "Les adresses jetables ne sont pas acceptées")
+  .refine((v) => {
+    const local = v.split("@")[0] ?? "";
+    return !/^(test|fake|admin|noreply|no-reply)$/i.test(local);
+  }, "Veuillez utiliser une adresse email réelle");
+
+const passwordSchema = z
+  .string()
+  .min(8, "Au moins 8 caractères")
+  .max(72, "Mot de passe trop long")
+  .regex(/[A-Za-z]/, "Doit contenir une lettre")
+  .regex(/[0-9]/, "Doit contenir un chiffre");
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -37,6 +79,8 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+type Provider = "google" | "apple";
+
 function AuthPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
@@ -44,7 +88,9 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState(false);
+  const [oauthLoading, setOauthLoading] = useState<Provider | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [pwdError, setPwdError] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -64,21 +110,45 @@ function AuthPage() {
     };
   }, [navigate]);
 
+  // Live email validation hint (only after the user has typed @ + something)
+  const emailHint = useMemo(() => {
+    if (!email || !email.includes("@") || email.endsWith("@")) return null;
+    const r = emailSchema.safeParse(email);
+    return r.success ? null : r.error.issues[0]?.message ?? "Email invalide";
+  }, [email]);
+
+  const validateForm = (mode: "signin" | "signup"): boolean => {
+    const e = emailSchema.safeParse(email);
+    setEmailError(e.success ? null : e.error.issues[0]?.message ?? "Email invalide");
+    if (mode === "signup") {
+      const p = passwordSchema.safeParse(password);
+      setPwdError(p.success ? null : p.error.issues[0]?.message ?? "Mot de passe invalide");
+      return e.success && p.success;
+    }
+    setPwdError(password.length === 0 ? "Mot de passe requis" : null);
+    return e.success && password.length > 0;
+  };
+
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm("signin")) return;
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
     setLoading(false);
     if (error) return toast.error(error.message);
-    toast.success("On y va !");
+    toast.success("Bienvenue !");
     navigate({ to: "/chat", replace: true });
   };
 
   const onSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm("signup")) return;
     setLoading(true);
     const { error } = await supabase.auth.signUp({
-      email,
+      email: email.trim(),
       password,
       options: { emailRedirectTo: `${window.location.origin}/chat` },
     });
@@ -87,13 +157,13 @@ function AuthPage() {
     toast.success("Vérifiez votre boîte mail pour confirmer votre compte.");
   };
 
-  const onGoogle = async () => {
-    setOauthLoading(true);
-    const r = await lovable.auth.signInWithOAuth("google", {
+  const onOAuth = async (provider: Provider) => {
+    setOauthLoading(provider);
+    const r = await lovable.auth.signInWithOAuth(provider, {
       redirect_uri: window.location.origin + "/chat",
     });
-    setOauthLoading(false);
-    if (r.error) toast.error("Échec de la connexion Google");
+    setOauthLoading(null);
+    if (r.error) toast.error(`Échec de la connexion ${provider === "google" ? "Google" : "Apple"}`);
     else if (!r.redirected) navigate({ to: "/chat", replace: true });
   };
 
@@ -208,19 +278,33 @@ function AuthPage() {
               </p>
             </div>
 
-            <Button
-              onClick={onGoogle}
-              variant="outline"
-              disabled={oauthLoading}
-              className="mt-7 h-11 w-full gap-3 border-border/80 bg-card text-sm font-medium shadow-sm hover:bg-accent"
-            >
-              {oauthLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <GoogleIcon className="h-[18px] w-[18px]" />
-              )}
-              Continuer avec Google
-            </Button>
+            <div className="mt-7 grid gap-2.5 sm:grid-cols-2">
+              <Button
+                onClick={() => onOAuth("google")}
+                variant="outline"
+                disabled={oauthLoading !== null}
+                className="h-11 gap-2.5 border-border/80 bg-card text-sm font-medium shadow-sm hover:bg-accent"
+              >
+                {oauthLoading === "google" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <GoogleIcon className="h-[18px] w-[18px]" />
+                )}
+                Google
+              </Button>
+              <Button
+                onClick={() => onOAuth("apple")}
+                disabled={oauthLoading !== null}
+                className="h-11 gap-2.5 bg-earth text-sm font-medium text-cream shadow-sm hover:bg-earth/90"
+              >
+                {oauthLoading === "apple" ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <AppleIcon className="h-[18px] w-[18px]" />
+                )}
+                Apple
+              </Button>
+            </div>
 
             <div className="my-6 flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               <div className="h-px flex-1 bg-border" />
@@ -228,21 +312,22 @@ function AuthPage() {
               <div className="h-px flex-1 bg-border" />
             </div>
 
-            <Tabs value={tab} onValueChange={(v) => setTab(v as "signin" | "signup")}>
+            <Tabs value={tab} onValueChange={(v) => { setTab(v as "signin" | "signup"); setEmailError(null); setPwdError(null); }}>
               <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
                 <TabsTrigger value="signin">Connexion</TabsTrigger>
                 <TabsTrigger value="signup">Créer un compte</TabsTrigger>
               </TabsList>
 
               <TabsContent value="signin">
-                <form onSubmit={onSignIn} className="space-y-4 pt-5">
-                  <EmailField value={email} onChange={setEmail} />
+                <form onSubmit={onSignIn} noValidate className="space-y-4 pt-5">
+                  <EmailField value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
                   <PasswordField
                     value={password}
-                    onChange={setPassword}
+                    onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="current-password"
+                    error={pwdError}
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Se connecter <ArrowRight className="h-4 w-4" /></>}
@@ -251,26 +336,28 @@ function AuthPage() {
               </TabsContent>
 
               <TabsContent value="signup">
-                <form onSubmit={onSignUp} className="space-y-4 pt-5">
-                  <EmailField value={email} onChange={setEmail} />
+                <form onSubmit={onSignUp} noValidate className="space-y-4 pt-5">
+                  <EmailField value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
                   <PasswordField
                     value={password}
-                    onChange={setPassword}
+                    onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="new-password"
-                    hint="Minimum 6 caractères."
+                    error={pwdError}
+                    hint="Au moins 8 caractères, avec lettres et chiffres."
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>Créer mon compte <ArrowRight className="h-4 w-4" /></>}
                   </Button>
                   <p className="text-center text-xs text-muted-foreground">
                     En continuant, vous acceptez d'utiliser FulanIA de manière respectueuse de la
-                    langue et de la culture Peules.
+                    langue et de la culture Peules. Un email de confirmation vous sera envoyé.
                   </p>
                 </form>
               </TabsContent>
             </Tabs>
+
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
@@ -293,7 +380,16 @@ function AuthPage() {
 
 /* ───────── Sub-components ───────── */
 
-function EmailField({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+function EmailField({
+  value, onChange, error, hint,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  error?: string | null;
+  hint?: string | null;
+}) {
+  const msg = error ?? hint ?? null;
+  const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
       <Label htmlFor="auth-email">Email</Label>
@@ -304,18 +400,30 @@ function EmailField({ value, onChange }: { value: string; onChange: (v: string) 
           type="email"
           required
           autoComplete="email"
-          placeholder="vous@exemple.com"
+          inputMode="email"
+          placeholder="prenom.nom@domaine.com"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-11 pl-9"
+          aria-invalid={invalid || undefined}
+          aria-describedby={msg ? "auth-email-msg" : undefined}
+          className={`h-11 pl-9 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
       </div>
+      {msg && (
+        <p
+          id="auth-email-msg"
+          className={`flex items-center gap-1.5 text-xs ${invalid ? "text-destructive" : "text-muted-foreground"}`}
+        >
+          {invalid ? <AlertCircle className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
+          {msg}
+        </p>
+      )}
     </div>
   );
 }
 
 function PasswordField({
-  value, onChange, show, onToggle, autoComplete, hint,
+  value, onChange, show, onToggle, autoComplete, hint, error,
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -323,7 +431,9 @@ function PasswordField({
   onToggle: () => void;
   autoComplete: string;
   hint?: string;
+  error?: string | null;
 }) {
+  const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
       <Label htmlFor="auth-password">Mot de passe</Label>
@@ -333,12 +443,14 @@ function PasswordField({
           id="auth-password"
           type={show ? "text" : "password"}
           required
-          minLength={6}
+          minLength={8}
           autoComplete={autoComplete}
           placeholder="••••••••"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="h-11 pl-9 pr-10"
+          aria-invalid={invalid || undefined}
+          aria-describedby={error || hint ? "auth-password-msg" : undefined}
+          className={`h-11 pl-9 pr-10 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
         <button
           type="button"
@@ -349,7 +461,15 @@ function PasswordField({
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
         </button>
       </div>
-      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
+      {(error || hint) && (
+        <p
+          id="auth-password-msg"
+          className={`flex items-center gap-1.5 text-xs ${invalid ? "text-destructive" : "text-muted-foreground"}`}
+        >
+          {invalid && <AlertCircle className="h-3.5 w-3.5" />}
+          {error ?? hint}
+        </p>
+      )}
     </div>
   );
 }
@@ -364,3 +484,12 @@ function GoogleIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+function AppleIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M17.05 12.04c-.02-2.05 1.68-3.04 1.76-3.09-.96-1.4-2.45-1.6-2.98-1.62-1.27-.13-2.48.75-3.12.75-.65 0-1.64-.73-2.7-.71-1.39.02-2.68.81-3.4 2.06-1.45 2.51-.37 6.22 1.04 8.26.69.99 1.51 2.11 2.59 2.07 1.04-.04 1.43-.67 2.69-.67 1.26 0 1.6.67 2.7.65 1.12-.02 1.83-1.01 2.51-2.01.79-1.16 1.12-2.28 1.14-2.34-.02-.01-2.19-.84-2.21-3.34zM15.04 5.92c.57-.69.95-1.65.85-2.6-.82.03-1.81.54-2.4 1.23-.53.61-.99 1.59-.87 2.52.91.07 1.85-.46 2.42-1.15z"/>
+    </svg>
+  );
+}
+
