@@ -1132,6 +1132,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
 export function useLanguage(): Ctx {
   const ctx = useContext(LangCtx);
-  if (!ctx) return { lang: "fr", setLang: () => {}, dialect: "fouta_toro", setDialect: () => {}, t: (k) => translations.fr[k] ?? k };
+  if (!ctx) return { lang: "fr", setLang: () => {}, dialect: "fouta_toro", setDialect: () => {}, t: (k) => resolveTranslation("fr", k) };
   return ctx;
 }
