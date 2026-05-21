@@ -590,6 +590,7 @@ export const translations: Record<Lang, Dict> = {
     "seo./culture.desc": "Proverbs, tales, traditions, music, food and dress of the Halpulaar: a living library of Fulani culture.",
     "nav.solution": "Solution", "nav.pillars": "Pillars", "nav.dictionary": "Dictionary",
     "nav.learn": "Learn",
+    "nav.back": "Back", "nav.home": "Home", "nav.hub": "Hub",
     "learn.title": "Learn Pulaar",
     "learn.subtitle": "Themed lessons, quizzes and flashcards — learn at your own pace.",
     "learn.lessons": "Lessons", "learn.flashcards": "Flashcards", "learn.quiz": "Quiz",
