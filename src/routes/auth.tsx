@@ -386,6 +386,7 @@ function EmailField({
   error?: string | null;
   hint?: string | null;
 }) {
+  const { t } = useLanguage();
   const msg = error ?? hint ?? null;
   const invalid = Boolean(error);
   return (
@@ -399,7 +400,7 @@ function EmailField({
           required
           autoComplete="email"
           inputMode="email"
-          placeholder="prenom.nom@domaine.com"
+          placeholder={t("auth.emailPh")}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={invalid || undefined}
