@@ -293,6 +293,10 @@ function DictionaryPage() {
           )}
         </div>
 
+        <AITranslator query={query} isAuthed={!!user} />
+
+
+
         <Tabs defaultValue="all">
           <TabsList>
             <TabsTrigger value="all" className="gap-1.5">
