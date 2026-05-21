@@ -112,7 +112,7 @@ function Index() {
             <div className="rounded-2xl border border-border bg-card p-7">
               <h3 className="font-display text-lg font-semibold text-foreground">{t("problem.other")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
-                {["Duolingo — 40+", "Google Translate — 130+", "Wikipedia — 300+", t("problem.tool4")].map((x) => (
+                {[t("problem.other1"), t("problem.other2"), t("problem.other3"), t("problem.other4")].map((x) => (
                   <li key={x} className="flex items-start gap-3">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald-700" />
                     <span className="text-foreground/80">{x}</span>
