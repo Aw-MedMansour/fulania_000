@@ -298,6 +298,10 @@ const translations: Record<Lang, Dict> = {
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Alaseri",
     "problem.tool4": "Assistanɓe IA",
+    "problem.pulaar1": "Duolingo — alaa jaŋde",
+    "problem.pulaar2": "Google Translate — wallitaaka",
+    "problem.pulaar3": "Wikipedia — winndannde seeɗa",
+    "problem.pulaar4": "Alaa assistant IA keeriiɗo",
 
     "footer.tagline": "Hakkille kuɓɓinaaɗo ngam ɗemngal e pinal Fulɓe.",
     "footer.explore": "Yiilo", "footer.contact": "Heɓtugol",
