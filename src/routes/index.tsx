@@ -286,12 +286,12 @@ function Index() {
               <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
               <div className="mt-8 grid grid-cols-2 gap-3">
                 {[
-                  { icon: Shield, label: "Préserver" },
-                  { icon: Heart, label: "Transmettre" },
-                  { icon: GraduationCap, label: "Éduquer" },
-                  { icon: Globe, label: "Valoriser" },
-                  { icon: Users, label: "Rassembler" },
-                  { icon: Languages, label: "Inclure" },
+                  { icon: Shield, label: t("vision.preserve") },
+                  { icon: Heart, label: t("vision.transmit") },
+                  { icon: GraduationCap, label: t("vision.educate") },
+                  { icon: Globe, label: t("vision.value") },
+                  { icon: Users, label: t("vision.gather") },
+                  { icon: Languages, label: t("vision.include") },
                 ].map(({ icon: Icon, label }) => (
                   <div key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm">
                     <Icon className="h-4 w-4 text-primary" />{label}
