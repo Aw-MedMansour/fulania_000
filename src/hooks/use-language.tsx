@@ -225,6 +225,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.",
     "alt.hero": "Bergers Peuls dans le Sahel",
     "alt.portrait": "Portrait Peul",
+    "nf.title": "Page introuvable",
+    "nf.body": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "nf.home": "Retour à l'accueil",
+    "err.title": "Cette page n'a pas pu se charger",
+    "err.body": "Une erreur est survenue de notre côté. Vous pouvez réessayer ou revenir à l'accueil.",
+    "err.retry": "Réessayer",
+    "err.home": "Accueil",
   },
 
   ff: {
