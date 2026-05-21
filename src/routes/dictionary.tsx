@@ -489,7 +489,7 @@ function EntryCard({
                 ? "text-[var(--terracotta)]"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground",
             )}
-            aria-label="Favori"
+            aria-label={t("dict.favorite")}
           >
             <Star className={cn("h-4 w-4", isFavorite && "fill-current")} />
           </button>
