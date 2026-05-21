@@ -53,6 +53,84 @@ export type Database = {
         }
         Relationships: []
       }
+      donations: {
+        Row: {
+          amount_cents: number
+          confirmed_at: string | null
+          created_at: string
+          currency: string
+          display_name: string | null
+          id: string
+          message: string | null
+          provider: string
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents: number
+          confirmed_at?: string | null
+          created_at?: string
+          currency?: string
+          display_name?: string | null
+          id?: string
+          message?: string | null
+          provider?: string
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number
+          confirmed_at?: string | null
+          created_at?: string
+          currency?: string
+          display_name?: string | null
+          id?: string
+          message?: string | null
+          provider?: string
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      fundraiser_goal: {
+        Row: {
+          created_at: string
+          description: string | null
+          external_url: string | null
+          goal_cents: number
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          external_url?: string | null
+          goal_cents: number
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          external_url?: string | null
+          goal_cents?: number
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_favorites: {
         Row: {
           created_at: string
@@ -143,7 +221,13 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      donations_public_stats: {
+        Row: {
+          donor_count: number | null
+          total_confirmed_cents: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
