@@ -19,7 +19,7 @@ export const DIALECTS: { code: Dialect; label: string; region: string }[] = [
 
 type Dict = Record<string, string>;
 
-const translations: Record<Lang, Dict> = {
+export const translations: Record<Lang, Dict> = {
   fr: {
     // Hub
     "hub.tag": "Ton espace",
