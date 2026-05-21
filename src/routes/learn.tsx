@@ -374,7 +374,7 @@ type Lesson = {
 };
 
 function AILessonView({ defaultTopic }: { defaultTopic: string }) {
-  const { t } = useLanguage();
+  const { t, dialect } = useLanguage();
   const [topic, setTopic] = useState(defaultTopic ?? "");
   const [level, setLevel] = useState<"debutant" | "intermediaire" | "avance">("debutant");
   const [lesson, setLesson] = useState<Lesson | null>(null);
