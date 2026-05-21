@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Check, ChevronDown, Globe, LogOut, Sparkles, User as UserIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { LANGUAGES, useLanguage } from "@/hooks/use-language";
+import { DIALECTS, LANGUAGES, useLanguage } from "@/hooks/use-language";
 
 async function signOut() {
   const { supabase } = await import("@/integrations/supabase/client");
