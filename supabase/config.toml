@@ -8,3 +8,6 @@ verify_jwt = true
 
 [functions.generate-lesson]
 verify_jwt = true
+
+[functions.dialect-translate]
+verify_jwt = true
