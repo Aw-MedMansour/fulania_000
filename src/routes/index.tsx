@@ -14,15 +14,15 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const dialects = [
-  { name: "Pulaar", zone: "Sénégal, Mauritanie", speakers: "~5 M", note: "Fouta Toro, Halpulaar" },
-  { name: "Pular", zone: "Guinée", speakers: "~8 M", note: "Fouta Djallon" },
-  { name: "Fulfulde", zone: "Cameroun, Mali, Niger", speakers: "~15 M", note: "Sahel" },
-  { name: "Fula", zone: "Gambie, Sierra Leone, Nigeria", speakers: "~20 M", note: "Afrique de l'Ouest" },
-];
-
 function Index() {
   const { t } = useLanguage();
+
+  const dialects = [
+    { name: "Pulaar", zone: t("dialect.zone.pulaar"), speakers: "~5 M", note: t("dialect.note.pulaar") },
+    { name: "Pular", zone: t("dialect.zone.pular"), speakers: "~8 M", note: t("dialect.note.pular") },
+    { name: "Fulfulde", zone: t("dialect.zone.fulfulde"), speakers: "~15 M", note: t("dialect.note.fulfulde") },
+    { name: "Fula", zone: t("dialect.zone.fula"), speakers: "~20 M", note: t("dialect.note.fula") },
+  ];
 
   const pulaaku = [
     { word: "Semteende", meaning: t("pulaaku.semteende"), icon: Shield },
@@ -40,19 +40,19 @@ function Index() {
   ];
 
   const publics = [
-    { tag: "Locuteurs natifs", desc: "Approfondir, retrouver des mots oubliés, transmettre aux enfants." },
-    { tag: "Diaspora Peule", desc: "Reconnecter avec leurs racines, apprendre ou retrouver la langue." },
-    { tag: "Enfants & jeunes", desc: "Apprendre la langue de leurs parents dans un format moderne et ludique." },
-    { tag: "Chercheurs & linguistes", desc: "Accéder à une base de données culturelle et linguistique fiable." },
-    { tag: "Curieux & apprenants", desc: "Découvrir une langue et une culture fascinantes." },
-    { tag: "ONG & institutions", desc: "Outils pour des programmes éducatifs et culturels." },
+    { tag: t("public.t1"), desc: t("public.d1") },
+    { tag: t("public.t2"), desc: t("public.d2") },
+    { tag: t("public.t3"), desc: t("public.d3") },
+    { tag: t("public.t4"), desc: t("public.d4") },
+    { tag: t("public.t5"), desc: t("public.d5") },
+    { tag: t("public.t6"), desc: t("public.d6") },
   ];
 
   const phases = [
-    { id: 1, title: "Lancement", body: "Assistant IA conversationnel, dictionnaire de base, site web vitrine." },
-    { id: 2, title: "Développement", body: "Système d'apprentissage par niveaux, reconnaissance vocale, contenu enrichi." },
-    { id: 3, title: "Expansion", body: "Application mobile iOS & Android, partenariats institutionnels, version multilingue complète." },
-    { id: 4, title: "Croissance", body: "Modèle IA entraîné spécifiquement sur le Pulaar, communauté de contributeurs." },
+    { id: 1, title: t("phase.1.t"), body: t("phase.1.b") },
+    { id: 2, title: t("phase.2.t"), body: t("phase.2.b") },
+    { id: 3, title: t("phase.3.t"), body: t("phase.3.b") },
+    { id: 4, title: t("phase.4.t"), body: t("phase.4.b") },
   ];
 
   return (
