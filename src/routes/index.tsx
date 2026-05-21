@@ -123,7 +123,7 @@ function Index() {
             <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7">
               <h3 className="font-display text-lg font-semibold text-primary">{t("problem.pulaar")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
-                {["—", "—", "—", "—"].map((x, i) => (
+                {[t("problem.pulaar1"), t("problem.pulaar2"), t("problem.pulaar3"), t("problem.pulaar4")].map((x, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <XCircle className="mt-0.5 h-5 w-5 flex-none text-primary" />
                     <span className="text-foreground/80">{x}</span>
