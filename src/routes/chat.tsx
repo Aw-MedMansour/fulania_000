@@ -79,7 +79,7 @@ function ChatPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${current.access_token}`,
         },
-        body: JSON.stringify({ messages: next.slice(-20), lang: chatLang }),
+        body: JSON.stringify({ messages: next.slice(-20), lang: chatLang, dialect }),
       });
 
       if (!resp.ok || !resp.body) {
