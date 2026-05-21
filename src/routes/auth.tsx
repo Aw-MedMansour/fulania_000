@@ -67,16 +67,17 @@ const passwordSchema = z
   .regex(/[0-9]/, "Doit contenir un chiffre");
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({
-    meta: [
-      { title: "Connexion à FulanIA — Assistant IA Peul" },
-      {
-        name: "description",
-        content:
-          "Connectez-vous à FulanIA pour discuter avec l'assistant Peul, explorer le dictionnaire Pulaar et synchroniser vos favoris.",
-      },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./auth.title") },
+        { name: "description", content: tFor(l, "seo./auth.desc") },
+        { property: "og:title", content: tFor(l, "seo./auth.title") },
+        { property: "og:description", content: tFor(l, "seo./auth.desc") },
+      ],
+    };
+  },
   component: AuthPage,
 });
 
