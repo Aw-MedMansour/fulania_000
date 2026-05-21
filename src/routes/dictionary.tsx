@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { BookOpen, Heart, History, Search, Star, Volume2, X, Cloud } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { useLanguage } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,7 @@ function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const { user } = useAuth();
+  const { t } = useLanguage();
   const qc = useQueryClient();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [history, setHistory] = useState<string[]>([]);
@@ -230,11 +232,10 @@ function DictionaryPage() {
           </div>
           <div>
             <h1 className="font-display text-3xl font-semibold text-earth sm:text-4xl">
-              Saggitorde — Dictionnaire
+              {t("dict.title")}
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
-              Pulaar ↔ Français ↔ العربية ↔ English. Recherchez un mot, écoutez sa prononciation,
-              enregistrez vos favoris et retrouvez votre historique.
+              {t("dict.subtitle")}
             </p>
           </div>
         </div>
@@ -243,19 +244,16 @@ function DictionaryPage() {
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-4 py-3 text-sm">
             <div className="flex items-center gap-2 text-earth">
               <Cloud className="h-4 w-4" />
-              <span>Connectez-vous pour synchroniser vos favoris et votre historique sur tous vos appareils.</span>
+              <span>{t("dict.cloudCta")}</span>
             </div>
-            <Link
-              to="/auth"
-              className="rounded-md bg-earth px-3 py-1.5 text-xs font-medium text-cream hover:opacity-90"
-            >
-              Se connecter
+            <Link to="/auth" className="rounded-md bg-earth px-3 py-1.5 text-xs font-medium text-cream hover:opacity-90">
+              {t("dict.signin")}
             </Link>
           </div>
         ) : (
           <div className="mb-6 flex items-center gap-2 rounded-lg border border-border bg-muted/40 px-4 py-2 text-xs text-muted-foreground">
             <Cloud className="h-3.5 w-3.5 text-[var(--gold)]" />
-            Vos favoris et votre historique sont synchronisés sur votre compte.
+            {t("dict.cloudSynced")}
           </div>
         )}
 
@@ -266,15 +264,15 @@ function DictionaryPage() {
               id="dict-search"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Rechercher en pulaar, français, arabe ou anglais…"
-              aria-label="Rechercher un mot"
+              placeholder={t("dict.search")}
+              aria-label={t("dict.searchAria")}
               className="h-12 pl-10 pr-10 text-base"
             />
             {query && (
               <button
                 onClick={() => setQuery("")}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                aria-label="Effacer"
+                aria-label={t("dict.clearSearch")}
               >
                 <X className="h-4 w-4" />
               </button>
@@ -284,14 +282,10 @@ function DictionaryPage() {
           {categories.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-2">
               <CategoryChip active={category === "all"} onClick={() => setCategory("all")}>
-                Tout
+                {t("dict.all")}
               </CategoryChip>
               {categories.map((c) => (
-                <CategoryChip
-                  key={c}
-                  active={category === c}
-                  onClick={() => setCategory(c)}
-                >
+                <CategoryChip key={c} active={category === c} onClick={() => setCategory(c)}>
                   {c}
                 </CategoryChip>
               ))}
@@ -302,15 +296,15 @@ function DictionaryPage() {
         <Tabs defaultValue="all">
           <TabsList>
             <TabsTrigger value="all" className="gap-1.5">
-              <BookOpen className="h-3.5 w-3.5" /> Tous
+              <BookOpen className="h-3.5 w-3.5" /> {t("dict.tab.all")}
               <Badge variant="secondary" className="ml-1">{filtered.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="favorites" className="gap-1.5">
-              <Heart className="h-3.5 w-3.5" /> Favoris
+              <Heart className="h-3.5 w-3.5" /> {t("dict.tab.fav")}
               <Badge variant="secondary" className="ml-1">{favEntries.length}</Badge>
             </TabsTrigger>
             <TabsTrigger value="history" className="gap-1.5">
-              <History className="h-3.5 w-3.5" /> Historique
+              <History className="h-3.5 w-3.5" /> {t("dict.tab.hist")}
               <Badge variant="secondary" className="ml-1">{histEntries.length}</Badge>
             </TabsTrigger>
           </TabsList>
@@ -323,7 +317,7 @@ function DictionaryPage() {
               onToggleFavorite={toggleFavorite}
               onSpeak={speak}
               onVisit={pushHistory}
-              emptyText={query ? "Aucun mot ne correspond à votre recherche." : "Aucune entrée."}
+              emptyText={query ? t("dict.empty.search") : t("dict.empty.entries")}
             />
           </TabsContent>
 
@@ -335,7 +329,7 @@ function DictionaryPage() {
               onToggleFavorite={toggleFavorite}
               onSpeak={speak}
               onVisit={pushHistory}
-              emptyText="Aucun favori pour l'instant. Touchez ♥ pour en ajouter."
+              emptyText={t("dict.empty.fav")}
             />
           </TabsContent>
 
@@ -343,7 +337,7 @@ function DictionaryPage() {
             {histEntries.length > 0 && (
               <div className="mb-3 flex justify-end">
                 <Button variant="ghost" size="sm" onClick={clearHistory}>
-                  Effacer l'historique
+                  {t("dict.clear")}
                 </Button>
               </div>
             )}
@@ -354,7 +348,7 @@ function DictionaryPage() {
               onToggleFavorite={toggleFavorite}
               onSpeak={speak}
               onVisit={pushHistory}
-              emptyText="Aucun mot consulté pour l'instant."
+              emptyText={t("dict.empty.hist")}
             />
           </TabsContent>
         </Tabs>
