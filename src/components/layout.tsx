@@ -10,10 +10,11 @@ async function signOut() {
 }
 
 function LanguageSwitcher() {
-  const { lang, setLang, t } = useLanguage();
+  const { lang, setLang, dialect, setDialect, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+  const currentDialect = DIALECTS.find((d) => d.code === dialect) ?? DIALECTS[0];
 
   useEffect(() => {
     if (!open) return;
@@ -34,31 +35,60 @@ function LanguageSwitcher() {
         aria-expanded={open}
       >
         <Globe className="h-3.5 w-3.5" />
-        <span className="hidden sm:inline">{current.code.toUpperCase()}</span>
+        <span className="hidden sm:inline">
+          {current.code.toUpperCase()}
+          {lang === "ff" && <span className="ms-1 text-muted-foreground">· {currentDialect.code === "fouta_toro" ? "FT" : currentDialect.code === "fouta_djallon" ? "FJ" : currentDialect.code === "maasina" ? "MA" : "AD"}</span>}
+        </span>
         <ChevronDown className="h-3 w-3" />
       </button>
       {open && (
-        <ul
-          role="listbox"
-          className="absolute end-0 z-50 mt-2 w-48 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
+        <div
+          className="absolute end-0 z-50 mt-2 w-64 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
         >
-          {LANGUAGES.map((l) => (
-            <li key={l.code}>
-              <button
-                role="option"
-                aria-selected={l.code === lang}
-                onClick={() => { setLang(l.code); setOpen(false); }}
-                className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
-              >
-                <span className="flex items-center gap-2">
-                  <span aria-hidden>{l.flag}</span>
-                  <span>{l.native}</span>
-                </span>
-                {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
-              </button>
-            </li>
-          ))}
-        </ul>
+          <ul role="listbox" aria-label={t("lang.switcher")}>
+            {LANGUAGES.map((l) => (
+              <li key={l.code}>
+                <button
+                  role="option"
+                  aria-selected={l.code === lang}
+                  onClick={() => { setLang(l.code); if (l.code !== "ff") setOpen(false); }}
+                  className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
+                >
+                  <span className="flex items-center gap-2">
+                    <span aria-hidden>{l.flag}</span>
+                    <span>{l.native}</span>
+                  </span>
+                  {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
+                </button>
+              </li>
+            ))}
+          </ul>
+          {lang === "ff" && (
+            <div className="border-t border-border bg-muted/40 px-3 py-2">
+              <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                Dialecte Pulaar
+              </p>
+              <ul role="listbox" aria-label="Dialecte Pulaar" className="space-y-0.5">
+                {DIALECTS.map((d) => (
+                  <li key={d.code}>
+                    <button
+                      role="option"
+                      aria-selected={d.code === dialect}
+                      onClick={() => { setDialect(d.code); setOpen(false); }}
+                      className="flex w-full items-center justify-between gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-accent"
+                    >
+                      <span className="flex flex-col">
+                        <span className="font-medium">{d.label}</span>
+                        <span className="text-[10px] text-muted-foreground">{d.region}</span>
+                      </span>
+                      {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
