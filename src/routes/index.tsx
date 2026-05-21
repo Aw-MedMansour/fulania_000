@@ -323,7 +323,7 @@ function Index() {
             <div>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
-              <p className="mt-5 text-cream/80">
+              <p className="mt-5 whitespace-pre-line text-cream/80">
                 {t("contact.bio")}
               </p>
             </div>
