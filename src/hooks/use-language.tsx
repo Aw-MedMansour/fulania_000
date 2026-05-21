@@ -581,7 +581,7 @@ const translations: Record<Lang, Dict> = {
     "vision.preserve": "Preserve", "vision.transmit": "Transmit", "vision.educate": "Educate",
     "vision.value": "Celebrate", "vision.gather": "Gather", "vision.include": "Include",
 
-    "contact.bio": "22 years old, from Lekseiba in the Gorgol region, Master's student in Biotechnology in Algeria.",
+    "contact.bio": "A 22-year-old student from Lekseiba in the Gorgol region, Aw Mohamedou Mansour is currently pursuing a Master's degree in Biotechnology in Algeria. Despite his scientific training, he has long held a deep conviction: technology must serve every culture, including those most marginalized in the digital world.\n\nIt is from this conviction that FulanIA was born — a project blending passion for Fulani culture with technological ambition, with the hope of creating a tool that will outlast generations.",
     "alt.hero": "Fulani herders in the Sahel",
     "alt.portrait": "Fulani portrait",
     "nf.title": "Page not found",
