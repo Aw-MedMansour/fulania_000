@@ -185,7 +185,7 @@ export function SiteFooter() {
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-cream/10 pt-6 text-xs text-cream/60 sm:flex-row">
           <p>© 2026 FulanIA — {t("footer.rights")}</p>
-          <p className="font-display italic">Notre culture, notre force. L'intelligence, notre avenir.</p>
+          <p className="font-display italic">{t("footer.motto")}</p>
         </div>
       </div>
     </footer>
