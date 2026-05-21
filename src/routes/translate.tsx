@@ -8,12 +8,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/translate")({
-  head: () => ({
-    meta: [
-      { title: "Traduction multi-dialectique Pulaar — FulanIA" },
-      { name: "description", content: "Compare un mot ou une phrase dans les principales variantes du Pulaar/Fulfulde : Fouta Toro, Fouta Djallon, Macina, Adamawa." },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./translate.title") },
+        { name: "description", content: tFor(l, "seo./translate.desc") },
+        { property: "og:title", content: tFor(l, "seo./translate.title") },
+        { property: "og:description", content: tFor(l, "seo./translate.desc") },
+      ],
+    };
+  },
   component: TranslatePage,
 });
 

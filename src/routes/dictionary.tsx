@@ -13,16 +13,17 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/dictionary")({
-  head: () => ({
-    meta: [
-      { title: "Dictionnaire Pulaar ↔ FR ↔ AR ↔ EN | FulanIA" },
-      {
-        name: "description",
-        content:
-          "Dictionnaire interactif Pulaar — Français — Arabe — Anglais. Recherche, favoris, historique et exemples.",
-      },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./dictionary.title") },
+        { name: "description", content: tFor(l, "seo./dictionary.desc") },
+        { property: "og:title", content: tFor(l, "seo./dictionary.title") },
+        { property: "og:description", content: tFor(l, "seo./dictionary.desc") },
+      ],
+    };
+  },
   component: DictionaryPage,
 });
 

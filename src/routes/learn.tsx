@@ -12,12 +12,17 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/learn")({
-  head: () => ({
-    meta: [
-      { title: "Apprendre le Pulaar — Leçons & Quiz | FulanIA" },
-      { name: "description", content: "Apprends le Pulaar avec des leçons thématiques, des quiz interactifs et des flashcards intelligentes." },
-    ],
-  }),
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./learn.title") },
+        { name: "description", content: tFor(l, "seo./learn.desc") },
+        { property: "og:title", content: tFor(l, "seo./learn.title") },
+        { property: "og:description", content: tFor(l, "seo./learn.desc") },
+      ],
+    };
+  },
   component: LearnPage,
 });
 

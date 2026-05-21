@@ -7,6 +7,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/chat")({
+  head: () => {
+    const l = getCurrentLang();
+    return {
+      meta: [
+        { title: tFor(l, "seo./chat.title") },
+        { name: "description", content: tFor(l, "seo./chat.desc") },
+        { property: "og:title", content: tFor(l, "seo./chat.title") },
+        { property: "og:description", content: tFor(l, "seo./chat.desc") },
+      ],
+    };
+  },
   component: ChatPage,
 });
 
