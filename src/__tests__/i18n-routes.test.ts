@@ -20,7 +20,7 @@ const ROUTES: Record<string, string> = {
   "/dictionary": "src/routes/dictionary.tsx",
 };
 
-const T_KEY_RE = /\bt\(\s*["'`]([^"'`]+)["'`]\s*[),]/g;
+const T_KEY_RE = /\b(?:t|tFor)\(\s*(?:[a-zA-Z_$][\w$]*\s*,\s*)?["'`]([^"'`]+)["'`]\s*[),]/g;
 
 function extractKeys(filePath: string): string[] {
   const src = readFileSync(resolve(process.cwd(), filePath), "utf8");
