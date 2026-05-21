@@ -18,7 +18,7 @@ const CHAT_LANG_KEY = "fulania.chat.lang";
 
 function ChatPage() {
   const { session, loading: authLoading } = useAuth();
-  const { t, lang: siteLang } = useLanguage();
+  const { t, lang: siteLang, dialect } = useLanguage();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -79,7 +79,7 @@ function ChatPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${current.access_token}`,
         },
-        body: JSON.stringify({ messages: next.slice(-20), lang: chatLang }),
+        body: JSON.stringify({ messages: next.slice(-20), lang: chatLang, dialect }),
       });
 
       if (!resp.ok || !resp.body) {

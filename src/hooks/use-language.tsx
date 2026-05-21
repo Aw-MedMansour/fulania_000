@@ -1,12 +1,20 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 export type Lang = "fr" | "ff" | "en" | "ar";
+export type Dialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
 
 export const LANGUAGES: { code: Lang; label: string; native: string; flag: string; dir: "ltr" | "rtl" }[] = [
   { code: "fr", label: "Français", native: "Français", flag: "🇫🇷", dir: "ltr" },
   { code: "ff", label: "Pulaar", native: "Pulaar / Fulfulde", flag: "🌍", dir: "ltr" },
   { code: "en", label: "English", native: "English", flag: "🇬🇧", dir: "ltr" },
   { code: "ar", label: "العربية", native: "العربية", flag: "🇸🇦", dir: "rtl" },
+];
+
+export const DIALECTS: { code: Dialect; label: string; region: string }[] = [
+  { code: "fouta_toro", label: "Pulaar — Fuuta Tooro", region: "Sénégal · Mauritanie · Mali" },
+  { code: "fouta_djallon", label: "Pular — Fuuta Jaloo", region: "Guinée" },
+  { code: "maasina", label: "Fulfulde — Maasina", region: "Mali · Burkina · Niger" },
+  { code: "aadamaawa", label: "Fulfulde — Aadamaawa", region: "Nigeria · Cameroun · Tchad" },
 ];
 
 type Dict = Record<string, string>;
@@ -954,16 +962,25 @@ const translations: Record<Lang, Dict> = {
   },
 };
 
-type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (key: string) => string };
+type Ctx = {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  dialect: Dialect;
+  setDialect: (d: Dialect) => void;
+  t: (key: string) => string;
+};
 const LangCtx = createContext<Ctx | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
+  const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("fulania.lang") as Lang | null;
       if (stored && translations[stored]) setLangState(stored);
+      const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
+      if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
     } catch {}
   }, []);
 
@@ -979,14 +996,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLangState(l);
     try { localStorage.setItem("fulania.lang", l); } catch {}
   };
+  const setDialect = (d: Dialect) => {
+    setDialectState(d);
+    try { localStorage.setItem("fulania.dialect", d); } catch {}
+  };
 
   const t = (key: string) => translations[lang][key] ?? translations.fr[key] ?? key;
 
-  return <LangCtx.Provider value={{ lang, setLang, t }}>{children}</LangCtx.Provider>;
+  return <LangCtx.Provider value={{ lang, setLang, dialect, setDialect, t }}>{children}</LangCtx.Provider>;
 }
 
 export function useLanguage(): Ctx {
   const ctx = useContext(LangCtx);
-  if (!ctx) return { lang: "fr", setLang: () => {}, t: (k) => translations.fr[k] ?? k };
+  if (!ctx) return { lang: "fr", setLang: () => {}, dialect: "fouta_toro", setDialect: () => {}, t: (k) => translations.fr[k] ?? k };
   return ctx;
 }

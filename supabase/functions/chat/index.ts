@@ -95,6 +95,14 @@ Deno.serve(async (req) => {
     const messages = body?.messages;
     const langRaw = typeof body?.lang === "string" ? body.lang : "fr";
     const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
+    const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
+    const DIALECT_LABELS: Record<string, string> = {
+      fouta_toro: "Pulaar du Fuuta Tooro (Sénégal, Mauritanie, Mali)",
+      fouta_djallon: "Pular du Fuuta Jaloo (Guinée)",
+      maasina: "Fulfulde du Maasina (Mali, Burkina, Niger)",
+      aadamaawa: "Fulfulde de l'Aadamaawa (Nigeria, Cameroun, Tchad)",
+    };
+    const dialectLabel = DIALECT_LABELS[dialectRaw] ?? DIALECT_LABELS.fouta_toro;
 
     if (!Array.isArray(messages) || messages.length === 0 || messages.length > MAX_MESSAGES) {
       return new Response(JSON.stringify({ error: "Requête invalide." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -117,7 +125,9 @@ Deno.serve(async (req) => {
     const lastUser = [...safeMessages].reverse().find((m) => m.role === "user");
     const dictContext = lastUser ? await fetchDictionaryContext(supabase, lastUser.content) : "";
 
-    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${LANG_INSTRUCTIONS[lang]}${dictContext}`;
+    const dialectInstruction = `\n\nDIALECTE PRIVILÉGIÉ : Quand tu donnes des mots, exemples ou citations en Pulaar/Fulfulde, privilégie le ${dialectLabel}. Si une forme diffère sensiblement dans d'autres dialectes, tu peux la signaler brièvement, mais la forme principale doit être celle de ce dialecte.`;
+
+    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${dictContext}`;
 
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
