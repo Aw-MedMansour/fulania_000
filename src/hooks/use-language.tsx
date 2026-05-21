@@ -225,6 +225,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "22 ans, originaire de Lekseiba dans la région du Gorgol, étudiant en Master Biotechnologie en Algérie.",
     "alt.hero": "Bergers Peuls dans le Sahel",
     "alt.portrait": "Portrait Peul",
+    "nf.title": "Page introuvable",
+    "nf.body": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "nf.home": "Retour à l'accueil",
+    "err.title": "Cette page n'a pas pu se charger",
+    "err.body": "Une erreur est survenue de notre côté. Vous pouvez réessayer ou revenir à l'accueil.",
+    "err.retry": "Réessayer",
+    "err.home": "Accueil",
   },
 
   ff: {
@@ -398,6 +405,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "Duuɓi 22, ummiiɗo Lekseiba e Gorgol, jannginteeɗo Master Biotechnologie e Alaseri.",
     "alt.hero": "Aynaaɓe Fulɓe e Saheli",
     "alt.portrait": "Mbaadi Pullo",
+    "nf.title": "Hello yiytaaka",
+    "nf.body": "Hello ngo ɗaɓɓataa alaa walla ɗiwtinaama.",
+    "nf.home": "Yiltu hoore",
+    "err.title": "Hello ngo loowaaki",
+    "err.body": "Juumre waɗii e ɓanngal amen. Eto kadi walla yiltu hoore.",
+    "err.retry": "Eto kadi",
+    "err.home": "Hoore",
   },
 
   en: {
@@ -570,6 +584,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "22 years old, from Lekseiba in the Gorgol region, Master's student in Biotechnology in Algeria.",
     "alt.hero": "Fulani herders in the Sahel",
     "alt.portrait": "Fulani portrait",
+    "nf.title": "Page not found",
+    "nf.body": "The page you're looking for doesn't exist or has been moved.",
+    "nf.home": "Go home",
+    "err.title": "This page didn't load",
+    "err.body": "Something went wrong on our end. You can try refreshing or head back home.",
+    "err.retry": "Try again",
+    "err.home": "Go home",
   },
 
   ar: {
@@ -742,6 +763,13 @@ const translations: Record<Lang, Dict> = {
     "contact.bio": "22 عامًا، من لكصيبة بمنطقة كوركول، طالب ماستر في التقنيات الحيوية بالجزائر.",
     "alt.hero": "رعاة فولانيون في الساحل",
     "alt.portrait": "صورة فولانية",
+    "nf.title": "الصفحة غير موجودة",
+    "nf.body": "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+    "nf.home": "العودة إلى الرئيسية",
+    "err.title": "تعذّر تحميل هذه الصفحة",
+    "err.body": "حدث خطأ من جانبنا. يمكنك المحاولة مجددًا أو العودة إلى الرئيسية.",
+    "err.retry": "إعادة المحاولة",
+    "err.home": "الرئيسية",
   },
 };
 
