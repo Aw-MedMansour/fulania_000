@@ -291,6 +291,9 @@ const translations: Record<Lang, Dict> = {
     "contact.callBody": "Min ɗaɓɓi cifotooɓe, ekspeer ɗemɗe, mooɓooɓe, wonɓe ballal e wallidiiɓe.",
     "contact.email": "Email", "contact.phone": "Noddorgal", "contact.address": "Ñiiɓirde",
     "contact.tryAi": "Eto assistant IA",
+    "author.name": "Aw Mohamedou Mansour",
+    "contact.location": "Boumerdes, Alaseri",
+    "problem.tool4": "Assistanɓe IA",
 
     "footer.tagline": "Hakkille kuɓɓinaaɗo ngam ɗemngal e pinal Fulɓe.",
     "footer.explore": "Yiilo", "footer.contact": "Heɓtugol",
