@@ -18,7 +18,6 @@ import {
   Check,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,8 +80,6 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Provider = "google" | "apple";
-
 function AuthPage() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -91,7 +88,6 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState<Provider | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [pwdError, setPwdError] = useState<string | null>(null);
 
@@ -160,15 +156,9 @@ function AuthPage() {
     toast.success(t("auth.verifyMail"));
   };
 
-  const onOAuth = async (provider: Provider) => {
-    setOauthLoading(provider);
-    const r = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin + "/hub",
-    });
-    setOauthLoading(null);
-    if (r.error) toast.error(`${t("auth.oauthErr")} ${provider === "google" ? "Google" : "Apple"}`);
-    else if (!r.redirected) navigate({ to: "/hub", replace: true });
-  };
+
+
+
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
@@ -275,39 +265,8 @@ function AuthPage() {
               </p>
             </div>
 
-            <div className="mt-7 grid gap-2.5 sm:grid-cols-2">
-              <Button
-                onClick={() => onOAuth("google")}
-                variant="outline"
-                disabled={oauthLoading !== null}
-                className="h-11 gap-2.5 border-border/80 bg-card text-sm font-medium shadow-sm hover:bg-accent"
-              >
-                {oauthLoading === "google" ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <GoogleIcon className="h-[18px] w-[18px]" />
-                )}
-                Google
-              </Button>
-              <Button
-                onClick={() => onOAuth("apple")}
-                disabled={oauthLoading !== null}
-                className="h-11 gap-2.5 bg-earth text-sm font-medium text-cream shadow-sm hover:bg-earth/90"
-              >
-                {oauthLoading === "apple" ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <AppleIcon className="h-[18px] w-[18px]" />
-                )}
-                Apple
-              </Button>
-            </div>
 
-            <div className="my-6 flex items-center gap-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              <div className="h-px flex-1 bg-border" />
-              {t("auth.orEmail")}
-              <div className="h-px flex-1 bg-border" />
-            </div>
+
 
             <Tabs value={tab} onValueChange={(v) => { setTab(v as "signin" | "signup"); setEmailError(null); setPwdError(null); }}>
               <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
