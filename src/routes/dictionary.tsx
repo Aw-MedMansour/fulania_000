@@ -249,7 +249,7 @@ function DictionaryPage() {
               <Cloud className="h-4 w-4" />
               <span>{t("dict.cloudCta")}</span>
             </div>
-            <Link to="/auth" className="rounded-md bg-earth px-3 py-1.5 text-xs font-medium text-cream hover:opacity-90">
+            <Link to="/auth" search={{ next: "/dictionary" }} className="rounded-md bg-earth px-3 py-1.5 text-xs font-medium text-cream hover:opacity-90">
               {t("dict.signin")}
             </Link>
           </div>
@@ -612,7 +612,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
             )}
           </Button>
         ) : (
-          <Link to="/auth"><Button size="sm" variant="outline">{t("dict.signin")}</Button></Link>
+          <Link to="/auth" search={{ next: "/dictionary" }}><Button size="sm" variant="outline">{t("dict.signin")}</Button></Link>
         )}
       </div>
 

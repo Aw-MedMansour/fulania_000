@@ -55,7 +55,9 @@ function TranslatePage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!authLoading && !session) navigate({ to: "/auth", replace: true });
+    if (!authLoading && !session) {
+      navigate({ to: "/auth", search: { next: "/translate" }, replace: true });
+    }
   }, [authLoading, session, navigate]);
 
   async function run() {
