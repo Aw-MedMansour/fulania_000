@@ -156,15 +156,9 @@ function AuthPage() {
     toast.success(t("auth.verifyMail"));
   };
 
-  const onOAuth = async (provider: Provider) => {
-    setOauthLoading(provider);
-    const r = await lovable.auth.signInWithOAuth(provider, {
-      redirect_uri: window.location.origin + "/hub",
-    });
-    setOauthLoading(null);
-    if (r.error) toast.error(`${t("auth.oauthErr")} ${provider === "google" ? "Google" : "Apple"}`);
-    else if (!r.redirected) navigate({ to: "/hub", replace: true });
   };
+
+
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
