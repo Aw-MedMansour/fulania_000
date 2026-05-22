@@ -1,8 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Send, Sparkles, Loader2, LogIn, Check, ChevronDown, Languages } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 import { PageNav } from "@/components/page-nav";
@@ -28,7 +27,6 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
 function ChatPage() {
-  const { session, loading: authLoading } = useAuth();
   const { t, lang: siteLang, setLang, dialect, setDialect } = useLanguage();
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -63,10 +61,6 @@ function ChatPage() {
     setError(null);
 
     const { data: { session: current } } = await supabase.auth.getSession();
-    if (!current?.access_token) {
-      setError(t("chat.errAuth"));
-      return;
-    }
 
     const next: Msg[] = [...messages, { role: "user", content }];
     setMessages(next);
@@ -78,7 +72,7 @@ function ChatPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${current.access_token}`,
+          ...(current?.access_token ? { Authorization: `Bearer ${current.access_token}` } : {}),
         },
         body: JSON.stringify({ messages: next.slice(-20), lang: chatLang, dialect }),
       });
@@ -152,18 +146,7 @@ function ChatPage() {
       <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
         <div className="mx-auto w-full max-w-4xl px-3 py-6 sm:px-4 sm:py-8">
           <h1 className="sr-only">{t("chat.srTitle")}</h1>
-          {!authLoading && !session ? (
-            <div className="mx-auto max-w-md py-16 text-center">
-              <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <LogIn className="h-7 w-7" />
-              </div>
-              <h2 className="mt-6 font-display text-2xl font-semibold">{t("chat.authNeeded")}</h2>
-              <p className="mt-3 text-muted-foreground">{t("chat.authBody")}</p>
-              <Link to="/auth" className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-                {t("chat.signin")}
-              </Link>
-            </div>
-          ) : messages.length === 0 ? (
+          {messages.length === 0 ? (
             <div className="mx-auto max-w-2xl py-8 text-center sm:py-12">
               <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                 <Sparkles className="h-7 w-7" />
