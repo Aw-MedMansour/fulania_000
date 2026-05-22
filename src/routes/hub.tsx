@@ -36,9 +36,8 @@ function HubPage() {
   const { session, user, loading } = useAuth();
   const { t } = useLanguage();
 
-  // Accès libre : pas de redirection. La connexion est optionnelle
-  // pour conserver historique et progression.
-  void loading; void session; void navigate;
+  // Accès libre : la connexion est optionnelle (historique/progression).
+  void loading; void navigate;
 
   const features = [
     {
