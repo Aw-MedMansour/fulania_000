@@ -93,16 +93,25 @@ function HubPage() {
         </Link>
         <div className="flex items-center gap-2">
           <PageNav />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={async () => {
-              await supabase.auth.signOut();
-              navigate({ to: "/", replace: true });
-            }}
-            className="gap-1.5 text-muted-foreground"
-          >
-            <LogOut className="h-4 w-4" />
+          {session ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate({ to: "/", replace: true });
+              }}
+              className="gap-1.5 text-muted-foreground"
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("btn.signout")}</span>
+            </Button>
+          ) : (
+            <Button asChild size="sm" variant="outline" className="gap-1.5">
+              <Link to="/auth">{t("auth.tab.signin")}</Link>
+            </Button>
+          )}
+        </div>
             <span className="hidden sm:inline">{t("btn.signout")}</span>
           </Button>
         </div>
