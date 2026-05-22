@@ -134,7 +134,7 @@ function AuthPage() {
       return toast.error("Identifiant ou mot de passe incorrect");
     }
     toast.success(t("auth.welcomeToast"));
-    navigate({ to: "/hub", replace: true });
+    goNext();
   };
 
   const onSignUp = async (e: React.FormEvent) => {
