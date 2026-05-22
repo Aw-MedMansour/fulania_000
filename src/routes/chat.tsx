@@ -1,8 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Send, Sparkles, Loader2, LogIn, Check, ChevronDown, Languages } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 import { PageNav } from "@/components/page-nav";
