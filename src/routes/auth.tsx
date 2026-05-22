@@ -156,7 +156,7 @@ function AuthPage() {
     toast.success(t("auth.verifyMail"));
   };
 
-  };
+
 
 
 
