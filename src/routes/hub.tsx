@@ -112,9 +112,6 @@ function HubPage() {
             </Button>
           )}
         </div>
-            <span className="hidden sm:inline">{t("btn.signout")}</span>
-          </Button>
-        </div>
       </header>
 
       <main className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-4 sm:px-8">
