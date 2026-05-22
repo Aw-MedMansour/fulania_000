@@ -71,6 +71,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const { t } = useLanguage();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
   const [identifier, setIdentifier] = useState("");
@@ -82,23 +83,29 @@ function AuthPage() {
   const [pwdError, setPwdError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
 
+  // After successful auth (or "continue without account"), go to `next` if
+  // provided (the tool the user was trying to reach), else /hub. We use
+  // `replace: true` so the auth page is not kept on the back stack.
+  const destination = next ?? "/hub";
+  const goNext = () => navigate({ to: destination as "/hub", replace: true });
+
   useEffect(() => {
     let active = true;
-    const goToHub = () => navigate({ to: "/hub", replace: true });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) goToHub();
+      if (session) goNext();
     });
 
     supabase.auth.getSession().then(({ data }) => {
-      if (active && data.session) goToHub();
+      if (active && data.session) goNext();
     });
 
     return () => {
       active = false;
       subscription.unsubscribe();
     };
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [destination]);
 
   const validate = (mode: "signin" | "signup"): boolean => {
     const i = idSchema.safeParse(identifier);
