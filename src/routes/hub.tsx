@@ -1,5 +1,4 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
 import {
   MessageSquareText,
   BookOpen,
@@ -34,12 +33,8 @@ export const Route = createFileRoute("/hub")({
 
 function HubPage() {
   const navigate = useNavigate();
-  const { session, user, loading } = useAuth();
+  const { session, user } = useAuth();
   const { t } = useLanguage();
-
-  useEffect(() => {
-    if (!loading && !session) navigate({ to: "/auth", replace: true });
-  }, [loading, session, navigate]);
 
   const features = [
     {
@@ -98,18 +93,24 @@ function HubPage() {
         </Link>
         <div className="flex items-center gap-2">
           <PageNav />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={async () => {
-              await supabase.auth.signOut();
-              navigate({ to: "/", replace: true });
-            }}
-            className="gap-1.5 text-muted-foreground"
-          >
-            <LogOut className="h-4 w-4" />
-            <span className="hidden sm:inline">{t("btn.signout")}</span>
-          </Button>
+          {session ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={async () => {
+                await supabase.auth.signOut();
+                navigate({ to: "/", replace: true });
+              }}
+              className="gap-1.5 text-muted-foreground"
+            >
+              <LogOut className="h-4 w-4" />
+              <span className="hidden sm:inline">{t("btn.signout")}</span>
+            </Button>
+          ) : (
+            <Button asChild size="sm" variant="outline" className="gap-1.5">
+              <Link to="/auth">{t("auth.tab.signin")}</Link>
+            </Button>
+          )}
         </div>
       </header>
 

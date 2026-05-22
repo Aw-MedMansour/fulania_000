@@ -312,6 +312,30 @@ function AuthPage() {
               </TabsContent>
             </Tabs>
 
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center" aria-hidden>
+                <span className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-background px-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                  ou
+                </span>
+              </div>
+            </div>
+
+            <Button
+              asChild
+              variant="outline"
+              className="h-11 w-full gap-2 text-sm font-medium"
+            >
+              <Link to="/hub">
+                Continuer sans compte <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+            <p className="mt-2 text-center text-xs text-muted-foreground">
+              Vous pourrez créer un compte plus tard pour conserver votre historique et votre progression.
+            </p>
+
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
               {t("auth.privacy")}
