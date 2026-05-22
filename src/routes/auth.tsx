@@ -337,13 +337,11 @@ function AuthPage() {
             </div>
 
             <Button
-              asChild
               variant="outline"
               className="h-11 w-full gap-2 text-sm font-medium"
+              onClick={() => navigate({ to: destination as "/hub", replace: true })}
             >
-              <Link to="/hub">
-                Continuer sans compte <ArrowRight className="h-4 w-4" />
-              </Link>
+              Continuer sans compte <ArrowRight className="h-4 w-4" />
             </Button>
             <p className="mt-2 text-center text-xs text-muted-foreground">
               Vous pourrez créer un compte plus tard pour conserver votre historique et votre progression.
