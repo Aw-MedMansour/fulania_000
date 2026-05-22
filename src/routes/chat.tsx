@@ -63,10 +63,6 @@ function ChatPage() {
     setError(null);
 
     const { data: { session: current } } = await supabase.auth.getSession();
-    if (!current?.access_token) {
-      setError(t("chat.errAuth"));
-      return;
-    }
 
     const next: Msg[] = [...messages, { role: "user", content }];
     setMessages(next);
@@ -78,7 +74,7 @@ function ChatPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${current.access_token}`,
+          ...(current?.access_token ? { Authorization: `Bearer ${current.access_token}` } : {}),
         },
         body: JSON.stringify({ messages: next.slice(-20), lang: chatLang, dialect }),
       });
