@@ -80,8 +80,6 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Provider = "google" | "apple";
-
 function AuthPage() {
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -90,7 +88,6 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [oauthLoading, setOauthLoading] = useState<Provider | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [pwdError, setPwdError] = useState<string | null>(null);
 
