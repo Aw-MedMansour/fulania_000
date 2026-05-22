@@ -37,9 +37,9 @@ function HubPage() {
   const { session, user, loading } = useAuth();
   const { t } = useLanguage();
 
-  useEffect(() => {
-    if (!loading && !session) navigate({ to: "/auth", replace: true });
-  }, [loading, session, navigate]);
+  // Accès libre : pas de redirection. La connexion est optionnelle
+  // pour conserver historique et progression.
+  void loading; void session; void navigate;
 
   const features = [
     {
