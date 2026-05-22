@@ -163,7 +163,7 @@ function AuthPage() {
     });
     if (signInErr) return toast.error(signInErr.message);
     toast.success(t("auth.welcomeToast"));
-    navigate({ to: "/hub", replace: true });
+    goNext();
   };
 
   return (
