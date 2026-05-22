@@ -51,7 +51,9 @@ function CulturePage() {
   const [tab, setTab] = useState("proverbs");
 
   useEffect(() => {
-    if (!loading && !session) navigate({ to: "/auth", replace: true });
+    if (!loading && !session) {
+      navigate({ to: "/auth", search: { next: "/culture" }, replace: true });
+    }
   }, [loading, session, navigate]);
 
   return (
