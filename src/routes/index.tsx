@@ -93,7 +93,7 @@ function Index() {
             <p className="mt-6 max-w-xl text-lg text-cream/85">{t("hero.subtitle")}</p>
 
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link to="/chat" className="inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90">
+              <Link to="/auth" className="inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90">
                 {t("btn.chat")} <ArrowRight className="h-4 w-4" />
               </Link>
               <a href="#solution" className="inline-flex items-center gap-2 rounded-md border border-cream/30 px-6 py-3 text-sm font-medium text-cream backdrop-blur transition hover:bg-cream/10">
