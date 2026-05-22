@@ -33,11 +33,8 @@ export const Route = createFileRoute("/hub")({
 
 function HubPage() {
   const navigate = useNavigate();
-  const { session, user, loading } = useAuth();
+  const { session, user } = useAuth();
   const { t } = useLanguage();
-
-  // Accès libre : la connexion est optionnelle (historique/progression).
-  void loading; void navigate;
 
   const features = [
     {
