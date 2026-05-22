@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import {
@@ -9,13 +9,12 @@ import {
   Eye,
   EyeOff,
   Loader2,
-  Mail,
+  User,
   Lock,
   Sparkles,
   ShieldCheck,
   Languages,
   AlertCircle,
-  Check,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -27,36 +26,18 @@ import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 
 /* ───────── Validation ─────────
- * Strict email validation + disposable / invalid domain blocklist
- * to ensure only real, deliverable addresses can register.
+ * Identifier: 3–32 chars, letters/digits/._-, no spaces.
+ * Maps to a synthetic email behind the scenes (Supabase requires email).
  */
-const DISPOSABLE_DOMAINS = new Set([
-  "mailinator.com", "yopmail.com", "guerrillamail.com", "10minutemail.com",
-  "tempmail.com", "temp-mail.org", "trashmail.com", "throwawaymail.com",
-  "fakeinbox.com", "getnada.com", "dispostable.com", "maildrop.cc",
-  "sharklasers.com", "spam4.me", "mintemail.com", "mohmal.com",
-  "tempr.email", "fake-mail.net", "moakt.com", "emailondeck.com",
-  "tempmailo.com", "1secmail.com", "inboxbear.com", "harakirimail.com",
-  "test.com", "example.com", "exemple.com", "exemple.fr",
-]);
+const ID_DOMAIN = "id.fulania.local";
 
-const emailSchema = z
+const idSchema = z
   .string()
   .trim()
-  .min(5, "Email trop court")
-  .max(254, "Email trop long")
-  .regex(
-    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    "Format d'email invalide",
-  )
-  .refine((v) => {
-    const domain = v.split("@")[1]?.toLowerCase() ?? "";
-    return !DISPOSABLE_DOMAINS.has(domain);
-  }, "Les adresses jetables ne sont pas acceptées")
-  .refine((v) => {
-    const local = v.split("@")[0] ?? "";
-    return !/^(test|fake|admin|noreply|no-reply)$/i.test(local);
-  }, "Veuillez utiliser une adresse email réelle");
+  .toLowerCase()
+  .min(3, "Au moins 3 caractères")
+  .max(32, "Au plus 32 caractères")
+  .regex(/^[a-z0-9._-]+$/, "Lettres, chiffres, . _ - uniquement");
 
 const passwordSchema = z
   .string()
@@ -64,6 +45,8 @@ const passwordSchema = z
   .max(72, "Mot de passe trop long")
   .regex(/[A-Za-z]/, "Doit contenir une lettre")
   .regex(/[0-9]/, "Doit contenir un chiffre");
+
+const idToEmail = (id: string) => `${id.trim().toLowerCase()}@${ID_DOMAIN}`;
 
 export const Route = createFileRoute("/auth")({
   head: () => {
@@ -84,23 +67,25 @@ function AuthPage() {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const [tab, setTab] = useState<"signin" | "signup">("signin");
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPwd, setConfirmPwd] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [emailError, setEmailError] = useState<string | null>(null);
+  const [idError, setIdError] = useState<string | null>(null);
   const [pwdError, setPwdError] = useState<string | null>(null);
+  const [confirmError, setConfirmError] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
-    const goToChat = () => navigate({ to: "/hub", replace: true });
+    const goToHub = () => navigate({ to: "/hub", replace: true });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) goToChat();
+      if (session) goToHub();
     });
 
     supabase.auth.getSession().then(({ data }) => {
-      if (active && data.session) goToChat();
+      if (active && data.session) goToHub();
     });
 
     return () => {
@@ -109,60 +94,67 @@ function AuthPage() {
     };
   }, [navigate]);
 
-  // Live email validation hint (only after the user has typed @ + something)
-  const emailHint = useMemo(() => {
-    if (!email || !email.includes("@") || email.endsWith("@")) return null;
-    const r = emailSchema.safeParse(email);
-    return r.success ? null : r.error.issues[0]?.message ?? "Email invalide";
-  }, [email]);
-
-  const validateForm = (mode: "signin" | "signup"): boolean => {
-    const e = emailSchema.safeParse(email);
-    setEmailError(e.success ? null : e.error.issues[0]?.message ?? "Email invalide");
+  const validate = (mode: "signin" | "signup"): boolean => {
+    const i = idSchema.safeParse(identifier);
+    setIdError(i.success ? null : i.error.issues[0]?.message ?? "Identifiant invalide");
     if (mode === "signup") {
       const p = passwordSchema.safeParse(password);
       setPwdError(p.success ? null : p.error.issues[0]?.message ?? "Mot de passe invalide");
-      return e.success && p.success;
+      const matches = password.length > 0 && password === confirmPwd;
+      setConfirmError(matches ? null : "Les mots de passe ne correspondent pas");
+      return i.success && p.success && matches;
     }
     setPwdError(password.length === 0 ? "Mot de passe requis" : null);
-    return e.success && password.length > 0;
+    return i.success && password.length > 0;
   };
 
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm("signin")) return;
+    if (!validate("signin")) return;
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
+      email: idToEmail(identifier),
       password,
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      return toast.error("Identifiant ou mot de passe incorrect");
+    }
     toast.success(t("auth.welcomeToast"));
     navigate({ to: "/hub", replace: true });
   };
 
   const onSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateForm("signup")) return;
+    if (!validate("signup")) return;
     setLoading(true);
     const { error } = await supabase.auth.signUp({
-      email: email.trim(),
+      email: idToEmail(identifier),
       password,
-      options: { emailRedirectTo: `${window.location.origin}/hub` },
+      options: {
+        emailRedirectTo: `${window.location.origin}/hub`,
+        data: { username: identifier.trim().toLowerCase() },
+      },
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
-    toast.success(t("auth.verifyMail"));
+    if (error) {
+      const msg = /registered|exists/i.test(error.message)
+        ? "Cet identifiant est déjà utilisé"
+        : error.message;
+      return toast.error(msg);
+    }
+    // Auto sign-in (auto_confirm is enabled)
+    const { error: signInErr } = await supabase.auth.signInWithPassword({
+      email: idToEmail(identifier),
+      password,
+    });
+    if (signInErr) return toast.error(signInErr.message);
+    toast.success(t("auth.welcomeToast"));
+    navigate({ to: "/hub", replace: true });
   };
-
-
-
-
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
-      {/* Subtle background pattern */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "420px" }}
@@ -170,14 +162,9 @@ function AuthPage() {
       />
 
       <div className="relative mx-auto grid min-h-screen max-w-7xl lg:grid-cols-[1.05fr_1fr]">
-        {/* ============= LEFT — Brand panel ============= */}
+        {/* LEFT — Brand panel */}
         <aside className="relative hidden overflow-hidden bg-earth text-cream lg:flex lg:flex-col lg:justify-between">
-          <img
-            src={portraitImg}
-            alt=""
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover opacity-25"
-          />
+          <img src={portraitImg} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-25" />
           <div className="absolute inset-0 bg-gradient-to-br from-earth via-earth/90 to-earth/60" />
           <div
             className="absolute inset-0 opacity-[0.08]"
@@ -192,9 +179,7 @@ function AuthPage() {
               </div>
               <div className="flex flex-col leading-none">
                 <span className="font-display text-xl font-semibold tracking-tight">FulanIA</span>
-                <span className="text-[10px] uppercase tracking-[0.18em] text-cream/60">
-                  Pulaagu &amp; IA
-                </span>
+                <span className="text-[10px] uppercase tracking-[0.18em] text-cream/60">Pulaagu &amp; IA</span>
               </div>
             </Link>
           </div>
@@ -207,9 +192,7 @@ function AuthPage() {
             <h2 className="mt-6 max-w-md font-display text-4xl font-semibold leading-[1.1] tracking-tight text-balance xl:text-5xl">
               {t("auth.heroTitle")}
             </h2>
-            <p className="mt-5 max-w-md text-cream/75">
-              {t("auth.heroBody")}
-            </p>
+            <p className="mt-5 max-w-md text-cream/75">{t("auth.heroBody")}</p>
 
             <ul className="mt-8 space-y-3 text-sm">
               {[
@@ -237,9 +220,8 @@ function AuthPage() {
           </div>
         </aside>
 
-        {/* ============= RIGHT — Form panel ============= */}
+        {/* RIGHT — Form panel */}
         <main className="relative flex min-h-screen flex-col justify-between px-5 py-8 sm:px-10 sm:py-12 lg:px-14">
-          {/* Mobile brand bar */}
           <div className="mb-8 flex items-center justify-between lg:hidden">
             <Link to="/" className="flex items-center gap-2.5" aria-label={t("auth.backHome")}>
               <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
@@ -265,10 +247,15 @@ function AuthPage() {
               </p>
             </div>
 
-
-
-
-            <Tabs value={tab} onValueChange={(v) => { setTab(v as "signin" | "signup"); setEmailError(null); setPwdError(null); }}>
+            <Tabs
+              value={tab}
+              onValueChange={(v) => {
+                setTab(v as "signin" | "signup");
+                setIdError(null);
+                setPwdError(null);
+                setConfirmError(null);
+              }}
+            >
               <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
                 <TabsTrigger value="signin">{t("auth.tab.signin")}</TabsTrigger>
                 <TabsTrigger value="signup">{t("auth.tab.signup")}</TabsTrigger>
@@ -276,9 +263,10 @@ function AuthPage() {
 
               <TabsContent value="signin">
                 <form onSubmit={onSignIn} noValidate className="space-y-4 pt-5">
-                  <EmailField label={t("auth.email")} value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
+                  <IdField value={identifier} onChange={(v) => { setIdentifier(v); setIdError(null); }} error={idError} />
                   <PasswordField
-                    label={t("auth.password")}
+                    id="auth-password"
+                    label="Mot de passe"
                     value={password}
                     onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
@@ -294,27 +282,35 @@ function AuthPage() {
 
               <TabsContent value="signup">
                 <form onSubmit={onSignUp} noValidate className="space-y-4 pt-5">
-                  <EmailField label={t("auth.email")} value={email} onChange={(v) => { setEmail(v); setEmailError(null); }} error={emailError} hint={emailHint} />
+                  <IdField value={identifier} onChange={(v) => { setIdentifier(v); setIdError(null); }} error={idError} />
                   <PasswordField
-                    label={t("auth.password")}
+                    id="auth-password"
+                    label="Mot de passe"
                     value={password}
                     onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="new-password"
                     error={pwdError}
-                    hint={t("auth.hintPwd")}
+                    hint="Au moins 8 caractères avec lettres et chiffres."
+                  />
+                  <PasswordField
+                    id="auth-password-confirm"
+                    label="Confirmer le mot de passe"
+                    value={confirmPwd}
+                    onChange={(v) => { setConfirmPwd(v); setConfirmError(null); }}
+                    show={showPwd}
+                    onToggle={() => setShowPwd((s) => !s)}
+                    autoComplete="new-password"
+                    error={confirmError}
                   />
                   <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>{t("auth.signupBtn")} <ArrowRight className="h-4 w-4" /></>}
                   </Button>
-                  <p className="text-center text-xs text-muted-foreground">
-                    {t("auth.terms")}
-                  </p>
+                  <p className="text-center text-xs text-muted-foreground">{t("auth.terms")}</p>
                 </form>
               </TabsContent>
             </Tabs>
-
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
@@ -337,54 +333,49 @@ function AuthPage() {
 
 /* ───────── Sub-components ───────── */
 
-function EmailField({
-  label = "Email", value, onChange, error, hint,
+function IdField({
+  value, onChange, error,
 }: {
-  label?: string;
   value: string;
   onChange: (v: string) => void;
   error?: string | null;
-  hint?: string | null;
 }) {
-  const { t } = useLanguage();
-  const msg = error ?? hint ?? null;
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-email">{label}</Label>
+      <Label htmlFor="auth-id">Identifiant</Label>
       <div className="relative">
-        <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <User className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          id="auth-email"
-          type="email"
+          id="auth-id"
+          type="text"
           required
-          autoComplete="email"
-          inputMode="email"
-          placeholder={t("auth.emailPh")}
+          autoComplete="username"
+          inputMode="text"
+          placeholder="votre_identifiant"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={invalid || undefined}
-          aria-describedby={msg ? "auth-email-msg" : undefined}
+          aria-describedby={error ? "auth-id-msg" : undefined}
           className={`h-11 pl-9 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
       </div>
-      {msg && (
-        <p
-          id="auth-email-msg"
-          className={`flex items-center gap-1.5 text-xs ${invalid ? "text-destructive" : "text-muted-foreground"}`}
-        >
-          {invalid ? <AlertCircle className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
-          {msg}
+      {error ? (
+        <p id="auth-id-msg" className="flex items-center gap-1.5 text-xs text-destructive">
+          <AlertCircle className="h-3.5 w-3.5" /> {error}
         </p>
+      ) : (
+        <p className="text-xs text-muted-foreground">3–32 caractères : lettres, chiffres, . _ -</p>
       )}
     </div>
   );
 }
 
 function PasswordField({
-  label, value, onChange, show, onToggle, autoComplete, hint, error,
+  id, label, value, onChange, show, onToggle, autoComplete, hint, error,
 }: {
-  label?: string;
+  id: string;
+  label: string;
   value: string;
   onChange: (v: string) => void;
   show: boolean;
@@ -397,11 +388,11 @@ function PasswordField({
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-password">{label ?? t("auth.password")}</Label>
+      <Label htmlFor={id}>{label}</Label>
       <div className="relative">
         <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
-          id="auth-password"
+          id={id}
           type={show ? "text" : "password"}
           required
           minLength={8}
@@ -410,7 +401,7 @@ function PasswordField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={invalid || undefined}
-          aria-describedby={error || hint ? "auth-password-msg" : undefined}
+          aria-describedby={error || hint ? `${id}-msg` : undefined}
           className={`h-11 pl-9 pr-10 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
         <button
@@ -424,7 +415,7 @@ function PasswordField({
       </div>
       {(error || hint) && (
         <p
-          id="auth-password-msg"
+          id={`${id}-msg`}
           className={`flex items-center gap-1.5 text-xs ${invalid ? "text-destructive" : "text-muted-foreground"}`}
         >
           {invalid && <AlertCircle className="h-3.5 w-3.5" />}
@@ -434,23 +425,3 @@ function PasswordField({
     </div>
   );
 }
-
-function GoogleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" aria-hidden>
-      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.25 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A10.997 10.997 0 0 0 12 23z"/>
-      <path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.78.43 3.46 1.18 4.94l3.66-2.84z"/>
-      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/>
-    </svg>
-  );
-}
-
-function AppleIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M17.05 12.04c-.02-2.05 1.68-3.04 1.76-3.09-.96-1.4-2.45-1.6-2.98-1.62-1.27-.13-2.48.75-3.12.75-.65 0-1.64-.73-2.7-.71-1.39.02-2.68.81-3.4 2.06-1.45 2.51-.37 6.22 1.04 8.26.69.99 1.51 2.11 2.59 2.07 1.04-.04 1.43-.67 2.69-.67 1.26 0 1.6.67 2.7.65 1.12-.02 1.83-1.01 2.51-2.01.79-1.16 1.12-2.28 1.14-2.34-.02-.01-2.19-.84-2.21-3.34zM15.04 5.92c.57-.69.95-1.65.85-2.6-.82.03-1.81.54-2.4 1.23-.53.61-.99 1.59-.87 2.52.91.07 1.85-.46 2.42-1.15z"/>
-    </svg>
-  );
-}
-
