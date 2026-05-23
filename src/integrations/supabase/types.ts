@@ -332,6 +332,39 @@ export type Database = {
       }
     }
     Views: {
+      donations_public: {
+        Row: {
+          amount_cents: number | null
+          confirmed_at: string | null
+          created_at: string | null
+          currency: string | null
+          display_name: string | null
+          id: string | null
+          message: string | null
+          status: string | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          confirmed_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          display_name?: string | null
+          id?: string | null
+          message?: string | null
+          status?: string | null
+        }
+        Update: {
+          amount_cents?: number | null
+          confirmed_at?: string | null
+          created_at?: string | null
+          currency?: string | null
+          display_name?: string | null
+          id?: string | null
+          message?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       donations_public_stats: {
         Row: {
           donor_count: number | null
