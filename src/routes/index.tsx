@@ -19,6 +19,7 @@ export const Route = createFileRoute("/")({
         { name: "description", content: tFor(l, "seo./.desc") },
         { property: "og:title", content: tFor(l, "seo./.title") },
         { property: "og:description", content: tFor(l, "seo./.desc") },
+        { property: "og:url", content: "https://fulania.com/" },
       ],
     };
   },

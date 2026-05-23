@@ -63,6 +63,7 @@ export const Route = createFileRoute("/auth")({
         { name: "description", content: tFor(l, "seo./auth.desc") },
         { property: "og:title", content: tFor(l, "seo./auth.title") },
         { property: "og:description", content: tFor(l, "seo./auth.desc") },
+        { property: "og:url", content: "https://fulania.com/auth" },
       ],
     };
   },

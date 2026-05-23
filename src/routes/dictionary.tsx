@@ -22,6 +22,7 @@ export const Route = createFileRoute("/dictionary")({
         { name: "description", content: tFor(l, "seo./dictionary.desc") },
         { property: "og:title", content: tFor(l, "seo./dictionary.title") },
         { property: "og:description", content: tFor(l, "seo./dictionary.desc") },
+        { property: "og:url", content: "https://fulania.com/dictionary" },
       ],
     };
   },
