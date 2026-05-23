@@ -21,6 +21,7 @@ export const Route = createFileRoute("/learn")({
         { name: "description", content: tFor(l, "seo./learn.desc") },
         { property: "og:title", content: tFor(l, "seo./learn.title") },
         { property: "og:description", content: tFor(l, "seo./learn.desc") },
+        { property: "og:url", content: "https://fulania.com/learn" },
       ],
     };
   },

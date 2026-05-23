@@ -15,6 +15,7 @@ export const Route = createFileRoute("/chat")({
         { name: "description", content: tFor(l, "seo./chat.desc") },
         { property: "og:title", content: tFor(l, "seo./chat.title") },
         { property: "og:description", content: tFor(l, "seo./chat.desc") },
+        { property: "og:url", content: "https://fulania.com/chat" },
       ],
     };
   },
