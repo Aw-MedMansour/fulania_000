@@ -72,6 +72,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "FulanIA — IA au service de la langue et de la culture Peules" },
       { name: "description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
       { name: "author", content: "Aw Mohamedou Mansour" },
+      { name: "google-site-verification", content: "HWoW3Klip0beO_mTlVXffoMOeRK-WjWVFoXbpjIbl88" },
       { property: "og:title", content: "FulanIA — IA au service de la langue et de la culture Peules" },
       { property: "og:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
       { property: "og:type", content: "website" },
