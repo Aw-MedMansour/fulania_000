@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TranslateRouteImport } from './routes/translate'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as HubRouteImport } from './routes/hub'
 import { Route as DictionaryRouteImport } from './routes/dictionary'
@@ -22,6 +23,11 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 const TranslateRoute = TranslateRouteImport.update({
   id: '/translate',
   path: '/translate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnRoute = LearnRouteImport.update({
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/hub'
     | '/learn'
+    | '/sitemap.xml'
     | '/translate'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/hub'
     | '/learn'
+    | '/sitemap.xml'
     | '/translate'
     | '/lovable/email/queue/process'
   id:
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/hub'
     | '/learn'
+    | '/sitemap.xml'
     | '/translate'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   DictionaryRoute: typeof DictionaryRoute
   HubRoute: typeof HubRoute
   LearnRoute: typeof LearnRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TranslateRoute: typeof TranslateRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
@@ -155,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/translate'
       fullPath: '/translate'
       preLoaderRoute: typeof TranslateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn': {
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   DictionaryRoute: DictionaryRoute,
   HubRoute: HubRoute,
   LearnRoute: LearnRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TranslateRoute: TranslateRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }

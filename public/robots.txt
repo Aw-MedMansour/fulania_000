@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /auth
+Disallow: /hub
+Disallow: /lovable/
+
+Sitemap: https://fulania.com/sitemap.xml

@@ -78,8 +78,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "FulanIA — IA au service de la langue et de la culture Peules" },
       { name: "twitter:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8a14f77c-facf-489e-87e5-25579a3fec7c/id-preview-0ec30cf5--5905733c-64a1-4914-a2b4-987c6c0202e7.lovable.app-1778979842021.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/8a14f77c-facf-489e-87e5-25579a3fec7c/id-preview-0ec30cf5--5905733c-64a1-4914-a2b4-987c6c0202e7.lovable.app-1778979842021.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
