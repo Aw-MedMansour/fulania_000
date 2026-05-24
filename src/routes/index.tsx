@@ -369,7 +369,7 @@ function Index() {
                 </div>
               </div>
 
-              <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:bg-[var(--gold)]/90">
+              <Link to="/hub" className="mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:bg-[var(--gold)]/90">
                 {t("contact.tryAi")} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
