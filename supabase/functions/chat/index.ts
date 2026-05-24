@@ -36,6 +36,31 @@ SOURCE D'AUTORITÉ — DICTIONNAIRE FULANIA :
 
 Style : chaleureux, pédagogue, comme un griot moderne. Markdown bien structuré (titres, listes, gras). Concis par défaut, détaillé sur demande.`;
 
+// Synthèse de l'ouvrage « Celluka e Mbinndiin Pulaar » (CERFLA, 2020) — règles
+// d'orthographe et de grammaire pulaar qui font autorité pour l'assistant.
+const CELLUKA_RULES = `RÈGLES PULAAR (orthographe & grammaire — source: Celluka e Mbinndiin Pulaar, CERFLA 2020) :
+
+Alphabet pulaar (32 lettres) : ' a b ɓ c d ɗ e f g h i j k l m mb n nd ng nj ñ ŋ o p r s t u w y ƴ.
+- 5 voyelles (laaɓɗe) : a e i o u, qui peuvent être brèves (daɓɓe) ou longues (duurtuɗe : aa, ee, ii, oo, uu).
+- La longueur change le sens : « hirde » ≠ « hiirde », « horde » ≠ « hoorde ».
+- Consonnes spéciales obligatoires : ɓ ɗ ƴ ŋ ñ. Ne JAMAIS écrire b/d/y à la place.
+- Prénasalisées : mb, nd, ng, nj.
+- Géminées possibles : bb, dd, ll, mm, nn, pp, tt, kk, ƴƴ…
+
+Mots (helmere) : composés d'une ou plusieurs syllabes (hijjannɗe). Une syllabe peut être réduite à une voyelle (a, o, e) ou commencer par un coup de glotte ' (Ɂ majuscule).
+
+Nom (innde) : désigne une personne, une chose, un animal ou un lieu. Le nom porte une racine (ɗaɗol) et une terminaison de classe (fooɓre). Exemples : neɗɗo (personne), puccu (cheval), suudu (case).
+
+Verbe (baɗal) : exprime une action. Deux types principaux : 
+- baɗal muumal (verbe à l'infinitif, terminé en -ude / -de / -gol) ex. janngude (étudier).
+- baɗal pirlitaangal (verbe conjugué) : la racine reçoit des terminaisons (MFC) : -i (accompli), -aani (négatif accompli), -ataa (négatif inaccompli), -ii, -aama, -aaka, -etee, etaake, etc. Ex. racine janng- → janngi, janngaani, janngataa.
+
+Phrase (konngol) : suite ordonnée de mots formant un sens complet. Commence par une majuscule, finit par . ! ? Ponctuation : virgule (,), deux-points (:), point-virgule (;), points de suspension (…).
+
+Classes nominales : chaque nom appartient à une classe (o, ngal, ndi, ndu, ɗum, ɗe, ɗi, ɓe, kal, kol, ka, ki, ko, nde, nge, ngo, ngu, ɗam…) ; l'accord se fait avec déterminants et adjectifs.
+
+CONSIGNE D'USAGE : Quand tu produis du pulaar, applique strictement cet alphabet et ces accords. Si un mot n'utilise pas ɓ/ɗ/ƴ/ŋ alors qu'il le devrait, corrige-le. Indique brièvement la classe nominale ou la racine verbale quand c'est pédagogique.`;
+
 const LANG_INSTRUCTIONS: Record<string, string> = {
   fr: "Réponds en français, mais donne TOUJOURS en priorité les équivalents/exemples en Pulaar (caractères ɓ ɗ ƴ ŋ corrects).",
   ff: "Jaabo SAHA fof e ɗemngal Pulaar/Fulfulde tan, huutoraa alkule ɓ, ɗ, ƴ, ŋ no haaniri. So a anndaa, wi'u 'mi anndaa'.",
@@ -135,7 +160,7 @@ Deno.serve(async (req) => {
 
     const dialectInstruction = `\n\nDIALECTE PRIVILÉGIÉ : Quand tu donnes des mots, exemples ou citations en Pulaar/Fulfulde, privilégie le ${dialectLabel}. Si une forme diffère sensiblement dans d'autres dialectes, tu peux la signaler brièvement, mais la forme principale doit être celle de ce dialecte.`;
 
-    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${FOUNDER_BIO}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${dictContext}`;
+    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${CELLUKA_RULES}\n\n${FOUNDER_BIO}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${dictContext}`;
 
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
