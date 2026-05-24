@@ -51,11 +51,8 @@ function CulturePage() {
   const { t } = useLanguage();
   const [tab, setTab] = useState("proverbs");
 
-  useEffect(() => {
-    if (!loading && !session) {
-      navigate({ to: "/auth", search: { next: "/culture" }, replace: true });
-    }
-  }, [loading, session, navigate]);
+  // Auth optional — page accessible without sign-in.
+
 
   return (
     <div className="min-h-screen bg-background">
