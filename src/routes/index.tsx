@@ -254,7 +254,7 @@ function Index() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
               </div>
             ))}
-            <Link to="/auth" search={{ next: "/chat" }} className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90">
+            <Link to="/hub" className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90">
               <Sparkles className="h-8 w-8" />
               <div>
                 <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
