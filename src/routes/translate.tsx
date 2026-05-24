@@ -55,11 +55,8 @@ function TranslatePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!authLoading && !session) {
-      navigate({ to: "/auth", search: { next: "/translate" }, replace: true });
-    }
-  }, [authLoading, session, navigate]);
+  // Auth optional — page accessible without sign-in.
+
 
   async function run() {
     const q = text.trim();
