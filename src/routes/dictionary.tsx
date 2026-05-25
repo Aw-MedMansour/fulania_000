@@ -557,7 +557,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
   const [lastQuery, setLastQuery] = useState("");
 
   const word = query.trim();
-  const canRun = word.length >= 2 && isAuthed;
+  const canRun = word.length >= 2;
 
   useEffect(() => {
     setCard(null);
@@ -604,17 +604,13 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
             <p className="text-xs text-muted-foreground">« {word} »</p>
           </div>
         </div>
-        {isAuthed ? (
-          <Button size="sm" onClick={run} disabled={loading || !canRun}>
-            {loading ? (
-              <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> {t("ai.translate.loading")}</>
-            ) : (
-              <><Sparkles className="mr-1.5 h-3.5 w-3.5" /> {t("ai.translate.cta")}</>
-            )}
-          </Button>
-        ) : (
-          <Link to="/auth" search={{ next: "/dictionary" }}><Button size="sm" variant="outline">{t("dict.signin")}</Button></Link>
-        )}
+        <Button size="sm" onClick={run} disabled={loading || !canRun}>
+          {loading ? (
+            <><Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> {t("ai.translate.loading")}</>
+          ) : (
+            <><Sparkles className="mr-1.5 h-3.5 w-3.5" /> {t("ai.translate.cta")}</>
+          )}
+        </Button>
       </div>
 
       {error && <p className="mt-3 text-xs text-destructive">{error}</p>}

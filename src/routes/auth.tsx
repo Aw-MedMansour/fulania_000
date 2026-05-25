@@ -146,7 +146,8 @@ function AuthPage() {
       email: idToEmail(identifier),
       password,
       options: {
-        emailRedirectTo: `${window.location.origin}/hub`,
+        // No email confirmation: accounts are username+password only.
+        // auto_confirm_email is enabled on the backend so no email is sent.
         data: { username: identifier.trim().toLowerCase() },
       },
     });
