@@ -557,7 +557,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
   const [lastQuery, setLastQuery] = useState("");
 
   const word = query.trim();
-  const canRun = word.length >= 2 && isAuthed;
+  const canRun = word.length >= 2;
 
   useEffect(() => {
     setCard(null);
