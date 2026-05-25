@@ -94,7 +94,7 @@ function Index() {
             <p className="mt-6 max-w-xl text-lg text-cream/85">{t("hero.subtitle")}</p>
 
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link to="/hub" className="inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90">
+              <Link to="/auth" className="inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90">
                 {t("btn.chat")} <ArrowRight className="h-4 w-4" />
               </Link>
               <a href="#solution" className="inline-flex items-center gap-2 rounded-md border border-cream/30 px-6 py-3 text-sm font-medium text-cream backdrop-blur transition hover:bg-cream/10">
@@ -254,7 +254,7 @@ function Index() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
               </div>
             ))}
-            <Link to="/hub" className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90">
+            <Link to="/auth" className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90">
               <Sparkles className="h-8 w-8" />
               <div>
                 <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
@@ -369,7 +369,7 @@ function Index() {
                 </div>
               </div>
 
-              <Link to="/hub" className="mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:bg-[var(--gold)]/90">
+              <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:bg-[var(--gold)]/90">
                 {t("contact.tryAi")} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
