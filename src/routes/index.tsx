@@ -4,10 +4,12 @@ import {
   XCircle, CheckCircle2, Languages, Users, Globe, Heart, Lightbulb, Shield,
   Mail, Phone, MapPin,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 import { SiteHeader, SiteFooter } from "@/components/layout";
+import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/")({
