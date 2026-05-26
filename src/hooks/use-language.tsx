@@ -253,6 +253,17 @@ export const translations: Record<Lang, Dict> = {
     "chat.sug2": "Explique-moi le Pulaagu en quelques phrases.",
     "chat.sug3": "Qui était El Hadj Oumar Tall ?",
     "chat.sug4": "Donne-moi 3 proverbes peuls avec leur sens.",
+    "chat.deepSearching": "Recherche approfondie en cours…",
+    "chat.webSearching": "Recherche sur le web en cours…",
+    "chat.webSearch": "Recherche web",
+    "chat.deepSearch": "Recherche approfondie",
+    "chat.addFile": "Ajouter un fichier",
+    "chat.camera": "Caméra",
+    "chat.add": "Ajouter",
+    "chat.addHint": "Ajouter : fichier, caméra, recherche",
+    "chat.disable": "Désactiver",
+    "chat.remove": "Retirer",
+    "chat.enterHint": "Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer",
 
     // Dictionary
     "dict.title": "Saggitorde — Dictionnaire",
