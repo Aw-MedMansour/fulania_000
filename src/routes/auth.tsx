@@ -377,6 +377,7 @@ function IdField({
   onChange: (v: string) => void;
   error?: string | null;
 }) {
+  const { t } = useLanguage();
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
