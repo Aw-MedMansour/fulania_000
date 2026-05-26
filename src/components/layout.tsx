@@ -119,7 +119,6 @@ function UserMenu() {
 }
 
 export function SiteHeader() {
-  const { user } = useAuth();
   const { t } = useLanguage();
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
