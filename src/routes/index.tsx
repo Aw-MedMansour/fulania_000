@@ -194,31 +194,40 @@ function Index() {
       {/* SOLUTION */}
       <section id="solution" className="py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-          <div>
+          <Reveal>
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("sol.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("sol.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("sol.body")}</p>
 
             <div className="mt-8 space-y-4">
-              <div className="rounded-xl border border-border bg-card p-5">
+              <div className="rounded-xl border border-border bg-card p-5 transition hover:border-muted-foreground/40">
                 <p className="text-sm uppercase tracking-wider text-muted-foreground">{t("sol.notLabel")}</p>
                 <p className="mt-1.5 text-foreground/80">{t("sol.notText")}</p>
               </div>
-              <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5">
+              <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5 transition hover:border-primary/60">
                 <p className="text-sm uppercase tracking-wider text-primary">{t("sol.isLabel")}</p>
                 <p className="mt-1.5 text-foreground">{t("sol.isText")}</p>
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl" aria-hidden />
-            <img src={portraitImg} alt={t("alt.portrait")} loading="lazy" width={1024} height={1024} className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl" />
+          <Reveal delay={0.15} className="relative">
+            <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl animate-float-glow" aria-hidden />
+            <motion.img
+              src={portraitImg}
+              alt={t("alt.portrait")}
+              loading="lazy"
+              width={1024}
+              height={1024}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl"
+            />
             <div className="absolute -bottom-6 -left-6 max-w-[240px] rounded-xl border border-border bg-card p-4 shadow-xl">
               <p className="font-display text-sm italic text-primary">« Pulaagu ko ngallu mawngu »</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("sol.quoteCaption")}</p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
