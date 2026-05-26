@@ -25,7 +25,24 @@ export const Route = createFileRoute("/chat")({
   component: ChatPage,
 });
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = { role: "user" | "assistant"; content: string; sources?: Source[] };
+
+const MAX_ATTACHMENTS = 5;
+const MAX_FILE_BYTES = 8 * 1024 * 1024;
+const ACCEPT = "image/png,image/jpeg,image/webp,image/gif,application/pdf,text/plain,text/markdown";
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = reader.result as string;
+      const comma = res.indexOf(",");
+      resolve(comma >= 0 ? res.slice(comma + 1) : res);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
