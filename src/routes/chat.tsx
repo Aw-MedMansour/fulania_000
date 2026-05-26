@@ -172,7 +172,7 @@ function ChatPage() {
     setAttachments([]);
     setLoading(true);
 
-    if (!user) quota.consume(kind);
+    if (!user) quota.consume();
 
     // Persist user msg + ensure conversation for authenticated users
     let convId = conversationId;
