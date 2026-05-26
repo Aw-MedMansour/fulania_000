@@ -304,13 +304,16 @@ function ChatPage() {
       {/* Header */}
       <header className="flex-none border-b border-border/60 bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
-          <SidebarToggle onClick={() => setSidebarOpen(true)} />
+          <div className="flex items-center gap-2">
+            <SidebarToggle onClick={() => setSidebarOpen(true)} />
+            <PageNav />
+          </div>
 
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
               <span className="font-display text-base font-bold">F</span>
             </div>
-            <div className="flex flex-col leading-tight">
+            <div className="hidden flex-col leading-tight sm:flex">
               <span className="font-display text-sm font-semibold">FulanIA</span>
               <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground">
                 {t("chat.subtitle")}
