@@ -110,15 +110,15 @@ function AuthPage() {
 
   const validate = (mode: "signin" | "signup"): boolean => {
     const i = idSchema.safeParse(identifier);
-    setIdError(i.success ? null : i.error.issues[0]?.message ?? "Identifiant invalide");
+    setIdError(i.success ? null : i.error.issues[0]?.message ?? t("auth.err.idInvalid"));
     if (mode === "signup") {
       const p = passwordSchema.safeParse(password);
-      setPwdError(p.success ? null : p.error.issues[0]?.message ?? "Mot de passe invalide");
+      setPwdError(p.success ? null : p.error.issues[0]?.message ?? t("auth.err.pwdInvalid"));
       const matches = password.length > 0 && password === confirmPwd;
-      setConfirmError(matches ? null : "Les mots de passe ne correspondent pas");
+      setConfirmError(matches ? null : t("auth.err.pwdMismatch"));
       return i.success && p.success && matches;
     }
-    setPwdError(password.length === 0 ? "Mot de passe requis" : null);
+    setPwdError(password.length === 0 ? t("auth.err.pwdRequired") : null);
     return i.success && password.length > 0;
   };
 
@@ -132,7 +132,7 @@ function AuthPage() {
     });
     setLoading(false);
     if (error) {
-      return toast.error("Identifiant ou mot de passe incorrect");
+      return toast.error(t("auth.err.badCreds"));
     }
     toast.success(t("auth.welcomeToast"));
     goNext();
@@ -154,7 +154,7 @@ function AuthPage() {
     setLoading(false);
     if (error) {
       const msg = /registered|exists/i.test(error.message)
-        ? "Cet identifiant est déjà utilisé"
+        ? t("auth.err.idTaken")
         : error.message;
       return toast.error(msg);
     }
@@ -281,7 +281,7 @@ function AuthPage() {
                   <IdField value={identifier} onChange={(v) => { setIdentifier(v); setIdError(null); }} error={idError} />
                   <PasswordField
                     id="auth-password"
-                    label="Mot de passe"
+                    label={t("auth.pwd.label")}
                     value={password}
                     onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
@@ -300,18 +300,18 @@ function AuthPage() {
                   <IdField value={identifier} onChange={(v) => { setIdentifier(v); setIdError(null); }} error={idError} />
                   <PasswordField
                     id="auth-password"
-                    label="Mot de passe"
+                    label={t("auth.pwd.label")}
                     value={password}
                     onChange={(v) => { setPassword(v); setPwdError(null); }}
                     show={showPwd}
                     onToggle={() => setShowPwd((s) => !s)}
                     autoComplete="new-password"
                     error={pwdError}
-                    hint="Au moins 8 caractères avec lettres et chiffres."
+                    hint={t("auth.pwd.hint")}
                   />
                   <PasswordField
                     id="auth-password-confirm"
-                    label="Confirmer le mot de passe"
+                    label={t("auth.pwdConfirm.label")}
                     value={confirmPwd}
                     onChange={(v) => { setConfirmPwd(v); setConfirmError(null); }}
                     show={showPwd}
@@ -333,7 +333,7 @@ function AuthPage() {
               </div>
               <div className="relative flex justify-center">
                 <span className="bg-background px-3 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                  ou
+                  {t("auth.or")}
                 </span>
               </div>
             </div>
@@ -343,10 +343,10 @@ function AuthPage() {
               className="h-11 w-full gap-2 text-sm font-medium"
               onClick={() => navigate({ to: destination as "/hub", replace: true })}
             >
-              Continuer sans compte <ArrowRight className="h-4 w-4" />
+              {t("auth.continueGuest")} <ArrowRight className="h-4 w-4" />
             </Button>
             <p className="mt-2 text-center text-xs text-muted-foreground">
-              Vous pourrez créer un compte plus tard pour conserver votre historique et votre progression.
+              {t("auth.guestHint")}
             </p>
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
@@ -377,10 +377,11 @@ function IdField({
   onChange: (v: string) => void;
   error?: string | null;
 }) {
+  const { t } = useLanguage();
   const invalid = Boolean(error);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="auth-id">Identifiant</Label>
+      <Label htmlFor="auth-id">{t("auth.id.label")}</Label>
       <div className="relative">
         <User className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
@@ -389,7 +390,7 @@ function IdField({
           required
           autoComplete="username"
           inputMode="text"
-          placeholder="votre_identifiant"
+          placeholder={t("auth.id.placeholder")}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={invalid || undefined}
@@ -402,7 +403,7 @@ function IdField({
           <AlertCircle className="h-3.5 w-3.5" /> {error}
         </p>
       ) : (
-        <p className="text-xs text-muted-foreground">3–32 caractères : lettres, chiffres, . _ -</p>
+        <p className="text-xs text-muted-foreground">{t("auth.id.hint")}</p>
       )}
     </div>
   );
