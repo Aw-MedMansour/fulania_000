@@ -139,14 +139,14 @@ function LearnPage() {
 /* ----------------------------- LESSON ----------------------------- */
 
 function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boolean }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   if (isLoading) return <SkeletonGrid />;
   if (entries.length === 0) return <Empty text={t("learn.empty")} />;
 
   const speak = (text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
+    u.lang = lang === "ar" ? "ar-SA" : lang === "en" ? "en-US" : "fr-FR";
     u.rate = 0.8;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
