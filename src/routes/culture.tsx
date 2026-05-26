@@ -4,6 +4,7 @@ import { ArrowLeft, Library, Quote, BookMarked, Music2, Shirt, Utensils, Crown }
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PageNav } from "@/components/page-nav";
 
 export const Route = createFileRoute("/culture")({
   head: () => {
