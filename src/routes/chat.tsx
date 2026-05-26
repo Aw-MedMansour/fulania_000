@@ -79,26 +79,62 @@ function ChatPage() {
     t("chat.sug1"), t("chat.sug2"), t("chat.sug3"), t("chat.sug4"),
   ], [t]);
 
+  async function handleFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    const remaining = MAX_ATTACHMENTS - attachments.length;
+    const list = Array.from(files).slice(0, remaining);
+    const added: Attachment[] = [];
+    for (const f of list) {
+      if (f.size > MAX_FILE_BYTES) { setError(`${f.name} : trop volumineux (max 8 Mo).`); continue; }
+      try {
+        const dataBase64 = await fileToBase64(f);
+        const previewUrl = f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined;
+        added.push({ name: f.name, mimeType: f.type || "application/octet-stream", dataBase64, previewUrl });
+      } catch { /* ignore */ }
+    }
+    if (added.length) setAttachments((a) => [...a, ...added]);
+  }
+
+  function removeAttachment(i: number) {
+    setAttachments((a) => {
+      const copy = [...a];
+      const [removed] = copy.splice(i, 1);
+      if (removed?.previewUrl) URL.revokeObjectURL(removed.previewUrl);
+      return copy;
+    });
+  }
+
   async function send(text: string) {
     const content = text.trim();
-    if (!content || loading) return;
+    if ((!content && attachments.length === 0) || loading) return;
     setError(null);
 
     const { data: { session: current } } = await supabase.auth.getSession();
-
-    const next: Msg[] = [...messages, { role: "user", content }];
+    const userContent = content || (attachments.length ? "(voir pièces jointes)" : "");
+    const next: Msg[] = [...messages, { role: "user", content: userContent }];
     setMessages(next);
     setInput("");
+    const sentAttachments = attachments;
+    setAttachments([]);
     setLoading(true);
 
     try {
+      const payloadAttachments = sentAttachments.map((a) => ({
+        name: a.name, mimeType: a.mimeType, dataBase64: a.dataBase64,
+      }));
       const resp = await fetch(FUNCTION_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           ...(current?.access_token ? { Authorization: `Bearer ${current.access_token}` } : {}),
         },
-        body: JSON.stringify({ messages: next.slice(-20), lang: chatLang, dialect }),
+        body: JSON.stringify({
+          messages: next.slice(-20).map(({ role, content }) => ({ role, content })),
+          lang: chatLang,
+          dialect,
+          webSearch,
+          attachments: payloadAttachments,
+        }),
       });
 
       if (!resp.ok || !resp.body) {
@@ -110,6 +146,7 @@ function ChatPage() {
       const decoder = new TextDecoder();
       let buffer = "";
       let assistant = "";
+      let sources: Source[] | undefined;
       setMessages((m) => [...m, { role: "assistant", content: "" }]);
 
       while (true) {
@@ -124,12 +161,21 @@ function ChatPage() {
           if (data === "[DONE]") continue;
           try {
             const parsed = JSON.parse(data);
+            if (Array.isArray(parsed.sources)) {
+              sources = parsed.sources;
+              setMessages((m) => {
+                const copy = [...m];
+                copy[copy.length - 1] = { ...copy[copy.length - 1], sources };
+                return copy;
+              });
+              continue;
+            }
             const delta = parsed.choices?.[0]?.delta?.content;
             if (delta) {
               assistant += delta;
               setMessages((m) => {
                 const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: assistant };
+                copy[copy.length - 1] = { role: "assistant", content: assistant, sources };
                 return copy;
               });
             }
