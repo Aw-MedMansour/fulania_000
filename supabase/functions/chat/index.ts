@@ -163,15 +163,20 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
   if (!apiKey) return { context: "", sources: [] };
   const q = ` ${query.toLowerCase()} `;
   if (BLOCKED_KEYWORDS.some((k) => q.includes(k))) {
-    return { context: "\n\n=== RECHERCHE WEB ===\n(Recherche filtrée : la requête contient des termes explicites. Aucune source web n'a été consultée. Réponds poliment en orientant l'utilisateur vers un sujet culturel ou linguistique Peul.)\n", sources: [] };
+    return { context: "", sources: [] };
   }
-  // Ancre thématique : on force la recherche vers le Pulaar et ses dialectes.
+  // Ancre thématique discrète : on oriente vers le Pulaar sans le rendre visible côté utilisateur.
   const scopedQuery = `${query} (Pulaar OR Fulfulde OR Pular OR Fulani OR Peul OR Halpulaar OR "Fuuta Tooro" OR "Fouta Djallon" OR Maasina OR Aadamaawa)`;
   try {
+    // Vraie recherche approfondie : on récupère le contenu markdown des pages, pas juste des snippets.
     const resp = await fetch("https://api.firecrawl.dev/v2/search", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ query: scopedQuery, limit: 12 }),
+      body: JSON.stringify({
+        query: scopedQuery,
+        limit: 10,
+        scrapeOptions: { formats: ["markdown"], onlyMainContent: true },
+      }),
     });
     if (!resp.ok) {
       console.error("Firecrawl search error:", resp.status, await resp.text());
@@ -181,21 +186,17 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
     const raw = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
     if (!Array.isArray(raw) || raw.length === 0) return { context: "", sources: [] };
     const safe = raw.filter((r) => !isUnsafeResult(r));
-    // Priorité : sources liées au Pulaar/Fulfulde/culture Peule en premier, puis le reste.
     const onTopic = safe.filter(isOnTopicResult);
     const offTopic = safe.filter((r) => !isOnTopicResult(r));
-    const ordered = [...onTopic, ...offTopic].slice(0, 5);
-    if (ordered.length === 0) {
-      return { context: "\n\n=== RECHERCHE WEB ===\n(Aucun résultat exploitable.)\n", sources: [] };
-    }
+    const ordered = [...onTopic, ...offTopic].slice(0, 6);
+    if (ordered.length === 0) return { context: "", sources: [] };
     const sources = ordered.map((r) => ({ title: r.title ?? r.url, url: r.url }));
     const lines = ordered.map((r, i) => {
-      const snippet = (r.description || r.snippet || r.markdown || "").toString().slice(0, 500);
-      const tag = isOnTopicResult(r) ? " · ★ Pulaar/Peul" : "";
-      return `[${i + 1}]${tag} **${r.title ?? r.url}**\n${r.url}\n${snippet}`;
+      const content = (r.markdown || r.description || r.snippet || "").toString().slice(0, 1800);
+      return `[${i + 1}] ${r.title ?? r.url}\n${r.url}\n${content}`;
     });
     return {
-      context: `\n\n=== RECHERCHE WEB (★ = source Pulaar/Fulfulde/culture Peule prioritaire) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. Donne la PRIORITÉ aux sources marquées ★ (Pulaar/Fulfulde/dialectes/culture Peule) ; n'utilise les autres sources qu'en complément si elles apportent un éclairage utile.\n\nRÈGLE DE MODÉRATION ABSOLUE : Ne mentionne, ne cite et ne fais JAMAIS référence à des sites pornographiques, escort, camgirl, NSFW, hentai ou contenus pour adultes explicites — même si tu en as connaissance par ailleurs. Si la question s'oriente vers ce type de contenu, refuse poliment et redirige vers la culture, la langue et les valeurs Pulaaku.`,
+      context: `\n\n=== RECHERCHE WEB (contenu extrait des pages) ===\n${lines.join("\n\n---\n\n")}\n=== Fin de la recherche ===\n\nMÉTHODE : Lis ces extraits AVANT de répondre. Synthétise, croise avec le dictionnaire et tes connaissances. Cite tes sources avec [1], [2], etc. au fil du texte. Donne priorité aux sources directement liées au Pulaar/Fulfulde/culture Peule, sans jamais mentionner cette priorité à l'utilisateur ni utiliser de marqueurs visibles. Ne mentionne ni ne cite aucun site pornographique, escort, NSFW, hentai ou contenu pour adultes.`,
       sources,
     };
   } catch (e) {
