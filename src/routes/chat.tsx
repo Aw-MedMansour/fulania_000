@@ -51,6 +51,8 @@ const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
 function ChatPage() {
   const { t, lang: siteLang, setLang, dialect, setDialect } = useLanguage();
+  const { user } = useAuth();
+  const quota = useGuestQuota(!user);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -59,6 +61,9 @@ function ChatPage() {
   const [deepSearch, setDeepSearch] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [plusOpen, setPlusOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [convRefreshKey, setConvRefreshKey] = useState(0);
   const plusRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -68,6 +73,27 @@ function ChatPage() {
   // Chat language IS the global site language — single source of truth.
   const chatLang = siteLang;
   const setChatLang = setLang;
+
+  // Load conversation messages when switching conversations
+  async function loadConversation(id: string) {
+    setConversationId(id);
+    const { data } = await supabase
+      .from("chat_messages")
+      .select("role, content, sources")
+      .eq("conversation_id", id)
+      .order("created_at", { ascending: true });
+    setMessages(
+      ((data ?? []) as { role: "user" | "assistant"; content: string; sources: Source[] | null }[])
+        .map((m) => ({ role: m.role, content: m.content, sources: m.sources ?? undefined })),
+    );
+    setError(null);
+  }
+
+  function startNewConversation() {
+    setConversationId(null);
+    setMessages([]);
+    setError(null);
+  }
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
