@@ -79,7 +79,7 @@ function TranslatePage() {
       const j = await r.json();
       if (!r.ok) throw new Error(j?.error ?? "Erreur");
       setCard(j.card as Card);
-      setShowDialects(false);
+      setDialectsOpen(false);
     } catch (e: any) {
       setError(e?.message ?? t("ai.translate.error"));
     } finally {
@@ -153,17 +153,17 @@ function TranslatePage() {
 
             <button
               type="button"
-              onClick={() => setShowDialects((v) => !v)}
+              onClick={() => setDialectsOpen((v) => !v)}
               className="mt-5 w-full rounded-xl border border-border bg-card px-4 py-3 text-left font-display text-base font-semibold text-earth transition hover:border-[var(--gold)]/60"
-              aria-expanded={showDialects}
+              aria-expanded={dialectsOpen}
             >
-              Pulaar {showDialects ? "▾" : "▸"}
+              Pulaar {dialectsOpen ? "▾" : "▸"}
               <span className="ml-2 text-xs font-normal text-muted-foreground">
-                {showDialects ? "Masquer les variantes" : "Voir les variantes dialectales"}
+                {dialectsOpen ? "Masquer les variantes" : "Voir les variantes dialectales"}
               </span>
             </button>
 
-            {showDialects && (
+            {dialectsOpen && (
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 {dialects.map((d) => {
                   const v = card[d.key] as string | null;
