@@ -86,6 +86,14 @@ Deno.serve(async (req) => {
     const topic = String(body?.topic ?? "").trim().slice(0, 120);
     const level = ["debutant", "intermediaire", "avance"].includes(body?.level) ? body.level : "debutant";
     const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
+    const langRaw = typeof body?.lang === "string" ? body.lang : "fr";
+    const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
+    const UI_LANG_LABEL: Record<string, string> = {
+      fr: "français",
+      ff: "Pulaar (Fulfulde)",
+      en: "English",
+      ar: "العربية (arabe)",
+    };
     const DIALECT_LABELS: Record<string, string> = {
       fouta_toro: "Pulaar du Fuuta Tooro (Sénégal, Mauritanie, Mali)",
       fouta_djallon: "Pular du Fuuta Jaloo (Guinée)",
@@ -103,6 +111,8 @@ Deno.serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) return new Response(JSON.stringify({ error: "Service indisponible." }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
+    const localizationNote = `\n\nLANGUE D'INTERFACE UTILISATEUR : ${UI_LANG_LABEL[lang]}.\n- Les champs 'pulaar' (vocabulaire et dialogue) restent OBLIGATOIREMENT en Pulaar/${dialectLabel}.\n- 'title', 'intro', 'tips', et TOUS les champs 'french' (vocabulaire & dialogue), ainsi que 'pronunciation' et 'speaker' DOIVENT être rédigés en ${UI_LANG_LABEL[lang]} — traduction soignée et idiomatique.\n- Malgré son nom, le champ 'french' contient la traduction dans la langue de l'utilisateur (${UI_LANG_LABEL[lang]}).`;
+
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
@@ -110,7 +120,7 @@ Deno.serve(async (req) => {
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: SYSTEM },
-          { role: "user", content: `Thème : « ${topic} »\nNiveau : ${level}\nDIALECTE CIBLE : ${dialectLabel} — rédige le vocabulaire et le dialogue dans ce dialecte.${ctxBlock}\n\nGénère la mini-leçon via mini_lesson.` },
+          { role: "user", content: `Thème : « ${topic} »\nNiveau : ${level}\nDIALECTE CIBLE : ${dialectLabel} — rédige le vocabulaire et le dialogue dans ce dialecte.${ctxBlock}${localizationNote}\n\nGénère la mini-leçon via mini_lesson.` },
         ],
         tools: [TOOL],
         tool_choice: { type: "function", function: { name: "mini_lesson" } },
