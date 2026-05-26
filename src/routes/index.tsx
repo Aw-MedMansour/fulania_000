@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
   XCircle, CheckCircle2, Languages, Users, Globe, Heart, Lightbulb, Shield,
@@ -30,25 +31,13 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useLanguage();
+  const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
-    { name: "Nigeria",        zone: "Fulfulde",          speakers: "16 – 18 M",  note: t("country.note.nigeria") },
-    { name: "Guinée",         zone: "Pular (Fuuta Jaloo)", speakers: "5,7 – 6,3 M", note: t("country.note.guinea") },
-    { name: "Sénégal",        zone: "Pulaar (Fuuta Tooro)", speakers: "4,7 – 5,2 M", note: t("country.note.senegal") },
-    { name: "Cameroun",       zone: "Fulfulde (Aadamaawa)", speakers: "3,0 – 3,6 M", note: t("country.note.cameroon") },
-    { name: "Mali",           zone: "Fulfulde (Maasina)",   speakers: "2,2 – 3,8 M", note: t("country.note.mali") },
-    { name: "Niger",          zone: "Fulfulde",           speakers: "2,1 – 2,6 M",  note: t("country.note.niger") },
-    { name: "Burkina Faso",   zone: "Fulfulde",           speakers: "1,8 – 2,4 M",  note: t("country.note.burkina") },
-    { name: "Bénin",          zone: "Fulfulde",           speakers: "0,9 – 1,2 M",  note: t("country.note.benin") },
-    { name: "Mauritanie",     zone: "Pulaar",             speakers: "0,4 – 1,1 M",  note: t("country.note.mauritania") },
-    { name: "Soudan",         zone: "Fulfulde",           speakers: "0,8 – 1,0 M",  note: t("country.note.sudan") },
-    { name: "Guinée-Bissau",  zone: "Pular",              speakers: "0,44 – 0,65 M", note: t("country.note.gbissau") },
-    { name: "Gambie",         zone: "Pulaar",             speakers: "0,54 – 0,72 M", note: t("country.note.gambia") },
-    { name: "Côte d'Ivoire",  zone: "Fulfulde",           speakers: "~ 0,5 M",      note: t("country.note.civ") },
-    { name: "Sierra Leone",   zone: "Pular",              speakers: "0,35 – 0,52 M", note: t("country.note.sleone") },
-    { name: "Tchad",          zone: "Fulfulde",           speakers: "0,36 – 0,43 M", note: t("country.note.chad") },
-    { name: "RCA",            zone: "Fulfulde",           speakers: "0,36 – 0,42 M", note: t("country.note.car") },
-    { name: "Togo",           zone: "Fulfulde",           speakers: "0,13 – 0,19 M", note: t("country.note.togo") },
+    { name: "Fuuta Tooro", zone: "Pulaar", speakers: "4,7 – 6,3 M", note: "Sénégal · Mauritanie · Mali" },
+    { name: "Fuuta Jaloo", zone: "Pular", speakers: "5,7 – 6,3 M", note: "Guinée" },
+    { name: "Maasina", zone: "Fulfulde", speakers: "4 – 6 M", note: "Mali · Burkina · Niger" },
+    { name: "Aadamaawa", zone: "Fulfulde", speakers: "6 – 9 M", note: "Nigeria · Cameroun · Tchad" },
   ];
 
   const pulaaku = [
@@ -241,35 +230,49 @@ function Index() {
             <p className="mt-5 text-lg text-cream/75">{t("culture.body")}</p>
           </Reveal>
 
-          <Reveal delay={0.1} className="mt-12 overflow-hidden rounded-2xl border border-cream/15">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-cream/5 text-[var(--gold)]">
-                <tr>
-                  <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.dialect")}</th>
-                  <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.zone")}</th>
-                  <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.speakers")}</th>
-                  <th className="hidden px-5 py-4 font-display text-xs uppercase tracking-wider sm:table-cell">{t("culture.col.notes")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-cream/10">
-                {dialects.map((d, i) => (
-                  <motion.tr
-                    key={d.name}
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.45, delay: Math.min(i * 0.03, 0.4), ease: [0.22, 1, 0.36, 1] }}
-                    className="transition-colors hover:bg-cream/[0.04]"
-                  >
-                    <td className="px-5 py-4 font-display text-base font-semibold">{d.name}</td>
-                    <td className="px-5 py-4 text-cream/80">{d.zone}</td>
-                    <td className="px-5 py-4 text-[var(--gold)]">{d.speakers}</td>
-                    <td className="hidden px-5 py-4 text-cream/70 sm:table-cell">{d.note}</td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </Reveal>
+          <button
+            type="button"
+            onClick={() => setShowDialects((v) => !v)}
+            className="mt-8 w-full rounded-xl border border-cream/15 bg-cream/[0.03] px-4 py-3 text-left font-display text-base font-semibold text-[var(--gold)] transition hover:border-[var(--gold)]/40 hover:bg-cream/[0.06]"
+            aria-expanded={showDialects}
+          >
+            Pulaar {showDialects ? "▾" : "▸"}
+            <span className="ml-2 text-xs font-normal text-cream/60">
+              {showDialects ? "Masquer les variantes" : "Voir les variantes dialectales"}
+            </span>
+          </button>
+
+          {showDialects && (
+            <Reveal delay={0.1} className="mt-4 overflow-hidden rounded-2xl border border-cream/15">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-cream/5 text-[var(--gold)]">
+                  <tr>
+                    <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.dialect")}</th>
+                    <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.zone")}</th>
+                    <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.speakers")}</th>
+                    <th className="hidden px-5 py-4 font-display text-xs uppercase tracking-wider sm:table-cell">{t("culture.col.notes")}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-cream/10">
+                  {dialects.map((d, i) => (
+                    <motion.tr
+                      key={d.name}
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.45, delay: Math.min(i * 0.03, 0.4), ease: [0.22, 1, 0.36, 1] }}
+                      className="transition-colors hover:bg-cream/[0.04]"
+                    >
+                      <td className="px-5 py-4 font-display text-base font-semibold">{d.name}</td>
+                      <td className="px-5 py-4 text-cream/80">{d.zone}</td>
+                      <td className="px-5 py-4 text-[var(--gold)]">{d.speakers}</td>
+                      <td className="hidden px-5 py-4 text-cream/70 sm:table-cell">{d.note}</td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </Reveal>
+          )}
 
           <div className="mt-20">
             <Reveal>

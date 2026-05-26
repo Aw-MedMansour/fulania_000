@@ -12,10 +12,10 @@ export const LANGUAGES: { code: Lang; label: string; native: string; flag: strin
 ];
 
 export const DIALECTS: { code: Dialect; label: string; region: string }[] = [
-  { code: "fouta_toro", label: "Pulaar — Fuuta Tooro", region: "Sénégal · Mauritanie · Mali" },
-  { code: "fouta_djallon", label: "Pular — Fuuta Jaloo", region: "Guinée" },
-  { code: "maasina", label: "Fulfulde — Maasina", region: "Mali · Burkina · Niger" },
-  { code: "aadamaawa", label: "Fulfulde — Aadamaawa", region: "Nigeria · Cameroun · Tchad" },
+  { code: "fouta_toro", label: "Fuuta Tooro", region: "" },
+  { code: "fouta_djallon", label: "Fuuta Jaloo", region: "" },
+  { code: "maasina", label: "Maasina", region: "" },
+  { code: "aadamaawa", label: "Aadamaawa", region: "" },
 ];
 
 type Dict = Record<string, string>;
@@ -164,7 +164,7 @@ export const translations: Record<Lang, Dict> = {
     "culture.tag": "Langue & Culture",
     "culture.title": "Un peuple immense, une civilisation millénaire.",
     "culture.body": "Des rives du fleuve Sénégal aux plaines du Sahel, une famille linguistique répartie sur plus de 20 pays et quatre grandes variantes dialectales.",
-    "culture.col.dialect": "Pays",
+    "culture.col.dialect": "Dialecte",
     "culture.col.zone": "Zone",
     "culture.col.speakers": "Locuteurs",
     "culture.col.notes": "Particularités",
@@ -440,7 +440,7 @@ export const translations: Record<Lang, Dict> = {
     "culture.tag": "Ɗemngal & Pinal",
     "culture.title": "Yimɓe heewɓe, civilisasiyoŋ duuɓi ujunere.",
     "culture.body": "Gila maayo Senegaal haa Saheli, leñol ɗemngal saraare e leyɗe ɓuri 20 e nayi ƴeewndeeji mawɗi.",
-    "culture.col.dialect": "Leydi", "culture.col.zone": "Nokku",
+    "culture.col.dialect": "Ƴeewndeere", "culture.col.zone": "Nokku",
     "culture.col.speakers": "Wolwooɓe", "culture.col.notes": "Ɓeydiiɗi",
     "pulaaku.title": "Pulaagu — laawol moƴƴere Fulɓe",
     "pulaaku.body": "Doosal ngenndi Fulɓe. Naɓɓe nayi mawɗe ɗe FulanIA yiɗi reenude e yettinde.",
@@ -689,7 +689,7 @@ export const translations: Record<Lang, Dict> = {
     "culture.tag": "Language & Culture",
     "culture.title": "A vast people, a millennia-old civilization.",
     "culture.body": "From the Senegal River to the Sahel plains, a linguistic family spread across more than 20 countries and four major dialectal variants.",
-    "culture.col.dialect": "Country", "culture.col.zone": "Region",
+    "culture.col.dialect": "Dialect", "culture.col.zone": "Region",
     "culture.col.speakers": "Speakers", "culture.col.notes": "Notes",
     "pulaaku.title": "Pulaagu — the Fulani moral code",
     "pulaaku.body": "The identity foundation of the Fulani people. Four cardinal values FulanIA seeks to preserve and transmit.",
@@ -939,7 +939,7 @@ export const translations: Record<Lang, Dict> = {
     "culture.tag": "اللغة والثقافة",
     "culture.title": "شعب عظيم، حضارة آلاف السنين.",
     "culture.body": "من ضفاف نهر السنغال إلى سهول الساحل، عائلة لغوية ممتدة على أكثر من 20 دولة وأربع لهجات رئيسية.",
-    "culture.col.dialect": "البلد", "culture.col.zone": "المنطقة",
+    "culture.col.dialect": "اللهجة", "culture.col.zone": "المنطقة",
     "culture.col.speakers": "المتحدثون", "culture.col.notes": "خصائص",
     "pulaaku.title": "Pulaagu — المدوّنة الأخلاقية الفولانية",
     "pulaaku.body": "الأساس الهوياتي للشعب الفولاني. أربع قيم رئيسية تسعى FulanIA للحفاظ عليها ونقلها.",

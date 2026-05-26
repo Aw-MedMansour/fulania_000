@@ -620,7 +620,7 @@ function ChatLangSelector({
                 >
                   <span className="flex flex-col items-start leading-tight">
                     <span>{d.label}</span>
-                    <span className="text-[10px] text-muted-foreground">{d.region}</span>
+                    {d.region && <span className="text-[10px] text-muted-foreground">{d.region}</span>}
                   </span>
                   {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
                 </button>
