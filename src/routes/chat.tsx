@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
@@ -54,10 +54,14 @@ function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [webSearch, setWebSearch] = useState(false);
+  const [deepSearch, setDeepSearch] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [plusOpen, setPlusOpen] = useState(false);
+  const plusRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   // Chat language IS the global site language — single source of truth.
   const chatLang = siteLang;
@@ -74,6 +78,16 @@ function ChatPage() {
     ta.style.height = "auto";
     ta.style.height = Math.min(ta.scrollHeight, 200) + "px";
   }, [input]);
+
+  // Close (+) menu on outside click
+  useEffect(() => {
+    if (!plusOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (plusRef.current && !plusRef.current.contains(e.target as Node)) setPlusOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [plusOpen]);
 
   const suggestions = useMemo(() => [
     t("chat.sug1"), t("chat.sug2"), t("chat.sug3"), t("chat.sug4"),
@@ -132,7 +146,8 @@ function ChatPage() {
           messages: next.slice(-20).map(({ role, content }) => ({ role, content })),
           lang: chatLang,
           dialect,
-          webSearch,
+          webSearch: webSearch || deepSearch,
+          deepSearch,
           attachments: payloadAttachments,
         }),
       });
@@ -281,23 +296,27 @@ function ChatPage() {
             </div>
           )}
 
-          {/* Toolbar */}
-          <div className="mb-2 flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setWebSearch((v) => !v)}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${
-                webSearch
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-border bg-card text-muted-foreground hover:text-foreground"
-              }`}
-              aria-pressed={webSearch}
-              title="Activer la recherche internet"
-            >
-              <Globe className="h-3.5 w-3.5" />
-              <span>Recherche web {webSearch ? "ON" : "OFF"}</span>
-            </button>
-          </div>
+          {/* Active mode chips */}
+          {(webSearch || deepSearch) && (
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              {webSearch && !deepSearch && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  <Globe className="h-3.5 w-3.5" /> Recherche web
+                  <button type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label="Désactiver">
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+              {deepSearch && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                  <Telescope className="h-3.5 w-3.5" /> Recherche approfondie
+                  <button type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label="Désactiver">
+                    <X className="h-3 w-3" />
+                  </button>
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         <form
@@ -312,16 +331,89 @@ function ChatPage() {
             className="hidden"
             onChange={(e) => { handleFiles(e.target.files); e.target.value = ""; }}
           />
-          <button
-            type="button"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={loading || attachments.length >= MAX_ATTACHMENTS}
-            className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border border-border bg-card text-muted-foreground transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
-            aria-label="Joindre un fichier"
-            title="Joindre image, PDF ou texte"
-          >
-            <Paperclip className="h-5 w-5" />
-          </button>
+          <input
+            ref={cameraInputRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            className="hidden"
+            onChange={(e) => { handleFiles(e.target.files); e.target.value = ""; }}
+          />
+
+          {/* (+) menu : fichier, caméra, recherche, recherche approfondie */}
+          <div className="relative" ref={plusRef}>
+            <button
+              type="button"
+              onClick={() => setPlusOpen((v) => !v)}
+              disabled={loading}
+              aria-haspopup="menu"
+              aria-expanded={plusOpen}
+              aria-label="Ajouter"
+              title="Ajouter : fichier, caméra, recherche"
+              className={`inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                plusOpen
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              <Plus className={`h-5 w-5 transition-transform ${plusOpen ? "rotate-45" : ""}`} />
+            </button>
+            {plusOpen && (
+              <div
+                role="menu"
+                className="absolute bottom-[60px] start-0 z-50 w-60 overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg"
+              >
+                <button
+                  type="button"
+                  role="menuitem"
+                  disabled={attachments.length >= MAX_ATTACHMENTS}
+                  onClick={() => { setPlusOpen(false); fileInputRef.current?.click(); }}
+                  className="flex w-full items-center gap-3 px-3 py-2.5 text-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Paperclip className="h-4 w-4 text-muted-foreground" />
+                  <span>Ajouter un fichier</span>
+                </button>
+                <button
+                  type="button"
+                  role="menuitem"
+                  disabled={attachments.length >= MAX_ATTACHMENTS}
+                  onClick={() => { setPlusOpen(false); cameraInputRef.current?.click(); }}
+                  className="flex w-full items-center gap-3 px-3 py-2.5 text-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Camera className="h-4 w-4 text-muted-foreground" />
+                  <span>Caméra</span>
+                </button>
+                <div className="my-1 h-px bg-border" />
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  aria-checked={webSearch && !deepSearch}
+                  onClick={() => { setWebSearch((v) => !v); setDeepSearch(false); setPlusOpen(false); }}
+                  className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-sm hover:bg-accent"
+                >
+                  <span className="flex items-center gap-3">
+                    <Search className="h-4 w-4 text-muted-foreground" />
+                    <span>Recherche web</span>
+                  </span>
+                  {webSearch && !deepSearch && <Check className="h-4 w-4 text-primary" />}
+                </button>
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  aria-checked={deepSearch}
+                  onClick={() => { setDeepSearch((v) => !v); setWebSearch(false); setPlusOpen(false); }}
+                  className="flex w-full items-center justify-between gap-3 px-3 py-2.5 text-sm hover:bg-accent"
+                >
+                  <span className="flex items-center gap-3">
+                    <Telescope className="h-4 w-4 text-muted-foreground" />
+                    <span>Recherche approfondie</span>
+                  </span>
+                  {deepSearch && <Check className="h-4 w-4 text-primary" />}
+                </button>
+              </div>
+            )}
+          </div>
+
           <textarea
             ref={textareaRef}
             id="chat-message"
