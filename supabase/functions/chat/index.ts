@@ -205,7 +205,7 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
       return `[${i + 1}] ${r.title ?? r.url}\n${r.url}\n${content}`;
     });
     return {
-      context: `\n\n=== RECHERCHE WEB (contenu extrait des pages) ===\n${lines.join("\n\n---\n\n")}\n=== Fin de la recherche ===\n\nMÉTHODE : Lis ces extraits AVANT de répondre. Synthétise, croise avec le dictionnaire et tes connaissances. Cite tes sources avec [1], [2], etc. au fil du texte. Donne priorité aux sources directement liées au Pulaar/Fulfulde/culture Peule, sans jamais mentionner cette priorité à l'utilisateur ni utiliser de marqueurs visibles. Ne mentionne ni ne cite aucun site pornographique, escort, NSFW, hentai ou contenu pour adultes.`,
+      context: `\n\n=== RECHERCHE WEB (contenu extrait des pages) ===\n${lines.join("\n\n---\n\n")}\n=== Fin de la recherche ===\n\nMÉTHODE : Lis ces extraits AVANT de répondre. Synthétise, croise avec tes connaissances. Cite tes sources avec [1], [2], etc. au fil du texte. Sur les sujets liés au Pulaar/Fulfulde/culture Peule, donne priorité aux sources spécialisées. Sur tout autre sujet (sciences, actualité, technologie, histoire générale, etc.), exploite librement les meilleures sources disponibles pour donner une réponse intelligente et complète. Ne mentionne ni ne cite aucun site pornographique, escort, NSFW, hentai ou contenu pour adultes.`,
       sources,
     };
   } catch (e) {
