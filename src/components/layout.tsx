@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, ChevronDown, Globe, LogOut, Sparkles, User as UserIcon } from "lucide-react";
+import { LogOut, Menu, Sparkles, User as UserIcon, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { DIALECTS, LANGUAGES, useLanguage } from "@/hooks/use-language";
@@ -9,13 +9,12 @@ async function signOut() {
   await supabase.auth.signOut();
 }
 
-function LanguageSwitcher() {
+function UserMenu() {
   const { lang, setLang, dialect, setDialect, t } = useLanguage();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [showDialects, setShowDialects] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
-  const currentDialect = DIALECTS.find((d) => d.code === dialect) ?? DIALECTS[0];
 
   useEffect(() => {
     if (!open) return;
@@ -30,66 +29,87 @@ function LanguageSwitcher() {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
+        className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
         aria-label={t("lang.switcher")}
-        aria-haspopup="listbox"
+        aria-haspopup="true"
         aria-expanded={open}
       >
-        <Globe className="h-3.5 w-3.5" />
-        <span className="hidden sm:inline">
-          {current.code.toUpperCase()}
-          <span className="ms-1 text-muted-foreground">· {currentDialect.code === "fouta_toro" ? "FT" : currentDialect.code === "fouta_djallon" ? "FJ" : currentDialect.code === "maasina" ? "MA" : "AD"}</span>
-        </span>
-        <ChevronDown className="h-3 w-3" />
+        {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+        <span className="hidden sm:inline">Menu</span>
       </button>
       {open && (
-        <div
-          className="absolute end-0 z-50 mt-2 w-64 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
-        >
-          <ul role="listbox" aria-label={t("lang.switcher")}>
-            {LANGUAGES.map((l) => (
-              <li key={l.code}>
+        <div className="absolute end-0 z-50 mt-2 w-64 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg">
+          <div className="border-b border-border px-3 py-2">
+            <p className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">{t("lang.switcher")}</p>
+            <div className="mt-2 flex gap-1">
+              {LANGUAGES.map((l) => (
                 <button
-                  role="option"
-                  aria-selected={l.code === lang}
-                  onClick={() => { setLang(l.code); setOpen(false); }}
-                  className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
+                  key={l.code}
+                  onClick={() => { setLang(l.code); }}
+                  className={`flex-1 rounded px-2 py-1 text-xs font-medium transition ${l.code === lang ? "bg-primary text-primary-foreground" : "bg-muted hover:bg-accent"}`}
+                  title={l.native}
                 >
-                  <span className="flex items-center gap-2">
-                    <span aria-hidden>{l.flag}</span>
-                    <span>{l.native}</span>
-                  </span>
-                  {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
+                  {l.flag} {l.code.toUpperCase()}
                 </button>
-              </li>
-            ))}
-          </ul>
-          <div className="border-t border-border bg-muted/40 px-3 py-2">
-            <button
-              type="button"
-              onClick={() => setShowDialects((v) => !v)}
-              aria-expanded={showDialects}
-              className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground"
+              ))}
+            </div>
+            {lang === "ff" && (
+              <div className="mt-2 border-t border-border pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDialects((v) => !v)}
+                  className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground"
+                >
+                  <span>Pulaar</span>
+                  <span aria-hidden>{showDialects ? "▾" : "▸"}</span>
+                </button>
+                {showDialects && (
+                  <div className="mt-1.5 grid grid-cols-2 gap-1">
+                    {DIALECTS.map((d) => (
+                      <button
+                        key={d.code}
+                        onClick={() => { setDialect(d.code); setShowDialects(false); }}
+                        className={`rounded px-2 py-1 text-left text-xs transition ${d.code === dialect ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent"}`}
+                      >
+                        {d.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="border-b border-border px-3 py-2">
+            <Link
+              to="/chat"
+              onClick={() => setOpen(false)}
+              className="flex w-full items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
             >
-              <span>Pulaar</span>
-              <span aria-hidden>{showDialects ? "▾" : "▸"}</span>
-            </button>
-            {showDialects && (
-              <ul role="listbox" aria-label="Dialecte Pulaar" className="mt-1.5 space-y-0.5">
-                {DIALECTS.map((d) => (
-                  <li key={d.code}>
-                    <button
-                      role="option"
-                      aria-selected={d.code === dialect}
-                      onClick={() => { setDialect(d.code); setOpen(false); setShowDialects(false); }}
-                      className="flex w-full items-center justify-between gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-accent"
-                    >
-                      <span className="font-medium">{d.label}</span>
-                      {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <Sparkles className="h-4 w-4" />
+              {t("btn.try")}
+            </Link>
+          </div>
+
+          <div className="px-3 py-2">
+            {user ? (
+              <button
+                onClick={() => { signOut(); setOpen(false); }}
+                className="flex w-full items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
+                title={user.email ?? ""}
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                {t("btn.signout")}
+              </button>
+            ) : (
+              <Link
+                to="/auth"
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center gap-2 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
+              >
+                <UserIcon className="h-3.5 w-3.5" />
+                {t("btn.signin")}
+              </Link>
             )}
           </div>
         </div>
@@ -99,7 +119,6 @@ function LanguageSwitcher() {
 }
 
 export function SiteHeader() {
-  const { user } = useAuth();
   const { t } = useLanguage();
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
@@ -129,35 +148,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-          {user ? (
-            <button
-              onClick={() => signOut()}
-              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              title={user.email ?? ""}
-              aria-label={t("btn.signout")}
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("btn.signout")}</span>
-            </button>
-          ) : (
-            <Link
-              to="/auth"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              aria-label={t("btn.signin")}
-            >
-              <UserIcon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("btn.signin")}</span>
-            </Link>
-          )}
-          <Link
-            to="/chat"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
-            aria-label={t("btn.try")}
-          >
-            <Sparkles className="h-4 w-4" />
-            <span className="hidden sm:inline">{t("btn.try")}</span>
-          </Link>
+          <UserMenu />
         </div>
       </div>
     </header>
