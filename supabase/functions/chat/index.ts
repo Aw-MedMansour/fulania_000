@@ -181,20 +181,21 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
     const raw = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
     if (!Array.isArray(raw) || raw.length === 0) return { context: "", sources: [] };
     const safe = raw.filter((r) => !isUnsafeResult(r));
-    const onTopic = safe.filter(isOnTopicResult).slice(0, 5);
-    if (onTopic.length === 0) {
-      return {
-        context: "\n\n=== RECHERCHE WEB ===\n(Aucune source pertinente trouvée en rapport avec le Pulaar/Fulfulde ou la culture Peule. Ne cite AUCUNE source web et indique poliment qu'aucune source fiable n'a été trouvée sur ce sujet précis.)\n",
-        sources: [],
-      };
+    // Priorité : sources liées au Pulaar/Fulfulde/culture Peule en premier, puis le reste.
+    const onTopic = safe.filter(isOnTopicResult);
+    const offTopic = safe.filter((r) => !isOnTopicResult(r));
+    const ordered = [...onTopic, ...offTopic].slice(0, 5);
+    if (ordered.length === 0) {
+      return { context: "\n\n=== RECHERCHE WEB ===\n(Aucun résultat exploitable.)\n", sources: [] };
     }
-    const sources = onTopic.map((r) => ({ title: r.title ?? r.url, url: r.url }));
-    const lines = onTopic.map((r, i) => {
+    const sources = ordered.map((r) => ({ title: r.title ?? r.url, url: r.url }));
+    const lines = ordered.map((r, i) => {
       const snippet = (r.description || r.snippet || r.markdown || "").toString().slice(0, 500);
-      return `[${i + 1}] **${r.title ?? r.url}**\n${r.url}\n${snippet}`;
+      const tag = isOnTopicResult(r) ? " · ★ Pulaar/Peul" : "";
+      return `[${i + 1}]${tag} **${r.title ?? r.url}**\n${r.url}\n${snippet}`;
     });
     return {
-      context: `\n\n=== RECHERCHE WEB (sources filtrées : uniquement Pulaar / Fulfulde / culture Peule) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. à la fin de ta réponse.\n\nRÈGLE DE PORTÉE ABSOLUE : Tu ne dois citer QUE des sources directement liées au Pulaar/Fulfulde/Pular/Fulani, aux dialectes (Fuuta Tooro, Fuuta Jaloo, Maasina, Aadamaawa), à l'histoire ou à la culture des Halpulaar'en / Fulɓe. Toute autre source doit être ignorée même si elle apparaît ci-dessus.\n\nRÈGLE DE MODÉRATION ABSOLUE : Ne mentionne, ne cite et ne fais JAMAIS référence à des sites pornographiques, escort, camgirl, NSFW, hentai ou contenus pour adultes explicites — même si tu en as connaissance par ailleurs. Si la question s'oriente vers ce type de contenu, refuse poliment et redirige vers la culture, la langue et les valeurs Pulaaku.`,
+      context: `\n\n=== RECHERCHE WEB (★ = source Pulaar/Fulfulde/culture Peule prioritaire) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. Donne la PRIORITÉ aux sources marquées ★ (Pulaar/Fulfulde/dialectes/culture Peule) ; n'utilise les autres sources qu'en complément si elles apportent un éclairage utile.\n\nRÈGLE DE MODÉRATION ABSOLUE : Ne mentionne, ne cite et ne fais JAMAIS référence à des sites pornographiques, escort, camgirl, NSFW, hentai ou contenus pour adultes explicites — même si tu en as connaissance par ailleurs. Si la question s'oriente vers ce type de contenu, refuse poliment et redirige vers la culture, la langue et les valeurs Pulaaku.`,
       sources,
     };
   } catch (e) {
