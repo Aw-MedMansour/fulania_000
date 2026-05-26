@@ -1083,6 +1083,17 @@ export function tFor(lang: Lang, key: string): string {
   return resolveTranslation(lang, key);
 }
 
+// BCP-47 locale for Web Speech / Intl APIs. Pulaar has no TTS voice everywhere,
+// fall back to French (closest phonology for the Fuuta region).
+export function bcp47(lang: Lang): string {
+  switch (lang) {
+    case "fr": return "fr-FR";
+    case "en": return "en-US";
+    case "ar": return "ar-SA";
+    case "ff": return "fr-FR";
+  }
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
   const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
