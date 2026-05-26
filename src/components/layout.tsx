@@ -10,9 +10,8 @@ async function signOut() {
 }
 
 function LanguageSwitcher() {
-  const { lang, setLang, dialect, setDialect, t } = useLanguage();
+  const { lang, setLang, dialect, setDialect, dialectsOpen, setDialectsOpen, t } = useLanguage();
   const [open, setOpen] = useState(false);
-  const [showDialects, setShowDialects] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
   const currentDialect = DIALECTS.find((d) => d.code === dialect) ?? DIALECTS[0];
@@ -67,21 +66,21 @@ function LanguageSwitcher() {
           <div className="border-t border-border bg-muted/40 px-3 py-2">
             <button
               type="button"
-              onClick={() => setShowDialects((v) => !v)}
-              aria-expanded={showDialects}
+              onClick={() => setDialectsOpen((v) => !v)}
+              aria-expanded={dialectsOpen}
               className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground"
             >
               <span>Pulaar</span>
-              <span aria-hidden>{showDialects ? "▾" : "▸"}</span>
+              <span aria-hidden>{dialectsOpen ? "▾" : "▸"}</span>
             </button>
-            {showDialects && (
+            {dialectsOpen && (
               <ul role="listbox" aria-label="Dialecte Pulaar" className="mt-1.5 space-y-0.5">
                 {DIALECTS.map((d) => (
                   <li key={d.code}>
                     <button
                       role="option"
                       aria-selected={d.code === dialect}
-                      onClick={() => { setDialect(d.code); setOpen(false); setShowDialects(false); }}
+                      onClick={() => { setDialect(d.code); setOpen(false); setDialectsOpen(false); }}
                       className="flex w-full items-center justify-between gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-accent"
                     >
                       <span className="font-medium">{d.label}</span>

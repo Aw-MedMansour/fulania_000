@@ -1111,6 +1111,8 @@ type Ctx = {
   setLang: (l: Lang) => void;
   dialect: Dialect;
   setDialect: (d: Dialect) => void;
+  dialectsOpen: boolean;
+  setDialectsOpen: (v: boolean | ((p: boolean) => boolean)) => void;
   t: (key: string) => string;
 };
 const LangCtx = createContext<Ctx | null>(null);
@@ -1169,6 +1171,7 @@ export function bcp47(lang: Lang): string {
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Lang>("fr");
   const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
+  const [dialectsOpen, setDialectsOpenState] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -1180,6 +1183,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       }
       const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
       if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
+      const storedOpen = localStorage.getItem("fulania.dialectsOpen");
+      if (storedOpen === "1") setDialectsOpenState(true);
     } catch {}
   }, []);
 
@@ -1203,16 +1208,21 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setDialectState(d);
     try { localStorage.setItem("fulania.dialect", d); } catch {}
   };
-
-
+  const setDialectsOpen = (v: boolean | ((p: boolean) => boolean)) => {
+    setDialectsOpenState((prev) => {
+      const next = typeof v === "function" ? (v as (p: boolean) => boolean)(prev) : v;
+      try { localStorage.setItem("fulania.dialectsOpen", next ? "1" : "0"); } catch {}
+      return next;
+    });
+  };
 
   const t = (key: string) => resolveTranslation(lang, key);
 
-  return <LangCtx.Provider value={{ lang, setLang, dialect, setDialect, t }}>{children}</LangCtx.Provider>;
+  return <LangCtx.Provider value={{ lang, setLang, dialect, setDialect, dialectsOpen, setDialectsOpen, t }}>{children}</LangCtx.Provider>;
 }
 
 export function useLanguage(): Ctx {
   const ctx = useContext(LangCtx);
-  if (!ctx) return { lang: "fr", setLang: () => {}, dialect: "fouta_toro", setDialect: () => {}, t: (k) => resolveTranslation("fr", k) };
+  if (!ctx) return { lang: "fr", setLang: () => {}, dialect: "fouta_toro", setDialect: () => {}, dialectsOpen: false, setDialectsOpen: () => {}, t: (k) => resolveTranslation("fr", k) };
   return ctx;
 }

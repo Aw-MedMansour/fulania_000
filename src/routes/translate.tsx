@@ -41,12 +41,11 @@ const FN_URL = `${SUPABASE_URL}/functions/v1/dialect-translate`;
 function TranslatePage() {
   const navigate = useNavigate();
   const { session, loading: authLoading } = useAuth();
-  const { t, lang } = useLanguage();
+  const { t, lang, dialectsOpen, setDialectsOpen } = useLanguage();
   const [text, setText] = useState("");
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showDialects, setShowDialects] = useState(false);
 
   const speak = (s: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
@@ -80,7 +79,7 @@ function TranslatePage() {
       const j = await r.json();
       if (!r.ok) throw new Error(j?.error ?? "Erreur");
       setCard(j.card as Card);
-      setShowDialects(false);
+      setDialectsOpen(false);
     } catch (e: any) {
       setError(e?.message ?? t("ai.translate.error"));
     } finally {
@@ -154,17 +153,17 @@ function TranslatePage() {
 
             <button
               type="button"
-              onClick={() => setShowDialects((v) => !v)}
+              onClick={() => setDialectsOpen((v) => !v)}
               className="mt-5 w-full rounded-xl border border-border bg-card px-4 py-3 text-left font-display text-base font-semibold text-earth transition hover:border-[var(--gold)]/60"
-              aria-expanded={showDialects}
+              aria-expanded={dialectsOpen}
             >
-              Pulaar {showDialects ? "▾" : "▸"}
+              Pulaar {dialectsOpen ? "▾" : "▸"}
               <span className="ml-2 text-xs font-normal text-muted-foreground">
-                {showDialects ? "Masquer les variantes" : "Voir les variantes dialectales"}
+                {dialectsOpen ? "Masquer les variantes" : "Voir les variantes dialectales"}
               </span>
             </button>
 
-            {showDialects && (
+            {dialectsOpen && (
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 {dialects.map((d) => {
                   const v = card[d.key] as string | null;
