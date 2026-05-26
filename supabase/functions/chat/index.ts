@@ -158,28 +158,28 @@ function isOnTopicResult(r: any): boolean {
   return PULAAR_TOPIC_KEYWORDS.some((k) => url.includes(k) || text.includes(k));
 }
 
-async function fetchWebSearchContext(query: string): Promise<{ context: string; sources: { title: string; url: string }[] }> {
+async function fetchWebSearchContext(query: string, deep = false): Promise<{ context: string; sources: { title: string; url: string }[] }> {
   const apiKey = Deno.env.get("FIRECRAWL_API_KEY");
   if (!apiKey) return { context: "", sources: [] };
   const q = ` ${query.toLowerCase()} `;
   if (BLOCKED_KEYWORDS.some((k) => q.includes(k))) {
     return { context: "", sources: [] };
   }
-  // Ancre thématique : on n'ajoute le scope Pulaar QUE si la requête semble liée au Peul/Pulaar.
-  // Sinon, on laisse Firecrawl chercher librement pour répondre intelligemment à n'importe quel sujet.
   const queryLower = query.toLowerCase();
   const isPulaarTopic = PULAAR_TOPIC_KEYWORDS.some((k) => queryLower.includes(k));
   const scopedQuery = isPulaarTopic
     ? `${query} (Pulaar OR Fulfulde OR Pular OR Fulani OR Peul OR Halpulaar OR "Fuuta Tooro" OR "Fouta Djallon" OR Maasina OR Aadamaawa)`
     : query;
+  const searchLimit = deep ? 20 : 10;
+  const keepLimit = deep ? 10 : 6;
+  const perPageChars = deep ? 3500 : 1800;
   try {
-    // Vraie recherche approfondie : on récupère le contenu markdown des pages, pas juste des snippets.
     const resp = await fetch("https://api.firecrawl.dev/v2/search", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         query: scopedQuery,
-        limit: 10,
+        limit: searchLimit,
         scrapeOptions: { formats: ["markdown"], onlyMainContent: true },
       }),
     });
@@ -192,20 +192,22 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
     const raw = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
     if (!Array.isArray(raw) || raw.length === 0) return { context: "", sources: [] };
     const safe = raw.filter((r) => !isUnsafeResult(r));
-    // Pour un sujet Pulaar : priorise les sources Pulaar puis complète. Pour tout autre sujet :
-    // garde l'ordre naturel de Firecrawl pour rester intelligent et pertinent sur n'importe quel thème.
     const ordered = isPulaarTopic
-      ? [...safe.filter(isOnTopicResult), ...safe.filter((r) => !isOnTopicResult(r))].slice(0, 6)
-      : safe.slice(0, 6);
+      ? [...safe.filter(isOnTopicResult), ...safe.filter((r) => !isOnTopicResult(r))].slice(0, keepLimit)
+      : safe.slice(0, keepLimit);
 
     if (ordered.length === 0) return { context: "", sources: [] };
     const sources = ordered.map((r) => ({ title: r.title ?? r.url, url: r.url }));
     const lines = ordered.map((r, i) => {
-      const content = (r.markdown || r.description || r.snippet || "").toString().slice(0, 1800);
+      const content = (r.markdown || r.description || r.snippet || "").toString().slice(0, perPageChars);
       return `[${i + 1}] ${r.title ?? r.url}\n${r.url}\n${content}`;
     });
+    const header = deep ? "RECHERCHE WEB APPROFONDIE" : "RECHERCHE WEB";
+    const method = deep
+      ? `MÉTHODE (RECHERCHE APPROFONDIE) : Tu as ${ordered.length} sources avec leur contenu complet. Analyse-les en profondeur AVANT de répondre. Compare, croise, identifie les convergences et divergences. Structure ta réponse en sections claires (contexte, points clés, nuances, conclusion). Cite TOUTES les sources avec [1], [2], etc. au fil du texte. Fournis une synthèse longue, détaillée et nuancée — pas un simple résumé. Sur les sujets Pulaar/Fulfulde/culture Peule, priorise les sources spécialisées. Ne mentionne ni ne cite aucun contenu pornographique, escort, NSFW ou pour adultes.`
+      : `MÉTHODE : Lis ces extraits AVANT de répondre. Synthétise, croise avec tes connaissances. Cite tes sources avec [1], [2], etc. au fil du texte. Sur les sujets liés au Pulaar/Fulfulde/culture Peule, donne priorité aux sources spécialisées. Sur tout autre sujet (sciences, actualité, technologie, histoire générale, etc.), exploite librement les meilleures sources disponibles pour donner une réponse intelligente et complète. Ne mentionne ni ne cite aucun site pornographique, escort, NSFW, hentai ou contenu pour adultes.`;
     return {
-      context: `\n\n=== RECHERCHE WEB (contenu extrait des pages) ===\n${lines.join("\n\n---\n\n")}\n=== Fin de la recherche ===\n\nMÉTHODE : Lis ces extraits AVANT de répondre. Synthétise, croise avec tes connaissances. Cite tes sources avec [1], [2], etc. au fil du texte. Sur les sujets liés au Pulaar/Fulfulde/culture Peule, donne priorité aux sources spécialisées. Sur tout autre sujet (sciences, actualité, technologie, histoire générale, etc.), exploite librement les meilleures sources disponibles pour donner une réponse intelligente et complète. Ne mentionne ni ne cite aucun site pornographique, escort, NSFW, hentai ou contenu pour adultes.`,
+      context: `\n\n=== ${header} (contenu extrait des pages) ===\n${lines.join("\n\n---\n\n")}\n=== Fin de la recherche ===\n\n${method}`,
       sources,
     };
   } catch (e) {
