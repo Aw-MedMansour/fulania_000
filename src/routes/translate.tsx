@@ -80,6 +80,7 @@ function TranslatePage() {
       const j = await r.json();
       if (!r.ok) throw new Error(j?.error ?? "Erreur");
       setCard(j.card as Card);
+      setShowDialects(false);
     } catch (e: any) {
       setError(e?.message ?? t("ai.translate.error"));
     } finally {
@@ -87,11 +88,11 @@ function TranslatePage() {
     }
   }
 
-  const dialects: { key: keyof Card; label: string; region: string }[] = [
-    { key: "fouta_toro", label: "Pulaar — Fuuta Tooro", region: "Sénégal · Mauritanie · Mali" },
-    { key: "fouta_djallon", label: "Pular — Fuuta Jaloo", region: "Guinée" },
-    { key: "macina", label: "Fulfulde — Maasina", region: "Mali · Burkina · Niger" },
-    { key: "adamawa", label: "Fulfulde — Aadamaawa", region: "Nigeria · Cameroun · Tchad" },
+  const dialects: { key: keyof Card; label: string }[] = [
+    { key: "fouta_toro", label: "Fuuta Tooro" },
+    { key: "fouta_djallon", label: "Fuuta Jaloo" },
+    { key: "macina", label: "Maasina" },
+    { key: "adamawa", label: "Aadamaawa" },
   ];
 
   return (
