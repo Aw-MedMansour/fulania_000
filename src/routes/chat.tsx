@@ -572,15 +572,20 @@ function MessageBubble({ role, content, sources }: Msg) {
                 <ChevronRight className={`h-3 w-3 transition-transform ${showSources ? "rotate-90" : ""}`} />
               </button>
               {showSources && (
-                <ol className="mt-2 space-y-1 text-xs">
-                  {sources.map((s, i) => (
-                    <li key={i} className="truncate">
-                      <span className="text-muted-foreground">[{i + 1}]</span>{" "}
-                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                        {s.title}
-                      </a>
-                    </li>
-                  ))}
+                <ol className="mt-2 space-y-1.5 text-xs">
+                  {sources.map((s, i) => {
+                    let host = "";
+                    try { host = new URL(s.url).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
+                    return (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="mt-0.5 inline-flex h-4 min-w-4 flex-none items-center justify-center rounded bg-muted px-1 text-[10px] font-semibold text-muted-foreground">{i + 1}</span>
+                        <a href={s.url} target="_blank" rel="noopener noreferrer" className="min-w-0 flex-1 hover:underline">
+                          <span className="block truncate text-foreground">{s.title}</span>
+                          {host && <span className="block truncate text-[10px] text-muted-foreground">{host}</span>}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ol>
               )}
             </div>
