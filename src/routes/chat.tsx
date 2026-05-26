@@ -234,7 +234,7 @@ function ChatPage() {
           ) : (
             <div className="space-y-5">
               {messages.map((m, i) => (
-                <MessageBubble key={i} role={m.role} content={m.content} />
+                <MessageBubble key={i} role={m.role} content={m.content} sources={m.sources} />
               ))}
               {loading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
