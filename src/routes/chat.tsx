@@ -151,6 +151,22 @@ function ChatPage() {
     if ((!content && attachments.length === 0) || loading) return;
     setError(null);
 
+    // Quota check for guests
+    const kind: QuotaKind = deepSearch ? "deep" : webSearch ? "search" : "simple";
+    if (!user) {
+      if (!quota.canUse(kind)) {
+        const labels: Record<QuotaKind, string> = {
+          simple: "questions",
+          search: "recherches web",
+          deep: "recherches approfondies",
+        };
+        setError(
+          `Vous avez utilisé vos ${quota.limits[kind]} ${labels[kind]} gratuites. Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset(kind)}.`,
+        );
+        return;
+      }
+    }
+
     const { data: { session: current } } = await supabase.auth.getSession();
     const userContent = content || (attachments.length ? "(voir pièces jointes)" : "");
     const next: Msg[] = [...messages, { role: "user", content: userContent }];
@@ -159,6 +175,35 @@ function ChatPage() {
     const sentAttachments = attachments;
     setAttachments([]);
     setLoading(true);
+
+    if (!user) quota.consume(kind);
+
+    // Persist user msg + ensure conversation for authenticated users
+    let convId = conversationId;
+    if (user) {
+      if (!convId) {
+        const title = (content || "Pièce jointe").slice(0, 60);
+        const { data: conv } = await supabase
+          .from("chat_conversations")
+          .insert({ user_id: user.id, title })
+          .select("id")
+          .single();
+        if (conv) {
+          convId = conv.id;
+          setConversationId(convId);
+          setConvRefreshKey((k) => k + 1);
+        }
+      }
+      if (convId) {
+        await supabase.from("chat_messages").insert({
+          conversation_id: convId,
+          user_id: user.id,
+          role: "user",
+          content: userContent,
+        });
+      }
+    }
+
 
     try {
       const payloadAttachments = sentAttachments.map((a) => ({
