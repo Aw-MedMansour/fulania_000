@@ -1,12 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope, LogIn } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
-import { useGuestQuota, type QuotaKind } from "@/hooks/use-guest-quota";
+import { useGuestQuota } from "@/hooks/use-guest-quota";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ChatSidebar, SidebarToggle } from "@/components/chat-sidebar";
+import { PageNav } from "@/components/page-nav";
 
 type Source = { title: string; url: string };
 type Attachment = { name: string; mimeType: string; dataBase64: string; previewUrl?: string };
@@ -151,17 +153,11 @@ function ChatPage() {
     if ((!content && attachments.length === 0) || loading) return;
     setError(null);
 
-    // Quota check for guests
-    const kind: QuotaKind = deepSearch ? "deep" : webSearch ? "search" : "simple";
+    // Quota check for guests — silent counter; only message when depleted.
     if (!user) {
-      if (!quota.canUse(kind)) {
-        const labels: Record<QuotaKind, string> = {
-          simple: "questions",
-          search: "recherches web",
-          deep: "recherches approfondies",
-        };
+      if (!quota.canUse()) {
         setError(
-          `Vous avez utilisé vos ${quota.limits[kind]} ${labels[kind]} gratuites. Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset(kind)}.`,
+          `Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset()}.`,
         );
         return;
       }
@@ -176,7 +172,7 @@ function ChatPage() {
     setAttachments([]);
     setLoading(true);
 
-    if (!user) quota.consume(kind);
+    if (!user) quota.consume();
 
     // Persist user msg + ensure conversation for authenticated users
     let convId = conversationId;
@@ -308,13 +304,16 @@ function ChatPage() {
       {/* Header */}
       <header className="flex-none border-b border-border/60 bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
-          <SidebarToggle onClick={() => setSidebarOpen(true)} />
+          <div className="flex items-center gap-2">
+            <SidebarToggle onClick={() => setSidebarOpen(true)} />
+            <PageNav />
+          </div>
 
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
               <span className="font-display text-base font-bold">F</span>
             </div>
-            <div className="flex flex-col leading-tight">
+            <div className="hidden flex-col leading-tight sm:flex">
               <span className="font-display text-sm font-semibold">FulanIA</span>
               <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground">
                 {t("chat.subtitle")}
@@ -417,28 +416,6 @@ function ChatPage() {
             </div>
           )}
 
-          {/* Guest quota indicator */}
-          {!user && (
-            <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-              <span className="font-medium">Crédits invité :</span>
-              <span>
-                Questions <strong className="text-foreground">{quota.remaining.simple}/{quota.limits.simple}</strong>
-              </span>
-              <span>
-                Recherche <strong className="text-foreground">{quota.remaining.search}/{quota.limits.search}</strong>
-              </span>
-              <span>
-                Approfondie <strong className="text-foreground">{quota.remaining.deep}/{quota.limits.deep}</strong>
-              </span>
-              <Link
-                to="/auth"
-                search={{ next: "/chat" }}
-                className="inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-medium text-background hover:opacity-90"
-              >
-                <LogIn className="h-3 w-3" /> Se connecter pour un accès illimité
-              </Link>
-            </div>
-          )}
         </div>
 
 
@@ -659,7 +636,8 @@ function ChatLangSelector({
 
 function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
-  const [showSources, setShowSources] = useState(true);
+  const isMobile = useIsMobile();
+  const [showSources, setShowSources] = useState(false);
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[88%] gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}>
@@ -695,7 +673,7 @@ function MessageBubble({ role, content, sources }: Msg) {
                 <ChevronRight className={`h-3 w-3 transition-transform ${showSources ? "rotate-90" : ""}`} />
               </button>
               {showSources && (
-                <ol className="mt-2 space-y-1.5 text-xs">
+                <ol className={`mt-2 space-y-1.5 text-xs ${isMobile ? "max-h-44 overflow-y-auto pr-1" : ""}`}>
                   {sources.map((s, i) => {
                     let host = "";
                     try { host = new URL(s.url).hostname.replace(/^www\./, ""); } catch { /* ignore */ }

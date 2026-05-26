@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
+import { PageNav } from "@/components/page-nav";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -228,6 +229,8 @@ function DictionaryPage() {
       <SiteHeader />
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <PageNav className="mb-4" />
+        
         
         <div className="mb-8 flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-earth text-[var(--gold)]">

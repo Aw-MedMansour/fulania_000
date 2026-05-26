@@ -6,6 +6,7 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PageNav } from "@/components/page-nav";
 
 export const Route = createFileRoute("/translate")({
   head: () => {
@@ -96,7 +97,9 @@ function TranslatePage() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3 sm:px-8">
-          
+          <PageNav />
+
+
 
           <div className="inline-flex items-center gap-2 text-sm font-medium text-earth">
             <Languages className="h-4 w-4" /> {t("hub.f4.title")}
