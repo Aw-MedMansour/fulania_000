@@ -481,7 +481,7 @@ function ChatPage() {
                   className="flex w-full items-center gap-3 px-3 py-2.5 text-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Camera className="h-4 w-4 text-muted-foreground" />
-                  <span>Caméra</span>
+                  <span>{t("chat.camera")}</span>
                 </button>
                 <div className="my-1 h-px bg-border" />
                 <button
