@@ -385,7 +385,7 @@ function ChatPage() {
                     type="button"
                     onClick={() => removeAttachment(i)}
                     className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="Retirer"
+                    aria-label={t("chat.remove")}
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
