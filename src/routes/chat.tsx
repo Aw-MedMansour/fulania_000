@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
@@ -238,7 +238,8 @@ function ChatPage() {
               ))}
               {loading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Loader2 className="h-4 w-4 animate-spin" />{t("chat.thinking")}
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  {webSearch ? "Recherche sur le web en cours…" : t("chat.thinking")}
                 </div>
               )}
               {error && (
@@ -326,10 +327,17 @@ function ChatPage() {
             id="chat-message"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }}
+            onKeyDown={(e) => {
+              // Entrée = retour à la ligne. Ctrl/Cmd+Entrée = envoyer.
+              if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                send(input);
+              }
+            }}
             rows={1}
             placeholder={t("chat.placeholder")}
             aria-label={t("chat.aria.msg")}
+            title="Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer"
             className="min-h-[52px] max-h-[200px] flex-1 resize-none rounded-2xl border border-border bg-card px-4 py-3.5 text-base leading-relaxed text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           <button
@@ -436,6 +444,7 @@ function ChatLangSelector({
 
 function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
+  const [showSources, setShowSources] = useState(false);
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[88%] gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}>
@@ -460,19 +469,28 @@ function MessageBubble({ role, content, sources }: Msg) {
           )}
           {!isUser && sources && sources.length > 0 && (
             <div className="mt-3 border-t border-border/60 pt-2">
-              <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                <Globe className="h-3 w-3" /> Sources
-              </div>
-              <ol className="space-y-0.5 text-xs">
-                {sources.map((s, i) => (
-                  <li key={i} className="truncate">
-                    <span className="text-muted-foreground">[{i + 1}]</span>{" "}
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      {s.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
+              <button
+                type="button"
+                onClick={() => setShowSources((v) => !v)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+                aria-expanded={showSources}
+              >
+                <Globe className="h-3 w-3" />
+                <span>{sources.length} source{sources.length > 1 ? "s" : ""}</span>
+                <ChevronRight className={`h-3 w-3 transition-transform ${showSources ? "rotate-90" : ""}`} />
+              </button>
+              {showSources && (
+                <ol className="mt-2 space-y-1 text-xs">
+                  {sources.map((s, i) => (
+                    <li key={i} className="truncate">
+                      <span className="text-muted-foreground">[{i + 1}]</span>{" "}
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                        {s.title}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
             </div>
           )}
         </div>
