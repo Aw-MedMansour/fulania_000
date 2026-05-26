@@ -635,11 +635,11 @@ export const translations: Record<Lang, Dict> = {
     "stats.speakers": "Speakers", "stats.countries": "Countries", "stats.dialects": "Dialects",
 
     "problem.tag": "The reality",
-    "problem.title": "A language spoken by millions, invisible online.",
-    "problem.body": "In 2026, search for « learn Pulaar » on Google — you'll find almost nothing. Yet tools exist for Klingon, the language of a TV series. Pulaar, spoken by tens of millions, is ignored by major AI models.",
+    "problem.title": "A language of nearly a hundred million speakers, still under-represented online.",
+    "problem.body": "Spoken by close to a hundred million people across Senegal, Mauritania, Guinea, Mali, Burkina Faso, Niger, Nigeria, Cameroon, Chad, The Gambia, Guinea-Bissau, Sierra Leone, Côte d'Ivoire, Benin, Togo, Ghana, Sudan, Central African Republic and the diaspora, Pulaar/Fulfulde remains under-served in digital tools and AI. FulanIA is a humble contribution to help close that gap, in service of the Fulɓe community.",
     "problem.other": "For other languages",
     "problem.pulaar": "For Pulaar",
-    "problem.quote": "Diaspora children who can no longer speak to their grandparents. An immense culture, silent on the internet. Ancestral knowledge at risk.",
+    "problem.quote": "Diaspora children who would love to better speak with their grandparents. An immense culture, still too quiet online. A precious heritage to pass on.",
 
     "sol.tag": "Our answer",
     "sol.title": "FulanIA — a bridge between tradition and technology.",
