@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Plus, MessageSquare, Trash2, X, PanelLeftOpen, PanelLeftClose, LogIn } from "lucide-react";
+import { Plus, MessageSquare, Trash2, PanelLeftOpen, PanelLeftClose, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
 
