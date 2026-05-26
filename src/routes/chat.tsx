@@ -673,7 +673,7 @@ function MessageBubble({ role, content, sources }: Msg) {
                 <ChevronRight className={`h-3 w-3 transition-transform ${showSources ? "rotate-90" : ""}`} />
               </button>
               {showSources && (
-                <ol className="mt-2 space-y-1.5 text-xs">
+                <ol className={`mt-2 space-y-1.5 text-xs ${isMobile ? "max-h-44 overflow-y-auto pr-1" : ""}`}>
                   {sources.map((s, i) => {
                     let host = "";
                     try { host = new URL(s.url).hostname.replace(/^www\./, ""); } catch { /* ignore */ }
