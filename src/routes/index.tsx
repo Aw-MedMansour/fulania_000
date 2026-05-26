@@ -235,13 +235,13 @@ function Index() {
       <section id="culture" className="relative overflow-hidden bg-earth py-24 text-cream">
         <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "400px" }} aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("culture.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("culture.title")}</h2>
             <p className="mt-5 text-lg text-cream/75">{t("culture.body")}</p>
-          </div>
+          </Reveal>
 
-          <div className="mt-12 overflow-hidden rounded-2xl border border-cream/15">
+          <Reveal delay={0.1} className="mt-12 overflow-hidden rounded-2xl border border-cream/15">
             <table className="w-full text-left text-sm">
               <thead className="bg-cream/5 text-[var(--gold)]">
                 <tr>
@@ -252,33 +252,45 @@ function Index() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-cream/10">
-                {dialects.map((d) => (
-                  <tr key={d.name}>
+                {dialects.map((d, i) => (
+                  <motion.tr
+                    key={d.name}
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.45, delay: Math.min(i * 0.03, 0.4), ease: [0.22, 1, 0.36, 1] }}
+                    className="transition-colors hover:bg-cream/[0.04]"
+                  >
                     <td className="px-5 py-4 font-display text-base font-semibold">{d.name}</td>
                     <td className="px-5 py-4 text-cream/80">{d.zone}</td>
                     <td className="px-5 py-4 text-[var(--gold)]">{d.speakers}</td>
                     <td className="hidden px-5 py-4 text-cream/70 sm:table-cell">{d.note}</td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </Reveal>
 
           <div className="mt-20">
-            <h3 className="font-display text-3xl font-semibold sm:text-4xl">{t("pulaaku.title")}</h3>
-            <p className="mt-3 max-w-2xl text-cream/75">{t("pulaaku.body")}</p>
+            <Reveal>
+              <h3 className="font-display text-3xl font-semibold sm:text-4xl">{t("pulaaku.title")}</h3>
+              <p className="mt-3 max-w-2xl text-cream/75">{t("pulaaku.body")}</p>
+            </Reveal>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {pulaaku.map(({ word, meaning, icon: Icon }) => (
-                <div key={word} className="group rounded-2xl border border-cream/15 bg-cream/[0.03] p-6 transition hover:border-[var(--gold)]/50 hover:bg-cream/[0.06]">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)]">
+                <StaggerItem
+                  key={word}
+                  className="group rounded-2xl border border-cream/15 bg-cream/[0.03] p-6 transition hover:-translate-y-1 hover:border-[var(--gold)]/50 hover:bg-cream/[0.06] hover:shadow-xl"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)] transition group-hover:scale-110">
                     <Icon className="h-5 w-5" />
                   </div>
                   <p className="mt-5 font-display text-2xl font-semibold text-[var(--gold)]">{word}</p>
                   <p className="mt-2 text-sm text-cream/75">{meaning}</p>
-                </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           </div>
         </div>
       </section>
