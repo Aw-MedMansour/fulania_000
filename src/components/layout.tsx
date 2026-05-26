@@ -10,9 +10,8 @@ async function signOut() {
 }
 
 function LanguageSwitcher() {
-  const { lang, setLang, dialect, setDialect, t } = useLanguage();
+  const { lang, setLang, dialect, setDialect, dialectsOpen, setDialectsOpen, t } = useLanguage();
   const [open, setOpen] = useState(false);
-  const [showDialects, setShowDialects] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
   const currentDialect = DIALECTS.find((d) => d.code === dialect) ?? DIALECTS[0];
