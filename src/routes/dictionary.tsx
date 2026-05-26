@@ -549,7 +549,7 @@ type AICard = {
 };
 
 function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean }) {
-  const { t, dialect } = useLanguage();
+  const { t, dialect, lang } = useLanguage();
   const [card, setCard] = useState<AICard | null>(null);
   const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
