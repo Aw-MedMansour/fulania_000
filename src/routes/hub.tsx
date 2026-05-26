@@ -13,6 +13,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { PageNav } from "@/components/page-nav";
 import patternImg from "@/assets/pattern.jpg";
 
 export const Route = createFileRoute("/hub")({
