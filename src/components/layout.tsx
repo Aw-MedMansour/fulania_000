@@ -15,8 +15,6 @@ function UserMenu() {
   const [open, setOpen] = useState(false);
   const [showDialects, setShowDialects] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const current = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
-  const currentDialect = DIALECTS.find((d) => d.code === dialect) ?? DIALECTS[0];
 
   useEffect(() => {
     if (!open) return;
