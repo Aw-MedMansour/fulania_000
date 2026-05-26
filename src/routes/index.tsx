@@ -397,47 +397,51 @@ function Index() {
       <section id="contact" className="relative overflow-hidden bg-earth py-24 text-cream">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
+            <Reveal>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
               <p className="mt-5 whitespace-pre-line text-cream/80">
                 {t("contact.bio")}
               </p>
-            </div>
+            </Reveal>
 
-            <div>
+            <Reveal delay={0.1}>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.callTag")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("contact.callTitle")}</h2>
               <p className="mt-5 text-cream/80">{t("contact.callBody")}</p>
 
-              <div className="mt-8 space-y-3">
-                <a href="mailto:awmedmansour@outlook.com" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
-                  <Mail className="h-5 w-5 text-[var(--gold)]" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.email")}</p>
-                    <p className="text-cream">awmedmansour@outlook.com</p>
-                  </div>
-                </a>
-                <a href="tel:+213780306486" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
-                  <Phone className="h-5 w-5 text-[var(--gold)]" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.phone")}</p>
-                    <p className="text-cream">+213 780 30 64 86</p>
-                  </div>
-                </a>
-                <div className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4">
+              <StaggerGroup className="mt-8 space-y-3">
+                <StaggerItem>
+                  <a href="mailto:awmedmansour@outlook.com" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
+                    <Mail className="h-5 w-5 text-[var(--gold)]" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.email")}</p>
+                      <p className="text-cream">awmedmansour@outlook.com</p>
+                    </div>
+                  </a>
+                </StaggerItem>
+                <StaggerItem>
+                  <a href="tel:+213780306486" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
+                    <Phone className="h-5 w-5 text-[var(--gold)]" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.phone")}</p>
+                      <p className="text-cream">+213 780 30 64 86</p>
+                    </div>
+                  </a>
+                </StaggerItem>
+                <StaggerItem className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4">
                   <MapPin className="h-5 w-5 text-[var(--gold)]" />
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.address")}</p>
                     <p className="text-cream">{t("contact.location")}</p>
                   </div>
-                </div>
-              </div>
+                </StaggerItem>
+              </StaggerGroup>
 
-              <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:bg-[var(--gold)]/90">
-                {t("contact.tryAi")} <ArrowRight className="h-4 w-4" />
+              <Link to="/auth" className="group mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
+                {t("contact.tryAi")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
