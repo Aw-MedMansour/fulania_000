@@ -34,10 +34,10 @@ function Index() {
   const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
-    { name: "Fuuta Tooro", zone: "Pulaar", speakers: "4,7 – 6,3 M", note: "Sénégal · Mauritanie · Mali" },
-    { name: "Fuuta Jaloo", zone: "Pular", speakers: "5,7 – 6,3 M", note: "Guinée" },
-    { name: "Maasina", zone: "Fulfulde", speakers: "4 – 6 M", note: "Mali · Burkina · Niger" },
-    { name: "Aadamaawa", zone: "Fulfulde", speakers: "6 – 9 M", note: "Nigeria · Cameroun · Tchad" },
+    { name: "Pulaar", zone: t("dialect.zone.pulaar"), speakers: "~5 M", note: t("dialect.note.pulaar") },
+    { name: "Pular", zone: t("dialect.zone.pular"), speakers: "~8 M", note: t("dialect.note.pular") },
+    { name: "Fulfulde", zone: t("dialect.zone.fulfulde"), speakers: "~15 M", note: t("dialect.note.fulfulde") },
+    { name: "Fula", zone: t("dialect.zone.fula"), speakers: "~20 M", note: t("dialect.note.fula") },
   ];
 
   const pulaaku = [
