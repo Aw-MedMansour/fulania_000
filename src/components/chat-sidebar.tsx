@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Plus, MessageSquare, Trash2, PanelLeftOpen, PanelLeftClose, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useLanguage } from "@/hooks/use-language";
 import type { User } from "@supabase/supabase-js";
 
 export type Conversation = {
@@ -27,6 +28,7 @@ export function ChatSidebar({
   onNew: () => void;
   refreshKey: number;
 }) {
+  const { t } = useLanguage();
   const [items, setItems] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -48,7 +50,7 @@ export function ChatSidebar({
 
   async function remove(id: string, e: React.MouseEvent) {
     e.stopPropagation();
-    if (!confirm("Supprimer cette discussion ?")) return;
+    if (!confirm(t("sb.confirmDelete"))) return;
     await supabase.from("chat_conversations").delete().eq("id", id);
     setItems((arr) => arr.filter((c) => c.id !== id));
     if (activeId === id) onNew();
@@ -60,7 +62,7 @@ export function ChatSidebar({
       {open && (
         <button
           type="button"
-          aria-label="Fermer"
+          aria-label={t("sb.close")}
           onClick={() => onOpenChange(false)}
           className="fixed inset-0 z-30 bg-black/40 md:hidden"
         />
@@ -73,12 +75,12 @@ export function ChatSidebar({
         aria-hidden={!open}
       >
         <div className="flex h-14 flex-none items-center justify-between border-b border-border px-3">
-          <span className="font-display text-sm font-semibold">Discussions</span>
+          <span className="font-display text-sm font-semibold">{t("sb.title")}</span>
           <button
             type="button"
             onClick={() => onOpenChange(false)}
             className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-            aria-label="Fermer la barre latérale"
+            aria-label={t("sb.close")}
           >
             <PanelLeftClose className="h-4 w-4" />
           </button>
@@ -91,26 +93,26 @@ export function ChatSidebar({
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" />
-            Nouvelle discussion
+            {t("sb.new")}
           </button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-2 pb-3">
           {!user ? (
             <div className="m-2 rounded-xl border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
-              <p className="mb-3">Connectez-vous pour conserver votre historique de discussions.</p>
+              <p className="mb-3">{t("sb.guestMsg")}</p>
               <Link
                 to="/auth"
                 search={{ next: "/chat" }}
                 className="inline-flex items-center gap-1.5 rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background hover:opacity-90"
               >
-                <LogIn className="h-3.5 w-3.5" /> Se connecter
+                <LogIn className="h-3.5 w-3.5" /> {t("sb.signin")}
               </Link>
             </div>
           ) : loading ? (
-            <p className="px-3 py-2 text-xs text-muted-foreground">Chargement…</p>
+            <p className="px-3 py-2 text-xs text-muted-foreground">{t("sb.loading")}</p>
           ) : items.length === 0 ? (
-            <p className="px-3 py-2 text-xs text-muted-foreground">Aucune discussion pour le moment.</p>
+            <p className="px-3 py-2 text-xs text-muted-foreground">{t("sb.empty")}</p>
           ) : (
             <ul className="space-y-1">
               {items.map((c) => (
@@ -131,7 +133,7 @@ export function ChatSidebar({
                       tabIndex={0}
                       onClick={(e) => remove(c.id, e)}
                       className="rounded p-1 text-muted-foreground opacity-0 transition hover:bg-destructive/10 hover:text-destructive group-hover:opacity-100"
-                      aria-label="Supprimer"
+                      aria-label={t("sb.delete")}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </span>
@@ -147,11 +149,12 @@ export function ChatSidebar({
 }
 
 export function SidebarToggle({ onClick }: { onClick: () => void }) {
+  const { t } = useLanguage();
   return (
     <button
       type="button"
       onClick={onClick}
-      aria-label="Ouvrir l'historique"
+      aria-label={t("sb.open")}
       className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background/80 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground"
     >
       <PanelLeftOpen className="h-4 w-4" />
