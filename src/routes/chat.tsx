@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope, LogIn } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 import { useAuth } from "@/hooks/use-auth";
-import { useGuestQuota, type QuotaKind } from "@/hooks/use-guest-quota";
+import { useGuestQuota } from "@/hooks/use-guest-quota";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ChatSidebar, SidebarToggle } from "@/components/chat-sidebar";
+import { PageNav } from "@/components/page-nav";
 
 type Source = { title: string; url: string };
 type Attachment = { name: string; mimeType: string; dataBase64: string; previewUrl?: string };
