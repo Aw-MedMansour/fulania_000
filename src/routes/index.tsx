@@ -34,10 +34,24 @@ function Index() {
   const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
-    { name: "Pulaar", zone: t("dialect.zone.pulaar"), speakers: "~5 M", note: t("dialect.note.pulaar") },
-    { name: "Pular", zone: t("dialect.zone.pular"), speakers: "~8 M", note: t("dialect.note.pular") },
-    { name: "Fulfulde", zone: t("dialect.zone.fulfulde"), speakers: "~15 M", note: t("dialect.note.fulfulde") },
-    { name: "Fula", zone: t("dialect.zone.fula"), speakers: "~20 M", note: t("dialect.note.fula") },
+    { name: "Nigeria", zone: "Fulfulde", speakers: "25 – 35 M", note: "" },
+    { name: "Guinée", zone: "Pular (Fuuta Jaloo)", speakers: "8 – 10 M", note: "" },
+    { name: "Sénégal", zone: "Pulaar (Fuuta Tooro)", speakers: "4 – 6 M", note: "" },
+    { name: "Mali", zone: "Fulfulde (Maasina)", speakers: "3 – 5 M", note: "" },
+    { name: "Cameroun", zone: "Fulfulde (Aadamaawa)", speakers: "3 – 4 M", note: "" },
+    { name: "Niger", zone: "Fulfulde", speakers: "2 – 3 M", note: "" },
+    { name: "Tchad", zone: "Fulfulde", speakers: "2 – 3 M", note: "" },
+    { name: "Burkina Faso", zone: "Fulfulde", speakers: "1,8 – 2,4 M", note: "" },
+    { name: "Bénin", zone: "Fulfulde", speakers: "0,9 – 1,2 M", note: "" },
+    { name: "Mauritanie", zone: "Pulaar", speakers: "0,8 – 1,1 M", note: "" },
+    { name: "Soudan", zone: "Fulfulde", speakers: "0,8 – 1,0 M", note: "" },
+    { name: "Gambie", zone: "Pulaar", speakers: "0,54 – 0,72 M", note: "" },
+    { name: "Côte d'Ivoire", zone: "Fulfulde", speakers: "~ 0,5 M", note: "" },
+    { name: "Guinée-Bissau", zone: "Pular", speakers: "0,44 – 0,65 M", note: "" },
+    { name: "Sierra Leone", zone: "Pular", speakers: "0,35 – 0,52 M", note: "" },
+    { name: "RCA", zone: "Fulfulde", speakers: "0,36 – 0,42 M", note: "" },
+    { name: "Ghana", zone: "Fulfulde", speakers: "1 – 2 M", note: "" },
+    { name: "Togo", zone: "Fulfulde", speakers: "0,13 – 0,19 M", note: "" },
   ];
 
   const pulaaku = [
