@@ -228,6 +228,8 @@ function DictionaryPage() {
       <SiteHeader />
 
       <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+        <PageNav className="mb-4" />
+        
         
         <div className="mb-8 flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
