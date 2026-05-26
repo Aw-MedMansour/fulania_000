@@ -71,6 +71,14 @@ Deno.serve(async (req) => {
     const body = await req.json();
     const word = String(body?.word ?? "").trim().slice(0, 80);
     const sourceLang = ["auto", "ff", "fr", "en", "ar"].includes(body?.sourceLang) ? body.sourceLang : "auto";
+    const langRaw = typeof body?.lang === "string" ? body.lang : "fr";
+    const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
+    const UI_LANG_LABEL: Record<string, string> = {
+      fr: "français",
+      ff: "Pulaar (Fulfulde)",
+      en: "English",
+      ar: "العربية (arabe)",
+    };
     const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
     const DIALECT_LABELS: Record<string, string> = {
       fouta_toro: "Pulaar du Fuuta Tooro (Sénégal, Mauritanie, Mali)",
@@ -90,7 +98,9 @@ Deno.serve(async (req) => {
           .join("\n")}\n=== Fin source ===`
       : "";
 
-    const userMsg = `Mot à traduire : « ${word} »\nLangue source supposée : ${sourceLang}\nDIALECTE CIBLE : ${dialectLabel} — donne la forme principale dans ce dialecte ; mentionne brièvement dans 'notes' si la forme diffère ailleurs.${ctxBlock}\n\nProduis la fiche en appelant translation_card.`;
+    const localizationNote = `\n\nLANGUE D'INTERFACE DE L'UTILISATEUR : ${UI_LANG_LABEL[lang]}.\n- Les champs 'pulaar' et 'example_pulaar' restent OBLIGATOIREMENT en Pulaar (ne traduis pas).\n- Les champs 'french', 'english', 'arabic' gardent leur langue propre.\n- TOUS les autres champs rédactionnels destinés à l'utilisateur ('notes', 'category') DOIVENT être rédigés en ${UI_LANG_LABEL[lang]} avec une traduction de qualité (idiomatique, précise).\n- Malgré son nom, 'example_french' doit contenir la traduction de l'exemple dans la langue de l'utilisateur (${UI_LANG_LABEL[lang]}).`;
+
+    const userMsg = `Mot à traduire : « ${word} »\nLangue source supposée : ${sourceLang}\nDIALECTE CIBLE : ${dialectLabel} — donne la forme principale dans ce dialecte ; mentionne brièvement dans 'notes' si la forme diffère ailleurs.${ctxBlock}${localizationNote}\n\nProduis la fiche en appelant translation_card.`;
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) {

@@ -38,22 +38,23 @@ type Card = {
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FN_URL = `${SUPABASE_URL}/functions/v1/dialect-translate`;
 
-function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.85;
-  window.speechSynthesis.cancel();
-  window.speechSynthesis.speak(u);
-}
-
 function TranslatePage() {
   const navigate = useNavigate();
   const { session, loading: authLoading } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [text, setText] = useState("");
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const speak = (s: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    const u = new SpeechSynthesisUtterance(s);
+    u.lang = lang === "ar" ? "ar-SA" : lang === "en" ? "en-US" : "fr-FR";
+    u.rate = 0.85;
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  };
 
   // Auth optional — page accessible without sign-in.
 
@@ -73,7 +74,7 @@ function TranslatePage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${s.access_token}`,
         },
-        body: JSON.stringify({ text: q }),
+        body: JSON.stringify({ text: q, lang }),
       });
       const j = await r.json();
       if (!r.ok) throw new Error(j?.error ?? "Erreur");

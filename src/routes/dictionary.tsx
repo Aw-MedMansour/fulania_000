@@ -58,7 +58,7 @@ function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const { user } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const qc = useQueryClient();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [history, setHistory] = useState<string[]>([]);
@@ -218,7 +218,7 @@ function DictionaryPage() {
   const speak = (text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
+    u.lang = lang === "ar" ? "ar-SA" : lang === "en" ? "en-US" : "fr-FR";
     u.rate = 0.85;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
@@ -549,7 +549,7 @@ type AICard = {
 };
 
 function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean }) {
-  const { t, dialect } = useLanguage();
+  const { t, dialect, lang } = useLanguage();
   const [card, setCard] = useState<AICard | null>(null);
   const [sources, setSources] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -577,7 +577,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
-        body: JSON.stringify({ word, sourceLang: "auto", dialect }),
+        body: JSON.stringify({ word, sourceLang: "auto", dialect, lang }),
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j?.error || "err");

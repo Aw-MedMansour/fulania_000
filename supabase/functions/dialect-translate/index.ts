@@ -55,6 +55,14 @@ Deno.serve(async (req) => {
 
     const body = await req.json();
     const text = String(body?.text ?? "").trim().slice(0, 200);
+    const langRaw = typeof body?.lang === "string" ? body.lang : "fr";
+    const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
+    const UI_LANG_LABEL: Record<string, string> = {
+      fr: "français",
+      ff: "Pulaar (Fulfulde)",
+      en: "English",
+      ar: "العربية (arabe)",
+    };
     if (!text) {
       return new Response(JSON.stringify({ error: "Texte requis." }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
@@ -64,6 +72,8 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Service indisponible." }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
+    const localizationNote = `\n\nLANGUE D'INTERFACE UTILISATEUR : ${UI_LANG_LABEL[lang]}.\n- Les champs dialectaux ('fouta_toro', 'fouta_djallon', 'macina', 'adamawa') restent en Pulaar/Fulfulde.\n- Malgré son nom, 'meaning_fr' doit contenir le sens dans la langue de l'utilisateur (${UI_LANG_LABEL[lang]}), traduction soignée et idiomatique.\n- 'notes' également en ${UI_LANG_LABEL[lang]}.`;
+
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
@@ -71,7 +81,7 @@ Deno.serve(async (req) => {
         model: "google/gemini-2.5-flash",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: `Mot/phrase : « ${text} »\n\nProduis la fiche dialectale en appelant dialect_card.` },
+          { role: "user", content: `Mot/phrase : « ${text} »${localizationNote}\n\nProduis la fiche dialectale en appelant dialect_card.` },
         ],
         tools: [TOOL],
         tool_choice: { type: "function", function: { name: "dialect_card" } },

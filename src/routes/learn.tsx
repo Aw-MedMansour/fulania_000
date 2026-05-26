@@ -139,14 +139,14 @@ function LearnPage() {
 /* ----------------------------- LESSON ----------------------------- */
 
 function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boolean }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   if (isLoading) return <SkeletonGrid />;
   if (entries.length === 0) return <Empty text={t("learn.empty")} />;
 
   const speak = (text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
+    u.lang = lang === "ar" ? "ar-SA" : lang === "en" ? "en-US" : "fr-FR";
     u.rate = 0.8;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
@@ -382,7 +382,7 @@ type Lesson = {
 };
 
 function AILessonView({ defaultTopic }: { defaultTopic: string }) {
-  const { t, dialect } = useLanguage();
+  const { t, dialect, lang } = useLanguage();
   const [topic, setTopic] = useState(defaultTopic ?? "");
   const [level, setLevel] = useState<"debutant" | "intermediaire" | "avance">("debutant");
   const [lesson, setLesson] = useState<Lesson | null>(null);
@@ -392,7 +392,7 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
   const speak = (text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
+    u.lang = lang === "ar" ? "ar-SA" : lang === "en" ? "en-US" : "fr-FR";
     u.rate = 0.8;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
@@ -409,7 +409,7 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
       const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-lesson`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session?.access_token ?? ""}` },
-        body: JSON.stringify({ topic: q, level, dialect }),
+        body: JSON.stringify({ topic: q, level, dialect, lang }),
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j?.error || "err");
