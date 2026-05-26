@@ -1119,14 +1119,6 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const setDialect = (d: Dialect) => {
     setDialectState(d);
     try { localStorage.setItem("fulania.dialect", d); } catch {}
-    // Choisir un dialecte bascule automatiquement la langue principale en Pulaar
-    _currentLang = "ff";
-    setLangState("ff");
-    try { localStorage.setItem("fulania.lang", "ff"); } catch {}
-    if (typeof document !== "undefined") {
-      document.documentElement.lang = "ff";
-      document.documentElement.dir = "ltr";
-    }
   };
 
 
