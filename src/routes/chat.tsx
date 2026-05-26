@@ -146,7 +146,8 @@ function ChatPage() {
           messages: next.slice(-20).map(({ role, content }) => ({ role, content })),
           lang: chatLang,
           dialect,
-          webSearch,
+          webSearch: webSearch || deepSearch,
+          deepSearch,
           attachments: payloadAttachments,
         }),
       });
