@@ -36,7 +36,7 @@ export function PageNav({ className = "" }: { className?: string }) {
         aria-label={t("nav.back")}
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        <span className="hidden sm:inline">{t("nav.back")}</span>
+        <span>{t("nav.back")}</span>
       </button>
       <Link
         to="/"
