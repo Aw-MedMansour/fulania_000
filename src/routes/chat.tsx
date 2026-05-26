@@ -529,7 +529,7 @@ function ChatPage() {
             rows={1}
             placeholder={t("chat.placeholder")}
             aria-label={t("chat.aria.msg")}
-            title="Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer"
+            title={t("chat.enterHint")}
             className="min-h-[52px] max-h-[200px] flex-1 resize-none rounded-2xl border border-border bg-card px-4 py-3.5 text-base leading-relaxed text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           <button
