@@ -1,50 +1,59 @@
+# Plan — Enrichir l'Assistant IA avec Recherche Internet & Pièces jointes
+
 ## Objectif
+Permettre à l'utilisateur sur `/chat` de :
+1. Activer une **recherche internet** (web search) pour enrichir les réponses avec des informations à jour et sourcées.
+2. **Joindre des images et fichiers** (PDF, texte, photos) à ses messages, que l'assistant analyse.
 
-Faire en sorte que le bouton « Retour » de chaque outil (chat, dictionary, learn, translate, culture) ramène **toujours à la page réellement précédente** (accueil, hub, ou un autre outil), au lieu de retomber arbitrairement sur `/hub` ou `/`.
+## 1. Recherche Internet
 
-## Diagnostic
+**Approche :** intégrer le connecteur **Firecrawl** (search + scrape) côté serveur dans l'edge function `chat`.
 
-Aujourd'hui :
-- Les `<Link>` poussent bien dans l'historique (OK).
-- `PageNav` appelle `router.history.back()` — correct en théorie.
-- **Mais** plusieurs `navigate({ replace: true })` cassent la chaîne :
-  - `auth.tsx` : après connexion → `/hub` en `replace` → la page d'origine (ex. `/`) est perdue, donc « Retour » depuis `/chat` saute à un état imprévu.
-  - `culture.tsx` et `translate.tsx` : `navigate({ to: "/auth", replace: true })` quand non connecté → impossible de revenir à l'outil d'origine après login.
-  - `hub.tsx` (signOut) : `replace: true` vers `/` — pas un bug de retour mais à harmoniser.
-- Les CTA de l'accueil (`index.tsx`) envoient tous vers `/auth` sans mémoriser l'outil ciblé → l'utilisateur ne revient jamais sur l'outil voulu.
+- Ajout d'un toggle "🌐 Recherche web" dans l'UI de `/chat` (à côté du sélecteur de dialecte).
+- Quand activé, le frontend envoie `webSearch: true` à l'edge function.
+- L'edge function `chat/index.ts` :
+  - Extrait les mots-clés du dernier message utilisateur (déjà fait pour le RAG dictionnaire).
+  - Appelle `firecrawl.search(query, { limit: 5, scrapeOptions: { formats: ['markdown'] } })`.
+  - Injecte les résultats (titres + extraits + URLs) dans le system prompt sous une section `=== RECHERCHE WEB ===`.
+  - Demande au modèle de citer les sources `[1], [2]…` à la fin.
+- Le frontend rend les citations cliquables sous la réponse.
 
-## Plan
+**Prérequis :** connecter Firecrawl via `standard_connectors--connect`. Si l'utilisateur préfère ne pas utiliser Firecrawl, on peut basculer sur Perplexity (recherche IA native avec citations) — à confirmer.
 
-### 1. Paramètre `?next=` pour rediriger après auth
-- `auth.tsx` :
-  - Lire `search.next` (string, route validée via `validateSearch`).
-  - Après `signIn` / `signUp` réussi ET « Continuer sans compte » → `navigate({ to: next ?? "/hub" })` **sans `replace`**, afin de préserver l'historique.
-  - Si déjà connecté à l'arrivée sur `/auth` → rediriger vers `next ?? "/hub"`.
+## 2. Upload de fichiers et photos
 
-### 2. Garde d'auth des outils protégés
-- `culture.tsx`, `translate.tsx` : remplacer
-  `navigate({ to: "/auth", replace: true })` par
-  `navigate({ to: "/auth", search: { next: "/culture" } })` (idem translate).
-  Garder `replace: true` ici est OK (on ne veut pas que « Retour » re-déclenche la garde), mais on transmet `next` pour boucler proprement après login.
+**Approche :** uploads gérés côté client, envoyés à l'edge function en base64 (pas besoin de bucket Storage pour des pièces jointes éphémères).
 
-### 3. CTA de l'accueil
-- `index.tsx` : les liens « Assistant IA », « Dictionnaire », etc. passent par `<Link to="/auth" search={{ next: "/chat" }}>` (ou `/dictionary`, `/learn`…). Les CTA génériques restent `to="/auth"` sans `next` (→ hub).
+- Bouton 📎 dans la barre de saisie de `/chat` :
+  - Accepte images (`.png .jpg .webp`), PDF, texte (`.txt .md`).
+  - Limite : 5 fichiers, 10 Mo total par message.
+- Aperçu (vignette image, icône fichier) avant envoi, avec bouton supprimer.
+- Le payload envoyé devient :
+  ```ts
+  { messages: [...], attachments: [{ name, mimeType, dataBase64 }] }
+  ```
+- Edge function `chat/index.ts` :
+  - **Images** → passées directement au modèle Gemini en multimodal (`content: [{ type: 'image_url', image_url: { url: 'data:...' } }, { type: 'text', text: ... }]`). Gemini 2.5 Flash gère le multimodal nativement via Lovable AI Gateway.
+  - **PDF/texte** → extraction texte côté serveur (texte brut directement ; PDF via lib légère ou simplement passer le binaire à Gemini qui supporte PDF en input multimodal).
+  - Le contenu extrait est injecté dans le message utilisateur.
 
-### 4. PageNav — robustesse du retour
-- `page-nav.tsx` : `router.history.back()` reste la base.
-- Détecter le cas « pas d'historique applicatif » (ex. ouverture directe d'un lien) via `window.history.length <= 1` **ou** un compteur de navigations dans `sessionStorage` — fallback vers `/hub` si connecté, sinon `/`. (Comportement actuel conservé, légère amélioration.)
+## 3. UI `/chat` — modifications
 
-### 5. Harmonisation
-- Retirer les `replace: true` superflus dans `hub.tsx` (signOut peut rester en replace : voulu).
-- Vérifier qu'aucun `<Link>` n'utilise `replace` pour la navigation inter-outils.
+- Toggle "Recherche web" (icône globe) à côté du sélecteur de dialecte.
+- Bouton trombone 📎 à gauche de la zone de texte.
+- Vignettes des pièces jointes au-dessus du textarea.
+- Badge "🌐 Sources" sous les réponses utilisant la recherche web, avec liens cliquables.
 
-## Hors scope
-- Pas de refonte visuelle de PageNav.
-- Pas de modification des Edge Functions ni du contenu i18n.
-- Pas de changement du flux d'inscription.
+## 4. Aspects techniques
 
-## Vérification
-- Scénario A : `/` → clic « Assistant IA » → `/auth?next=/chat` → login → `/chat` → bouton Retour → revient sur `/` (pas sur `/hub`).
-- Scénario B : `/hub` → `/chat` → Retour → `/hub`.
-- Scénario C : `/dictionary` → `/chat` → Retour → `/dictionary`.
-- Scénario D : ouverture directe de `/chat` (lien partagé) → Retour → `/hub` si connecté, `/` sinon.
+- Pas de changement DB.
+- Edge function `chat` reste publique (sans auth) — conforme à la mémoire sécurité.
+- Validation : limite stricte taille payload (15 Mo max), nombre de pièces jointes.
+- Rate limiting léger par IP recommandé (déjà noté dans `@security-memory`).
+
+## Questions avant de coder
+
+1. **Moteur de recherche** : Firecrawl (scrape + search, flexible) ou **Perplexity** (réponses IA avec citations natives, plus simple) ?
+2. **Persistance** : conserver l'historique des conversations en DB, ou rester sur du in-memory comme actuellement ?
+
+Je peux démarrer dès ta validation — je partirai sur **Firecrawl + multimodal Gemini** sauf indication contraire.
