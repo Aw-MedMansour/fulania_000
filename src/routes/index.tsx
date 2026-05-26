@@ -4,10 +4,12 @@ import {
   XCircle, CheckCircle2, Languages, Users, Globe, Heart, Lightbulb, Shield,
   Mail, Phone, MapPin,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 import { SiteHeader, SiteFooter } from "@/components/layout";
+import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/")({
@@ -87,54 +89,77 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} />
+          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover animate-kenburns" width={1920} height={1080} />
           <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/80 to-earth/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth/80 via-transparent to-transparent" />
+          <div className="pointer-events-none absolute -right-24 top-1/3 h-96 w-96 rounded-full bg-[var(--gold)]/20 blur-3xl animate-float-glow" aria-hidden />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
-          <div className="max-w-2xl text-cream">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/40 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--gold)] backdrop-blur">
+          <motion.div
+            className="max-w-2xl text-cream"
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } }}
+          >
+            <motion.div
+              variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/40 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--gold)] backdrop-blur"
+            >
               <Sparkles className="h-3 w-3" />
               {t("hero.badge")}
-            </div>
+            </motion.div>
 
-            <h1 className="mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl">
+            <motion.h1
+              variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
+              className="mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl"
+            >
               {t("hero.title1")}{" "}
-              <span className="italic text-[var(--gold)]">{t("hero.title2")}</span>.
-            </h1>
+              <span className="italic text-shimmer-gold">{t("hero.title2")}</span>.
+            </motion.h1>
 
-            <p className="mt-6 max-w-xl text-lg text-cream/85">{t("hero.subtitle")}</p>
+            <motion.p
+              variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+              className="mt-6 max-w-xl text-lg text-cream/85"
+            >
+              {t("hero.subtitle")}
+            </motion.p>
 
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link to="/auth" className="inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90">
-                {t("btn.chat")} <ArrowRight className="h-4 w-4" />
+            <motion.div
+              variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
+              className="mt-9 flex flex-wrap gap-3"
+            >
+              <Link to="/auth" className="group inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90 hover:shadow-xl hover:-translate-y-0.5">
+                {t("btn.chat")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
-              <a href="#solution" className="inline-flex items-center gap-2 rounded-md border border-cream/30 px-6 py-3 text-sm font-medium text-cream backdrop-blur transition hover:bg-cream/10">
+              <a href="#solution" className="inline-flex items-center gap-2 rounded-md border border-cream/30 px-6 py-3 text-sm font-medium text-cream backdrop-blur transition hover:bg-cream/10 hover:border-cream/50">
                 {t("btn.discover")}
               </a>
-            </div>
+            </motion.div>
 
-            <dl className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-cream/20 pt-6">
+            <motion.dl
+              variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } } }}
+              className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-cream/20 pt-6"
+            >
               <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.speakers")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">~100 M</dd></div>
               <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.countries")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">20+</dd></div>
               <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.dialects")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">4</dd></div>
-            </dl>
-          </div>
+            </motion.dl>
+          </motion.div>
         </div>
       </section>
 
       {/* PROBLEM */}
       <section className="bg-secondary/40 bg-grain py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("problem.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("problem.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("problem.body")}</p>
-          </div>
+          </Reveal>
 
-          <div className="mt-12 grid gap-4 lg:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-card p-7">
+          <StaggerGroup className="mt-12 grid gap-4 lg:grid-cols-2">
+            <StaggerItem className="rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="font-display text-lg font-semibold text-foreground">{t("problem.other")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
                 {[t("problem.other1"), t("problem.other2"), t("problem.other3"), t("problem.other4")].map((x) => (
@@ -144,8 +169,8 @@ function Index() {
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7">
+            </StaggerItem>
+            <StaggerItem className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="font-display text-lg font-semibold text-primary">{t("problem.pulaar")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
                 {[t("problem.pulaar1"), t("problem.pulaar2"), t("problem.pulaar3"), t("problem.pulaar4")].map((x, i) => (
@@ -155,43 +180,54 @@ function Index() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </StaggerItem>
+          </StaggerGroup>
 
-          <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
-            {t("problem.quote")}
-          </p>
+          <Reveal>
+            <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
+              {t("problem.quote")}
+            </p>
+          </Reveal>
         </div>
       </section>
 
       {/* SOLUTION */}
       <section id="solution" className="py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-          <div>
+          <Reveal>
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("sol.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("sol.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("sol.body")}</p>
 
             <div className="mt-8 space-y-4">
-              <div className="rounded-xl border border-border bg-card p-5">
+              <div className="rounded-xl border border-border bg-card p-5 transition hover:border-muted-foreground/40">
                 <p className="text-sm uppercase tracking-wider text-muted-foreground">{t("sol.notLabel")}</p>
                 <p className="mt-1.5 text-foreground/80">{t("sol.notText")}</p>
               </div>
-              <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5">
+              <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5 transition hover:border-primary/60">
                 <p className="text-sm uppercase tracking-wider text-primary">{t("sol.isLabel")}</p>
                 <p className="mt-1.5 text-foreground">{t("sol.isText")}</p>
               </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl" aria-hidden />
-            <img src={portraitImg} alt={t("alt.portrait")} loading="lazy" width={1024} height={1024} className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl" />
+          <Reveal delay={0.15} className="relative">
+            <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl animate-float-glow" aria-hidden />
+            <motion.img
+              src={portraitImg}
+              alt={t("alt.portrait")}
+              loading="lazy"
+              width={1024}
+              height={1024}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl"
+            />
             <div className="absolute -bottom-6 -left-6 max-w-[240px] rounded-xl border border-border bg-card p-4 shadow-xl">
               <p className="font-display text-sm italic text-primary">« Pulaagu ko ngallu mawngu »</p>
               <p className="mt-1 text-xs text-muted-foreground">{t("sol.quoteCaption")}</p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -199,13 +235,13 @@ function Index() {
       <section id="culture" className="relative overflow-hidden bg-earth py-24 text-cream">
         <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "400px" }} aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("culture.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("culture.title")}</h2>
             <p className="mt-5 text-lg text-cream/75">{t("culture.body")}</p>
-          </div>
+          </Reveal>
 
-          <div className="mt-12 overflow-hidden rounded-2xl border border-cream/15">
+          <Reveal delay={0.1} className="mt-12 overflow-hidden rounded-2xl border border-cream/15">
             <table className="w-full text-left text-sm">
               <thead className="bg-cream/5 text-[var(--gold)]">
                 <tr>
@@ -216,33 +252,45 @@ function Index() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-cream/10">
-                {dialects.map((d) => (
-                  <tr key={d.name}>
+                {dialects.map((d, i) => (
+                  <motion.tr
+                    key={d.name}
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.45, delay: Math.min(i * 0.03, 0.4), ease: [0.22, 1, 0.36, 1] }}
+                    className="transition-colors hover:bg-cream/[0.04]"
+                  >
                     <td className="px-5 py-4 font-display text-base font-semibold">{d.name}</td>
                     <td className="px-5 py-4 text-cream/80">{d.zone}</td>
                     <td className="px-5 py-4 text-[var(--gold)]">{d.speakers}</td>
                     <td className="hidden px-5 py-4 text-cream/70 sm:table-cell">{d.note}</td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </Reveal>
 
           <div className="mt-20">
-            <h3 className="font-display text-3xl font-semibold sm:text-4xl">{t("pulaaku.title")}</h3>
-            <p className="mt-3 max-w-2xl text-cream/75">{t("pulaaku.body")}</p>
+            <Reveal>
+              <h3 className="font-display text-3xl font-semibold sm:text-4xl">{t("pulaaku.title")}</h3>
+              <p className="mt-3 max-w-2xl text-cream/75">{t("pulaaku.body")}</p>
+            </Reveal>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {pulaaku.map(({ word, meaning, icon: Icon }) => (
-                <div key={word} className="group rounded-2xl border border-cream/15 bg-cream/[0.03] p-6 transition hover:border-[var(--gold)]/50 hover:bg-cream/[0.06]">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)]">
+                <StaggerItem
+                  key={word}
+                  className="group rounded-2xl border border-cream/15 bg-cream/[0.03] p-6 transition hover:-translate-y-1 hover:border-[var(--gold)]/50 hover:bg-cream/[0.06] hover:shadow-xl"
+                >
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)] transition group-hover:scale-110">
                     <Icon className="h-5 w-5" />
                   </div>
                   <p className="mt-5 font-display text-2xl font-semibold text-[var(--gold)]">{word}</p>
                   <p className="mt-2 text-sm text-cream/75">{meaning}</p>
-                </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerGroup>
           </div>
         </div>
       </section>
@@ -250,54 +298,56 @@ function Index() {
       {/* PILIERS */}
       <section id="piliers" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("pillars.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("pillars.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
-          </div>
+          </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerGroup className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {piliers.map(({ icon: Icon, title, desc }, idx) => (
-              <div key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10">0{idx + 1}</div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <StaggerItem key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
+                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-              </div>
+              </StaggerItem>
             ))}
-            <Link to="/auth" className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90">
-              <Sparkles className="h-8 w-8" />
-              <div>
-                <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
-                <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
-                <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
-                  {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+            <StaggerItem>
+              <Link to="/auth" className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90 hover:shadow-2xl">
+                <Sparkles className="h-8 w-8 transition group-hover:rotate-12" />
+                <div>
+                  <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
+                  <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
+                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
+                    {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </div>
+              </Link>
+            </StaggerItem>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* PUBLIC */}
       <section className="bg-secondary/40 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("public.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("public.title")}</h2>
-          </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          </Reveal>
+          <StaggerGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {publics.map(({ tag, desc }) => (
-              <div key={tag} className="rounded-2xl border border-border bg-card p-6 transition hover:border-primary/40">
+              <StaggerItem key={tag} className="rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
                   <Users className="h-3 w-3" />{tag}
                 </div>
                 <p className="mt-4 text-sm text-foreground/80">{desc}</p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
@@ -305,11 +355,11 @@ function Index() {
       <section id="vision" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
-            <div>
+            <Reveal>
               <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("vision.tag")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance">{t("vision.title")}</h2>
               <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
-              <div className="mt-8 grid grid-cols-2 gap-3">
+              <StaggerGroup className="mt-8 grid grid-cols-2 gap-3">
                 {[
                   { icon: Shield, label: t("vision.preserve") },
                   { icon: Heart, label: t("vision.transmit") },
@@ -318,24 +368,26 @@ function Index() {
                   { icon: Users, label: t("vision.gather") },
                   { icon: Languages, label: t("vision.include") },
                 ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm">
+                  <StaggerItem key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:bg-primary/5">
                     <Icon className="h-4 w-4 text-primary" />{label}
-                  </div>
+                  </StaggerItem>
                 ))}
-              </div>
-            </div>
+              </StaggerGroup>
+            </Reveal>
 
             <div>
-              <h3 className="font-display text-2xl font-semibold">{t("vision.roadmap")}</h3>
-              <ol className="mt-6 space-y-5">
+              <Reveal>
+                <h3 className="font-display text-2xl font-semibold">{t("vision.roadmap")}</h3>
+              </Reveal>
+              <StaggerGroup className="mt-6 space-y-5">
                 {phases.map((p) => (
-                  <li key={p.id} className="relative rounded-2xl border border-border bg-card p-6 pl-20">
-                    <div className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-primary-foreground">{p.id}</div>
+                  <StaggerItem key={p.id} className="relative rounded-2xl border border-border bg-card p-6 pl-20 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                    <div className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-primary-foreground shadow-md">{p.id}</div>
                     <h4 className="font-display text-lg font-semibold">{t("vision.phase")} {p.id} — {p.title}</h4>
                     <p className="mt-1 text-sm text-muted-foreground">{p.body}</p>
-                  </li>
+                  </StaggerItem>
                 ))}
-              </ol>
+              </StaggerGroup>
             </div>
           </div>
         </div>
@@ -345,47 +397,51 @@ function Index() {
       <section id="contact" className="relative overflow-hidden bg-earth py-24 text-cream">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <div>
+            <Reveal>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
               <p className="mt-5 whitespace-pre-line text-cream/80">
                 {t("contact.bio")}
               </p>
-            </div>
+            </Reveal>
 
-            <div>
+            <Reveal delay={0.1}>
               <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.callTag")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("contact.callTitle")}</h2>
               <p className="mt-5 text-cream/80">{t("contact.callBody")}</p>
 
-              <div className="mt-8 space-y-3">
-                <a href="mailto:awmedmansour@outlook.com" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
-                  <Mail className="h-5 w-5 text-[var(--gold)]" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.email")}</p>
-                    <p className="text-cream">awmedmansour@outlook.com</p>
-                  </div>
-                </a>
-                <a href="tel:+213780306486" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
-                  <Phone className="h-5 w-5 text-[var(--gold)]" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.phone")}</p>
-                    <p className="text-cream">+213 780 30 64 86</p>
-                  </div>
-                </a>
-                <div className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4">
+              <StaggerGroup className="mt-8 space-y-3">
+                <StaggerItem>
+                  <a href="mailto:awmedmansour@outlook.com" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
+                    <Mail className="h-5 w-5 text-[var(--gold)]" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.email")}</p>
+                      <p className="text-cream">awmedmansour@outlook.com</p>
+                    </div>
+                  </a>
+                </StaggerItem>
+                <StaggerItem>
+                  <a href="tel:+213780306486" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
+                    <Phone className="h-5 w-5 text-[var(--gold)]" />
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.phone")}</p>
+                      <p className="text-cream">+213 780 30 64 86</p>
+                    </div>
+                  </a>
+                </StaggerItem>
+                <StaggerItem className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4">
                   <MapPin className="h-5 w-5 text-[var(--gold)]" />
                   <div>
                     <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.address")}</p>
                     <p className="text-cream">{t("contact.location")}</p>
                   </div>
-                </div>
-              </div>
+                </StaggerItem>
+              </StaggerGroup>
 
-              <Link to="/auth" className="mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:bg-[var(--gold)]/90">
-                {t("contact.tryAi")} <ArrowRight className="h-4 w-4" />
+              <Link to="/auth" className="group mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
+                {t("contact.tryAi")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
-            </div>
+            </Reveal>
           </div>
         </div>
       </section>
