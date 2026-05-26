@@ -163,7 +163,7 @@ export const translations: Record<Lang, Dict> = {
     // Culture
     "culture.tag": "Langue & Culture",
     "culture.title": "Un peuple immense, une civilisation millénaire.",
-    "culture.body": "Des Fulɓe du fleuve Sénégal aux Fulɓe du Sahel, une famille linguistique répartie sur plus de 20 pays et quatre grandes variantes dialectales.",
+    "culture.body": "Des rives du fleuve Sénégal aux plaines du Sahel, une famille linguistique répartie sur plus de 20 pays et quatre grandes variantes dialectales.",
     "culture.col.dialect": "Dialecte",
     "culture.col.zone": "Zone",
     "culture.col.speakers": "Locuteurs",
@@ -421,7 +421,7 @@ export const translations: Record<Lang, Dict> = {
 
     "culture.tag": "Ɗemngal & Pinal",
     "culture.title": "Yimɓe heewɓe, civilisasiyoŋ duuɓi ujunere.",
-    "culture.body": "Gila Fulɓe maayo Senegaal haa Fulɓe Saheli, leñol ɗemngal saraare e leyɗe ɓuri 20 e nayi ƴeewndeeji mawɗi.",
+    "culture.body": "Gila maayo Senegaal haa Saheli, leñol ɗemngal saraare e leyɗe ɓuri 20 e nayi ƴeewndeeji mawɗi.",
     "culture.col.dialect": "Ƴeewndeere", "culture.col.zone": "Nokku",
     "culture.col.speakers": "Wolwooɓe", "culture.col.notes": "Ɓeydiiɗi",
     "pulaaku.title": "Pulaagu — laawol moƴƴere Fulɓe",
@@ -652,7 +652,7 @@ export const translations: Record<Lang, Dict> = {
 
     "culture.tag": "Language & Culture",
     "culture.title": "A vast people, a millennia-old civilization.",
-    "culture.body": "From the Fulɓe of the Senegal River to the Fulɓe of the Sahel, a linguistic family spread across more than 20 countries and four major dialectal variants.",
+    "culture.body": "From the Senegal River to the Sahel plains, a linguistic family spread across more than 20 countries and four major dialectal variants.",
     "culture.col.dialect": "Dialect", "culture.col.zone": "Region",
     "culture.col.speakers": "Speakers", "culture.col.notes": "Notes",
     "pulaaku.title": "Pulaagu — the Fulani moral code",
@@ -884,7 +884,7 @@ export const translations: Record<Lang, Dict> = {
 
     "culture.tag": "اللغة والثقافة",
     "culture.title": "شعب عظيم، حضارة آلاف السنين.",
-    "culture.body": "من فولبي نهر السنغال إلى فولبي الساحل، عائلة لغوية ممتدة على أكثر من 20 دولة وأربع لهجات رئيسية.",
+    "culture.body": "من ضفاف نهر السنغال إلى سهول الساحل، عائلة لغوية ممتدة على أكثر من 20 دولة وأربع لهجات رئيسية.",
     "culture.col.dialect": "اللهجة", "culture.col.zone": "المنطقة",
     "culture.col.speakers": "المتحدثون", "culture.col.notes": "خصائص",
     "pulaaku.title": "Pulaagu — المدوّنة الأخلاقية الفولانية",
