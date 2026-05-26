@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Send, Sparkles, Loader2, Check, ChevronDown, Languages } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
 import { PageNav } from "@/components/page-nav";
+
+type Source = { title: string; url: string };
+type Attachment = { name: string; mimeType: string; dataBase64: string; previewUrl?: string };
 
 export const Route = createFileRoute("/chat")({
   head: () => {
@@ -22,7 +25,24 @@ export const Route = createFileRoute("/chat")({
   component: ChatPage,
 });
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = { role: "user" | "assistant"; content: string; sources?: Source[] };
+
+const MAX_ATTACHMENTS = 5;
+const MAX_FILE_BYTES = 8 * 1024 * 1024;
+const ACCEPT = "image/png,image/jpeg,image/webp,image/gif,application/pdf,text/plain,text/markdown";
+
+function fileToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const res = reader.result as string;
+      const comma = res.indexOf(",");
+      resolve(comma >= 0 ? res.slice(comma + 1) : res);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string;
 const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
@@ -33,8 +53,11 @@ function ChatPage() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [webSearch, setWebSearch] = useState(false);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Chat language IS the global site language — single source of truth.
   const chatLang = siteLang;
@@ -56,26 +79,62 @@ function ChatPage() {
     t("chat.sug1"), t("chat.sug2"), t("chat.sug3"), t("chat.sug4"),
   ], [t]);
 
+  async function handleFiles(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    const remaining = MAX_ATTACHMENTS - attachments.length;
+    const list = Array.from(files).slice(0, remaining);
+    const added: Attachment[] = [];
+    for (const f of list) {
+      if (f.size > MAX_FILE_BYTES) { setError(`${f.name} : trop volumineux (max 8 Mo).`); continue; }
+      try {
+        const dataBase64 = await fileToBase64(f);
+        const previewUrl = f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined;
+        added.push({ name: f.name, mimeType: f.type || "application/octet-stream", dataBase64, previewUrl });
+      } catch { /* ignore */ }
+    }
+    if (added.length) setAttachments((a) => [...a, ...added]);
+  }
+
+  function removeAttachment(i: number) {
+    setAttachments((a) => {
+      const copy = [...a];
+      const [removed] = copy.splice(i, 1);
+      if (removed?.previewUrl) URL.revokeObjectURL(removed.previewUrl);
+      return copy;
+    });
+  }
+
   async function send(text: string) {
     const content = text.trim();
-    if (!content || loading) return;
+    if ((!content && attachments.length === 0) || loading) return;
     setError(null);
 
     const { data: { session: current } } = await supabase.auth.getSession();
-
-    const next: Msg[] = [...messages, { role: "user", content }];
+    const userContent = content || (attachments.length ? "(voir pièces jointes)" : "");
+    const next: Msg[] = [...messages, { role: "user", content: userContent }];
     setMessages(next);
     setInput("");
+    const sentAttachments = attachments;
+    setAttachments([]);
     setLoading(true);
 
     try {
+      const payloadAttachments = sentAttachments.map((a) => ({
+        name: a.name, mimeType: a.mimeType, dataBase64: a.dataBase64,
+      }));
       const resp = await fetch(FUNCTION_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           ...(current?.access_token ? { Authorization: `Bearer ${current.access_token}` } : {}),
         },
-        body: JSON.stringify({ messages: next.slice(-20), lang: chatLang, dialect }),
+        body: JSON.stringify({
+          messages: next.slice(-20).map(({ role, content }) => ({ role, content })),
+          lang: chatLang,
+          dialect,
+          webSearch,
+          attachments: payloadAttachments,
+        }),
       });
 
       if (!resp.ok || !resp.body) {
@@ -87,6 +146,7 @@ function ChatPage() {
       const decoder = new TextDecoder();
       let buffer = "";
       let assistant = "";
+      let sources: Source[] | undefined;
       setMessages((m) => [...m, { role: "assistant", content: "" }]);
 
       while (true) {
@@ -101,12 +161,21 @@ function ChatPage() {
           if (data === "[DONE]") continue;
           try {
             const parsed = JSON.parse(data);
+            if (Array.isArray(parsed.sources)) {
+              sources = parsed.sources;
+              setMessages((m) => {
+                const copy = [...m];
+                copy[copy.length - 1] = { ...copy[copy.length - 1], sources };
+                return copy;
+              });
+              continue;
+            }
             const delta = parsed.choices?.[0]?.delta?.content;
             if (delta) {
               assistant += delta;
               setMessages((m) => {
                 const copy = [...m];
-                copy[copy.length - 1] = { role: "assistant", content: assistant };
+                copy[copy.length - 1] = { role: "assistant", content: assistant, sources };
                 return copy;
               });
             }
@@ -165,7 +234,7 @@ function ChatPage() {
           ) : (
             <div className="space-y-5">
               {messages.map((m, i) => (
-                <MessageBubble key={i} role={m.role} content={m.content} />
+                <MessageBubble key={i} role={m.role} content={m.content} sources={m.sources} />
               ))}
               {loading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -184,10 +253,74 @@ function ChatPage() {
 
       {/* Composer */}
       <div className="flex-none border-t border-border bg-background">
+        <div className="mx-auto w-full max-w-4xl px-3 pt-2 sm:px-4">
+          {/* Attachments preview */}
+          {attachments.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {attachments.map((a, i) => (
+                <div key={i} className="group relative flex items-center gap-2 rounded-lg border border-border bg-card px-2 py-1.5 text-xs">
+                  {a.previewUrl ? (
+                    <img src={a.previewUrl} alt={a.name} className="h-8 w-8 rounded object-cover" />
+                  ) : a.mimeType.startsWith("image/") ? (
+                    <ImageIcon className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  <span className="max-w-[140px] truncate">{a.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeAttachment(i)}
+                    className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Retirer"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Toolbar */}
+          <div className="mb-2 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setWebSearch((v) => !v)}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${
+                webSearch
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={webSearch}
+              title="Activer la recherche internet"
+            >
+              <Globe className="h-3.5 w-3.5" />
+              <span>Recherche web {webSearch ? "ON" : "OFF"}</span>
+            </button>
+          </div>
+        </div>
+
         <form
           onSubmit={(e) => { e.preventDefault(); send(input); }}
-          className="mx-auto flex max-w-4xl items-end gap-2 px-3 py-3 sm:px-4 sm:py-4"
+          className="mx-auto flex max-w-4xl items-end gap-2 px-3 pb-3 sm:px-4 sm:pb-4"
         >
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept={ACCEPT}
+            className="hidden"
+            onChange={(e) => { handleFiles(e.target.files); e.target.value = ""; }}
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={loading || attachments.length >= MAX_ATTACHMENTS}
+            className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border border-border bg-card text-muted-foreground transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Joindre un fichier"
+            title="Joindre image, PDF ou texte"
+          >
+            <Paperclip className="h-5 w-5" />
+          </button>
           <textarea
             ref={textareaRef}
             id="chat-message"
@@ -201,7 +334,7 @@ function ChatPage() {
           />
           <button
             type="submit"
-            disabled={loading || !input.trim()}
+            disabled={loading || (!input.trim() && attachments.length === 0)}
             className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl bg-primary text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label={t("chat.send")}
           >
@@ -301,7 +434,7 @@ function ChatLangSelector({
 }
 
 
-function MessageBubble({ role, content }: Msg) {
+function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -324,6 +457,23 @@ function MessageBubble({ role, content }: Msg) {
             )
           ) : (
             <span className="opacity-50">…</span>
+          )}
+          {!isUser && sources && sources.length > 0 && (
+            <div className="mt-3 border-t border-border/60 pt-2">
+              <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <Globe className="h-3 w-3" /> Sources
+              </div>
+              <ol className="space-y-0.5 text-xs">
+                {sources.map((s, i) => (
+                  <li key={i} className="truncate">
+                    <span className="text-muted-foreground">[{i + 1}]</span>{" "}
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {s.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
           )}
         </div>
       </div>

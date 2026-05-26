@@ -1,4 +1,4 @@
-// FulanIA — Assistant IA edge function with dictionary RAG
+// FulanIA — Assistant IA edge function with dictionary RAG, web search & multimodal
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -34,32 +34,24 @@ SOURCE D'AUTORITÉ — DICTIONNAIRE FULANIA :
 - Quand un « DICTIONNAIRE DE RÉFÉRENCE » t'est fourni ci-dessous, ses entrées font autorité : recopie l'orthographe et la traduction EXACTES de ces entrées.
 - Si la question concerne un mot présent dans ce dictionnaire, utilise OBLIGATOIREMENT la forme du dictionnaire ; n'invente pas de variante.
 
+PIÈCES JOINTES :
+- Quand l'utilisateur envoie une image, décris-la et réponds à sa question. Si elle contient du texte (notamment Pulaar), lis-le et corrige l'orthographe si besoin.
+- Quand l'utilisateur envoie un document texte, traite son contenu directement.
+
 Style : chaleureux, pédagogue, comme un griot moderne. Markdown bien structuré (titres, listes, gras). Concis par défaut, détaillé sur demande.`;
 
-// Synthèse de l'ouvrage « Celluka e Mbinndiin Pulaar » (CERFLA, 2020) — règles
-// d'orthographe et de grammaire pulaar qui font autorité pour l'assistant.
 const CELLUKA_RULES = `RÈGLES PULAAR (orthographe & grammaire — source: Celluka e Mbinndiin Pulaar, CERFLA 2020) :
 
 Alphabet pulaar (32 lettres) : ' a b ɓ c d ɗ e f g h i j k l m mb n nd ng nj ñ ŋ o p r s t u w y ƴ.
-- 5 voyelles (laaɓɗe) : a e i o u, qui peuvent être brèves (daɓɓe) ou longues (duurtuɗe : aa, ee, ii, oo, uu).
+- 5 voyelles (laaɓɗe) : a e i o u, brèves (daɓɓe) ou longues (duurtuɗe : aa, ee, ii, oo, uu).
 - La longueur change le sens : « hirde » ≠ « hiirde », « horde » ≠ « hoorde ».
 - Consonnes spéciales obligatoires : ɓ ɗ ƴ ŋ ñ. Ne JAMAIS écrire b/d/y à la place.
-- Prénasalisées : mb, nd, ng, nj.
-- Géminées possibles : bb, dd, ll, mm, nn, pp, tt, kk, ƴƴ…
+- Prénasalisées : mb, nd, ng, nj. Géminées possibles : bb, dd, ll, mm, nn, pp, tt, kk, ƴƴ…
 
-Mots (helmere) : composés d'une ou plusieurs syllabes (hijjannɗe). Une syllabe peut être réduite à une voyelle (a, o, e) ou commencer par un coup de glotte ' (Ɂ majuscule).
+Verbe (baɗal) : infinitif -ude/-de/-gol (ex. janngude). Conjugué : -i, -aani, -ataa, -ii, -aama, -aaka, -etee, etaake…
+Classes nominales : o, ngal, ndi, ndu, ɗum, ɗe, ɗi, ɓe, kal, kol, ka, ki, ko, nde, nge, ngo, ngu, ɗam…
 
-Nom (innde) : désigne une personne, une chose, un animal ou un lieu. Le nom porte une racine (ɗaɗol) et une terminaison de classe (fooɓre). Exemples : neɗɗo (personne), puccu (cheval), suudu (case).
-
-Verbe (baɗal) : exprime une action. Deux types principaux : 
-- baɗal muumal (verbe à l'infinitif, terminé en -ude / -de / -gol) ex. janngude (étudier).
-- baɗal pirlitaangal (verbe conjugué) : la racine reçoit des terminaisons (MFC) : -i (accompli), -aani (négatif accompli), -ataa (négatif inaccompli), -ii, -aama, -aaka, -etee, etaake, etc. Ex. racine janng- → janngi, janngaani, janngataa.
-
-Phrase (konngol) : suite ordonnée de mots formant un sens complet. Commence par une majuscule, finit par . ! ? Ponctuation : virgule (,), deux-points (:), point-virgule (;), points de suspension (…).
-
-Classes nominales : chaque nom appartient à une classe (o, ngal, ndi, ndu, ɗum, ɗe, ɗi, ɓe, kal, kol, ka, ki, ko, nde, nge, ngo, ngu, ɗam…) ; l'accord se fait avec déterminants et adjectifs.
-
-CONSIGNE D'USAGE : Quand tu produis du pulaar, applique strictement cet alphabet et ces accords. Si un mot n'utilise pas ɓ/ɗ/ƴ/ŋ alors qu'il le devrait, corrige-le. Indique brièvement la classe nominale ou la racine verbale quand c'est pédagogique.`;
+CONSIGNE : Applique strictement cet alphabet et ces accords. Corrige tout mot mal orthographié.`;
 
 const LANG_INSTRUCTIONS: Record<string, string> = {
   fr: "Réponds en français, mais donne TOUJOURS en priorité les équivalents/exemples en Pulaar (caractères ɓ ɗ ƴ ŋ corrects).",
@@ -69,7 +61,11 @@ const LANG_INSTRUCTIONS: Record<string, string> = {
 };
 
 const MAX_MESSAGES = 20;
-const MAX_CONTENT_LENGTH = 2000;
+const MAX_CONTENT_LENGTH = 4000;
+const MAX_ATTACHMENTS = 5;
+const MAX_ATTACHMENT_BYTES = 8 * 1024 * 1024; // 8 MB / fichier
+const ALLOWED_MIME = /^(image\/(png|jpe?g|webp|gif)|application\/pdf|text\/(plain|markdown))$/i;
+
 const STOPWORDS = new Set([
   "le","la","les","un","une","des","de","du","et","ou","mais","est","sont","ce","cette","ces","que","qui","quoi","comment","pourquoi","où","quand","mon","ma","mes","ton","ta","tes","son","sa","ses","je","tu","il","elle","nous","vous","ils","elles","pour","avec","dans","sur","sous","par","en","au","aux","a","à","the","is","are","what","how","why","where","when","my","your","his","her","our","their","i","you","he","she","we","they","for","with","in","on","by","at","of","and","or","but","this","that",
 ]);
@@ -110,6 +106,65 @@ async function fetchDictionaryContext(supabase: ReturnType<typeof createClient>,
   return `\n\n=== DICTIONNAIRE DE RÉFÉRENCE (entrées vérifiées correspondant à la question) ===\n${lines.join("\n")}\n=== Fin du dictionnaire ===`;
 }
 
+async function fetchWebSearchContext(query: string): Promise<{ context: string; sources: { title: string; url: string }[] }> {
+  const apiKey = Deno.env.get("FIRECRAWL_API_KEY");
+  if (!apiKey) return { context: "", sources: [] };
+  try {
+    const resp = await fetch("https://api.firecrawl.dev/v2/search", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ query, limit: 5 }),
+    });
+    if (!resp.ok) {
+      console.error("Firecrawl search error:", resp.status, await resp.text());
+      return { context: "", sources: [] };
+    }
+    const json = await resp.json();
+    const results = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
+    if (!Array.isArray(results) || results.length === 0) return { context: "", sources: [] };
+    const sources = results.slice(0, 5).map((r) => ({ title: r.title ?? r.url, url: r.url }));
+    const lines = results.slice(0, 5).map((r, i) => {
+      const snippet = (r.description || r.snippet || r.markdown || "").toString().slice(0, 500);
+      return `[${i + 1}] **${r.title ?? r.url}**\n${r.url}\n${snippet}`;
+    });
+    return {
+      context: `\n\n=== RECHERCHE WEB (résultats récents) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. à la fin de ta réponse.`,
+      sources,
+    };
+  } catch (e) {
+    console.error("Firecrawl request failed:", e);
+    return { context: "", sources: [] };
+  }
+}
+
+type Attachment = { name: string; mimeType: string; dataBase64: string };
+
+function validateAttachments(input: unknown): Attachment[] {
+  if (!Array.isArray(input)) return [];
+  const out: Attachment[] = [];
+  for (const a of input.slice(0, MAX_ATTACHMENTS)) {
+    if (!a || typeof a !== "object") continue;
+    const { name, mimeType, dataBase64 } = a as any;
+    if (typeof name !== "string" || typeof mimeType !== "string" || typeof dataBase64 !== "string") continue;
+    if (!ALLOWED_MIME.test(mimeType)) continue;
+    // base64 length approximation: bytes ≈ len * 0.75
+    if (dataBase64.length * 0.75 > MAX_ATTACHMENT_BYTES) continue;
+    out.push({ name: name.slice(0, 120), mimeType, dataBase64 });
+  }
+  return out;
+}
+
+function decodeTextAttachment(a: Attachment): string {
+  try {
+    const bin = atob(a.dataBase64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder("utf-8", { fatal: false }).decode(bytes).slice(0, 8000);
+  } catch {
+    return "";
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -117,7 +172,6 @@ Deno.serve(async (req) => {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     const authHeader = req.headers.get("Authorization");
-    // Auth is optional — assistant is accessible to visitors and signed-in users alike.
     const supabase = createClient(
       SUPABASE_URL,
       SUPABASE_ANON_KEY,
@@ -129,6 +183,9 @@ Deno.serve(async (req) => {
     const langRaw = typeof body?.lang === "string" ? body.lang : "fr";
     const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
     const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
+    const webSearch = body?.webSearch === true;
+    const attachments = validateAttachments(body?.attachments);
+
     const DIALECT_LABELS: Record<string, string> = {
       fouta_toro: "Pulaar du Fuuta Tooro (Sénégal, Mauritanie, Mali)",
       fouta_djallon: "Pular du Fuuta Jaloo (Guinée)",
@@ -154,13 +211,48 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Service indisponible." }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    // RAG: search dictionary for keywords in the last user message
     const lastUser = [...safeMessages].reverse().find((m) => m.role === "user");
-    const dictContext = lastUser ? await fetchDictionaryContext(supabase, lastUser.content) : "";
+    const lastUserText = lastUser?.content ?? "";
+
+    // Run dictionary lookup + web search in parallel
+    const [dictContext, webResult] = await Promise.all([
+      fetchDictionaryContext(supabase, lastUserText),
+      webSearch && lastUserText ? fetchWebSearchContext(lastUserText) : Promise.resolve({ context: "", sources: [] }),
+    ]);
 
     const dialectInstruction = `\n\nDIALECTE PRIVILÉGIÉ : Quand tu donnes des mots, exemples ou citations en Pulaar/Fulfulde, privilégie le ${dialectLabel}. Si une forme diffère sensiblement dans d'autres dialectes, tu peux la signaler brièvement, mais la forme principale doit être celle de ce dialecte.`;
 
-    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${CELLUKA_RULES}\n\n${FOUNDER_BIO}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${dictContext}`;
+    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${CELLUKA_RULES}\n\n${FOUNDER_BIO}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${dictContext}${webResult.context}`;
+
+    // Inject attachments into the last user message (multimodal content array).
+    const finalMessages: any[] = safeMessages.slice(0, -1);
+    if (attachments.length > 0 && lastUser) {
+      const parts: any[] = [];
+      // Decode text attachments inline
+      const textBlocks: string[] = [];
+      for (const a of attachments) {
+        if (/^image\//i.test(a.mimeType)) {
+          parts.push({
+            type: "image_url",
+            image_url: { url: `data:${a.mimeType};base64,${a.dataBase64}` },
+          });
+        } else if (/^application\/pdf$/i.test(a.mimeType)) {
+          // Gemini accepts PDF via image_url data URI as well
+          parts.push({
+            type: "image_url",
+            image_url: { url: `data:${a.mimeType};base64,${a.dataBase64}` },
+          });
+        } else if (/^text\//i.test(a.mimeType)) {
+          const txt = decodeTextAttachment(a);
+          if (txt) textBlocks.push(`--- Fichier joint : ${a.name} ---\n${txt}\n--- fin ---`);
+        }
+      }
+      const combinedText = [lastUser.content, ...textBlocks].filter(Boolean).join("\n\n");
+      parts.push({ type: "text", text: combinedText || "(voir pièces jointes)" });
+      finalMessages.push({ role: "user", content: parts });
+    } else {
+      finalMessages.push(lastUser!);
+    }
 
     const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -168,7 +260,7 @@ Deno.serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         stream: true,
-        messages: [{ role: "system", content: systemPrompt }, ...safeMessages],
+        messages: [{ role: "system", content: systemPrompt }, ...finalMessages],
       }),
     });
 
@@ -179,7 +271,26 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Une erreur est survenue." }), { status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
 
-    return new Response(resp.body, { headers: { ...corsHeaders, "Content-Type": "text/event-stream", "Cache-Control": "no-cache" } });
+    // Stream the AI body, then append a sources event the client can parse.
+    const sourcesHeader = webResult.sources.length
+      ? `data: ${JSON.stringify({ sources: webResult.sources })}\n\n`
+      : "";
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        const encoder = new TextEncoder();
+        if (sourcesHeader) controller.enqueue(encoder.encode(sourcesHeader));
+        const reader = resp.body!.getReader();
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          controller.enqueue(value);
+        }
+        controller.close();
+      },
+    });
+
+    return new Response(stream, { headers: { ...corsHeaders, "Content-Type": "text/event-stream", "Cache-Control": "no-cache" } });
   } catch (e) {
     console.error("chat function error:", e);
     return new Response(JSON.stringify({ error: "Une erreur est survenue." }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
