@@ -103,7 +103,7 @@ function Index() {
             </div>
 
             <dl className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-cream/20 pt-6">
-              <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.speakers")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">50–60 M</dd></div>
+              <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.speakers")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">~100 M</dd></div>
               <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.countries")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">20+</dd></div>
               <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.dialects")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">4</dd></div>
             </dl>
