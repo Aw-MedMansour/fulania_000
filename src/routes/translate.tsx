@@ -41,12 +41,11 @@ const FN_URL = `${SUPABASE_URL}/functions/v1/dialect-translate`;
 function TranslatePage() {
   const navigate = useNavigate();
   const { session, loading: authLoading } = useAuth();
-  const { t, lang } = useLanguage();
+  const { t, lang, dialectsOpen, setDialectsOpen } = useLanguage();
   const [text, setText] = useState("");
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showDialects, setShowDialects] = useState(false);
 
   const speak = (s: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
