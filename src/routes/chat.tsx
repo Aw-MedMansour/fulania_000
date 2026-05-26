@@ -506,7 +506,7 @@ function ChatPage() {
                 >
                   <span className="flex items-center gap-3">
                     <Telescope className="h-4 w-4 text-muted-foreground" />
-                    <span>Recherche approfondie</span>
+                    <span>{t("chat.deepSearch")}</span>
                   </span>
                   {deepSearch && <Check className="h-4 w-4 text-primary" />}
                 </button>
