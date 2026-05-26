@@ -434,7 +434,7 @@ function ChatLangSelector({
 }
 
 
-function MessageBubble({ role, content }: Msg) {
+function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -457,6 +457,23 @@ function MessageBubble({ role, content }: Msg) {
             )
           ) : (
             <span className="opacity-50">…</span>
+          )}
+          {!isUser && sources && sources.length > 0 && (
+            <div className="mt-3 border-t border-border/60 pt-2">
+              <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                <Globe className="h-3 w-3" /> Sources
+              </div>
+              <ol className="space-y-0.5 text-xs">
+                {sources.map((s, i) => (
+                  <li key={i} className="truncate">
+                    <span className="text-muted-foreground">[{i + 1}]</span>{" "}
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      {s.title}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
           )}
         </div>
       </div>
