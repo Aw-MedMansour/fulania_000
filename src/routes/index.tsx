@@ -31,25 +31,13 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useLanguage();
+  const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
-    { name: "Nigeria",        zone: "Fulfulde",          speakers: "16 – 18 M",  note: t("country.note.nigeria") },
-    { name: "Guinée",         zone: "Pular (Fuuta Jaloo)", speakers: "5,7 – 6,3 M", note: t("country.note.guinea") },
-    { name: "Sénégal",        zone: "Pulaar (Fuuta Tooro)", speakers: "4,7 – 5,2 M", note: t("country.note.senegal") },
-    { name: "Cameroun",       zone: "Fulfulde (Aadamaawa)", speakers: "3,0 – 3,6 M", note: t("country.note.cameroon") },
-    { name: "Mali",           zone: "Fulfulde (Maasina)",   speakers: "2,2 – 3,8 M", note: t("country.note.mali") },
-    { name: "Niger",          zone: "Fulfulde",           speakers: "2,1 – 2,6 M",  note: t("country.note.niger") },
-    { name: "Burkina Faso",   zone: "Fulfulde",           speakers: "1,8 – 2,4 M",  note: t("country.note.burkina") },
-    { name: "Bénin",          zone: "Fulfulde",           speakers: "0,9 – 1,2 M",  note: t("country.note.benin") },
-    { name: "Mauritanie",     zone: "Pulaar",             speakers: "0,4 – 1,1 M",  note: t("country.note.mauritania") },
-    { name: "Soudan",         zone: "Fulfulde",           speakers: "0,8 – 1,0 M",  note: t("country.note.sudan") },
-    { name: "Guinée-Bissau",  zone: "Pular",              speakers: "0,44 – 0,65 M", note: t("country.note.gbissau") },
-    { name: "Gambie",         zone: "Pulaar",             speakers: "0,54 – 0,72 M", note: t("country.note.gambia") },
-    { name: "Côte d'Ivoire",  zone: "Fulfulde",           speakers: "~ 0,5 M",      note: t("country.note.civ") },
-    { name: "Sierra Leone",   zone: "Pular",              speakers: "0,35 – 0,52 M", note: t("country.note.sleone") },
-    { name: "Tchad",          zone: "Fulfulde",           speakers: "0,36 – 0,43 M", note: t("country.note.chad") },
-    { name: "RCA",            zone: "Fulfulde",           speakers: "0,36 – 0,42 M", note: t("country.note.car") },
-    { name: "Togo",           zone: "Fulfulde",           speakers: "0,13 – 0,19 M", note: t("country.note.togo") },
+    { name: "Fuuta Tooro", zone: "Pulaar", speakers: "4,7 – 6,3 M", note: "Sénégal · Mauritanie · Mali" },
+    { name: "Fuuta Jaloo", zone: "Pular", speakers: "5,7 – 6,3 M", note: "Guinée" },
+    { name: "Maasina", zone: "Fulfulde", speakers: "4 – 6 M", note: "Mali · Burkina · Niger" },
+    { name: "Aadamaawa", zone: "Fulfulde", speakers: "6 – 9 M", note: "Nigeria · Cameroun · Tchad" },
   ];
 
   const pulaaku = [
