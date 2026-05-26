@@ -253,10 +253,74 @@ function ChatPage() {
 
       {/* Composer */}
       <div className="flex-none border-t border-border bg-background">
+        <div className="mx-auto w-full max-w-4xl px-3 pt-2 sm:px-4">
+          {/* Attachments preview */}
+          {attachments.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {attachments.map((a, i) => (
+                <div key={i} className="group relative flex items-center gap-2 rounded-lg border border-border bg-card px-2 py-1.5 text-xs">
+                  {a.previewUrl ? (
+                    <img src={a.previewUrl} alt={a.name} className="h-8 w-8 rounded object-cover" />
+                  ) : a.mimeType.startsWith("image/") ? (
+                    <ImageIcon className="h-4 w-4 text-muted-foreground" />
+                  ) : (
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                  )}
+                  <span className="max-w-[140px] truncate">{a.name}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeAttachment(i)}
+                    className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    aria-label="Retirer"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Toolbar */}
+          <div className="mb-2 flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setWebSearch((v) => !v)}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${
+                webSearch
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground"
+              }`}
+              aria-pressed={webSearch}
+              title="Activer la recherche internet"
+            >
+              <Globe className="h-3.5 w-3.5" />
+              <span>Recherche web {webSearch ? "ON" : "OFF"}</span>
+            </button>
+          </div>
+        </div>
+
         <form
           onSubmit={(e) => { e.preventDefault(); send(input); }}
-          className="mx-auto flex max-w-4xl items-end gap-2 px-3 py-3 sm:px-4 sm:py-4"
+          className="mx-auto flex max-w-4xl items-end gap-2 px-3 pb-3 sm:px-4 sm:pb-4"
         >
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept={ACCEPT}
+            className="hidden"
+            onChange={(e) => { handleFiles(e.target.files); e.target.value = ""; }}
+          />
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={loading || attachments.length >= MAX_ATTACHMENTS}
+            className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border border-border bg-card text-muted-foreground transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Joindre un fichier"
+            title="Joindre image, PDF ou texte"
+          >
+            <Paperclip className="h-5 w-5" />
+          </button>
           <textarea
             ref={textareaRef}
             id="chat-message"
@@ -270,7 +334,7 @@ function ChatPage() {
           />
           <button
             type="submit"
-            disabled={loading || !input.trim()}
+            disabled={loading || (!input.trim() && attachments.length === 0)}
             className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl bg-primary text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label={t("chat.send")}
           >
