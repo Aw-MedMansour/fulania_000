@@ -327,10 +327,17 @@ function ChatPage() {
             id="chat-message"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input); } }}
+            onKeyDown={(e) => {
+              // Entrée = retour à la ligne. Ctrl/Cmd+Entrée = envoyer.
+              if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                send(input);
+              }
+            }}
             rows={1}
             placeholder={t("chat.placeholder")}
             aria-label={t("chat.aria.msg")}
+            title="Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer"
             className="min-h-[52px] max-h-[200px] flex-1 resize-none rounded-2xl border border-border bg-card px-4 py-3.5 text-base leading-relaxed text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           <button
