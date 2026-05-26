@@ -636,7 +636,8 @@ function ChatLangSelector({
 
 function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
-  const [showSources, setShowSources] = useState(true);
+  const isMobile = useIsMobile();
+  const [showSources, setShowSources] = useState(false);
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[88%] gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}>
