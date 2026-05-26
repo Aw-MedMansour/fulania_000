@@ -352,7 +352,7 @@ function ChatPage() {
               {loading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  {deepSearch ? "Recherche approfondie en cours…" : webSearch ? "Recherche sur le web en cours…" : t("chat.thinking")}
+                  {deepSearch ? t("chat.deepSearching") : webSearch ? t("chat.webSearching") : t("chat.thinking")}
                 </div>
               )}
               {error && (
@@ -385,7 +385,7 @@ function ChatPage() {
                     type="button"
                     onClick={() => removeAttachment(i)}
                     className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                    aria-label="Retirer"
+                    aria-label={t("chat.remove")}
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -399,16 +399,16 @@ function ChatPage() {
             <div className="mb-2 flex flex-wrap items-center gap-2">
               {webSearch && !deepSearch && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  <Globe className="h-3.5 w-3.5" /> Recherche web
-                  <button type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label="Désactiver">
+                  <Globe className="h-3.5 w-3.5" /> {t("chat.webSearch")}
+                  <button type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
                     <X className="h-3 w-3" />
                   </button>
                 </span>
               )}
               {deepSearch && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  <Telescope className="h-3.5 w-3.5" /> Recherche approfondie
-                  <button type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label="Désactiver">
+                  <Telescope className="h-3.5 w-3.5" /> {t("chat.deepSearch")}
+                  <button type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
                     <X className="h-3 w-3" />
                   </button>
                 </span>
@@ -448,8 +448,8 @@ function ChatPage() {
               disabled={loading}
               aria-haspopup="menu"
               aria-expanded={plusOpen}
-              aria-label="Ajouter"
-              title="Ajouter : fichier, caméra, recherche"
+              aria-label={t("chat.add")}
+              title={t("chat.addHint")}
               className={`inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border transition disabled:cursor-not-allowed disabled:opacity-50 ${
                 plusOpen
                   ? "border-primary bg-primary/10 text-primary"
@@ -471,7 +471,7 @@ function ChatPage() {
                   className="flex w-full items-center gap-3 px-3 py-2.5 text-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Paperclip className="h-4 w-4 text-muted-foreground" />
-                  <span>Ajouter un fichier</span>
+                  <span>{t("chat.addFile")}</span>
                 </button>
                 <button
                   type="button"
@@ -481,7 +481,7 @@ function ChatPage() {
                   className="flex w-full items-center gap-3 px-3 py-2.5 text-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Camera className="h-4 w-4 text-muted-foreground" />
-                  <span>Caméra</span>
+                  <span>{t("chat.camera")}</span>
                 </button>
                 <div className="my-1 h-px bg-border" />
                 <button
@@ -493,7 +493,7 @@ function ChatPage() {
                 >
                   <span className="flex items-center gap-3">
                     <Search className="h-4 w-4 text-muted-foreground" />
-                    <span>Recherche web</span>
+                    <span>{t("chat.webSearch")}</span>
                   </span>
                   {webSearch && !deepSearch && <Check className="h-4 w-4 text-primary" />}
                 </button>
@@ -506,7 +506,7 @@ function ChatPage() {
                 >
                   <span className="flex items-center gap-3">
                     <Telescope className="h-4 w-4 text-muted-foreground" />
-                    <span>Recherche approfondie</span>
+                    <span>{t("chat.deepSearch")}</span>
                   </span>
                   {deepSearch && <Check className="h-4 w-4 text-primary" />}
                 </button>
@@ -529,7 +529,7 @@ function ChatPage() {
             rows={1}
             placeholder={t("chat.placeholder")}
             aria-label={t("chat.aria.msg")}
-            title="Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer"
+            title={t("chat.enterHint")}
             className="min-h-[52px] max-h-[200px] flex-1 resize-none rounded-2xl border border-border bg-card px-4 py-3.5 text-base leading-relaxed text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
           <button
