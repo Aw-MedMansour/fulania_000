@@ -448,8 +448,8 @@ function ChatPage() {
               disabled={loading}
               aria-haspopup="menu"
               aria-expanded={plusOpen}
-              aria-label="Ajouter"
-              title="Ajouter : fichier, caméra, recherche"
+              aria-label={t("chat.add")}
+              title={t("chat.addHint")}
               className={`inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border transition disabled:cursor-not-allowed disabled:opacity-50 ${
                 plusOpen
                   ? "border-primary bg-primary/10 text-primary"
