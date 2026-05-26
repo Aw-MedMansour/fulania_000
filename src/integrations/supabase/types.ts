@@ -343,26 +343,6 @@ export type Database = {
           message: string | null
           status: string | null
         }
-        Insert: {
-          amount_cents?: number | null
-          confirmed_at?: string | null
-          created_at?: string | null
-          currency?: string | null
-          display_name?: string | null
-          id?: string | null
-          message?: string | null
-          status?: string | null
-        }
-        Update: {
-          amount_cents?: number | null
-          confirmed_at?: string | null
-          created_at?: string | null
-          currency?: string | null
-          display_name?: string | null
-          id?: string | null
-          message?: string | null
-          status?: string | null
-        }
         Relationships: []
       }
       donations_public_stats: {
@@ -381,6 +361,19 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      get_public_donations: {
+        Args: never
+        Returns: {
+          amount_cents: number
+          confirmed_at: string
+          created_at: string
+          currency: string
+          display_name: string
+          id: string
+          message: string
+          status: string
+        }[]
       }
       move_to_dlq: {
         Args: {
