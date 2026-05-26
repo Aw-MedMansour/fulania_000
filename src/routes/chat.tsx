@@ -416,7 +416,31 @@ function ChatPage() {
               )}
             </div>
           )}
+
+          {/* Guest quota indicator */}
+          {!user && (
+            <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+              <span className="font-medium">Crédits invité :</span>
+              <span>
+                Questions <strong className="text-foreground">{quota.remaining.simple}/{quota.limits.simple}</strong>
+              </span>
+              <span>
+                Recherche <strong className="text-foreground">{quota.remaining.search}/{quota.limits.search}</strong>
+              </span>
+              <span>
+                Approfondie <strong className="text-foreground">{quota.remaining.deep}/{quota.limits.deep}</strong>
+              </span>
+              <Link
+                to="/auth"
+                search={{ next: "/chat" }}
+                className="inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-medium text-background hover:opacity-90"
+              >
+                <LogIn className="h-3 w-3" /> Se connecter pour un accès illimité
+              </Link>
+            </div>
+          )}
         </div>
+
 
         <form
           onSubmit={(e) => { e.preventDefault(); send(input); }}
