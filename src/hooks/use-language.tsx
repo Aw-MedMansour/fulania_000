@@ -220,10 +220,10 @@ export const translations: Record<Lang, Dict> = {
     "problem.other2": "Google Translate — 130+ langues",
     "problem.other3": "Wikipedia en 300+ langues",
     "problem.other4": "Assistants IA multilingues",
-    "problem.pulaar1": "Aucune application d'apprentissage sérieuse",
-    "problem.pulaar2": "Support très limité, souvent inexact",
-    "problem.pulaar3": "Contenu quasi inexistant",
-    "problem.pulaar4": "Ignoré par tous les grands modèles",
+    "problem.pulaar1": "Peu d'applications d'apprentissage dédiées",
+    "problem.pulaar2": "Support encore limité, à enrichir",
+    "problem.pulaar3": "Contenu numérique encore peu développé",
+    "problem.pulaar4": "Faible présence dans les grands modèles d'IA",
 
     // Footer
     "footer.tagline": "Intelligence Artificielle au service de la langue et de la culture Peules.",
