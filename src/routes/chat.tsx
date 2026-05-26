@@ -54,10 +54,14 @@ function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [webSearch, setWebSearch] = useState(false);
+  const [deepSearch, setDeepSearch] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [plusOpen, setPlusOpen] = useState(false);
+  const plusRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   // Chat language IS the global site language — single source of truth.
   const chatLang = siteLang;
