@@ -1111,6 +1111,8 @@ type Ctx = {
   setLang: (l: Lang) => void;
   dialect: Dialect;
   setDialect: (d: Dialect) => void;
+  dialectsOpen: boolean;
+  setDialectsOpen: (v: boolean | ((p: boolean) => boolean)) => void;
   t: (key: string) => string;
 };
 const LangCtx = createContext<Ctx | null>(null);
