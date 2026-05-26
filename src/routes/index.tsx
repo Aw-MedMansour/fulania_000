@@ -230,35 +230,49 @@ function Index() {
             <p className="mt-5 text-lg text-cream/75">{t("culture.body")}</p>
           </Reveal>
 
-          <Reveal delay={0.1} className="mt-12 overflow-hidden rounded-2xl border border-cream/15">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-cream/5 text-[var(--gold)]">
-                <tr>
-                  <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.dialect")}</th>
-                  <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.zone")}</th>
-                  <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.speakers")}</th>
-                  <th className="hidden px-5 py-4 font-display text-xs uppercase tracking-wider sm:table-cell">{t("culture.col.notes")}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-cream/10">
-                {dialects.map((d, i) => (
-                  <motion.tr
-                    key={d.name}
-                    initial={{ opacity: 0, x: -12 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.45, delay: Math.min(i * 0.03, 0.4), ease: [0.22, 1, 0.36, 1] }}
-                    className="transition-colors hover:bg-cream/[0.04]"
-                  >
-                    <td className="px-5 py-4 font-display text-base font-semibold">{d.name}</td>
-                    <td className="px-5 py-4 text-cream/80">{d.zone}</td>
-                    <td className="px-5 py-4 text-[var(--gold)]">{d.speakers}</td>
-                    <td className="hidden px-5 py-4 text-cream/70 sm:table-cell">{d.note}</td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </Reveal>
+          <button
+            type="button"
+            onClick={() => setShowDialects((v) => !v)}
+            className="mt-8 w-full rounded-xl border border-cream/15 bg-cream/[0.03] px-4 py-3 text-left font-display text-base font-semibold text-[var(--gold)] transition hover:border-[var(--gold)]/40 hover:bg-cream/[0.06]"
+            aria-expanded={showDialects}
+          >
+            Pulaar {showDialects ? "▾" : "▸"}
+            <span className="ml-2 text-xs font-normal text-cream/60">
+              {showDialects ? "Masquer les variantes" : "Voir les variantes dialectales"}
+            </span>
+          </button>
+
+          {showDialects && (
+            <Reveal delay={0.1} className="mt-4 overflow-hidden rounded-2xl border border-cream/15">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-cream/5 text-[var(--gold)]">
+                  <tr>
+                    <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.dialect")}</th>
+                    <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.zone")}</th>
+                    <th className="px-5 py-4 font-display text-xs uppercase tracking-wider">{t("culture.col.speakers")}</th>
+                    <th className="hidden px-5 py-4 font-display text-xs uppercase tracking-wider sm:table-cell">{t("culture.col.notes")}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-cream/10">
+                  {dialects.map((d, i) => (
+                    <motion.tr
+                      key={d.name}
+                      initial={{ opacity: 0, x: -12 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.45, delay: Math.min(i * 0.03, 0.4), ease: [0.22, 1, 0.36, 1] }}
+                      className="transition-colors hover:bg-cream/[0.04]"
+                    >
+                      <td className="px-5 py-4 font-display text-base font-semibold">{d.name}</td>
+                      <td className="px-5 py-4 text-cream/80">{d.zone}</td>
+                      <td className="px-5 py-4 text-[var(--gold)]">{d.speakers}</td>
+                      <td className="hidden px-5 py-4 text-cream/70 sm:table-cell">{d.note}</td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </Reveal>
+          )}
 
           <div className="mt-20">
             <Reveal>
