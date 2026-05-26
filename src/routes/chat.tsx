@@ -444,6 +444,7 @@ function ChatLangSelector({
 
 function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
+  const [showSources, setShowSources] = useState(false);
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[88%] gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}>
@@ -468,19 +469,28 @@ function MessageBubble({ role, content, sources }: Msg) {
           )}
           {!isUser && sources && sources.length > 0 && (
             <div className="mt-3 border-t border-border/60 pt-2">
-              <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                <Globe className="h-3 w-3" /> Sources
-              </div>
-              <ol className="space-y-0.5 text-xs">
-                {sources.map((s, i) => (
-                  <li key={i} className="truncate">
-                    <span className="text-muted-foreground">[{i + 1}]</span>{" "}
-                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      {s.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
+              <button
+                type="button"
+                onClick={() => setShowSources((v) => !v)}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
+                aria-expanded={showSources}
+              >
+                <Globe className="h-3 w-3" />
+                <span>{sources.length} source{sources.length > 1 ? "s" : ""}</span>
+                <ChevronRight className={`h-3 w-3 transition-transform ${showSources ? "rotate-90" : ""}`} />
+              </button>
+              {showSources && (
+                <ol className="mt-2 space-y-1 text-xs">
+                  {sources.map((s, i) => (
+                    <li key={i} className="truncate">
+                      <span className="text-muted-foreground">[{i + 1}]</span>{" "}
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                        {s.title}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              )}
             </div>
           )}
         </div>
