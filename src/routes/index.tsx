@@ -298,34 +298,36 @@ function Index() {
       {/* PILIERS */}
       <section id="piliers" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("pillars.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("pillars.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
-          </div>
+          </Reveal>
 
-          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerGroup className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {piliers.map(({ icon: Icon, title, desc }, idx) => (
-              <div key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10">0{idx + 1}</div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <StaggerItem key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
+                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-              </div>
+              </StaggerItem>
             ))}
-            <Link to="/auth" className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90">
-              <Sparkles className="h-8 w-8" />
-              <div>
-                <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
-                <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
-                <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
-                  {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+            <StaggerItem>
+              <Link to="/auth" className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90 hover:shadow-2xl">
+                <Sparkles className="h-8 w-8 transition group-hover:rotate-12" />
+                <div>
+                  <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
+                  <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
+                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
+                    {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </div>
                 </div>
-              </div>
-            </Link>
-          </div>
+              </Link>
+            </StaggerItem>
+          </StaggerGroup>
         </div>
       </section>
 
