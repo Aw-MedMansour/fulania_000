@@ -1,6 +1,6 @@
 # FulanIA
 
-> FulanIA est le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule (Halpulaar). Apprendre, traduire, préserver.
+> FulanIA est le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule (Fulɓe). Apprendre, traduire, préserver.
 
 Fondé par Aw Mohamedou Mansour, FulanIA propose un assistant IA conversationnel, un dictionnaire multilingue (Pulaar ↔ Français ↔ Anglais ↔ Arabe), des leçons interactives, un traducteur multi-dialectes (Fuuta Tooro, Fuuta Jaloo, Maasina, Aadamaawa) et une bibliothèque culturelle (proverbes, contes).
 
@@ -11,4 +11,4 @@ Fondé par Aw Mohamedou Mansour, FulanIA propose un assistant IA conversationnel
 - [Dictionnaire](/dictionary): Saggitorde — recherche multilingue Pulaar/FR/EN/AR avec audio.
 - [Apprentissage](/learn): Leçons, flashcards et quiz Pulaar.
 - [Traducteur](/translate): Traduction comparée entre dialectes Pulaar.
-- [Culture](/culture): Proverbes, contes et patrimoine Halpulaar.
+- [Culture](/culture): Proverbes, contes et patrimoine Fulɓe.
