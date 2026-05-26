@@ -53,7 +53,7 @@ function UserMenu() {
                 </button>
               ))}
             </div>
-            {current.code === "ff" && (
+            {lang === "ff" && (
               <div className="mt-2 border-t border-border pt-2">
                 <button
                   type="button"
