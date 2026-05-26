@@ -65,27 +65,32 @@ function LanguageSwitcher() {
             ))}
           </ul>
           <div className="border-t border-border bg-muted/40 px-3 py-2">
-            <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Dialecte Pulaar
-            </p>
-            <ul role="listbox" aria-label="Dialecte Pulaar" className="space-y-0.5">
-              {DIALECTS.map((d) => (
-                <li key={d.code}>
-                  <button
-                    role="option"
-                    aria-selected={d.code === dialect}
-                    onClick={() => { setDialect(d.code); setOpen(false); }}
-                    className="flex w-full items-center justify-between gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-accent"
-                  >
-                    <span className="flex flex-col">
+            <button
+              type="button"
+              onClick={() => setShowDialects((v) => !v)}
+              aria-expanded={showDialects}
+              className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground"
+            >
+              <span>Pulaar</span>
+              <span aria-hidden>{showDialects ? "▾" : "▸"}</span>
+            </button>
+            {showDialects && (
+              <ul role="listbox" aria-label="Dialecte Pulaar" className="mt-1.5 space-y-0.5">
+                {DIALECTS.map((d) => (
+                  <li key={d.code}>
+                    <button
+                      role="option"
+                      aria-selected={d.code === dialect}
+                      onClick={() => { setDialect(d.code); setOpen(false); setShowDialects(false); }}
+                      className="flex w-full items-center justify-between gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-accent"
+                    >
                       <span className="font-medium">{d.label}</span>
-                      {d.region && <span className="text-[10px] text-muted-foreground">{d.region}</span>}
-                    </span>
-                    {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
-                  </button>
-                </li>
-              ))}
-            </ul>
+                      {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       )}
