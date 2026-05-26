@@ -404,11 +404,11 @@ export const translations: Record<Lang, Dict> = {
     "stats.speakers": "Wolwooɓe", "stats.countries": "Leyɗe", "stats.dialects": "Ƴeewndeeji",
 
     "problem.tag": "Hawritannde",
-    "problem.title": "Ɗemngal wolwetengal e miliyoŋaaji, suuɗiingal e enternet.",
-    "problem.body": "E hitaande 2026, winndu « jangugol Pulaar » e Google — a yiytataa hay huunde. Kono kuutorɗe ngoodi ngam Klingon, ɗemngal feere televisioŋ. Pulaar, wolwetengal e miliyoŋaaji teemedde, no yejjitaa e kala maɗɗitorɗi IA mawɗi.",
+    "problem.title": "Ɗemngal wolwetengal ɓadtii miliyoŋaaji teemedde, hara tawaaka no haaniri e enternet.",
+    "problem.body": "Pulaar/Fulfulde no wolwetee ɓadtii miliyoŋaaji teemedde e Senegaal, Muritani, Gine, Mali, Burkinaa, Nijeer, Niiseriya, Kameruun, Caad, Gammbi, Gine-Bisaawo, Seraa Leyon, Kodduwaar, Beneŋ, Toogo, Gaana, Sudaan, Saŋtarafriki e diaspora. Kono ko haa jooni o tawaaka no haaniri e kuutorɗe njuɓɓudi e IA. FulanIA ko ballal fanɗungal, e yankinaare, ngam wallude leñol Fulɓe.",
     "problem.other": "Wonande ɗemɗe goɗɗe",
     "problem.pulaar": "Wonande Pulaar",
-    "problem.quote": "Sukaaɓe diaspora ɓe waawaa wolwiidude e maamiraaɓe maɓɓe. Pinal mawngal, deeƴungal e enternet. Ganndal jolɗal e bonannde.",
+    "problem.quote": "Sukaaɓe diaspora ɓe njiɗi ɓeydude wolwiidude e maamiraaɓe maɓɓe. Pinal mawngal, hara taw seeɗa e enternet. Ndonaandi tedduɗi e yettineede.",
 
     "sol.tag": "Jaabawol amen",
     "sol.title": "FulanIA — jokkere hakkunde aada e teknolosi.",
