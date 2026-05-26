@@ -153,17 +153,11 @@ function ChatPage() {
     if ((!content && attachments.length === 0) || loading) return;
     setError(null);
 
-    // Quota check for guests
-    const kind: QuotaKind = deepSearch ? "deep" : webSearch ? "search" : "simple";
+    // Quota check for guests — silent counter; only message when depleted.
     if (!user) {
-      if (!quota.canUse(kind)) {
-        const labels: Record<QuotaKind, string> = {
-          simple: "questions",
-          search: "recherches web",
-          deep: "recherches approfondies",
-        };
+      if (!quota.canUse()) {
         setError(
-          `Vous avez utilisé vos ${quota.limits[kind]} ${labels[kind]} gratuites. Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset(kind)}.`,
+          `Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset()}.`,
         );
         return;
       }
