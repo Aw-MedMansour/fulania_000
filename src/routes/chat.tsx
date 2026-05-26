@@ -493,7 +493,7 @@ function ChatPage() {
                 >
                   <span className="flex items-center gap-3">
                     <Search className="h-4 w-4 text-muted-foreground" />
-                    <span>Recherche web</span>
+                    <span>{t("chat.webSearch")}</span>
                   </span>
                   {webSearch && !deepSearch && <Check className="h-4 w-4 text-primary" />}
                 </button>
