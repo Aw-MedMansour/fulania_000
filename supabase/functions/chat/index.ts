@@ -263,6 +263,7 @@ Deno.serve(async (req) => {
     const lang = ["fr", "ff", "en", "ar"].includes(langRaw) ? langRaw : "fr";
     const dialectRaw = typeof body?.dialect === "string" ? body.dialect : "fouta_toro";
     const webSearch = body?.webSearch === true;
+    const deepSearch = body?.deepSearch === true;
     const attachments = validateAttachments(body?.attachments);
 
     const DIALECT_LABELS: Record<string, string> = {
