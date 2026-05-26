@@ -159,7 +159,7 @@ function TranslatePage() {
             >
               Pulaar {dialectsOpen ? "▾" : "▸"}
               <span className="ml-2 text-xs font-normal text-muted-foreground">
-                {dialectsOpen ? "Masquer les variantes" : "Voir les variantes dialectales"}
+                {dialectsOpen ? t("translate.toggle.hide") : t("translate.toggle.show")}
               </span>
             </button>
 
