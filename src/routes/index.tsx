@@ -152,14 +152,14 @@ function Index() {
       {/* PROBLEM */}
       <section className="bg-secondary/40 bg-grain py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("problem.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("problem.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("problem.body")}</p>
-          </div>
+          </Reveal>
 
-          <div className="mt-12 grid gap-4 lg:grid-cols-2">
-            <div className="rounded-2xl border border-border bg-card p-7">
+          <StaggerGroup className="mt-12 grid gap-4 lg:grid-cols-2">
+            <StaggerItem className="rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="font-display text-lg font-semibold text-foreground">{t("problem.other")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
                 {[t("problem.other1"), t("problem.other2"), t("problem.other3"), t("problem.other4")].map((x) => (
@@ -169,8 +169,8 @@ function Index() {
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7">
+            </StaggerItem>
+            <StaggerItem className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7 transition hover:-translate-y-1 hover:shadow-lg">
               <h3 className="font-display text-lg font-semibold text-primary">{t("problem.pulaar")}</h3>
               <ul className="mt-4 space-y-3 text-sm">
                 {[t("problem.pulaar1"), t("problem.pulaar2"), t("problem.pulaar3"), t("problem.pulaar4")].map((x, i) => (
@@ -180,12 +180,14 @@ function Index() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
+            </StaggerItem>
+          </StaggerGroup>
 
-          <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
-            {t("problem.quote")}
-          </p>
+          <Reveal>
+            <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
+              {t("problem.quote")}
+            </p>
+          </Reveal>
         </div>
       </section>
 
