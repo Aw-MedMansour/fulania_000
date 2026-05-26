@@ -218,7 +218,7 @@ function DictionaryPage() {
   const speak = (text: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
+    u.lang = lang === "ar" ? "ar-SA" : lang === "en" ? "en-US" : "fr-FR";
     u.rate = 0.85;
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(u);
