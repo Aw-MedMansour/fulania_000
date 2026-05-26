@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, LogOut, Menu, Sparkles, User as UserIcon, X } from "lucide-react";
+import { LogOut, Menu, Sparkles, User as UserIcon, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { DIALECTS, LANGUAGES, useLanguage } from "@/hooks/use-language";
