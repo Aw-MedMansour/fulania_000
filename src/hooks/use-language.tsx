@@ -884,7 +884,7 @@ export const translations: Record<Lang, Dict> = {
 
     "culture.tag": "اللغة والثقافة",
     "culture.title": "شعب عظيم، حضارة آلاف السنين.",
-    "culture.body": "من الهلبولار في نهر السنغال إلى الفولبي في الساحل، عائلة لغوية موزعة على أكثر من 20 دولة وأربع لهجات رئيسية.",
+    "culture.body": "من فولبي نهر السنغال إلى فولبي الساحل، عائلة لغوية ممتدة على أكثر من 20 دولة وأربع لهجات رئيسية.",
     "culture.col.dialect": "اللهجة", "culture.col.zone": "المنطقة",
     "culture.col.speakers": "المتحدثون", "culture.col.notes": "خصائص",
     "pulaaku.title": "Pulaagu — المدوّنة الأخلاقية الفولانية",
