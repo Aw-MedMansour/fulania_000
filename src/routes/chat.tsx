@@ -634,6 +634,71 @@ function ChatLangSelector({
 }
 
 
+function MessageActions({ content }: { content: string }) {
+  const [copied, setCopied] = useState(false);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+  const [speaking, setSpeaking] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch { /* ignore */ }
+  };
+
+  const speak = () => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(content);
+    u.onend = () => setSpeaking(false);
+    u.onerror = () => setSpeaking(false);
+    setSpeaking(true);
+    window.speechSynthesis.speak(u);
+  };
+
+  const share = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ text: content });
+      } else {
+        await navigator.clipboard.writeText(content);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      }
+    } catch { /* ignore */ }
+  };
+
+  const btn = "inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent hover:text-foreground";
+
+  return (
+    <div className="mt-2 flex items-center gap-0.5 -ml-1">
+      <button type="button" onClick={copy} className={btn} aria-label="Copier" title="Copier">
+        {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
+      </button>
+      <button type="button" onClick={speak} className={`${btn} ${speaking ? "text-primary" : ""}`} aria-label="Écouter" title="Écouter">
+        <Volume2 className="h-4 w-4" />
+      </button>
+      <button type="button" onClick={() => setFeedback(feedback === "up" ? null : "up")} className={`${btn} ${feedback === "up" ? "text-primary" : ""}`} aria-label="J'aime" title="J'aime">
+        <ThumbsUp className="h-4 w-4" />
+      </button>
+      <button type="button" onClick={() => setFeedback(feedback === "down" ? null : "down")} className={`${btn} ${feedback === "down" ? "text-primary" : ""}`} aria-label="Je n'aime pas" title="Je n'aime pas">
+        <ThumbsDown className="h-4 w-4" />
+      </button>
+      <button type="button" onClick={share} className={btn} aria-label="Partager" title="Partager">
+        <Share className="h-4 w-4" />
+      </button>
+      <button type="button" className={btn} aria-label="Plus" title="Plus">
+        <MoreHorizontal className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
 function MessageBubble({ role, content, sources }: Msg) {
   const isUser = role === "user";
   const isMobile = useIsMobile();
@@ -660,6 +725,7 @@ function MessageBubble({ role, content, sources }: Msg) {
           ) : (
             <span className="opacity-50">…</span>
           )}
+          {!isUser && content && <MessageActions content={content} />}
           {!isUser && sources && sources.length > 0 && (
             <div className="mt-3 border-t border-border/60 pt-2">
               <button
