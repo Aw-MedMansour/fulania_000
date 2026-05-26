@@ -399,16 +399,16 @@ function ChatPage() {
             <div className="mb-2 flex flex-wrap items-center gap-2">
               {webSearch && !deepSearch && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  <Globe className="h-3.5 w-3.5" /> Recherche web
-                  <button type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label="Désactiver">
+                  <Globe className="h-3.5 w-3.5" /> {t("chat.webSearch")}
+                  <button type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
                     <X className="h-3 w-3" />
                   </button>
                 </span>
               )}
               {deepSearch && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                  <Telescope className="h-3.5 w-3.5" /> Recherche approfondie
-                  <button type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label="Désactiver">
+                  <Telescope className="h-3.5 w-3.5" /> {t("chat.deepSearch")}
+                  <button type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
                     <X className="h-3 w-3" />
                   </button>
                 </span>
