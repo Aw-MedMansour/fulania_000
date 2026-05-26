@@ -334,20 +334,20 @@ function Index() {
       {/* PUBLIC */}
       <section className="bg-secondary/40 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("public.tag")}</span>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("public.title")}</h2>
-          </div>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          </Reveal>
+          <StaggerGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {publics.map(({ tag, desc }) => (
-              <div key={tag} className="rounded-2xl border border-border bg-card p-6 transition hover:border-primary/40">
+              <StaggerItem key={tag} className="rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
                 <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
                   <Users className="h-3 w-3" />{tag}
                 </div>
                 <p className="mt-4 text-sm text-foreground/80">{desc}</p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
@@ -355,11 +355,11 @@ function Index() {
       <section id="vision" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
-            <div>
+            <Reveal>
               <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("vision.tag")}</span>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance">{t("vision.title")}</h2>
               <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
-              <div className="mt-8 grid grid-cols-2 gap-3">
+              <StaggerGroup className="mt-8 grid grid-cols-2 gap-3">
                 {[
                   { icon: Shield, label: t("vision.preserve") },
                   { icon: Heart, label: t("vision.transmit") },
@@ -368,24 +368,26 @@ function Index() {
                   { icon: Users, label: t("vision.gather") },
                   { icon: Languages, label: t("vision.include") },
                 ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm">
+                  <StaggerItem key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:bg-primary/5">
                     <Icon className="h-4 w-4 text-primary" />{label}
-                  </div>
+                  </StaggerItem>
                 ))}
-              </div>
-            </div>
+              </StaggerGroup>
+            </Reveal>
 
             <div>
-              <h3 className="font-display text-2xl font-semibold">{t("vision.roadmap")}</h3>
-              <ol className="mt-6 space-y-5">
+              <Reveal>
+                <h3 className="font-display text-2xl font-semibold">{t("vision.roadmap")}</h3>
+              </Reveal>
+              <StaggerGroup className="mt-6 space-y-5">
                 {phases.map((p) => (
-                  <li key={p.id} className="relative rounded-2xl border border-border bg-card p-6 pl-20">
-                    <div className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-primary-foreground">{p.id}</div>
+                  <StaggerItem key={p.id} className="relative rounded-2xl border border-border bg-card p-6 pl-20 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                    <div className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-primary-foreground shadow-md">{p.id}</div>
                     <h4 className="font-display text-lg font-semibold">{t("vision.phase")} {p.id} — {p.title}</h4>
                     <p className="mt-1 text-sm text-muted-foreground">{p.body}</p>
-                  </li>
+                  </StaggerItem>
                 ))}
-              </ol>
+              </StaggerGroup>
             </div>
           </div>
         </div>
