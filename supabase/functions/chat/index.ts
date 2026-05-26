@@ -165,8 +165,13 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
   if (BLOCKED_KEYWORDS.some((k) => q.includes(k))) {
     return { context: "", sources: [] };
   }
-  // Ancre thématique discrète : on oriente vers le Pulaar sans le rendre visible côté utilisateur.
-  const scopedQuery = `${query} (Pulaar OR Fulfulde OR Pular OR Fulani OR Peul OR Halpulaar OR "Fuuta Tooro" OR "Fouta Djallon" OR Maasina OR Aadamaawa)`;
+  // Ancre thématique : on n'ajoute le scope Pulaar QUE si la requête semble liée au Peul/Pulaar.
+  // Sinon, on laisse Firecrawl chercher librement pour répondre intelligemment à n'importe quel sujet.
+  const queryLower = query.toLowerCase();
+  const isPulaarTopic = PULAAR_TOPIC_KEYWORDS.some((k) => queryLower.includes(k));
+  const scopedQuery = isPulaarTopic
+    ? `${query} (Pulaar OR Fulfulde OR Pular OR Fulani OR Peul OR Halpulaar OR "Fuuta Tooro" OR "Fouta Djallon" OR Maasina OR Aadamaawa)`
+    : query;
   try {
     // Vraie recherche approfondie : on récupère le contenu markdown des pages, pas juste des snippets.
     const resp = await fetch("https://api.firecrawl.dev/v2/search", {
@@ -178,6 +183,7 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
         scrapeOptions: { formats: ["markdown"], onlyMainContent: true },
       }),
     });
+
     if (!resp.ok) {
       console.error("Firecrawl search error:", resp.status, await resp.text());
       return { context: "", sources: [] };
