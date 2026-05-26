@@ -79,6 +79,16 @@ function ChatPage() {
     ta.style.height = Math.min(ta.scrollHeight, 200) + "px";
   }, [input]);
 
+  // Close (+) menu on outside click
+  useEffect(() => {
+    if (!plusOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (plusRef.current && !plusRef.current.contains(e.target as Node)) setPlusOpen(false);
+    };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [plusOpen]);
+
   const suggestions = useMemo(() => [
     t("chat.sug1"), t("chat.sug2"), t("chat.sug3"), t("chat.sug4"),
   ], [t]);
