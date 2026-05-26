@@ -152,37 +152,48 @@ function TranslatePage() {
               )}
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {dialects.map((d) => {
-                const v = card[d.key] as string | null;
-                return (
-                  <div
-                    key={d.key}
-                    className="flex flex-col rounded-xl border border-border bg-card p-4 transition hover:border-[var(--gold)]/50"
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
+            <button
+              type="button"
+              onClick={() => setShowDialects((v) => !v)}
+              className="mt-5 w-full rounded-xl border border-border bg-card px-4 py-3 text-left font-display text-base font-semibold text-earth transition hover:border-[var(--gold)]/60"
+              aria-expanded={showDialects}
+            >
+              Pulaar {showDialects ? "▾" : "▸"}
+              <span className="ml-2 text-xs font-normal text-muted-foreground">
+                {showDialects ? "Masquer les variantes" : "Voir les variantes dialectales"}
+              </span>
+            </button>
+
+            {showDialects && (
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                {dialects.map((d) => {
+                  const v = card[d.key] as string | null;
+                  return (
+                    <div
+                      key={d.key}
+                      className="flex flex-col rounded-xl border border-border bg-card p-4 transition hover:border-[var(--gold)]/50"
+                    >
+                      <div className="flex items-start justify-between gap-2">
                         <div className="font-display text-sm font-semibold text-earth">{d.label}</div>
-                        <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{d.region}</div>
+                        {v && (
+                          <button
+                            type="button"
+                            onClick={() => speak(v)}
+                            aria-label={t("entry.listen")}
+                            className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                          >
+                            <Volume2 className="h-4 w-4" />
+                          </button>
+                        )}
                       </div>
-                      {v && (
-                        <button
-                          type="button"
-                          onClick={() => speak(v)}
-                          aria-label={t("entry.listen")}
-                          className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-                        >
-                          <Volume2 className="h-4 w-4" />
-                        </button>
-                      )}
+                      <div className="mt-3 font-display text-xl text-foreground">
+                        {v ?? <span className="text-sm italic text-muted-foreground">{t("dt.unknown")}</span>}
+                      </div>
                     </div>
-                    <div className="mt-3 font-display text-xl text-foreground">
-                      {v ?? <span className="text-sm italic text-muted-foreground">{t("dt.unknown")}</span>}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
           </section>
         )}
       </main>
