@@ -12,10 +12,10 @@ export const LANGUAGES: { code: Lang; label: string; native: string; flag: strin
 ];
 
 export const DIALECTS: { code: Dialect; label: string; region: string }[] = [
-  { code: "fouta_toro", label: "Pulaar — Fuuta Tooro", region: "Sénégal · Mauritanie · Mali" },
-  { code: "fouta_djallon", label: "Pular — Fuuta Jaloo", region: "Guinée" },
-  { code: "maasina", label: "Fulfulde — Maasina", region: "Mali · Burkina · Niger" },
-  { code: "aadamaawa", label: "Fulfulde — Aadamaawa", region: "Nigeria · Cameroun · Tchad" },
+  { code: "fouta_toro", label: "Fuuta Tooro", region: "" },
+  { code: "fouta_djallon", label: "Fuuta Jaloo", region: "" },
+  { code: "maasina", label: "Maasina", region: "" },
+  { code: "aadamaawa", label: "Aadamaawa", region: "" },
 ];
 
 type Dict = Record<string, string>;
@@ -164,7 +164,7 @@ export const translations: Record<Lang, Dict> = {
     "culture.tag": "Langue & Culture",
     "culture.title": "Un peuple immense, une civilisation millénaire.",
     "culture.body": "Des rives du fleuve Sénégal aux plaines du Sahel, une famille linguistique répartie sur plus de 20 pays et quatre grandes variantes dialectales.",
-    "culture.col.dialect": "Pays",
+    "culture.col.dialect": "Dialecte",
     "culture.col.zone": "Zone",
     "culture.col.speakers": "Locuteurs",
     "culture.col.notes": "Particularités",
