@@ -170,9 +170,9 @@ async function fetchWebSearchContext(query: string, deep = false): Promise<{ con
   const scopedQuery = isPulaarTopic
     ? `${query} (Pulaar OR Fulfulde OR Pular OR Fulani OR Peul OR Halpulaar OR "Fuuta Tooro" OR "Fouta Djallon" OR Maasina OR Aadamaawa)`
     : query;
-  const searchLimit = deep ? 20 : 10;
-  const keepLimit = deep ? 10 : 6;
-  const perPageChars = deep ? 3500 : 1800;
+  const searchLimit = deep ? 25 : 15;
+  const keepLimit = deep ? 15 : 10;
+  const perPageChars = deep ? 3500 : 1500;
   try {
     const resp = await fetch("https://api.firecrawl.dev/v2/search", {
       method: "POST",
