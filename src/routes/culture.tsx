@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Library, Quote, BookMarked, Music2, Shirt, Utensils, Crown } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
-import { PageNav } from "@/components/page-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/culture")({
@@ -58,7 +57,7 @@ function CulturePage() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3 sm:px-8">
-          <PageNav />
+          
 
           <div className="inline-flex items-center gap-2 text-sm font-medium text-earth">
             <Library className="h-4 w-4" /> {t("hub.f5.title")}
