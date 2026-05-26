@@ -270,6 +270,21 @@ function ChatPage() {
           } catch { /* ignore */ }
         }
       }
+
+      if (user && convId && assistant) {
+        await supabase.from("chat_messages").insert({
+          conversation_id: convId,
+          user_id: user.id,
+          role: "assistant",
+          content: assistant,
+          sources: sources ?? null,
+        });
+        await supabase
+          .from("chat_conversations")
+          .update({ updated_at: new Date().toISOString() })
+          .eq("id", convId);
+        setConvRefreshKey((k) => k + 1);
+      }
     } catch (e) {
       setError((e as Error).message);
       setMessages((m) => m.slice(0, -1));
