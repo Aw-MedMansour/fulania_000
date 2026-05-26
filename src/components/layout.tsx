@@ -46,51 +46,53 @@ function LanguageSwitcher() {
           className="absolute end-0 z-50 mt-2 w-64 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
         >
           <ul role="listbox" aria-label={t("lang.switcher")}>
-            {LANGUAGES.map((l) => (
-              <li key={l.code}>
-                <button
-                  role="option"
-                  aria-selected={l.code === lang}
-                  onClick={() => { setLang(l.code); setOpen(false); }}
-                  className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
-                >
-                  <span className="flex items-center gap-2">
-                    <span aria-hidden>{l.flag}</span>
-                    <span>{l.native}</span>
-                  </span>
-                  {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
-                </button>
-              </li>
-            ))}
+            {LANGUAGES.map((l) => {
+              const isPulaar = l.code === "ff";
+              return (
+                <li key={l.code}>
+                  <button
+                    role="option"
+                    aria-selected={l.code === lang}
+                    aria-expanded={isPulaar ? dialectsOpen : undefined}
+                    onClick={() => {
+                      setLang(l.code);
+                      if (isPulaar) {
+                        setDialectsOpen(true);
+                      } else {
+                        setDialectsOpen(false);
+                        setOpen(false);
+                      }
+                    }}
+                    className="flex w-full items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-accent"
+                  >
+                    <span className="flex items-center gap-2">
+                      <span aria-hidden>{l.flag}</span>
+                      <span>{l.native}</span>
+                      {isPulaar && <span aria-hidden className="text-muted-foreground">{dialectsOpen ? "▾" : "▸"}</span>}
+                    </span>
+                    {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
+                  </button>
+                  {isPulaar && dialectsOpen && (
+                    <ul role="listbox" aria-label="Dialecte Pulaar" className="border-t border-border bg-muted/40 px-2 py-1.5 space-y-0.5">
+                      {DIALECTS.map((d) => (
+                        <li key={d.code}>
+                          <button
+                            role="option"
+                            aria-selected={d.code === dialect}
+                            onClick={() => { setDialect(d.code); setOpen(false); }}
+                            className="flex w-full items-center justify-between gap-2 rounded px-3 py-1.5 text-left text-sm hover:bg-accent"
+                          >
+                            <span className="font-medium">{d.label}</span>
+                            {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
           </ul>
-          <div className="border-t border-border bg-muted/40 px-3 py-2">
-            <button
-              type="button"
-              onClick={() => setDialectsOpen((v) => !v)}
-              aria-expanded={dialectsOpen}
-              className="flex w-full items-center justify-between gap-2 rounded px-1 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground hover:text-foreground"
-            >
-              <span>Pulaar</span>
-              <span aria-hidden>{dialectsOpen ? "▾" : "▸"}</span>
-            </button>
-            {dialectsOpen && (
-              <ul role="listbox" aria-label="Dialecte Pulaar" className="mt-1.5 space-y-0.5">
-                {DIALECTS.map((d) => (
-                  <li key={d.code}>
-                    <button
-                      role="option"
-                      aria-selected={d.code === dialect}
-                      onClick={() => { setDialect(d.code); setOpen(false); setDialectsOpen(false); }}
-                      className="flex w-full items-center justify-between gap-2 rounded px-2 py-1.5 text-left text-sm hover:bg-accent"
-                    >
-                      <span className="font-medium">{d.label}</span>
-                      {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
         </div>
       )}
     </div>
