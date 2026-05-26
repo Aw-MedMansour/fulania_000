@@ -235,10 +235,20 @@ function ChatPage() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background">
+      <ChatSidebar
+        user={user}
+        open={sidebarOpen}
+        onOpenChange={setSidebarOpen}
+        activeId={conversationId}
+        onSelect={loadConversation}
+        onNew={startNewConversation}
+        refreshKey={convRefreshKey}
+      />
+
       {/* Header */}
       <header className="flex-none border-b border-border/60 bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
-          <PageNav />
+          <SidebarToggle onClick={() => setSidebarOpen(true)} />
 
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
@@ -254,6 +264,7 @@ function ChatPage() {
           <ChatLangSelector value={chatLang} onChange={setChatLang} dialect={dialect} onDialectChange={setDialect} label={t("chat.replyIn")} />
         </div>
       </header>
+
 
       {/* Messages — only scrollable area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
