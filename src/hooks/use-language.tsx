@@ -144,8 +144,8 @@ export const translations: Record<Lang, Dict> = {
 
     // Problem
     "problem.tag": "Le constat",
-    "problem.title": "Une langue de millions de personnes, invisible en ligne.",
-    "problem.body": "En 2026, tapez « apprendre le Pulaar » sur Google — vous ne trouverez presque rien. Pourtant, des outils existent pour le Klingon, langue d'une série télévisée. Le Pulaar, parlé par des dizaines de millions de personnes, est ignoré par les grands modèles d'IA.",
+    "problem.title": "Une langue de près de cent millions de locuteurs, encore peu présente en ligne.",
+    "problem.body": "Parlé par près d'une centaine de millions de personnes à travers le Sénégal, la Mauritanie, la Guinée, le Mali, le Burkina Faso, le Niger, le Nigeria, le Cameroun, le Tchad, la Gambie, la Guinée-Bissau, la Sierra Leone, la Côte d'Ivoire, le Bénin, le Togo, le Ghana, le Soudan, la Centrafrique et la diaspora, le Pulaar/Fulfulde reste sous-représenté dans les outils numériques et l'intelligence artificielle. FulanIA est une modeste contribution pour aider à combler ce manque, avec humilité et au service de la communauté Fulɓe.",
     "problem.other": "Pour d'autres langues",
     "problem.pulaar": "Pour le Pulaar",
     "problem.quote": "Des enfants de la diaspora qui ne peuvent plus parler à leurs grands-parents. Une culture immense, silencieuse sur internet. Un savoir ancestral en danger.",
