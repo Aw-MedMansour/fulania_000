@@ -2,13 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 
 /**
  * Guest quota (device-scoped, sliding 5h window).
- * Connected users have unlimited usage — this hook is only consulted when
- * there is no authenticated session.
+ * UNIFIED bucket: every action (simple / search / deep) consumes the same
+ * shared pool. When the pool is empty, all actions are blocked.
  *
- * Limit per kind:
- *  - simple : 10  (chat sans recherche)
- *  - search : 7   (recherche web)
- *  - deep   : 5   (recherche approfondie)
+ * The user never sees a counter — only the "Connectez-vous pour continuer"
+ * message when the pool is depleted.
  *
  * NOTE: enforcement is client-side only (localStorage). Easy to bypass by
  * clearing site data or using private mode. A robust block would require a
@@ -17,17 +15,10 @@ import { useCallback, useEffect, useState } from "react";
 
 export type QuotaKind = "simple" | "search" | "deep";
 
-const LIMITS: Record<QuotaKind, number> = {
-  simple: 10,
-  search: 7,
-  deep: 5,
-};
-
+const TOTAL_LIMIT = 10;
 const WINDOW_MS = 5 * 60 * 60 * 1000; // 5h
-const STORAGE_KEY = "fulania_guest_quota_v1";
+const STORAGE_KEY = "fulania_guest_quota_v2";
 const DEVICE_KEY = "fulania_device_id";
-
-type Store = Record<QuotaKind, number[]>;
 
 function getDeviceId(): string {
   if (typeof window === "undefined") return "ssr";
@@ -39,25 +30,21 @@ function getDeviceId(): string {
   return id;
 }
 
-function load(): Store {
-  if (typeof window === "undefined") return { simple: [], search: [], deep: [] };
+function loadTimestamps(): number[] {
+  if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { simple: [], search: [], deep: [] };
-    const parsed = JSON.parse(raw) as Partial<Store>;
-    return {
-      simple: Array.isArray(parsed.simple) ? parsed.simple : [],
-      search: Array.isArray(parsed.search) ? parsed.search : [],
-      deep: Array.isArray(parsed.deep) ? parsed.deep : [],
-    };
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((n) => typeof n === "number") : [];
   } catch {
-    return { simple: [], search: [], deep: [] };
+    return [];
   }
 }
 
-function save(store: Store) {
+function save(arr: number[]) {
   if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
 }
 
 function prune(arr: number[], now: number): number[] {
@@ -67,16 +54,13 @@ function prune(arr: number[], now: number): number[] {
 
 export interface QuotaState {
   deviceId: string;
-  remaining: Record<QuotaKind, number>;
-  limits: Record<QuotaKind, number>;
-  canUse: (kind: QuotaKind) => boolean;
-  consume: (kind: QuotaKind) => boolean;
-  nextResetIn: (kind: QuotaKind) => number; // ms until oldest entry expires
-  formatReset: (kind: QuotaKind) => string; // "5h 00min"
+  canUse: (kind?: QuotaKind) => boolean;
+  consume: (kind?: QuotaKind) => boolean;
+  formatReset: () => string;
 }
 
 export function useGuestQuota(enabled: boolean): QuotaState {
-  const [tick, setTick] = useState(0);
+  const [, setTick] = useState(0);
 
   // Re-render every minute so countdowns refresh.
   useEffect(() => {
@@ -89,69 +73,37 @@ export function useGuestQuota(enabled: boolean): QuotaState {
 
   const compute = useCallback(() => {
     const now = Date.now();
-    const store = load();
-    const pruned: Store = {
-      simple: prune(store.simple, now),
-      search: prune(store.search, now),
-      deep: prune(store.deep, now),
-    };
-    return { now, pruned };
+    return { now, pruned: prune(loadTimestamps(), now) };
   }, []);
 
-  const { pruned } = compute();
-  // touch tick so re-renders pick up changes
-  void tick;
+  const canUse = useCallback(() => {
+    if (!enabled) return true;
+    const { pruned } = compute();
+    return pruned.length < TOTAL_LIMIT;
+  }, [enabled, compute]);
 
-  const remaining: Record<QuotaKind, number> = {
-    simple: Math.max(0, LIMITS.simple - pruned.simple.length),
-    search: Math.max(0, LIMITS.search - pruned.search.length),
-    deep: Math.max(0, LIMITS.deep - pruned.deep.length),
-  };
+  const consume = useCallback(() => {
+    if (!enabled) return true;
+    const { now, pruned } = compute();
+    if (pruned.length >= TOTAL_LIMIT) return false;
+    const next = [...pruned, now];
+    save(next);
+    setTick((t) => t + 1);
+    return true;
+  }, [enabled, compute]);
 
-  const canUse = useCallback(
-    (kind: QuotaKind) => {
-      if (!enabled) return true;
-      const { pruned } = compute();
-      return pruned[kind].length < LIMITS[kind];
-    },
-    [enabled, compute],
-  );
+  const formatReset = useCallback(() => {
+    const { now, pruned } = compute();
+    const oldest = pruned[0];
+    if (oldest === undefined) return "maintenant";
+    const ms = Math.max(0, oldest + WINDOW_MS - now);
+    if (ms <= 0) return "maintenant";
+    const totalMin = Math.ceil(ms / 60_000);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    if (h <= 0) return `${m} min`;
+    return `${h}h ${m.toString().padStart(2, "0")}min`;
+  }, [compute]);
 
-  const consume = useCallback(
-    (kind: QuotaKind) => {
-      if (!enabled) return true;
-      const { now, pruned } = compute();
-      if (pruned[kind].length >= LIMITS[kind]) return false;
-      pruned[kind] = [...pruned[kind], now];
-      save(pruned);
-      setTick((t) => t + 1);
-      return true;
-    },
-    [enabled, compute],
-  );
-
-  const nextResetIn = useCallback(
-    (kind: QuotaKind) => {
-      const { now, pruned } = compute();
-      const oldest = pruned[kind][0];
-      if (oldest === undefined) return 0;
-      return Math.max(0, oldest + WINDOW_MS - now);
-    },
-    [compute],
-  );
-
-  const formatReset = useCallback(
-    (kind: QuotaKind) => {
-      const ms = nextResetIn(kind);
-      if (ms <= 0) return "maintenant";
-      const totalMin = Math.ceil(ms / 60_000);
-      const h = Math.floor(totalMin / 60);
-      const m = totalMin % 60;
-      if (h <= 0) return `${m} min`;
-      return `${h}h ${m.toString().padStart(2, "0")}min`;
-    },
-    [nextResetIn],
-  );
-
-  return { deviceId, remaining, limits: LIMITS, canUse, consume, nextResetIn, formatReset };
+  return { deviceId, canUse, consume, formatReset };
 }
