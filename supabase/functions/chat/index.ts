@@ -307,7 +307,7 @@ Deno.serve(async (req) => {
     // Run dictionary lookup + web search in parallel, enriched with attachment content
     const [dictContext, webResult] = await Promise.all([
       fetchDictionaryContext(supabase, enrichedQuery),
-      webSearch && enrichedQuery ? fetchWebSearchContext(lastUserText || attachmentNames || "FulanIA") : Promise.resolve({ context: "", sources: [] }),
+      (webSearch || deepSearch) && enrichedQuery ? fetchWebSearchContext(lastUserText || attachmentNames || "FulanIA", deepSearch) : Promise.resolve({ context: "", sources: [] }),
     ]);
 
     const dialectInstruction = `\n\nDIALECTE PRIVILÉGIÉ : Quand tu donnes des mots, exemples ou citations en Pulaar/Fulfulde, privilégie le ${dialectLabel}. Si une forme diffère sensiblement dans d'autres dialectes, tu peux la signaler brièvement, mais la forme principale doit être celle de ce dialecte.`;
