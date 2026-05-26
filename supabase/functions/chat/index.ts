@@ -219,15 +219,29 @@ Deno.serve(async (req) => {
     const lastUser = [...safeMessages].reverse().find((m) => m.role === "user");
     const lastUserText = lastUser?.content ?? "";
 
-    // Run dictionary lookup + web search in parallel
+    // Pre-decode text attachments so we can (a) enrich dictionary + web search queries
+    // and (b) reuse them when building the multimodal user message below.
+    const decodedTextAttachments = attachments
+      .filter((a) => /^text\//i.test(a.mimeType))
+      .map((a) => ({ name: a.name, text: decodeTextAttachment(a) }))
+      .filter((t) => t.text.length > 0);
+    const attachmentNames = attachments.map((a) => a.name).join(" ");
+    const attachmentTextBlob = decodedTextAttachments.map((t) => t.text).join("\n").slice(0, 6000);
+    const enrichedQuery = [lastUserText, attachmentNames, attachmentTextBlob].filter(Boolean).join("\n");
+
+    // Run dictionary lookup + web search in parallel, enriched with attachment content
     const [dictContext, webResult] = await Promise.all([
-      fetchDictionaryContext(supabase, lastUserText),
-      webSearch && lastUserText ? fetchWebSearchContext(lastUserText) : Promise.resolve({ context: "", sources: [] }),
+      fetchDictionaryContext(supabase, enrichedQuery),
+      webSearch && enrichedQuery ? fetchWebSearchContext(lastUserText || attachmentNames || "FulanIA") : Promise.resolve({ context: "", sources: [] }),
     ]);
 
     const dialectInstruction = `\n\nDIALECTE PRIVILÉGIÉ : Quand tu donnes des mots, exemples ou citations en Pulaar/Fulfulde, privilégie le ${dialectLabel}. Si une forme diffère sensiblement dans d'autres dialectes, tu peux la signaler brièvement, mais la forme principale doit être celle de ce dialecte.`;
 
-    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${CELLUKA_RULES}\n\n${FOUNDER_BIO}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${dictContext}${webResult.context}`;
+    const attachmentsNotice = attachments.length > 0
+      ? `\n\n=== PIÈCES JOINTES REÇUES (${attachments.length}) ===\n${attachments.map((a) => `• ${a.name} (${a.mimeType})`).join("\n")}\nExploite-les obligatoirement pour répondre.`
+      : "";
+
+    const systemPrompt = `${BASE_SYSTEM_PROMPT}\n\n${CELLUKA_RULES}\n\n${FOUNDER_BIO}\n\n${LANG_INSTRUCTIONS[lang]}${dialectInstruction}${attachmentsNotice}${dictContext}${webResult.context}`;
 
     // Inject attachments into the last user message (multimodal content array).
     const finalMessages: any[] = safeMessages.slice(0, -1);
