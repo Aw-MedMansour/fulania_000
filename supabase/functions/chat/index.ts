@@ -192,9 +192,12 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
     const raw = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
     if (!Array.isArray(raw) || raw.length === 0) return { context: "", sources: [] };
     const safe = raw.filter((r) => !isUnsafeResult(r));
-    const onTopic = safe.filter(isOnTopicResult);
-    const offTopic = safe.filter((r) => !isOnTopicResult(r));
-    const ordered = [...onTopic, ...offTopic].slice(0, 6);
+    // Pour un sujet Pulaar : priorise les sources Pulaar puis complète. Pour tout autre sujet :
+    // garde l'ordre naturel de Firecrawl pour rester intelligent et pertinent sur n'importe quel thème.
+    const ordered = isPulaarTopic
+      ? [...safe.filter(isOnTopicResult), ...safe.filter((r) => !isOnTopicResult(r))].slice(0, 6)
+      : safe.slice(0, 6);
+
     if (ordered.length === 0) return { context: "", sources: [] };
     const sources = ordered.map((r) => ({ title: r.title ?? r.url, url: r.url }));
     const lines = ordered.map((r, i) => {
