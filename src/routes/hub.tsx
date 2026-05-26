@@ -93,6 +93,8 @@ function HubPage() {
           <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
         </Link>
         <div className="flex items-center gap-2">
+          <PageNav />
+
           
           {session ? (
             <Button
