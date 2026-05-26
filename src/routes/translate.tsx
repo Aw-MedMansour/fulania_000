@@ -46,6 +46,7 @@ function TranslatePage() {
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showDialects, setShowDialects] = useState(false);
 
   const speak = (s: string) => {
     if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
