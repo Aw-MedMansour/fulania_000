@@ -151,35 +151,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <LanguageSwitcher />
-          {user ? (
-            <button
-              onClick={() => signOut()}
-              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              title={user.email ?? ""}
-              aria-label={t("btn.signout")}
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("btn.signout")}</span>
-            </button>
-          ) : (
-            <Link
-              to="/auth"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              aria-label={t("btn.signin")}
-            >
-              <UserIcon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("btn.signin")}</span>
-            </Link>
-          )}
-          <Link
-            to="/chat"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
-            aria-label={t("btn.try")}
-          >
-            <Sparkles className="h-4 w-4" />
-            <span className="hidden sm:inline">{t("btn.try")}</span>
-          </Link>
+          <UserMenu />
         </div>
       </div>
     </header>
