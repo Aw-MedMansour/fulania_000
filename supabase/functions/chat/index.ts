@@ -111,29 +111,57 @@ async function fetchDictionaryContext(supabase: ReturnType<typeof createClient>,
   return `\n\n=== DICTIONNAIRE DE RÉFÉRENCE (entrées vérifiées correspondant à la question) ===\n${lines.join("\n")}\n=== Fin du dictionnaire ===`;
 }
 
+const BLOCKED_DOMAINS = [
+  "pornhub", "xvideos", "xnxx", "xhamster", "redtube", "youporn", "brazzers",
+  "onlyfans", "chaturbate", "stripchat", "livejasmin", "cam4", "bongacams",
+  "spankbang", "tnaflix", "eporner", "hclips", "nhentai", "hentai-",
+  "rule34", "e621", "fapello", "motherless", "thothub", "erome", "missav",
+];
+const BLOCKED_KEYWORDS = [
+  "porn", "porno", " xxx", "hentai", " nude", " nudes", "naked sex",
+  "escort", "camgirl", "onlyfans", "nsfw", "fetish", "erotic", "erotique",
+  "adult video", "sexe explicite",
+];
+
+function isUnsafeResult(r: any): boolean {
+  const url = String(r?.url ?? "").toLowerCase();
+  const text = ` ${(r?.title ?? "")} ${(r?.description ?? r?.snippet ?? "")}`.toLowerCase();
+  if (BLOCKED_DOMAINS.some((d) => url.includes(d))) return true;
+  if (BLOCKED_KEYWORDS.some((k) => text.includes(k))) return true;
+  return false;
+}
+
 async function fetchWebSearchContext(query: string): Promise<{ context: string; sources: { title: string; url: string }[] }> {
   const apiKey = Deno.env.get("FIRECRAWL_API_KEY");
   if (!apiKey) return { context: "", sources: [] };
+  const q = ` ${query.toLowerCase()} `;
+  if (BLOCKED_KEYWORDS.some((k) => q.includes(k))) {
+    return { context: "\n\n=== RECHERCHE WEB ===\n(Recherche filtrée : la requête contient des termes explicites. Aucune source web n'a été consultée. Réponds poliment en orientant l'utilisateur vers un sujet culturel ou linguistique Peul.)\n", sources: [] };
+  }
   try {
     const resp = await fetch("https://api.firecrawl.dev/v2/search", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ query, limit: 5 }),
+      body: JSON.stringify({ query, limit: 8 }),
     });
     if (!resp.ok) {
       console.error("Firecrawl search error:", resp.status, await resp.text());
       return { context: "", sources: [] };
     }
     const json = await resp.json();
-    const results = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
-    if (!Array.isArray(results) || results.length === 0) return { context: "", sources: [] };
-    const sources = results.slice(0, 5).map((r) => ({ title: r.title ?? r.url, url: r.url }));
-    const lines = results.slice(0, 5).map((r, i) => {
+    const raw = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
+    if (!Array.isArray(raw) || raw.length === 0) return { context: "", sources: [] };
+    const results = raw.filter((r) => !isUnsafeResult(r)).slice(0, 5);
+    if (results.length === 0) {
+      return { context: "\n\n=== RECHERCHE WEB ===\n(Tous les résultats ont été filtrés car jugés inappropriés. Ne cite aucune source.)\n", sources: [] };
+    }
+    const sources = results.map((r) => ({ title: r.title ?? r.url, url: r.url }));
+    const lines = results.map((r, i) => {
       const snippet = (r.description || r.snippet || r.markdown || "").toString().slice(0, 500);
       return `[${i + 1}] **${r.title ?? r.url}**\n${r.url}\n${snippet}`;
     });
     return {
-      context: `\n\n=== RECHERCHE WEB (résultats récents) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. à la fin de ta réponse.`,
+      context: `\n\n=== RECHERCHE WEB (résultats récents, filtrés safe-search) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. à la fin de ta réponse.\n\nRÈGLE DE MODÉRATION ABSOLUE : Ne mentionne, ne cite et ne fais JAMAIS référence à des sites pornographiques, escort, camgirl, NSFW, hentai ou contenus pour adultes explicites — même si tu en as connaissance par ailleurs. Si la question s'oriente vers ce type de contenu, refuse poliment et redirige vers la culture, la langue et les valeurs Pulaaku.`,
       sources,
     };
   } catch (e) {
