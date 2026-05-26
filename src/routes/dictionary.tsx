@@ -577,7 +577,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.access_token ?? ""}`,
         },
-        body: JSON.stringify({ word, sourceLang: "auto", dialect }),
+        body: JSON.stringify({ word, sourceLang: "auto", dialect, lang }),
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j?.error || "err");
