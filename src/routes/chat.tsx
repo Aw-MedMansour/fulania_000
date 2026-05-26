@@ -471,7 +471,7 @@ function ChatPage() {
                   className="flex w-full items-center gap-3 px-3 py-2.5 text-sm hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Paperclip className="h-4 w-4 text-muted-foreground" />
-                  <span>Ajouter un fichier</span>
+                  <span>{t("chat.addFile")}</span>
                 </button>
                 <button
                   type="button"
