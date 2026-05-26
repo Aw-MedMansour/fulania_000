@@ -352,7 +352,7 @@ function ChatPage() {
               {loading && messages[messages.length - 1]?.role === "user" && (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  {deepSearch ? "Recherche approfondie en cours…" : webSearch ? "Recherche sur le web en cours…" : t("chat.thinking")}
+                  {deepSearch ? t("chat.deepSearching") : webSearch ? t("chat.webSearching") : t("chat.thinking")}
                 </div>
               )}
               {error && (
