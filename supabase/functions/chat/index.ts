@@ -131,6 +131,33 @@ function isUnsafeResult(r: any): boolean {
   return false;
 }
 
+// Allowlist : mots-clés liés au Pulaar / Fulfulde / Halpulaar / dialectes & culture Peule.
+// Un résultat doit contenir AU MOINS un de ces termes (URL, titre ou description) pour être conservé.
+const PULAAR_TOPIC_KEYWORDS = [
+  "pulaar", "pular", "fulfulde", "fulani", "fulɓe", "fulbe", "fula", "peul", "peule", "peuls", "peules",
+  "halpulaar", "haalpulaar", "haalpulaar'en", "toucouleur", "tukulor",
+  "fuuta", "fouta", "fuuta tooro", "fouta toro", "fuuta jaloo", "fouta djallon", "djallon",
+  "maasina", "macina", "aadamaawa", "adamawa", "sokoto",
+  "pulaaku", "semteende", "munyal", "hakkiilo", "neddaaku",
+  "ceerno", "thierno", "almamy", "almami", "el hadj oumar", "oumar tall", "souleymane baal",
+  "hoddu", "riti", "yela", "leele", "gumbala",
+  "celluka", "cerfla", "ajami",
+];
+
+// Domaines de confiance (toujours acceptés s'ils ne sont pas bloqués par BLOCKED_DOMAINS).
+const PULAAR_TRUSTED_DOMAINS = [
+  "fulania.com", "webpulaar.com", "pulaagu.com", "tabital-pulaaku", "timpulaaku",
+  "ethnologue.com", "glottolog.org", "wikipedia.org", "wiktionary.org",
+  "unesco.org", "openlibrary.org", "cerfla", "sil.org",
+];
+
+function isOnTopicResult(r: any): boolean {
+  const url = String(r?.url ?? "").toLowerCase();
+  const text = `${(r?.title ?? "")} ${(r?.description ?? r?.snippet ?? "")}`.toLowerCase();
+  if (PULAAR_TRUSTED_DOMAINS.some((d) => url.includes(d))) return true;
+  return PULAAR_TOPIC_KEYWORDS.some((k) => url.includes(k) || text.includes(k));
+}
+
 async function fetchWebSearchContext(query: string): Promise<{ context: string; sources: { title: string; url: string }[] }> {
   const apiKey = Deno.env.get("FIRECRAWL_API_KEY");
   if (!apiKey) return { context: "", sources: [] };
@@ -138,11 +165,13 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
   if (BLOCKED_KEYWORDS.some((k) => q.includes(k))) {
     return { context: "\n\n=== RECHERCHE WEB ===\n(Recherche filtrée : la requête contient des termes explicites. Aucune source web n'a été consultée. Réponds poliment en orientant l'utilisateur vers un sujet culturel ou linguistique Peul.)\n", sources: [] };
   }
+  // Ancre thématique : on force la recherche vers le Pulaar et ses dialectes.
+  const scopedQuery = `${query} (Pulaar OR Fulfulde OR Pular OR Fulani OR Peul OR Halpulaar OR "Fuuta Tooro" OR "Fouta Djallon" OR Maasina OR Aadamaawa)`;
   try {
     const resp = await fetch("https://api.firecrawl.dev/v2/search", {
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ query, limit: 8 }),
+      body: JSON.stringify({ query: scopedQuery, limit: 12 }),
     });
     if (!resp.ok) {
       console.error("Firecrawl search error:", resp.status, await resp.text());
@@ -151,17 +180,21 @@ async function fetchWebSearchContext(query: string): Promise<{ context: string; 
     const json = await resp.json();
     const raw = (json?.data?.web ?? json?.data ?? json?.web ?? []) as any[];
     if (!Array.isArray(raw) || raw.length === 0) return { context: "", sources: [] };
-    const results = raw.filter((r) => !isUnsafeResult(r)).slice(0, 5);
-    if (results.length === 0) {
-      return { context: "\n\n=== RECHERCHE WEB ===\n(Tous les résultats ont été filtrés car jugés inappropriés. Ne cite aucune source.)\n", sources: [] };
+    const safe = raw.filter((r) => !isUnsafeResult(r));
+    const onTopic = safe.filter(isOnTopicResult).slice(0, 5);
+    if (onTopic.length === 0) {
+      return {
+        context: "\n\n=== RECHERCHE WEB ===\n(Aucune source pertinente trouvée en rapport avec le Pulaar/Fulfulde ou la culture Peule. Ne cite AUCUNE source web et indique poliment qu'aucune source fiable n'a été trouvée sur ce sujet précis.)\n",
+        sources: [],
+      };
     }
-    const sources = results.map((r) => ({ title: r.title ?? r.url, url: r.url }));
-    const lines = results.map((r, i) => {
+    const sources = onTopic.map((r) => ({ title: r.title ?? r.url, url: r.url }));
+    const lines = onTopic.map((r, i) => {
       const snippet = (r.description || r.snippet || r.markdown || "").toString().slice(0, 500);
       return `[${i + 1}] **${r.title ?? r.url}**\n${r.url}\n${snippet}`;
     });
     return {
-      context: `\n\n=== RECHERCHE WEB (résultats récents, filtrés safe-search) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. à la fin de ta réponse.\n\nRÈGLE DE MODÉRATION ABSOLUE : Ne mentionne, ne cite et ne fais JAMAIS référence à des sites pornographiques, escort, camgirl, NSFW, hentai ou contenus pour adultes explicites — même si tu en as connaissance par ailleurs. Si la question s'oriente vers ce type de contenu, refuse poliment et redirige vers la culture, la langue et les valeurs Pulaaku.`,
+      context: `\n\n=== RECHERCHE WEB (sources filtrées : uniquement Pulaar / Fulfulde / culture Peule) ===\n${lines.join("\n\n")}\n=== Fin de la recherche ===\n\nCite tes sources avec [1], [2], etc. à la fin de ta réponse.\n\nRÈGLE DE PORTÉE ABSOLUE : Tu ne dois citer QUE des sources directement liées au Pulaar/Fulfulde/Pular/Fulani, aux dialectes (Fuuta Tooro, Fuuta Jaloo, Maasina, Aadamaawa), à l'histoire ou à la culture des Halpulaar'en / Fulɓe. Toute autre source doit être ignorée même si elle apparaît ci-dessus.\n\nRÈGLE DE MODÉRATION ABSOLUE : Ne mentionne, ne cite et ne fais JAMAIS référence à des sites pornographiques, escort, camgirl, NSFW, hentai ou contenus pour adultes explicites — même si tu en as connaissance par ailleurs. Si la question s'oriente vers ce type de contenu, refuse poliment et redirige vers la culture, la langue et les valeurs Pulaaku.`,
       sources,
     };
   } catch (e) {
