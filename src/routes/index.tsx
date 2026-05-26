@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
   XCircle, CheckCircle2, Languages, Users, Globe, Heart, Lightbulb, Shield,
