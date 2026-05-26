@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import ogCover from "@/assets/og-cover.jpg";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 
 function NotFoundComponent() {
@@ -76,9 +77,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "FulanIA — IA au service de la langue et de la culture Peules" },
       { property: "og:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://fulania.com" },
+      { property: "og:image", content: `https://fulania.com${ogCover}` },
+      { property: "og:image:width", content: "1216" },
+      { property: "og:image:height", content: "640" },
+      { property: "og:image:alt", content: "FulanIA — Pulaagu & IA" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "FulanIA — IA au service de la langue et de la culture Peules" },
       { name: "twitter:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
+      { name: "twitter:image", content: `https://fulania.com${ogCover}` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

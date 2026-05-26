@@ -5,7 +5,6 @@ import { BookOpen, GraduationCap, Sparkles, RefreshCw, Check, X, Volume2, ArrowR
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
-import { PageNav } from "@/components/page-nav";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -73,7 +72,7 @@ function LearnPage() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-        <PageNav className="mb-6" />
+        
         <div className="mb-8 flex items-start gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
             <GraduationCap className="h-6 w-6" />

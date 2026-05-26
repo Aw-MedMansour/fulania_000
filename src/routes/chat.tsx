@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope } from "lucide-react";
+import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope, LogIn } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { supabase } from "@/integrations/supabase/client";
 import { LANGUAGES, DIALECTS, useLanguage, getCurrentLang, tFor, type Lang, type Dialect } from "@/hooks/use-language";
-import { PageNav } from "@/components/page-nav";
+import { useAuth } from "@/hooks/use-auth";
+import { useGuestQuota, type QuotaKind } from "@/hooks/use-guest-quota";
+import { ChatSidebar, SidebarToggle } from "@/components/chat-sidebar";
 
 type Source = { title: string; url: string };
 type Attachment = { name: string; mimeType: string; dataBase64: string; previewUrl?: string };
@@ -49,6 +51,8 @@ const FUNCTION_URL = `${SUPABASE_URL}/functions/v1/chat`;
 
 function ChatPage() {
   const { t, lang: siteLang, setLang, dialect, setDialect } = useLanguage();
+  const { user } = useAuth();
+  const quota = useGuestQuota(!user);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -57,6 +61,9 @@ function ChatPage() {
   const [deepSearch, setDeepSearch] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [plusOpen, setPlusOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [convRefreshKey, setConvRefreshKey] = useState(0);
   const plusRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -66,6 +73,27 @@ function ChatPage() {
   // Chat language IS the global site language — single source of truth.
   const chatLang = siteLang;
   const setChatLang = setLang;
+
+  // Load conversation messages when switching conversations
+  async function loadConversation(id: string) {
+    setConversationId(id);
+    const { data } = await supabase
+      .from("chat_messages")
+      .select("role, content, sources")
+      .eq("conversation_id", id)
+      .order("created_at", { ascending: true });
+    setMessages(
+      ((data ?? []) as { role: "user" | "assistant"; content: string; sources: Source[] | null }[])
+        .map((m) => ({ role: m.role, content: m.content, sources: m.sources ?? undefined })),
+    );
+    setError(null);
+  }
+
+  function startNewConversation() {
+    setConversationId(null);
+    setMessages([]);
+    setError(null);
+  }
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -123,6 +151,22 @@ function ChatPage() {
     if ((!content && attachments.length === 0) || loading) return;
     setError(null);
 
+    // Quota check for guests
+    const kind: QuotaKind = deepSearch ? "deep" : webSearch ? "search" : "simple";
+    if (!user) {
+      if (!quota.canUse(kind)) {
+        const labels: Record<QuotaKind, string> = {
+          simple: "questions",
+          search: "recherches web",
+          deep: "recherches approfondies",
+        };
+        setError(
+          `Vous avez utilisé vos ${quota.limits[kind]} ${labels[kind]} gratuites. Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset(kind)}.`,
+        );
+        return;
+      }
+    }
+
     const { data: { session: current } } = await supabase.auth.getSession();
     const userContent = content || (attachments.length ? "(voir pièces jointes)" : "");
     const next: Msg[] = [...messages, { role: "user", content: userContent }];
@@ -131,6 +175,35 @@ function ChatPage() {
     const sentAttachments = attachments;
     setAttachments([]);
     setLoading(true);
+
+    if (!user) quota.consume(kind);
+
+    // Persist user msg + ensure conversation for authenticated users
+    let convId = conversationId;
+    if (user) {
+      if (!convId) {
+        const title = (content || "Pièce jointe").slice(0, 60);
+        const { data: conv } = await supabase
+          .from("chat_conversations")
+          .insert({ user_id: user.id, title })
+          .select("id")
+          .single();
+        if (conv) {
+          convId = conv.id;
+          setConversationId(convId);
+          setConvRefreshKey((k) => k + 1);
+        }
+      }
+      if (convId) {
+        await supabase.from("chat_messages").insert({
+          conversation_id: convId,
+          user_id: user.id,
+          role: "user",
+          content: userContent,
+        });
+      }
+    }
+
 
     try {
       const payloadAttachments = sentAttachments.map((a) => ({
@@ -197,6 +270,21 @@ function ChatPage() {
           } catch { /* ignore */ }
         }
       }
+
+      if (user && convId && assistant) {
+        await supabase.from("chat_messages").insert({
+          conversation_id: convId,
+          user_id: user.id,
+          role: "assistant",
+          content: assistant,
+          sources: sources ?? null,
+        });
+        await supabase
+          .from("chat_conversations")
+          .update({ updated_at: new Date().toISOString() })
+          .eq("id", convId);
+        setConvRefreshKey((k) => k + 1);
+      }
     } catch (e) {
       setError((e as Error).message);
       setMessages((m) => m.slice(0, -1));
@@ -207,10 +295,20 @@ function ChatPage() {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-background">
+      <ChatSidebar
+        user={user}
+        open={sidebarOpen}
+        onOpenChange={setSidebarOpen}
+        activeId={conversationId}
+        onSelect={loadConversation}
+        onNew={startNewConversation}
+        refreshKey={convRefreshKey}
+      />
+
       {/* Header */}
       <header className="flex-none border-b border-border/60 bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
-          <PageNav />
+          <SidebarToggle onClick={() => setSidebarOpen(true)} />
 
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
@@ -226,6 +324,7 @@ function ChatPage() {
           <ChatLangSelector value={chatLang} onChange={setChatLang} dialect={dialect} onDialectChange={setDialect} label={t("chat.replyIn")} />
         </div>
       </header>
+
 
       {/* Messages — only scrollable area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
@@ -317,7 +416,31 @@ function ChatPage() {
               )}
             </div>
           )}
+
+          {/* Guest quota indicator */}
+          {!user && (
+            <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+              <span className="font-medium">Crédits invité :</span>
+              <span>
+                Questions <strong className="text-foreground">{quota.remaining.simple}/{quota.limits.simple}</strong>
+              </span>
+              <span>
+                Recherche <strong className="text-foreground">{quota.remaining.search}/{quota.limits.search}</strong>
+              </span>
+              <span>
+                Approfondie <strong className="text-foreground">{quota.remaining.deep}/{quota.limits.deep}</strong>
+              </span>
+              <Link
+                to="/auth"
+                search={{ next: "/chat" }}
+                className="inline-flex items-center gap-1 rounded-full bg-foreground px-2 py-0.5 text-[10px] font-medium text-background hover:opacity-90"
+              >
+                <LogIn className="h-3 w-3" /> Se connecter pour un accès illimité
+              </Link>
+            </div>
+          )}
         </div>
+
 
         <form
           onSubmit={(e) => { e.preventDefault(); send(input); }}
