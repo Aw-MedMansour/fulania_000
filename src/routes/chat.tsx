@@ -156,15 +156,13 @@ function ChatPage() {
     // Quota check for guests — silent counter; only message when depleted.
     if (!user) {
       if (!quota.canUse()) {
-        setError(
-          `Connectez-vous pour continuer — ou réessayez dans ${quota.formatReset()}.`,
-        );
+        setError(t("chat.guestExhausted").replace("{time}", quota.formatReset()));
         return;
       }
     }
 
     const { data: { session: current } } = await supabase.auth.getSession();
-    const userContent = content || (attachments.length ? "(voir pièces jointes)" : "");
+    const userContent = content || (attachments.length ? t("chat.attachOnly") : "");
     const next: Msg[] = [...messages, { role: "user", content: userContent }];
     setMessages(next);
     setInput("");
