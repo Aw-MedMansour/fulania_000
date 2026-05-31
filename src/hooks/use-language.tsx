@@ -887,6 +887,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "Disable",
     "chat.remove": "Remove",
     "chat.enterHint": "Enter for newline — Ctrl/⌘+Enter to send",
+    "chat.fileTooBig": "{name}: too large (max 8 MB).",
+    "chat.guestExhausted": "Sign in to continue — or try again in {time}.",
+    "chat.attachOnly": "(see attachments)",
+    "entry.listen": "Listen",
+    "learn.quizInfo": "{n} words · 4-choice quiz",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     "dict.title": "Saggitorde — Dictionary",
     "dict.subtitle": "Pulaar ↔ French ↔ العربية ↔ English. Search a word, listen to its pronunciation, save your favorites and find your history.",
