@@ -22,27 +22,147 @@ export const Route = createFileRoute("/culture")({
   component: CulturePage,
 });
 
-const PROVERBS = [
-  { pulaar: "Pulaagu ko ngallu mawngu.", fr: "Le Pulaaku est une grande richesse." },
-  { pulaar: "Neɗɗo ko jiyaaɗo wonnde mum.", fr: "L'homme est esclave de sa parole." },
-  { pulaar: "Hakkille ɓuri doole.", fr: "L'intelligence vaut mieux que la force." },
-  { pulaar: "Mo woni e ngendi mum, woni e koyɗe mum.", fr: "Qui est chez les siens est sur ses propres pieds." },
-  { pulaar: "Ko hakkunde teŋle ñaamiraa, wonaa hakkunde gite.", fr: "On mange avec les mains, pas avec les yeux." },
-  { pulaar: "Ngaynaako mo wuyaani na ɗalata na'i mum.", fr: "Le berger qui ne veille pas perd son troupeau." },
+// Proverbs are quoted in Pulaar; the gloss switches with the UI language.
+type Lang = "fr" | "en" | "ar" | "ff";
+type Trio = Record<Lang, string>;
+
+const PROVERBS: { pulaar: string; gloss: Trio }[] = [
+  {
+    pulaar: "Pulaagu ko ngallu mawngu.",
+    gloss: {
+      fr: "Le Pulaaku est une grande richesse.",
+      en: "Pulaaku is a great wealth.",
+      ar: "البولاكو ثروة عظيمة.",
+      ff: "Pulaagu ko ngallu mawngu — ngalu mawngu.",
+    },
+  },
+  {
+    pulaar: "Neɗɗo ko jiyaaɗo wonnde mum.",
+    gloss: {
+      fr: "L'homme est esclave de sa parole.",
+      en: "A person is bound by their word.",
+      ar: "الإنسان رهين كلمته.",
+      ff: "Neɗɗo ko jiyaaɗo konngol mum.",
+    },
+  },
+  {
+    pulaar: "Hakkille ɓuri doole.",
+    gloss: {
+      fr: "L'intelligence vaut mieux que la force.",
+      en: "Wisdom beats strength.",
+      ar: "العقل خير من القوة.",
+      ff: "Hakkille ɓuri doole — miijo ɓuri sembe.",
+    },
+  },
+  {
+    pulaar: "Mo woni e ngendi mum, woni e koyɗe mum.",
+    gloss: {
+      fr: "Qui est chez les siens est sur ses propres pieds.",
+      en: "Who stands among their own stands on their own feet.",
+      ar: "من كان بين أهله فهو على قدميه.",
+      ff: "Mo woni e ngendi mum, woni e doole mum.",
+    },
+  },
+  {
+    pulaar: "Ko hakkunde teŋle ñaamiraa, wonaa hakkunde gite.",
+    gloss: {
+      fr: "On mange avec les mains, pas avec les yeux.",
+      en: "One eats with their hands, not with their eyes.",
+      ar: "نأكل بالأيدي لا بالعيون.",
+      ff: "Hakkunde teŋle ñaamirtee, wonaa gite.",
+    },
+  },
+  {
+    pulaar: "Ngaynaako mo wuyaani na ɗalata na'i mum.",
+    gloss: {
+      fr: "Le berger qui ne veille pas perd son troupeau.",
+      en: "The shepherd who fails to watch loses his herd.",
+      ar: "الراعي الذي لا يسهر يفقد قطيعه.",
+      ff: "Ngaynaako mo reenaani, ena ɗala na'i mum.",
+    },
+  },
 ];
 
-const TALES = [
-  { title: "Demmba e Foroyel", summary: "Conte initiatique d'un jeune berger du Fouta confronté au génie de la brousse — une leçon sur la patience et le respect des aînés." },
-  { title: "Samba Gelaajo Jeegi", summary: "Épopée du prince guerrier du Fouta Toro, héros chanté par les griots et symbole du courage Peul." },
-  { title: "Tyamaba, le serpent du fleuve", summary: "Légende du serpent gardien du fleuve Sénégal, protecteur des Halpulaar de la vallée." },
-  { title: "Goggo e jiwo mum", summary: "Récit d'une tante et de sa nièce, transmis pour enseigner aux jeunes filles les valeurs du Pulaaku." },
+const TALES: { title: string; summary: Trio }[] = [
+  {
+    title: "Demmba e Foroyel",
+    summary: {
+      fr: "Conte initiatique d'un jeune berger du Fouta confronté au génie de la brousse — une leçon sur la patience et le respect des aînés.",
+      en: "Initiation tale of a young Fouta shepherd facing the bush spirit — a lesson on patience and respect for elders.",
+      ar: "حكاية تأهيل لراعٍ شاب من الفوتا يواجه روح الأدغال — درس في الصبر واحترام الكبار.",
+      ff: "Taalol ngon ngaynaako kesum gonɗo Fuuta haalde e jinne ladde — janngirde munyal e neɗɗaaku mawɓe.",
+    },
+  },
+  {
+    title: "Samba Gelaajo Jeegi",
+    summary: {
+      fr: "Épopée du prince guerrier du Fouta Toro, héros chanté par les griots et symbole du courage Peul.",
+      en: "Epic of the warrior prince of Fouta Toro, hero sung by griots and emblem of Fulɓe courage.",
+      ar: "ملحمة الأمير المحارب لفوتا تورو، بطلٌ يغنّيه الڭراويون ورمز شجاعة الفولان.",
+      ff: "Tinndol laamɗo hare Fuuta Tooro, kewɗo gawloɓe yim'a — maande cuusal Fulɓe.",
+    },
+  },
+  {
+    title: "Tyamaba, le serpent du fleuve",
+    summary: {
+      fr: "Légende du serpent gardien du fleuve Sénégal, protecteur des Halpulaar de la vallée.",
+      en: "Legend of the serpent guardian of the Senegal River, protector of the valley's Halpulaar.",
+      ar: "أسطورة الثعبان حارس نهر السنغال وحامي هلپولار الوادي.",
+      ff: "Taariindi ngooroondi maayo Senegaal, deenoowo Halpulaar e jeeri maayo.",
+    },
+  },
+  {
+    title: "Goggo e jiwo mum",
+    summary: {
+      fr: "Récit d'une tante et de sa nièce, transmis pour enseigner aux jeunes filles les valeurs du Pulaaku.",
+      en: "Story of an aunt and her niece, passed down to teach young girls the values of Pulaaku.",
+      ar: "حكاية عمّة وابنة أخيها، تُروى لتعليم الفتيات قيم البولاكو.",
+      ff: "Taalol goggo e jiwo mum, jokketenoongol ngam janngingol surbaaɓe wonaande Pulaagu.",
+    },
+  },
 ];
 
-const TRADITIONS = [
-  { icon: Crown, title: "Pulaaku", body: "Code moral fondamental : munyal (patience), semteende (pudeur), hakkille (sagesse), neɗɗaaku (humanité)." },
-  { icon: Shirt, title: "Mbubba & Taara", body: "Boubous brodés, foulards et bijoux d'or des femmes Peules — héritage esthétique millénaire." },
-  { icon: Music2, title: "Hoddu & Riti", body: "Luth des griots et vièle des bergers : musiques qui accompagnent veillées, mariages et transhumances." },
-  { icon: Utensils, title: "Cuisine", body: "Thiéboudienne, maafe, lacciri ko kosam (couscous au lait), gnirie : une table où se transmet la culture." },
+const TRADITIONS: { icon: typeof Crown; title: string; body: Trio }[] = [
+  {
+    icon: Crown,
+    title: "Pulaaku",
+    body: {
+      fr: "Code moral fondamental : munyal (patience), semteende (pudeur), hakkille (sagesse), neɗɗaaku (humanité).",
+      en: "Core moral code: munyal (patience), semteende (modesty), hakkille (wisdom), neɗɗaaku (humanity).",
+      ar: "ميثاق أخلاقي جوهري: مونيال (الصبر)، سَمتيندي (الحياء)، حكِّيلي (الحكمة)، نِدّاكو (الإنسانية).",
+      ff: "Aada mawɗo: munyal, semteende, hakkille, neɗɗaaku.",
+    },
+  },
+  {
+    icon: Shirt,
+    title: "Mbubba & Taara",
+    body: {
+      fr: "Boubous brodés, foulards et bijoux d'or des femmes Peules — héritage esthétique millénaire.",
+      en: "Embroidered boubous, headscarves and gold jewelry of Fulɓe women — a millennia-old aesthetic heritage.",
+      ar: "بُبُّو مطرّز ومناديل وحلي ذهبية لنساء الفولان — إرث جمالي ممتد لآلاف السنين.",
+      ff: "Mbubba binndaaɗi, taara e cuɗaari kaŋŋe rewɓe Fulɓe — donaaɗum njeenu ɓooyɗum.",
+    },
+  },
+  {
+    icon: Music2,
+    title: "Hoddu & Riti",
+    body: {
+      fr: "Luth des griots et vièle des bergers : musiques qui accompagnent veillées, mariages et transhumances.",
+      en: "Griots' lute and shepherds' fiddle: music that accompanies night gatherings, weddings and transhumance.",
+      ar: "عود الڭراويين ورباب الرعاة: موسيقى ترافق السهرات والأعراس والترحال.",
+      ff: "Hoddu gawloɓe e riti aynaaɓe: gimi tawtoraaɗi jamanuuji, kabbangol e perol.",
+    },
+  },
+  {
+    icon: Utensils,
+    title: "Cuisine",
+    body: {
+      fr: "Thiéboudienne, maafe, lacciri ko kosam (couscous au lait), gnirie : une table où se transmet la culture.",
+      en: "Thieboudienne, maafe, lacciri ko kosam (couscous with milk), gnirie: a table where culture is handed down.",
+      ar: "تشيبوجين، مافي، لاسيري كو كوسام (كسكس بالحليب)، ݣْنيري: مائدة تنتقل عبرها الثقافة.",
+      ff: "Cebu jen, maafe, lacciri ko kosam, ñiiri: taabal ɗo aada jokketee.",
+    },
+  },
 ];
 
 function CulturePage() {
