@@ -163,13 +163,13 @@ function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boole
               <h3 className="font-display text-xl font-semibold text-earth">{e.pulaar}</h3>
               {e.pronunciation && <span className="text-xs italic text-muted-foreground">/{e.pronunciation}/</span>}
             </div>
-            <button onClick={() => speak(e.pulaar)} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label="Écouter">
+            <button onClick={() => speak(e.pulaar)} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t("entry.listen")}>
               <Volume2 className="h-4 w-4" />
             </button>
           </div>
           <p className="mt-2 text-sm">{e.french}</p>
-          {e.english && <p className="text-xs text-muted-foreground">EN — {e.english}</p>}
-          {e.arabic && <p className="text-xs text-muted-foreground" dir="rtl">AR — {e.arabic}</p>}
+          {e.english && <p className="text-xs text-muted-foreground">{t("learn.langEN")} — {e.english}</p>}
+          {e.arabic && <p className="text-xs text-muted-foreground" dir="rtl">{t("learn.langAR")} — {e.arabic}</p>}
           {e.example_pulaar && (
             <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
               <p className="font-display italic text-earth">« {e.example_pulaar} »</p>
@@ -271,7 +271,7 @@ function QuizView({ entries, allEntries, isLoading }: { entries: Entry[]; allEnt
     return (
       <div className="rounded-lg border border-border bg-card p-8 text-center">
         <h3 className="font-display text-xl font-semibold">{t("learn.quiz")}</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{entries.length} mots · QCM 4 choix</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("learn.quizInfo").replace("{n}", String(entries.length))}</p>
         <Button className="mt-4" onClick={() => { setQuestions(buildQuiz(entries, allEntries)); setI(0); setScore(0); setDone(false); setPicked(null); }}>
           {t("learn.start")}
         </Button>

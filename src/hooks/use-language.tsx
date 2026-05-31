@@ -291,6 +291,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "Désactiver",
     "chat.remove": "Retirer",
     "chat.enterHint": "Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer",
+    "chat.fileTooBig": "{name} : trop volumineux (max 8 Mo).",
+    "chat.guestExhausted": "Connectez-vous pour continuer — ou réessayez dans {time}.",
+    "chat.attachOnly": "(voir pièces jointes)",
+    "entry.listen": "Écouter",
+    "learn.quizInfo": "{n} mots · QCM 4 choix",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     // Dictionary
     "dict.title": "Saggitorde — Dictionnaire",
@@ -563,6 +569,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "Daɗɗin",
     "chat.remove": "Itto",
     "chat.enterHint": "Entrée ngam liñol kesol — Ctrl/⌘+Entrée ngam neldude",
+    "chat.fileTooBig": "{name} : ko mawɗo no feewi (max 8 Mo).",
+    "chat.guestExhausted": "Naatu ngam jokkude — walla eto kadi ɓaawo {time}.",
+    "chat.attachOnly": "(yiy ko jokkaa)",
+    "entry.listen": "Heɗo",
+    "learn.quizInfo": "{n} konnguɗi · QCM 4 cuɓo",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     "dict.title": "Saggitorde",
     "dict.subtitle": "Pulaar ↔ Faransi ↔ العربية ↔ Engele. Yiyloo konngol, heɗo hito mum, marde ɓe njiɗɗaa.",
@@ -875,6 +887,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "Disable",
     "chat.remove": "Remove",
     "chat.enterHint": "Enter for newline — Ctrl/⌘+Enter to send",
+    "chat.fileTooBig": "{name}: too large (max 8 MB).",
+    "chat.guestExhausted": "Sign in to continue — or try again in {time}.",
+    "chat.attachOnly": "(see attachments)",
+    "entry.listen": "Listen",
+    "learn.quizInfo": "{n} words · 4-choice quiz",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     "dict.title": "Saggitorde — Dictionary",
     "dict.subtitle": "Pulaar ↔ French ↔ العربية ↔ English. Search a word, listen to its pronunciation, save your favorites and find your history.",
@@ -1189,6 +1207,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "تعطيل",
     "chat.remove": "إزالة",
     "chat.enterHint": "Enter لسطر جديد — Ctrl/⌘+Enter للإرسال",
+    "chat.fileTooBig": "{name}: حجم كبير جدًا (الحد الأقصى 8 ميغابايت).",
+    "chat.guestExhausted": "سجّل الدخول للمتابعة — أو حاول مجددًا بعد {time}.",
+    "chat.attachOnly": "(انظر المرفقات)",
+    "entry.listen": "استمع",
+    "learn.quizInfo": "{n} كلمة · اختبار من 4 خيارات",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     "dict.title": "Saggitorde — القاموس",
     "dict.subtitle": "بولارية ↔ فرنسية ↔ العربية ↔ إنجليزية. ابحث عن كلمة، استمع لنطقها، احفظ مفضلاتك.",
@@ -1398,25 +1422,48 @@ export function bcp47(lang: Lang): string {
   }
 }
 
+// Read persisted language synchronously so the very first client render uses
+// the user's chosen language — eliminates the brief flash of French (FOUC)
+// on every navigation. SSR still emits "fr" markup; React 18 reconciles the
+// mismatch on hydration and we suppress hydration warnings via
+// suppressHydrationWarning on translated text containers where needed.
+function readStoredLang(): Lang {
+  if (typeof window === "undefined") return "fr";
+  try {
+    const stored = window.localStorage.getItem("fulania.lang") as Lang | null;
+    if (stored && translations[stored]) return stored;
+  } catch {}
+  return "fr";
+}
+function readStoredDialect(): Dialect {
+  if (typeof window === "undefined") return "fouta_toro";
+  try {
+    const stored = window.localStorage.getItem("fulania.dialect") as Dialect | null;
+    if (stored && DIALECTS.some((d) => d.code === stored)) return stored;
+  } catch {}
+  return "fouta_toro";
+}
+function readStoredDialectsOpen(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem("fulania.dialectsOpen") === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("fr");
-  const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
-  const [dialectsOpen, setDialectsOpenState] = useState<boolean>(false);
+  const [lang, setLangState] = useState<Lang>(readStoredLang);
+  const [dialect, setDialectState] = useState<Dialect>(readStoredDialect);
+  const [dialectsOpen, setDialectsOpenState] = useState<boolean>(readStoredDialectsOpen);
   const router = useRouter();
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("fulania.lang") as Lang | null;
-      if (stored && translations[stored]) {
-        setLangState(stored);
-        _currentLang = stored;
-      }
-      const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
-      if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
-      const storedOpen = localStorage.getItem("fulania.dialectsOpen");
-      if (storedOpen === "1") setDialectsOpenState(true);
-    } catch {}
-  }, []);
+  // Keep the module-level mirror in sync on the very first client render so
+  // route head() helpers (which call getCurrentLang()) see the right language
+  // before the next effect tick.
+  if (typeof window !== "undefined" && _currentLang !== lang) {
+    _currentLang = lang;
+  }
 
   useEffect(() => {
     _currentLang = lang;
