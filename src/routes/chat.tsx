@@ -129,7 +129,7 @@ function ChatPage() {
     const list = Array.from(files).slice(0, remaining);
     const added: Attachment[] = [];
     for (const f of list) {
-      if (f.size > MAX_FILE_BYTES) { setError(`${f.name} : trop volumineux (max 8 Mo).`); continue; }
+      if (f.size > MAX_FILE_BYTES) { setError(t("chat.fileTooBig").replace("{name}", f.name)); continue; }
       try {
         const dataBase64 = await fileToBase64(f);
         const previewUrl = f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined;
