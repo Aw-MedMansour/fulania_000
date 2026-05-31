@@ -168,8 +168,10 @@ const TRADITIONS: { icon: typeof Crown; title: string; body: Trio }[] = [
 function CulturePage() {
   const navigate = useNavigate();
   const { session, loading } = useAuth();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [tab, setTab] = useState("proverbs");
+  const L = lang as Lang;
+  void t;
 
   // Auth optional — page accessible without sign-in.
 
