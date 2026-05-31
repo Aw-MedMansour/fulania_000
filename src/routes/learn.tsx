@@ -163,13 +163,13 @@ function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boole
               <h3 className="font-display text-xl font-semibold text-earth">{e.pulaar}</h3>
               {e.pronunciation && <span className="text-xs italic text-muted-foreground">/{e.pronunciation}/</span>}
             </div>
-            <button onClick={() => speak(e.pulaar)} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label="Écouter">
+            <button onClick={() => speak(e.pulaar)} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t("entry.listen")}>
               <Volume2 className="h-4 w-4" />
             </button>
           </div>
           <p className="mt-2 text-sm">{e.french}</p>
-          {e.english && <p className="text-xs text-muted-foreground">EN — {e.english}</p>}
-          {e.arabic && <p className="text-xs text-muted-foreground" dir="rtl">AR — {e.arabic}</p>}
+          {e.english && <p className="text-xs text-muted-foreground">{t("learn.langEN")} — {e.english}</p>}
+          {e.arabic && <p className="text-xs text-muted-foreground" dir="rtl">{t("learn.langAR")} — {e.arabic}</p>}
           {e.example_pulaar && (
             <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
               <p className="font-display italic text-earth">« {e.example_pulaar} »</p>
