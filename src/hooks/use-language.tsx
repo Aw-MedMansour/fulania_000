@@ -291,6 +291,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "Désactiver",
     "chat.remove": "Retirer",
     "chat.enterHint": "Entrée pour aller à la ligne — Ctrl/⌘+Entrée pour envoyer",
+    "chat.fileTooBig": "{name} : trop volumineux (max 8 Mo).",
+    "chat.guestExhausted": "Connectez-vous pour continuer — ou réessayez dans {time}.",
+    "chat.attachOnly": "(voir pièces jointes)",
+    "entry.listen": "Écouter",
+    "learn.quizInfo": "{n} mots · QCM 4 choix",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     // Dictionary
     "dict.title": "Saggitorde — Dictionnaire",
