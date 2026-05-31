@@ -1207,6 +1207,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "تعطيل",
     "chat.remove": "إزالة",
     "chat.enterHint": "Enter لسطر جديد — Ctrl/⌘+Enter للإرسال",
+    "chat.fileTooBig": "{name}: حجم كبير جدًا (الحد الأقصى 8 ميغابايت).",
+    "chat.guestExhausted": "سجّل الدخول للمتابعة — أو حاول مجددًا بعد {time}.",
+    "chat.attachOnly": "(انظر المرفقات)",
+    "entry.listen": "استمع",
+    "learn.quizInfo": "{n} كلمة · اختبار من 4 خيارات",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     "dict.title": "Saggitorde — القاموس",
     "dict.subtitle": "بولارية ↔ فرنسية ↔ العربية ↔ إنجليزية. ابحث عن كلمة، استمع لنطقها، احفظ مفضلاتك.",
