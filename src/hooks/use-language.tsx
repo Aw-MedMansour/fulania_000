@@ -1398,25 +1398,48 @@ export function bcp47(lang: Lang): string {
   }
 }
 
+// Read persisted language synchronously so the very first client render uses
+// the user's chosen language — eliminates the brief flash of French (FOUC)
+// on every navigation. SSR still emits "fr" markup; React 18 reconciles the
+// mismatch on hydration and we suppress hydration warnings via
+// suppressHydrationWarning on translated text containers where needed.
+function readStoredLang(): Lang {
+  if (typeof window === "undefined") return "fr";
+  try {
+    const stored = window.localStorage.getItem("fulania.lang") as Lang | null;
+    if (stored && translations[stored]) return stored;
+  } catch {}
+  return "fr";
+}
+function readStoredDialect(): Dialect {
+  if (typeof window === "undefined") return "fouta_toro";
+  try {
+    const stored = window.localStorage.getItem("fulania.dialect") as Dialect | null;
+    if (stored && DIALECTS.some((d) => d.code === stored)) return stored;
+  } catch {}
+  return "fouta_toro";
+}
+function readStoredDialectsOpen(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem("fulania.dialectsOpen") === "1";
+  } catch {
+    return false;
+  }
+}
+
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("fr");
-  const [dialect, setDialectState] = useState<Dialect>("fouta_toro");
-  const [dialectsOpen, setDialectsOpenState] = useState<boolean>(false);
+  const [lang, setLangState] = useState<Lang>(readStoredLang);
+  const [dialect, setDialectState] = useState<Dialect>(readStoredDialect);
+  const [dialectsOpen, setDialectsOpenState] = useState<boolean>(readStoredDialectsOpen);
   const router = useRouter();
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("fulania.lang") as Lang | null;
-      if (stored && translations[stored]) {
-        setLangState(stored);
-        _currentLang = stored;
-      }
-      const storedD = localStorage.getItem("fulania.dialect") as Dialect | null;
-      if (storedD && DIALECTS.some((d) => d.code === storedD)) setDialectState(storedD);
-      const storedOpen = localStorage.getItem("fulania.dialectsOpen");
-      if (storedOpen === "1") setDialectsOpenState(true);
-    } catch {}
-  }, []);
+  // Keep the module-level mirror in sync on the very first client render so
+  // route head() helpers (which call getCurrentLang()) see the right language
+  // before the next effect tick.
+  if (typeof window !== "undefined" && _currentLang !== lang) {
+    _currentLang = lang;
+  }
 
   useEffect(() => {
     _currentLang = lang;
