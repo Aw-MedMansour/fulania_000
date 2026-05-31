@@ -271,7 +271,7 @@ function QuizView({ entries, allEntries, isLoading }: { entries: Entry[]; allEnt
     return (
       <div className="rounded-lg border border-border bg-card p-8 text-center">
         <h3 className="font-display text-xl font-semibold">{t("learn.quiz")}</h3>
-        <p className="mt-2 text-sm text-muted-foreground">{entries.length} mots · QCM 4 choix</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("learn.quizInfo").replace("{n}", String(entries.length))}</p>
         <Button className="mt-4" onClick={() => { setQuestions(buildQuiz(entries, allEntries)); setI(0); setScore(0); setDone(false); setPicked(null); }}>
           {t("learn.start")}
         </Button>
