@@ -569,6 +569,12 @@ export const translations: Record<Lang, Dict> = {
     "chat.disable": "Daɗɗin",
     "chat.remove": "Itto",
     "chat.enterHint": "Entrée ngam liñol kesol — Ctrl/⌘+Entrée ngam neldude",
+    "chat.fileTooBig": "{name} : ko mawɗo no feewi (max 8 Mo).",
+    "chat.guestExhausted": "Naatu ngam jokkude — walla eto kadi ɓaawo {time}.",
+    "chat.attachOnly": "(yiy ko jokkaa)",
+    "entry.listen": "Heɗo",
+    "learn.quizInfo": "{n} konnguɗi · QCM 4 cuɓo",
+    "learn.langEN": "EN", "learn.langAR": "AR",
 
     "dict.title": "Saggitorde",
     "dict.subtitle": "Pulaar ↔ Faransi ↔ العربية ↔ Engele. Yiyloo konngol, heɗo hito mum, marde ɓe njiɗɗaa.",
