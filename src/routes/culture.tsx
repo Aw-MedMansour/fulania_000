@@ -208,7 +208,7 @@ function CulturePage() {
               <figure key={i} className="rounded-xl border border-border bg-card p-5">
                 <Quote className="h-5 w-5 text-[var(--gold)]" />
                 <blockquote className="mt-2 font-display text-lg italic text-earth">« {p.pulaar} »</blockquote>
-                <figcaption className="mt-2 text-sm text-muted-foreground">{p.fr}</figcaption>
+                <figcaption className="mt-2 text-sm text-muted-foreground">{p.gloss[L]}</figcaption>
               </figure>
             ))}
           </TabsContent>
