@@ -217,7 +217,7 @@ function CulturePage() {
             {TALES.map((tale) => (
               <article key={tale.title} className="rounded-xl border border-border bg-card p-5">
                 <h2 className="font-display text-lg font-semibold text-earth">{tale.title}</h2>
-                <p className="mt-2 text-sm text-foreground/85">{tale.summary}</p>
+                <p className="mt-2 text-sm text-foreground/85">{tale.summary[L]}</p>
               </article>
             ))}
           </TabsContent>
@@ -229,7 +229,7 @@ function CulturePage() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <h2 className="mt-3 font-display text-lg font-semibold text-earth">{title}</h2>
-                <p className="mt-1.5 text-sm text-foreground/85">{body}</p>
+                <p className="mt-1.5 text-sm text-foreground/85">{body[L]}</p>
               </article>
             ))}
           </TabsContent>
