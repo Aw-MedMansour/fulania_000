@@ -140,7 +140,10 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    scroll-behavior: auto;
   }
 
   body {
@@ -148,6 +151,12 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  img, video, canvas, svg {
+    max-width: 100%;
   }
 
   h1, h2, h3, h4 {
@@ -176,13 +185,13 @@
     0%   { transform: scale(1) translate3d(0,0,0); }
     100% { transform: scale(1.08) translate3d(-1%, -1%, 0); }
   }
-  .animate-kenburns { animation: kenburns 18s ease-in-out infinite alternate; }
+  .animate-kenburns { animation: none; }
 
   @keyframes floatGlow {
     0%, 100% { opacity: .55; transform: translate3d(0,0,0) scale(1); }
     50%      { opacity: .9;  transform: translate3d(0,-8px,0) scale(1.03); }
   }
-  .animate-float-glow { animation: floatGlow 6s ease-in-out infinite; }
+  .animate-float-glow { animation: none; }
 
   @keyframes shimmer {
     0%   { background-position: -200% 0; }
@@ -194,11 +203,20 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: shimmer 5s linear infinite;
+    animation: none;
+  }
+
+  .hover\:-translate-y-0\.5:hover,
+  .hover\:-translate-y-1:hover,
+  .group:hover .group-hover\:translate-x-0\.5,
+  .group:hover .group-hover\:translate-x-1,
+  .group:hover .group-hover\:scale-105,
+  .group:hover .group-hover\:scale-110 {
+    transform: none !important;
   }
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
