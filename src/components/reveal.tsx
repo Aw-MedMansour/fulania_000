@@ -2,7 +2,7 @@ import { motion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
 const defaultVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 0 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
@@ -15,7 +15,7 @@ type RevealProps = {
   as?: "div" | "section" | "li" | "article" | "header";
 };
 
-export function Reveal({ children, className, delay = 0, y = 24, once = true, as = "div" }: RevealProps) {
+export function Reveal({ children, className, delay = 0, y = 0, once = true, as = "div" }: RevealProps) {
   const MotionTag = motion[as] as typeof motion.div;
   return (
     <MotionTag
@@ -24,7 +24,7 @@ export function Reveal({ children, className, delay = 0, y = 24, once = true, as
       whileInView="show"
       viewport={{ once, amount: 0.2 }}
       variants={{
-        hidden: { opacity: 0, y },
+        hidden: { opacity: 0, y: 0 },
         show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay } },
       }}
     >
