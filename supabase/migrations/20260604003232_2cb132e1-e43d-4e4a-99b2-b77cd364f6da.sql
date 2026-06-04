@@ -1,0 +1,1 @@
+GRANT UPDATE ON public.dictionary_entries TO anon, authenticated;
