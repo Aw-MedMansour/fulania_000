@@ -127,7 +127,7 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover animate-kenburns" width={1920} height={1080} />
+          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover animate-kenburns" width={1920} height={1080} fetchPriority="high" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/80 to-earth/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth/80 via-transparent to-transparent" />
           <div className="pointer-events-none absolute -right-24 top-1/3 h-96 w-96 rounded-full bg-[var(--gold)]/20 blur-3xl animate-float-glow" aria-hidden />
