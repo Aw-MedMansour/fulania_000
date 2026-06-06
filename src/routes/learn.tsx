@@ -181,6 +181,7 @@ function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boole
         </article>
       ))}
     </div>
+    </section>
   );
 }
 
