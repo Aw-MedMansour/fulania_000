@@ -24,6 +24,41 @@ export const Route = createFileRoute("/")({
         { property: "og:description", content: tFor(l, "seo./.desc") },
         { property: "og:url", content: "https://fulania.com/" },
       ],
+      links: [
+        { rel: "canonical", href: "https://fulania.com/" },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "FulanIA",
+            url: "https://fulania.com/",
+            inLanguage: ["fr", "ff", "en", "ar"],
+            description: tFor(l, "seo./.desc"),
+            potentialAction: {
+              "@type": "SearchAction",
+              target: "https://fulania.com/dictionary?q={search_term_string}",
+              "query-input": "required name=search_term_string",
+            },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "FulanIA",
+            url: "https://fulania.com/",
+            logo: "https://fulania.com/favicon.ico",
+            description:
+              "FulanIA — assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule.",
+            founder: { "@type": "Person", name: "Aw Mohamedou Mansour" },
+            sameAs: ["https://fulania.com"],
+          }),
+        },
+      ],
     };
   },
   component: Index,
