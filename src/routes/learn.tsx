@@ -155,6 +155,8 @@ function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boole
   };
 
   return (
+    <section aria-labelledby="lessons-heading">
+    <h2 id="lessons-heading" className="sr-only">{t("learn.lessons")}</h2>
     <div className="grid gap-3 sm:grid-cols-2">
       {entries.map((e) => (
         <article key={e.id} className="rounded-lg border border-border bg-card p-4 transition hover:border-primary/40">
@@ -179,6 +181,7 @@ function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boole
         </article>
       ))}
     </div>
+    </section>
   );
 }
 
