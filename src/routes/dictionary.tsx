@@ -24,6 +24,34 @@ export const Route = createFileRoute("/dictionary")({
         { property: "og:description", content: tFor(l, "seo./dictionary.desc") },
         { property: "og:url", content: "https://fulania.com/dictionary" },
       ],
+      links: [
+        { rel: "canonical", href: "https://fulania.com/dictionary" },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: tFor(l, "seo./dictionary.title"),
+            url: "https://fulania.com/dictionary",
+            description: tFor(l, "seo./dictionary.desc"),
+            inLanguage: ["ff", "fr", "en", "ar"],
+            isPartOf: { "@type": "WebSite", name: "FulanIA", url: "https://fulania.com/" },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "FulanIA", item: "https://fulania.com/" },
+              { "@type": "ListItem", position: 2, name: "Dictionnaire", item: "https://fulania.com/dictionary" },
+            ],
+          }),
+        },
+      ],
     };
   },
   component: DictionaryPage,
