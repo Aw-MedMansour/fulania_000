@@ -24,6 +24,41 @@ export const Route = createFileRoute("/")({
         { property: "og:description", content: tFor(l, "seo./.desc") },
         { property: "og:url", content: "https://fulania.com/" },
       ],
+      links: [
+        { rel: "canonical", href: "https://fulania.com/" },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "FulanIA",
+            url: "https://fulania.com/",
+            inLanguage: ["fr", "ff", "en", "ar"],
+            description: tFor(l, "seo./.desc"),
+            potentialAction: {
+              "@type": "SearchAction",
+              target: "https://fulania.com/dictionary?q={search_term_string}",
+              "query-input": "required name=search_term_string",
+            },
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "FulanIA",
+            url: "https://fulania.com/",
+            logo: "https://fulania.com/favicon.ico",
+            description:
+              "FulanIA — assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule.",
+            founder: { "@type": "Person", name: "Aw Mohamedou Mansour" },
+            sameAs: ["https://fulania.com"],
+          }),
+        },
+      ],
     };
   },
   component: Index,
@@ -92,7 +127,7 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover animate-kenburns" width={1920} height={1080} />
+          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover animate-kenburns" width={1920} height={1080} fetchPriority="high" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/80 to-earth/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth/80 via-transparent to-transparent" />
           <div className="pointer-events-none absolute -right-24 top-1/3 h-96 w-96 rounded-full bg-[var(--gold)]/20 blur-3xl animate-float-glow" aria-hidden />
