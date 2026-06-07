@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      books: {
+        Row: {
+          author: string
+          category: string | null
+          cover_path: string | null
+          cover_url: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          dialect: string | null
+          download_count: number
+          file_size_bytes: number | null
+          id: string
+          isbn: string | null
+          language: string | null
+          pages: number | null
+          pdf_path: string
+          pdf_url: string
+          title: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          author: string
+          category?: string | null
+          cover_path?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          dialect?: string | null
+          download_count?: number
+          file_size_bytes?: number | null
+          id?: string
+          isbn?: string | null
+          language?: string | null
+          pages?: number | null
+          pdf_path: string
+          pdf_url: string
+          title: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          author?: string
+          category?: string | null
+          cover_path?: string | null
+          cover_url?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          dialect?: string | null
+          download_count?: number
+          file_size_bytes?: number | null
+          id?: string
+          isbn?: string | null
+          language?: string | null
+          pages?: number | null
+          pdf_path?: string
+          pdf_url?: string
+          title?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
       chat_conversations: {
         Row: {
           created_at: string
@@ -362,6 +428,27 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_stats: {
         Row: {
           created_at: string
@@ -437,6 +524,17 @@ export type Database = {
           status: string
         }[]
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      increment_book_downloads: {
+        Args: { _book_id: string }
+        Returns: undefined
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -456,7 +554,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -583,6 +681,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
