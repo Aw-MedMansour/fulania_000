@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TranslateRouteImport } from './routes/translate'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as LibraryRouteImport } from './routes/library'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as HubRouteImport } from './routes/hub'
 import { Route as DictionaryRouteImport } from './routes/dictionary'
@@ -28,6 +29,11 @@ const TranslateRoute = TranslateRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LibraryRoute = LibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnRoute = LearnRouteImport.update({
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
+  '/library': typeof LibraryRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
+  '/library': typeof LibraryRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
+  '/library': typeof LibraryRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/hub'
     | '/learn'
+    | '/library'
     | '/sitemap.xml'
     | '/translate'
     | '/lovable/email/queue/process'
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/hub'
     | '/learn'
+    | '/library'
     | '/sitemap.xml'
     | '/translate'
     | '/lovable/email/queue/process'
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/dictionary'
     | '/hub'
     | '/learn'
+    | '/library'
     | '/sitemap.xml'
     | '/translate'
     | '/lovable/email/queue/process'
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   DictionaryRoute: typeof DictionaryRoute
   HubRoute: typeof HubRoute
   LearnRoute: typeof LearnRoute
+  LibraryRoute: typeof LibraryRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TranslateRoute: typeof TranslateRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -175,6 +188,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/library': {
+      id: '/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn': {
@@ -244,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   DictionaryRoute: DictionaryRoute,
   HubRoute: HubRoute,
   LearnRoute: LearnRoute,
+  LibraryRoute: LibraryRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TranslateRoute: TranslateRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
@@ -251,13 +272,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
