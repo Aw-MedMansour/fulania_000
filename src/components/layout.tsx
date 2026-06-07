@@ -124,6 +124,7 @@ export function SiteHeader() {
           <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.pillars")}</a>
           <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.dictionary")}</Link>
           <Link to="/learn" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.learn")}</Link>
+          <Link to="/library" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.library")}</Link>
           <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
           <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
           <a href="/#contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</a>
