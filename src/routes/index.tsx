@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
+import issaPhoto from "@/assets/issa-mboh.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -399,6 +400,84 @@ function Index() {
                 <p className="mt-4 text-sm text-foreground/80">{desc}</p>
               </StaggerItem>
             ))}
+          </StaggerGroup>
+        </div>
+      </section>
+
+      {/* COMITÉ EXÉCUTIF */}
+      <section id="comite" className="border-t border-border/60 bg-muted/30 py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <div className="mx-auto max-w-3xl text-center">
+              <span className="text-xs uppercase tracking-[0.2em] text-primary">Équipe</span>
+              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">
+                Comité Exécutif FulanIA
+              </h2>
+              <p className="mt-5 text-muted-foreground">
+                Les femmes et hommes qui portent la mission FulanIA — préserver, transmettre et valoriser le Pulaagu à l'ère de l'IA.
+              </p>
+            </div>
+          </Reveal>
+
+          <StaggerGroup className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                name: "Aw Mohamedou Mansour",
+                role: "Fondateur · Responsable du Développement Informatique",
+                bio: "Initiateur du projet FulanIA, il pilote la conception et le développement technique de la plateforme.",
+                photo: null,
+              },
+              {
+                name: "Mamita",
+                role: "Vice-Présidente · Responsable Sensibilisation & Communication",
+                bio: "Porte la voix de FulanIA auprès des communautés et coordonne les actions de sensibilisation.",
+                photo: null,
+              },
+              {
+                name: "Issa Mboh",
+                role: "Trésorier · Conseiller Principal · Adjoint & Représentant Europe / International",
+                bio: "Étudiant en master à l'Université Dunărea de Jos de Galați (Roumanie), titulaire d'une licence pro en agroalimentaire. Originaire du Guidimakha (Ould Yenge).",
+                photo: issaPhoto.url,
+              },
+              {
+                name: "Ali Diallo",
+                role: "Responsable des Partenariats & Gestion de Programme",
+                bio: "Tisse les alliances stratégiques et orchestre les programmes au service de la mission FulanIA.",
+                photo: null,
+              },
+              {
+                name: "Ousmane Deh",
+                role: "Représentant Europe / International · Responsable Cybersécurité",
+                bio: "Garant de la sécurité numérique de la plateforme et relais de FulanIA à l'international.",
+                photo: null,
+              },
+            ].map((m) => {
+              const initials = m.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
+              return (
+                <StaggerItem key={m.name} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                  <div className="relative aspect-[3/4] w-full overflow-hidden bg-gradient-to-br from-earth/90 to-earth">
+                    {m.photo ? (
+                      <img
+                        src={m.photo}
+                        alt={`Portrait de ${m.name}`}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center">
+                        <span className="font-display text-6xl font-semibold text-[var(--gold)]">{initials}</span>
+                      </div>
+                    )}
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-earth/90 to-transparent" />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="font-display text-xl font-semibold text-foreground">{m.name}</h3>
+                    <p className="mt-1 text-xs font-medium uppercase tracking-wider text-primary">{m.role}</p>
+                    <p className="mt-3 text-sm text-muted-foreground">{m.bio}</p>
+                  </div>
+                </StaggerItem>
+              );
+            })}
           </StaggerGroup>
         </div>
       </section>
