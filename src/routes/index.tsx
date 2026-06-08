@@ -428,9 +428,9 @@ function Index() {
                 photo: null,
               },
               {
-                name: "Mamita",
+                name: "Meimouna Sy",
                 role: "Vice-Présidente · Responsable Sensibilisation & Communication",
-                bio: "Porte la voix de FulanIA auprès des communautés et coordonne les actions de sensibilisation.",
+                bio: "Étudiante en master science des eaux à l'ISSTE GABES — Tunisie. Originaire de Abbé Daande Maayo.",
                 photo: null,
               },
               {
@@ -440,15 +440,15 @@ function Index() {
                 photo: issaPhoto.url,
               },
               {
-                name: "Ali Diallo",
+                name: "Ali Hamadi Diallo",
                 role: "Responsable des Partenariats & Gestion de Programme",
-                bio: "Tisse les alliances stratégiques et orchestre les programmes au service de la mission FulanIA.",
+                bio: "Employé à l'AMAD CERAI — Mauritanie. Diplômé de l'ISET de Rosso. Originaire du village de Lougere Dadi (région du Gorgol, à côté de Koundel).",
                 photo: null,
               },
               {
                 name: "Ousmane Deh",
                 role: "Représentant Europe / International · Responsable Cybersécurité",
-                bio: "Garant de la sécurité numérique de la plateforme et relais de FulanIA à l'international.",
+                bio: "Étudiant en master à l'Université de Galați (Roumanie). Originaire de Melga (Guidimakha).",
                 photo: null,
               },
             ].map((m) => {
