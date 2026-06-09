@@ -10,6 +10,8 @@ import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 import issaPhoto from "@/assets/issa-mboh.jpeg.asset.json";
+import aliPhoto from "@/assets/ali-diallo.jpeg.asset.json";
+import meimounaPhoto from "@/assets/meimouna-sy.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -431,7 +433,7 @@ function Index() {
                 name: "Meimouna Sy",
                 role: "Vice-Présidente · Responsable Sensibilisation & Communication",
                 bio: "Étudiante en master science des eaux à l'ISSTE GABES — Tunisie. Originaire de Abbé Daande Maayo.",
-                photo: null,
+                photo: meimounaPhoto.url,
               },
               {
                 name: "Issa Mboh",
@@ -443,7 +445,7 @@ function Index() {
                 name: "Ali Hamadi Diallo",
                 role: "Responsable des Partenariats & Gestion de Programme",
                 bio: "Employé à l'AMAD CERAI — Mauritanie. Diplômé de l'ISET de Rosso. Originaire du village de Lougere Dadi (région du Gorgol, à côté de Koundel).",
-                photo: null,
+                photo: aliPhoto.url,
               },
               {
                 name: "Ousmane Deh",
