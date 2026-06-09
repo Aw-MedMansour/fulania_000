@@ -434,7 +434,7 @@ function Index() {
               {
                 name: "Meimouna Sy",
                 role: "Vice-Présidente · Responsable Sensibilisation & Communication",
-                bio: "Étudiante en master science des eaux à l'ISSTE GABES — Tunisie. Originaire de Abbé Daande Maayo.",
+                bio: "Étudiante en master science des eaux à l'ISSTE GABES — Tunisie. Titulaire d'une licence professionnelle en Génie Rural à l'ISET Rosso. Originaire de Abbé Daande Maayo.",
                 photo: meimounaPhoto.url,
               },
               {
