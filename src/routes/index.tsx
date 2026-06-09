@@ -12,6 +12,7 @@ import patternImg from "@/assets/pattern.jpg";
 import issaPhoto from "@/assets/issa-mboh.jpeg.asset.json";
 import aliPhoto from "@/assets/ali-diallo.jpeg.asset.json";
 import meimounaPhoto from "@/assets/meimouna-sy.jpeg.asset.json";
+import ousmanePhoto from "@/assets/ousmane-deh.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -451,7 +452,7 @@ function Index() {
                 name: "Ousmane Deh",
                 role: "Représentant Europe / International · Responsable Cybersécurité",
                 bio: "Étudiant en master à l'Université de Galați (Roumanie). Originaire de Melga (Guidimakha).",
-                photo: null,
+                photo: ousmanePhoto.url,
               },
             ].map((m) => {
               const initials = m.name.split(" ").map((p) => p[0]).slice(0, 2).join("");
