@@ -13,6 +13,7 @@ import issaPhoto from "@/assets/issa-mboh.jpeg.asset.json";
 import aliPhoto from "@/assets/ali-diallo.jpeg.asset.json";
 import meimounaPhoto from "@/assets/meimouna-sy.jpeg.asset.json";
 import ousmanePhoto from "@/assets/ousmane-deh.jpeg.asset.json";
+import awMansourPhoto from "@/assets/aw-mansour.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
