@@ -428,13 +428,13 @@ function Index() {
               {
                 name: "Aw Mohamedou Mansour",
                 role: "Fondateur · Responsable du Développement Informatique",
-                bio: "Étudiant en Master en biotechnologie végétale. Titulaire d'une licence professionnelle en agronomie à l'ISET Rosso.",
+                bio: "Étudiant en Master en biotechnologie végétale à l'Université M'Hamed Bougara Boumerdés (Algérie). Titulaire d'une licence professionnelle en agronomie à l'ISET Rosso.",
                 photo: awMansourPhoto.url,
               },
               {
                 name: "Meimouna Sy",
                 role: "Vice-Présidente · Responsable Sensibilisation & Communication",
-                bio: "Étudiante en master science des eaux à l'ISSTE GABES — Tunisie. Originaire de Abbé Daande Maayo.",
+                bio: "Étudiante en master science des eaux à l'ISSTE GABES — Tunisie. Titulaire d'une licence professionnelle en Génie Rural à l'ISET Rosso. Originaire de Abbé Daande Maayo.",
                 photo: meimounaPhoto.url,
               },
               {
