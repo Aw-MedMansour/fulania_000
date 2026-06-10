@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/use-auth";
 import { useServerFn } from "@tanstack/react-start";
 import { useState, type FormEvent } from "react";
 import {
@@ -47,6 +48,8 @@ function fmtSize(bytes: number | null): string {
 function LibraryPage() {
   const { t } = useLanguage();
   const { isAdmin } = useIsAdmin();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const fetchBooks = useServerFn(listBooks);
   const fetchDownload = useServerFn(getBookDownloadUrl);
   const qc = useQueryClient();
@@ -72,6 +75,10 @@ function LibraryPage() {
     : books;
 
   const onDownload = async (b: BookListItem) => {
+    if (!user) {
+      navigate({ to: "/auth" });
+      return;
+    }
     try {
       setDownloading(b.id);
       const { url } = await fetchDownload({ data: { id: b.id } });
