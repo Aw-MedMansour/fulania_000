@@ -75,6 +75,10 @@ function LibraryPage() {
     : books;
 
   const onDownload = async (b: BookListItem) => {
+    if (!user) {
+      navigate({ to: "/auth" });
+      return;
+    }
     try {
       setDownloading(b.id);
       const { url } = await fetchDownload({ data: { id: b.id } });
