@@ -64,6 +64,7 @@ export const listBooks = createServerFn({ method: "GET" }).handler(async () => {
 const downloadInput = z.object({ id: z.string().uuid() });
 
 export const getBookDownloadUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((d) => downloadInput.parse(d))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
