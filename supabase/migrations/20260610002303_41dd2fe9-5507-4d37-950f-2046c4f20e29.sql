@@ -1,0 +1,2 @@
+REVOKE SELECT ON public.books FROM anon, authenticated;
+GRANT SELECT (id, title, author, description, cover_url, cover_path, language, dialect, category, year, isbn, pages, file_size_bytes, download_count, created_by, created_at, updated_at) ON public.books TO anon, authenticated;
