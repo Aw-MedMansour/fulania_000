@@ -170,7 +170,7 @@ function CulturePage() {
   const navigate = useNavigate();
   const { session, loading } = useAuth();
   const { t, lang } = useLanguage();
-  const [tab, setTab] = useState("proverbs");
+  const [tab, setTab] = useState("books");
   const L = lang as Lang;
   void t;
 
