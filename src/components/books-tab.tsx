@@ -30,6 +30,7 @@ export function BooksTab() {
   const qc = useQueryClient();
   const [q, setQ] = useState("");
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [selected, setSelected] = useState<BookListItem | null>(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["library-books"],
@@ -119,7 +120,8 @@ export function BooksTab() {
           {filtered.map((b) => (
             <article
               key={b.id}
-              className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition hover:border-primary/40 hover:shadow-lg"
+              onClick={() => setSelected(b)}
+              className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border border-border bg-card transition hover:border-primary/40 hover:shadow-lg"
             >
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-gradient-to-br from-earth/10 to-[var(--gold)]/10">
                 {b.cover_url ? (
@@ -134,6 +136,11 @@ export function BooksTab() {
                     <span className="font-display text-xl font-semibold text-earth">{b.title}</span>
                   </div>
                 )}
+                {b.category && (
+                  <span className="absolute right-2 top-2 rounded-full bg-[var(--gold)]/95 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+                    {b.category}
+                  </span>
+                )}
                 {b.dialect && (
                   <span className="absolute left-2 top-2 rounded-full bg-earth/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cream">
                     {b.dialect}
@@ -144,9 +151,9 @@ export function BooksTab() {
                 <h3 className="font-display text-lg font-semibold leading-tight text-earth line-clamp-2">
                   {b.title}
                 </h3>
-                <p className="text-xs text-muted-foreground">
-                  {b.author}
-                  {b.year ? ` · ${b.year}` : ""}
+                <p className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                  <User className="h-3 w-3" /> {b.author}
+                  {b.year ? <><span>·</span><Calendar className="h-3 w-3" /> {b.year}</> : null}
                 </p>
                 {b.description && (
                   <p className="line-clamp-3 text-xs text-foreground/70">{b.description}</p>
@@ -157,7 +164,7 @@ export function BooksTab() {
                   </span>
                   <Button
                     size="sm"
-                    onClick={() => onDownload(b)}
+                    onClick={(e) => { e.stopPropagation(); onDownload(b); }}
                     disabled={downloading === b.id}
                     className={cn("gap-1.5", downloading === b.id && "opacity-70")}
                   >
@@ -174,6 +181,110 @@ export function BooksTab() {
           ))}
         </div>
       )}
+
+      <BookDetailDialog
+        book={selected}
+        onClose={() => setSelected(null)}
+        onDownload={onDownload}
+        downloading={downloading}
+      />
+    </div>
+  );
+}
+
+function BookDetailDialog({
+  book,
+  onClose,
+  onDownload,
+  downloading,
+}: {
+  book: BookListItem | null;
+  onClose: () => void;
+  onDownload: (b: BookListItem) => void;
+  downloading: string | null;
+}) {
+  const { t } = useLanguage();
+  return (
+    <Dialog open={!!book} onOpenChange={(o) => !o && onClose()}>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        {book && (
+          <>
+            <DialogHeader>
+              <DialogTitle className="font-display text-2xl text-earth">{book.title}</DialogTitle>
+              <DialogDescription className="inline-flex items-center gap-1 text-sm">
+                <User className="h-3.5 w-3.5" /> {book.author}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="grid gap-5 sm:grid-cols-[180px_1fr]">
+              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-gradient-to-br from-earth/10 to-[var(--gold)]/10">
+                {book.cover_url ? (
+                  <img src={book.cover_url} alt={book.title} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center p-4 text-center">
+                    <BookOpen className="h-10 w-10 text-earth/60" />
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-3 text-sm">
+                {book.description && (
+                  <p className="text-foreground/85">{book.description}</p>
+                )}
+
+                <dl className="grid grid-cols-2 gap-x-3 gap-y-2 rounded-lg border border-border bg-muted/30 p-3 text-xs">
+                  {book.category && (
+                    <Info icon={Tag} label={t("library.detail.category")} value={book.category} />
+                  )}
+                  {book.language && (
+                    <Info icon={Languages} label={t("library.detail.language")} value={book.language} />
+                  )}
+                  {book.dialect && (
+                    <Info icon={Globe} label={t("library.detail.dialect")} value={book.dialect} />
+                  )}
+                  {book.year != null && (
+                    <Info icon={Calendar} label={t("library.detail.year")} value={String(book.year)} />
+                  )}
+                  {book.pages != null && (
+                    <Info icon={FileText} label={t("library.detail.pages")} value={String(book.pages)} />
+                  )}
+                  {book.isbn && (
+                    <Info icon={Hash} label="ISBN" value={book.isbn} />
+                  )}
+                  {book.file_size_bytes != null && (
+                    <Info icon={FileText} label={t("library.detail.size")} value={fmtSize(book.file_size_bytes)} />
+                  )}
+                  <Info icon={Download} label={t("library.detail.downloads")} value={String(book.download_count)} />
+                </dl>
+
+                <Button
+                  onClick={() => onDownload(book)}
+                  disabled={downloading === book.id}
+                  className="w-full gap-2"
+                >
+                  {downloading === book.id ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4" />
+                  )}
+                  {t("library.download")}
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function Info({ icon: Icon, label, value }: { icon: typeof Tag; label: string; value: string }) {
+  return (
+    <div className="flex flex-col">
+      <span className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+        <Icon className="h-3 w-3" /> {label}
+      </span>
+      <span className="font-medium text-earth">{value}</span>
     </div>
   );
 }
