@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Library, Quote, BookMarked, Music2, Shirt, Utensils, Crown } from "lucide-react";
+import { ArrowLeft, Library, Quote, BookMarked, Music2, Shirt, Utensils, Crown, BookOpen } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageNav } from "@/components/page-nav";
+import { BooksTab } from "@/components/books-tab";
 
 export const Route = createFileRoute("/culture")({
   head: () => {
@@ -197,11 +198,16 @@ function CulturePage() {
         <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">{t("cult.subtitle")}</p>
 
         <Tabs value={tab} onValueChange={setTab} className="mt-7">
-          <TabsList className="bg-secondary/60">
+          <TabsList className="bg-secondary/60 flex-wrap h-auto">
+            <TabsTrigger value="books" className="gap-1.5"><BookOpen className="h-3.5 w-3.5" /> {t("cult.tab.books")}</TabsTrigger>
             <TabsTrigger value="proverbs" className="gap-1.5"><Quote className="h-3.5 w-3.5" /> {t("cult.tab.proverbs")}</TabsTrigger>
             <TabsTrigger value="tales" className="gap-1.5"><BookMarked className="h-3.5 w-3.5" /> {t("cult.tab.tales")}</TabsTrigger>
             <TabsTrigger value="traditions" className="gap-1.5"><Crown className="h-3.5 w-3.5" /> {t("cult.tab.traditions")}</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="books" className="mt-6">
+            <BooksTab />
+          </TabsContent>
 
           <TabsContent value="proverbs" className="mt-6 grid gap-3 sm:grid-cols-2">
             {PROVERBS.map((p, i) => (
