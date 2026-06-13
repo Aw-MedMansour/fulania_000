@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      _dict_pending: {
+        Row: {
+          ar: string | null
+          en: string | null
+          id: string
+        }
+        Insert: {
+          ar?: string | null
+          en?: string | null
+          id: string
+        }
+        Update: {
+          ar?: string | null
+          en?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
       books: {
         Row: {
           author: string
