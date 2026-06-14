@@ -42,7 +42,7 @@ export function MissionsTab() {
 
   const missionsQ = useQuery({
     queryKey: ["janngude-missions"],
-    queryFn: () => fetchMissions({ data: undefined }),
+    queryFn: () => fetchMissions(),
     enabled: !!user,
     refetchOnWindowFocus: false,
   });
