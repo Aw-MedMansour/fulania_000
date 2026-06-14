@@ -142,6 +142,48 @@ export type Database = {
           },
         ]
       }
+      daily_missions: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          exercises: Json
+          id: string
+          mission_date: string
+          score: number | null
+          slot: number
+          theme: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          exercises: Json
+          id?: string
+          mission_date: string
+          score?: number | null
+          slot: number
+          theme?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          exercises?: Json
+          id?: string
+          mission_date?: string
+          score?: number | null
+          slot?: number
+          theme?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       dictionary_entries: {
         Row: {
           arabic: string | null
@@ -370,6 +412,77 @@ export type Database = {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          badge_code: string
+          id: string
+          unlocked_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_code: string
+          id?: string
+          unlocked_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_code?: string
+          id?: string
+          unlocked_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_card_progress: {
+        Row: {
+          created_at: string
+          ease: number
+          entry_id: string
+          id: string
+          interval_days: number
+          lapses: number
+          last_reviewed_at: string | null
+          next_review: string
+          reps: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ease?: number
+          entry_id: string
+          id?: string
+          interval_days?: number
+          lapses?: number
+          last_reviewed_at?: string | null
+          next_review?: string
+          reps?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ease?: number
+          entry_id?: string
+          id?: string
+          interval_days?: number
+          lapses?: number
+          last_reviewed_at?: string | null
+          next_review?: string
+          reps?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_card_progress_entry_id_fkey"
+            columns: ["entry_id"]
+            isOneToOne: false
+            referencedRelation: "dictionary_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_favorites: {
         Row: {
           created_at: string
@@ -427,6 +540,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_learning_progress: {
+        Row: {
+          created_at: string
+          hearts: number
+          last_active_date: string | null
+          last_heart_lost_at: string | null
+          level: number
+          streak_days: number
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          created_at?: string
+          hearts?: number
+          last_active_date?: string | null
+          last_heart_lost_at?: string | null
+          level?: number
+          streak_days?: number
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          created_at?: string
+          hearts?: number
+          last_active_date?: string | null
+          last_heart_lost_at?: string | null
+          level?: number
+          streak_days?: number
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
       }
       user_roles: {
         Row: {
