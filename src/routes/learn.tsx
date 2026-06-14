@@ -109,13 +109,18 @@ function LearnPage() {
           </div>
         </div>
 
-        <Tabs defaultValue="lessons">
+        <Tabs defaultValue="missions">
           <TabsList>
+            <TabsTrigger value="missions" className="gap-1.5"><Trophy className="h-3.5 w-3.5" /> Missions</TabsTrigger>
             <TabsTrigger value="lessons" className="gap-1.5"><BookOpen className="h-3.5 w-3.5" /> {t("learn.lessons")}</TabsTrigger>
             <TabsTrigger value="flashcards" className="gap-1.5"><Sparkles className="h-3.5 w-3.5" /> {t("learn.flashcards")}</TabsTrigger>
             <TabsTrigger value="quiz" className="gap-1.5"><GraduationCap className="h-3.5 w-3.5" /> {t("learn.quiz")}</TabsTrigger>
             <TabsTrigger value="ai" className="gap-1.5"><Wand2 className="h-3.5 w-3.5" /> {t("ai.lesson.tab")}</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="missions" className="mt-6">
+            <MissionsTab />
+          </TabsContent>
 
           <TabsContent value="lessons" className="mt-6">
             <LessonView entries={catEntries} isLoading={isLoading} />
