@@ -33,6 +33,7 @@ export function MissionsTab() {
   const fetchState = useServerFn(getLearningState);
   const fetchMissions = useServerFn(getOrGenerateDailyMissions);
   const [activeMission, setActiveMission] = useState<Mission | null>(null);
+  const [endless, setEndless] = useState(false);
 
   const stateQ = useQuery({
     queryKey: ["janngude-state"],
