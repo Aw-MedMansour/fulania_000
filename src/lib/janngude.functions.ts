@@ -201,6 +201,9 @@ function buildTypeIn(entry: DictEntry): Exercise {
     hint: entry.pronunciation ? `/${entry.pronunciation}/` : undefined,
   };
 }
+
+export const getOrGenerateDailyMissions = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const today = new Date().toISOString().slice(0, 10);
