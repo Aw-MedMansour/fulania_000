@@ -72,6 +72,35 @@ export function MissionsTab() {
     <div className="space-y-6">
       <StatsBar state={state} loading={stateQ.isLoading} />
 
+      {/* Hero — Aventure infinie */}
+      <button
+        type="button"
+        onClick={() => setEndless(true)}
+        disabled={!state || state.hearts === 0}
+        className={cn(
+          "group relative w-full overflow-hidden rounded-3xl border-2 border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/15 via-card to-[var(--terracotta)]/20 p-5 text-left transition-all sm:p-6",
+          state && state.hearts > 0 && "hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--gold)]",
+          (!state || state.hearts === 0) && "opacity-60",
+        )}
+      >
+        <div className="absolute -right-6 -top-6 text-[140px] opacity-10 transition-transform group-hover:rotate-12">✨</div>
+        <div className="relative flex items-center gap-4">
+          <div className="flex h-16 w-16 flex-none items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--gold)] to-[var(--terracotta)] text-3xl shadow-lg sm:h-20 sm:w-20 sm:text-4xl">
+            🚀
+          </div>
+          <div className="flex-1">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-earth/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-cream">
+              <InfinityIcon className="h-3 w-3" /> Nouveauté
+            </div>
+            <h3 className="mt-1.5 font-display text-xl font-bold text-earth sm:text-2xl">Aventure infinie</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
+              Exercices générés en continu par l'IA · QCM · Écoute · Saisie
+            </p>
+          </div>
+          <Zap className="hidden h-6 w-6 text-[var(--gold)] transition-transform group-hover:scale-125 sm:block" />
+        </div>
+      </button>
+
       <div>
         <h3 className="mb-3 font-display text-lg font-semibold text-earth">Missions du jour</h3>
         {missionsQ.isLoading ? (
@@ -110,6 +139,17 @@ export function MissionsTab() {
             await qc.invalidateQueries({ queryKey: ["janngude-state"] });
             await qc.invalidateQueries({ queryKey: ["janngude-missions"] });
           }}
+        />
+      )}
+
+      {endless && (
+        <EndlessPlayer
+          state={state ?? null}
+          onClose={async () => {
+            setEndless(false);
+            await qc.invalidateQueries({ queryKey: ["janngude-state"] });
+          }}
+          onTick={() => { /* refresh on close only */ }}
         />
       )}
     </div>
