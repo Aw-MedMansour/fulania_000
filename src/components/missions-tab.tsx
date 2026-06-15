@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
 import {
-  Flame, Heart, Trophy, Star, Volume2, X, Check, Sparkles, Loader2, LogIn, Award,
+  Flame, Heart, Trophy, Star, Volume2, X, Check, Sparkles, Loader2, LogIn, Award, Infinity as InfinityIcon, Zap,
 } from "lucide-react";
 import {
   getLearningState,
@@ -14,6 +14,7 @@ import {
   type Exercise,
   type LearningState,
 } from "@/lib/janngude.functions";
+import { EndlessPlayer } from "@/components/endless-player";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
