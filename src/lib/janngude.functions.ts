@@ -7,13 +7,16 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 export type Exercise = {
   id: string;
   entry_id: string;
-  kind: "mcq_fr_to_pl" | "mcq_pl_to_fr" | "fill_blank";
+  kind: "mcq_fr_to_pl" | "mcq_pl_to_fr" | "listen_pick" | "type_in";
   prompt: string;
   options: string[];
   answer: string;
+  accept?: string[];
   hint?: string;
   pulaar: string;
   french: string;
+  emoji: string;
+  category: string | null;
 };
 
 export type Mission = {
