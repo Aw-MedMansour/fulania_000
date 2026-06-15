@@ -147,8 +147,20 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-function buildMcq(entry: DictEntry, pool: DictEntry[], dir: "fr_to_pl" | "pl_to_fr"): Exercise {
+const CAT_EMOJI: Record<string, string> = {
+  salutation: "👋", famille: "👨‍👩‍👧", nourriture: "🍲", maison: "🏠",
+  nature: "🌳", corps: "🫀", voyage: "🐪", travail: "🛠️",
+  sentiments: "❤️", animaux: "🐄", religion: "🕌", vetement: "👘",
+  temps: "⏰", couleur: "🎨", nombre: "🔢", verbe: "⚡",
+};
+function emojiFor(cat: string | null): string {
+  if (!cat) return "✨";
+  return CAT_EMOJI[cat.toLowerCase()] ?? "✨";
+}
+
+function buildMcq(entry: DictEntry, pool: DictEntry[], dir: "fr_to_pl" | "pl_to_fr" | "listen"): Exercise {
   const isFR = dir === "fr_to_pl";
+  const isListen = dir === "listen";
   const answer = isFR ? entry.pulaar : entry.french;
   const distractors = shuffle(pool.filter((p) => p.id !== entry.id))
     .slice(0, 3)
@@ -157,20 +169,38 @@ function buildMcq(entry: DictEntry, pool: DictEntry[], dir: "fr_to_pl" | "pl_to_
   return {
     id: crypto.randomUUID(),
     entry_id: entry.id,
-    kind: isFR ? "mcq_fr_to_pl" : "mcq_pl_to_fr",
-    prompt: isFR
-      ? `Comment dit-on « ${entry.french} » en Pulaar ?`
-      : `Que signifie « ${entry.pulaar} » ?`,
+    kind: isListen ? "listen_pick" : isFR ? "mcq_fr_to_pl" : "mcq_pl_to_fr",
+    prompt: isListen
+      ? `Écoute et choisis la traduction`
+      : isFR
+        ? `Comment dit-on « ${entry.french} » en Pulaar ?`
+        : `Que signifie « ${entry.pulaar} » ?`,
     options,
     answer,
     pulaar: entry.pulaar,
     french: entry.french,
+    emoji: emojiFor(entry.category),
+    category: entry.category,
     hint: entry.pronunciation ? `/${entry.pronunciation}/` : undefined,
   };
 }
 
-export const getOrGenerateDailyMissions = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
+function buildTypeIn(entry: DictEntry): Exercise {
+  return {
+    id: crypto.randomUUID(),
+    entry_id: entry.id,
+    kind: "type_in",
+    prompt: `Écris en Pulaar : « ${entry.french} »`,
+    options: [],
+    answer: entry.pulaar,
+    accept: [entry.pulaar.toLowerCase().trim()],
+    pulaar: entry.pulaar,
+    french: entry.french,
+    emoji: emojiFor(entry.category),
+    category: entry.category,
+    hint: entry.pronunciation ? `/${entry.pronunciation}/` : undefined,
+  };
+}
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const today = new Date().toISOString().slice(0, 10);
