@@ -513,3 +513,66 @@ export const completeMission = createServerFn({ method: "POST" })
 
     return { ok: true, xp_gained: 50, badges: unlocks.map((b) => b.code) };
   });
+
+/* ====== Aventure infinie : génère un lot d'exercices variés ====== */
+
+const batchInput = z.object({
+  size: z.number().int().min(4).max(20).optional(),
+});
+
+export const generateEndlessBatch = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d) => batchInput.parse(d ?? {}))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const size = data.size ?? 10;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // 1) cartes dues (priorité)
+    const { data: dueRows } = await supabase
+      .from("user_card_progress")
+      .select("entry_id")
+      .eq("user_id", userId)
+      .lte("next_review", new Date().toISOString())
+      .limit(Math.ceil(size / 2));
+    const dueIds = (dueRows ?? []).map((r) => r.entry_id);
+
+    let dueEntries: DictEntry[] = [];
+    if (dueIds.length) {
+      const { data } = await supabaseAdmin
+        .from("dictionary_entries")
+        .select("id, pulaar, french, pronunciation, category")
+        .in("id", dueIds);
+      dueEntries = ((data ?? []) as DictEntry[]).filter((e) => e.pulaar && e.french);
+    }
+
+    // 2) nouvelles entrées
+    const { data: pool } = await supabaseAdmin
+      .from("dictionary_entries")
+      .select("id, pulaar, french, pronunciation, category")
+      .not("french", "is", null)
+      .not("pulaar", "is", null)
+      .limit(500);
+    const distractorPool = (pool ?? []) as DictEntry[];
+    const seen = new Set(dueEntries.map((e) => e.id));
+    const fresh = shuffle(distractorPool.filter((e) => !seen.has(e.id)));
+
+    const picks: DictEntry[] = [...dueEntries];
+    while (picks.length < size && fresh.length) picks.push(fresh.shift()!);
+    if (!picks.length) return [] as Exercise[];
+
+    // 3) varie les types d'exercice
+    const kinds: Array<"fr_to_pl" | "pl_to_fr" | "listen" | "type"> = [];
+    for (let i = 0; i < picks.length; i++) {
+      const r = i % 5;
+      kinds.push(r === 0 ? "listen" : r === 1 ? "type" : r === 2 ? "fr_to_pl" : r === 3 ? "pl_to_fr" : "fr_to_pl");
+    }
+
+    const exercises: Exercise[] = picks.map((p, i) => {
+      const k = kinds[i];
+      if (k === "type") return buildTypeIn(p);
+      return buildMcq(p, distractorPool, k);
+    });
+
+    return shuffle(exercises);
+  });
