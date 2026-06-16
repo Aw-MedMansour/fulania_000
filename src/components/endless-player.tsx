@@ -203,6 +203,15 @@ export function EndlessPlayer({
           <div className="hidden items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-sm font-semibold text-amber-600 sm:flex">
             <Star className="h-4 w-4 fill-current" /> {xpGain}
           </div>
+          <button
+            onClick={() => setTutorOpen(true)}
+            aria-label="Demander au tuteur"
+            title="Tuteur IA"
+            className="inline-flex items-center gap-1 rounded-full bg-gradient-to-br from-[var(--gold)]/15 to-[var(--terracotta)]/15 px-2.5 py-1 text-sm font-semibold text-[var(--terracotta)] hover:from-[var(--gold)]/25 hover:to-[var(--terracotta)]/25"
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Aide</span>
+          </button>
         </div>
       </div>
 
