@@ -326,6 +326,12 @@ export function EndlessPlayer({
           ) : null}
         </div>
       </div>
+      {tutorOpen && (
+        <TutorChat
+          context={{ pulaar: ex.pulaar, french: ex.french, category: ex.category, hint: ex.hint }}
+          onClose={() => setTutorOpen(false)}
+        />
+      )}
     </Shell>
   );
 }
