@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Heart, X, Flame, Volume2, Sparkles, Loader2, Star, Zap } from "lucide-react";
+import { Heart, X, Flame, Volume2, Sparkles, Loader2, Star, Zap, MessageCircle } from "lucide-react";
 import {
   generateEndlessBatch,
   submitAnswer,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { TutorChat } from "@/components/tutor-chat";
 
 export function EndlessPlayer({
   state,
@@ -32,6 +33,7 @@ export function EndlessPlayer({
   const [xpGain, setXpGain] = useState(0);
   const [feedback, setFeedback] = useState<"ok" | "no" | null>(null);
   const [done, setDone] = useState(0);
+  const [tutorOpen, setTutorOpen] = useState(false);
   const loadingMoreRef = useRef(false);
 
   const ex = queue[0];
@@ -201,6 +203,15 @@ export function EndlessPlayer({
           <div className="hidden items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-sm font-semibold text-amber-600 sm:flex">
             <Star className="h-4 w-4 fill-current" /> {xpGain}
           </div>
+          <button
+            onClick={() => setTutorOpen(true)}
+            aria-label="Demander au tuteur"
+            title="Tuteur IA"
+            className="inline-flex items-center gap-1 rounded-full bg-gradient-to-br from-[var(--gold)]/15 to-[var(--terracotta)]/15 px-2.5 py-1 text-sm font-semibold text-[var(--terracotta)] hover:from-[var(--gold)]/25 hover:to-[var(--terracotta)]/25"
+          >
+            <MessageCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Aide</span>
+          </button>
         </div>
       </div>
 
@@ -315,6 +326,12 @@ export function EndlessPlayer({
           ) : null}
         </div>
       </div>
+      {tutorOpen && (
+        <TutorChat
+          context={{ pulaar: ex.pulaar, french: ex.french, category: ex.category, hint: ex.hint }}
+          onClose={() => setTutorOpen(false)}
+        />
+      )}
     </Shell>
   );
 }
