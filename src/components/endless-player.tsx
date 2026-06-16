@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Heart, X, Flame, Volume2, Sparkles, Loader2, Star, Zap } from "lucide-react";
+import { Heart, X, Flame, Volume2, Sparkles, Loader2, Star, Zap, MessageCircle } from "lucide-react";
 import {
   generateEndlessBatch,
   submitAnswer,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { TutorChat } from "@/components/tutor-chat";
 
 export function EndlessPlayer({
   state,
