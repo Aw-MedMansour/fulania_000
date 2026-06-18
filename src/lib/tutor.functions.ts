@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
+export type TutorDialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
+
 export type TutorMsg = { role: "user" | "assistant"; content: string };
 
 export type TutorContext = {
@@ -7,12 +9,22 @@ export type TutorContext = {
   french?: string;
   category?: string | null;
   hint?: string | null;
+  dialect?: TutorDialect;
 };
 
 export type AskTutorInput = {
   context: TutorContext;
   messages: TutorMsg[];
 };
+
+const DIALECT_LABELS: Record<TutorDialect, string> = {
+  fouta_toro: "Fuuta Tooro (Sénégal / Mauritanie)",
+  fouta_djallon: "Fuuta Jaloo (Guinée)",
+  maasina: "Maasina (Mali)",
+  aadamaawa: "Aadamaawa (Cameroun / Nigeria)",
+};
+
+const ALLOWED_DIALECTS: TutorDialect[] = ["fouta_toro", "fouta_djallon", "maasina", "aadamaawa"];
 
 function validate(input: unknown): AskTutorInput {
   if (!input || typeof input !== "object") throw new Error("Invalid input");
@@ -27,12 +39,16 @@ function validate(input: unknown): AskTutorInput {
       throw new Error("Invalid role");
     }
   }
+  const rawDialect = i.context?.dialect;
+  const dialect: TutorDialect =
+    rawDialect && ALLOWED_DIALECTS.includes(rawDialect) ? rawDialect : "fouta_toro";
   return {
     context: {
       pulaar: typeof i.context?.pulaar === "string" ? i.context.pulaar.slice(0, 200) : undefined,
       french: typeof i.context?.french === "string" ? i.context.french.slice(0, 200) : undefined,
       category: i.context?.category ? String(i.context.category).slice(0, 80) : null,
       hint: i.context?.hint ? String(i.context.hint).slice(0, 200) : null,
+      dialect,
     },
     messages: i.messages,
   };
@@ -45,6 +61,8 @@ export const askTutor = createServerFn({ method: "POST" })
     if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
 
     const ctx = data.context;
+    const dialect = ctx.dialect ?? "fouta_toro";
+    const dialectLabel = DIALECT_LABELS[dialect];
     const ctxLine =
       ctx.pulaar || ctx.french
         ? `Mot en cours d'étude — Pulaar: « ${ctx.pulaar ?? "?"} » / Français: « ${ctx.french ?? "?"} »${ctx.category ? ` (catégorie: ${ctx.category})` : ""}${ctx.hint ? ` — indice: ${ctx.hint}` : ""}.`
@@ -52,11 +70,13 @@ export const askTutor = createServerFn({ method: "POST" })
 
     const system = `Tu es Janngude, un tuteur IA chaleureux qui aide à apprendre le **Pulaar (peul)** depuis le français.
 
+Dialecte préféré de l'apprenant : **${dialectLabel}**. Privilégie la variante, l'orthographe et les exemples de ce dialecte. Si un mot diffère sensiblement dans d'autres dialectes, signale-le brièvement entre parenthèses.
+
 ${ctxLine}
 
 Règles :
 - Réponds en français, brièvement (1 à 4 phrases), comme un ami patient.
-- Donne toujours un exemple concret en Pulaar quand c'est utile, suivi de la traduction française entre parenthèses.
+- Donne toujours un exemple concret en Pulaar (${dialectLabel}) quand c'est utile, suivi de la traduction française entre parenthèses.
 - Mets le Pulaar en **gras**.
 - Si l'apprenant se trompe, corrige avec douceur et explique en une phrase.
 - Pour la prononciation, décris-la simplement (ex: "« ñ » se prononce comme le « gn » de campagne").
