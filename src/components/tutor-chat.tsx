@@ -24,6 +24,8 @@ export function TutorChat({
   onClose: () => void;
 }) {
   const ask = useServerFn(askTutor);
+  const { dialect } = useLanguage();
+  const ctxWithDialect: TutorContext = { ...context, dialect: context.dialect ?? dialect ?? "fouta_toro" };
   const [messages, setMessages] = useState<TutorMsg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
