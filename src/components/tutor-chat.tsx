@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import ReactMarkdown from "react-markdown";
 import { Sparkles, X, Send, Loader2, Volume2 } from "lucide-react";
 import { askTutor, type TutorContext, type TutorMsg } from "@/lib/tutor.functions";
+import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,8 @@ export function TutorChat({
   onClose: () => void;
 }) {
   const ask = useServerFn(askTutor);
+  const { dialect } = useLanguage();
+  const ctxWithDialect: TutorContext = { ...context, dialect: context.dialect ?? dialect ?? "fouta_toro" };
   const [messages, setMessages] = useState<TutorMsg[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -53,7 +56,7 @@ export function TutorChat({
     setMessages(next);
     setLoading(true);
     try {
-      const { reply } = await ask({ data: { context, messages: next } });
+      const { reply } = await ask({ data: { context: ctxWithDialect, messages: next } });
       setMessages((m) => [...m, { role: "assistant", content: reply }]);
     } catch (e) {
       console.error(e);
