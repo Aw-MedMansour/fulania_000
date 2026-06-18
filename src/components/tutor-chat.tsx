@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import ReactMarkdown from "react-markdown";
 import { Sparkles, X, Send, Loader2, Volume2 } from "lucide-react";
 import { askTutor, type TutorContext, type TutorMsg } from "@/lib/tutor.functions";
+import { useLanguage } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
