@@ -56,7 +56,7 @@ export function TutorChat({
     setMessages(next);
     setLoading(true);
     try {
-      const { reply } = await ask({ data: { context, messages: next } });
+      const { reply } = await ask({ data: { context: ctxWithDialect, messages: next } });
       setMessages((m) => [...m, { role: "assistant", content: reply }]);
     } catch (e) {
       console.error(e);
