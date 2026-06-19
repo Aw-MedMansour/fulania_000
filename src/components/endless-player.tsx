@@ -80,22 +80,22 @@ export function EndlessPlayer({
     }
   }
 
-  const speak = (text: string) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
-    u.rate = 0.85;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
-  };
-
-  // auto-speak listen_pick prompts
-  useEffect(() => {
-    if (ex?.kind === "listen_pick") {
-      const t = setTimeout(() => speak(ex.pulaar), 250);
-      return () => clearTimeout(t);
-    }
-  }, [ex?.id, ex?.kind]);
+  function askFulanIA() {
+    if (!ex) return;
+    try {
+      const ctx = [
+        "CONTEXTE CARTE Janngude",
+        `Pulaar : ${ex.pulaar}`,
+        `Français : ${ex.french}`,
+        ex.category ? `Catégorie : ${ex.category}` : null,
+        ex.hint ? `Indice : ${ex.hint}` : null,
+        "",
+        "Aide-moi à comprendre et mémoriser ce mot : donne-moi un exemple court en Pulaar avec sa traduction, et une note de prononciation écrite.",
+      ].filter(Boolean).join("\n");
+      sessionStorage.setItem("fulania.chat.prefill", ctx);
+    } catch { /* ignore */ }
+    navigate({ to: "/chat" });
+  }
 
   function judge(correct: boolean) {
     if (!ex) return;
