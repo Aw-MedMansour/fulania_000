@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Heart, X, Flame, Volume2, Sparkles, Loader2, Star, Zap, MessageCircle } from "lucide-react";
+import { useNavigate } from "@tanstack/react-router";
+import { Heart, X, Flame, Sparkles, Loader2, Star, Zap, MessageCircle } from "lucide-react";
 import {
   generateEndlessBatch,
   submitAnswer,
@@ -10,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { TutorChat } from "@/components/tutor-chat";
 
 export function EndlessPlayer({
   state,
@@ -33,8 +33,8 @@ export function EndlessPlayer({
   const [xpGain, setXpGain] = useState(0);
   const [feedback, setFeedback] = useState<"ok" | "no" | null>(null);
   const [done, setDone] = useState(0);
-  const [tutorOpen, setTutorOpen] = useState(false);
   const loadingMoreRef = useRef(false);
+  const navigate = useNavigate();
 
   const ex = queue[0];
 
@@ -80,22 +80,22 @@ export function EndlessPlayer({
     }
   }
 
-  const speak = (text: string) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
-    u.rate = 0.85;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
-  };
-
-  // auto-speak listen_pick prompts
-  useEffect(() => {
-    if (ex?.kind === "listen_pick") {
-      const t = setTimeout(() => speak(ex.pulaar), 250);
-      return () => clearTimeout(t);
-    }
-  }, [ex?.id, ex?.kind]);
+  function askFulanIA() {
+    if (!ex) return;
+    try {
+      const ctx = [
+        "CONTEXTE CARTE Janngude",
+        `Pulaar : ${ex.pulaar}`,
+        `Français : ${ex.french}`,
+        ex.category ? `Catégorie : ${ex.category}` : null,
+        ex.hint ? `Indice : ${ex.hint}` : null,
+        "",
+        "Aide-moi à comprendre et mémoriser ce mot : donne-moi un exemple court en Pulaar avec sa traduction, et une note de prononciation écrite.",
+      ].filter(Boolean).join("\n");
+      sessionStorage.setItem("fulania.chat.prefill", ctx);
+    } catch { /* ignore */ }
+    navigate({ to: "/chat" });
+  }
 
   function judge(correct: boolean) {
     if (!ex) return;
@@ -204,13 +204,13 @@ export function EndlessPlayer({
             <Star className="h-4 w-4 fill-current" /> {xpGain}
           </div>
           <button
-            onClick={() => setTutorOpen(true)}
-            aria-label="Demander au tuteur"
-            title="Tuteur IA"
+            onClick={askFulanIA}
+            aria-label="Demander à FulanIA"
+            title="Demander à FulanIA"
             className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--terracotta)] px-3 py-1.5 text-sm font-bold text-white shadow-md shadow-[var(--terracotta)]/30 hover:brightness-110"
           >
             <MessageCircle className="h-4 w-4" />
-            <span>Aide</span>
+            <span>FulanIA</span>
           </button>
         </div>
       </div>
@@ -241,14 +241,6 @@ export function EndlessPlayer({
           {ex.prompt}
         </h2>
 
-        {(ex.kind === "listen_pick" || ex.kind === "mcq_pl_to_fr") && (
-          <button
-            onClick={() => speak(ex.pulaar)}
-            className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-600 hover:bg-sky-500/20"
-          >
-            <Volume2 className="h-3.5 w-3.5" /> Réécouter
-          </button>
-        )}
 
         {/* Answer area */}
         <div className="mt-6">
@@ -326,12 +318,6 @@ export function EndlessPlayer({
           ) : null}
         </div>
       </div>
-      {tutorOpen && (
-        <TutorChat
-          context={{ pulaar: ex.pulaar, french: ex.french, category: ex.category, hint: ex.hint }}
-          onClose={() => setTutorOpen(false)}
-        />
-      )}
     </Shell>
   );
 }

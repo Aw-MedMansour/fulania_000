@@ -561,11 +561,11 @@ export const generateEndlessBatch = createServerFn({ method: "POST" })
     while (picks.length < size && fresh.length) picks.push(fresh.shift()!);
     if (!picks.length) return [] as Exercise[];
 
-    // 3) varie les types d'exercice
-    const kinds: Array<"fr_to_pl" | "pl_to_fr" | "listen" | "type"> = [];
+    // 3) varie les types d'exercice (audio désactivé tant que la prononciation TTS n'est pas fiable)
+    const kinds: Array<"fr_to_pl" | "pl_to_fr" | "type"> = [];
     for (let i = 0; i < picks.length; i++) {
-      const r = i % 5;
-      kinds.push(r === 0 ? "listen" : r === 1 ? "type" : r === 2 ? "fr_to_pl" : r === 3 ? "pl_to_fr" : "fr_to_pl");
+      const r = i % 4;
+      kinds.push(r === 0 ? "type" : r === 1 ? "fr_to_pl" : r === 2 ? "pl_to_fr" : "fr_to_pl");
     }
 
     const exercises: Exercise[] = picks.map((p, i) => {

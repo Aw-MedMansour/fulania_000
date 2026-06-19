@@ -109,6 +109,19 @@ function ChatPage() {
     ta.style.height = Math.min(ta.scrollHeight, 200) + "px";
   }, [input]);
 
+  // Prefill from external triggers (e.g. Janngude « Aide » button on a flashcard)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const pre = sessionStorage.getItem("fulania.chat.prefill");
+      if (pre) {
+        setInput(pre);
+        sessionStorage.removeItem("fulania.chat.prefill");
+        setTimeout(() => textareaRef.current?.focus(), 50);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
   // Close (+) menu on outside click
   useEffect(() => {
     if (!plusOpen) return;
