@@ -363,11 +363,6 @@ function MissionPlayer({
               Question {idx + 1} / {total}
             </p>
             <h2 className="mt-3 font-display text-2xl font-semibold text-earth sm:text-3xl">{ex.prompt}</h2>
-            {ex.kind === "mcq_pl_to_fr" && (
-              <button onClick={() => speak(ex.pulaar)} className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground">
-                <Volume2 className="h-3.5 w-3.5" /> Écouter
-              </button>
-            )}
 
             <div className="mt-6 grid gap-2">
               {ex.options.map((opt) => {
