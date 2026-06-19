@@ -33,8 +33,8 @@ export function EndlessPlayer({
   const [xpGain, setXpGain] = useState(0);
   const [feedback, setFeedback] = useState<"ok" | "no" | null>(null);
   const [done, setDone] = useState(0);
-  const [tutorOpen, setTutorOpen] = useState(false);
   const loadingMoreRef = useRef(false);
+  const navigate = useNavigate();
 
   const ex = queue[0];
 
