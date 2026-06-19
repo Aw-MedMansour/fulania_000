@@ -332,14 +332,7 @@ function MissionPlayer({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  const speak = (text: string) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
-    u.rate = 0.85;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(u);
-  };
+  // Audio désactivé pour Janngude tant que la prononciation TTS n'est pas fiable.
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-background">
