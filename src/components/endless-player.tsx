@@ -241,14 +241,6 @@ export function EndlessPlayer({
           {ex.prompt}
         </h2>
 
-        {(ex.kind === "listen_pick" || ex.kind === "mcq_pl_to_fr") && (
-          <button
-            onClick={() => speak(ex.pulaar)}
-            className="mx-auto mt-2 inline-flex items-center gap-1.5 rounded-full bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-600 hover:bg-sky-500/20"
-          >
-            <Volume2 className="h-3.5 w-3.5" /> Réécouter
-          </button>
-        )}
 
         {/* Answer area */}
         <div className="mt-6">
