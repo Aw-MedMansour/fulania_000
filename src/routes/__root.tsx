@@ -125,6 +125,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <Outlet />
+        <WhatsAppFloat />
       </LanguageProvider>
     </QueryClientProvider>
   );
