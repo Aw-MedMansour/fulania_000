@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
@@ -60,7 +61,13 @@ export const Route = createFileRoute("/")({
             description:
               "FulanIA — assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule.",
             founder: { "@type": "Person", name: "Aw Mohamedou Mansour" },
-            sameAs: ["https://fulania.com"],
+            sameAs: [
+              "https://fulania.com",
+              "https://www.facebook.com/share/1D6ac9C3Qs/?mibextid=wwXIfr",
+              "https://whatsapp.com/channel/0029VabnVHaDuMRcgOMKpM3s",
+              "https://www.tiktok.com/@anssour",
+              "https://www.youtube.com/@FulanIA-TV",
+            ],
           }),
         },
       ],
@@ -573,7 +580,10 @@ function Index() {
                 </StaggerItem>
               </StaggerGroup>
 
-              <Link to="/auth" className="group mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
+              <div className="mt-6">
+                <SocialLinks />
+              </div>
+              <Link to="/auth" className="group mt-6 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
                 {t("contact.tryAi")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
             </Reveal>
