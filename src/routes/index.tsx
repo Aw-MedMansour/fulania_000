@@ -574,7 +574,10 @@ function Index() {
                 </StaggerItem>
               </StaggerGroup>
 
-              <Link to="/auth" className="group mt-8 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
+              <div className="mt-6">
+                <SocialLinks />
+              </div>
+              <Link to="/auth" className="group mt-6 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
                 {t("contact.tryAi")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </Link>
             </Reveal>
