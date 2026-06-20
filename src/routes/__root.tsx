@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import ogCover from "@/assets/og-cover.jpg";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
+import { WhatsAppFloat } from "@/components/whatsapp-float";
 
 function NotFoundComponent() {
   const { t } = useLanguage();
@@ -124,6 +125,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <Outlet />
+        <WhatsAppFloat />
       </LanguageProvider>
     </QueryClientProvider>
   );
