@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
