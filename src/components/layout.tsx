@@ -188,7 +188,7 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <div>
+        <div>
             <h4 className="font-display text-sm uppercase tracking-widest text-[var(--gold)]">
               {t("footer.explore")}
             </h4>
@@ -218,6 +218,9 @@ export function SiteFooter() {
               </li>
               <li className="text-cream/60">{t("contact.location")}</li>
             </ul>
+            <div className="mt-4">
+              <SocialLinks />
+            </div>
           </div>
         </div>
 
