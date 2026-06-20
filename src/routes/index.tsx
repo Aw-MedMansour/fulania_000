@@ -61,7 +61,13 @@ export const Route = createFileRoute("/")({
             description:
               "FulanIA — assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule.",
             founder: { "@type": "Person", name: "Aw Mohamedou Mansour" },
-            sameAs: ["https://fulania.com"],
+            sameAs: [
+              "https://fulania.com",
+              "https://www.facebook.com/share/1D6ac9C3Qs/?mibextid=wwXIfr",
+              "https://whatsapp.com/channel/0029VabnVHaDuMRcgOMKpM3s",
+              "https://www.tiktok.com/@anssour",
+              "https://www.youtube.com/@FulanIA-TV",
+            ],
           }),
         },
       ],
