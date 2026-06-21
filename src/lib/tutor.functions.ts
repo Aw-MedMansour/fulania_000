@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type TutorDialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
 
