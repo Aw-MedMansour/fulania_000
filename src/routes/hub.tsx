@@ -152,6 +152,8 @@ function HubPage() {
           ))}
         </section>
       </main>
+
+      <SiteFooter />
     </div>
   );
 }
