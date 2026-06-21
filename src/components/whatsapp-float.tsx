@@ -4,7 +4,7 @@ export function WhatsAppFloat() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   // Masquer sur les pages applicatives (assistant, traduction, dictionnaire, etc.)
-  const hiddenPrefixes = ["/chat", "/translate", "/dictionary", "/learn", "/hub", "/library", "/auth"];
+  const hiddenPrefixes = ["/chat", "/translate", "/dictionary", "/learn", "/library", "/auth"];
   if (hiddenPrefixes.some((p) => pathname === p || pathname.startsWith(p + "/"))) {
     return null;
   }
