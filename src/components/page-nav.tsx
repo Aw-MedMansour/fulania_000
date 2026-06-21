@@ -49,7 +49,7 @@ export function PageNav({ className = "" }: { className?: string }) {
       {user && (
         <Link
           to="/hub"
-          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/80 px-2.5 py-1.5 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground"
+          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/80 px-2.5 py-1.5 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground animate-pulse"
           aria-label={t("nav.hub")}
         >
           <LayoutGrid className="h-3.5 w-3.5" />
