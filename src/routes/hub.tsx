@@ -14,6 +14,7 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
+import { SiteFooter } from "@/components/layout";
 import patternImg from "@/assets/pattern.jpg";
 
 export const Route = createFileRoute("/hub")({
