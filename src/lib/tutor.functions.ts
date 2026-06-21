@@ -56,6 +56,7 @@ function validate(input: unknown): AskTutorInput {
 }
 
 export const askTutor = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator(validate)
   .handler(async ({ data }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
