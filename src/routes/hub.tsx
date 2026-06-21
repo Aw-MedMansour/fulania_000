@@ -137,7 +137,7 @@ function HubPage() {
             <Link
               key={to}
               to={to}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:shadow-lg"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:shadow-lg animate-pulse"
             >
               <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-opacity group-hover:opacity-100`} aria-hidden />
               <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-earth text-cream shadow-sm">
