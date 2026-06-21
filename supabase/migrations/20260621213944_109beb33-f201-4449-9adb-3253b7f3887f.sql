@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.increment_book_downloads(uuid) FROM anon;

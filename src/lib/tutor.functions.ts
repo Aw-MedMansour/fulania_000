@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type TutorDialect = "fouta_toro" | "fouta_djallon" | "maasina" | "aadamaawa";
 
@@ -55,6 +56,7 @@ function validate(input: unknown): AskTutorInput {
 }
 
 export const askTutor = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator(validate)
   .handler(async ({ data }) => {
     const apiKey = process.env.LOVABLE_API_KEY;
