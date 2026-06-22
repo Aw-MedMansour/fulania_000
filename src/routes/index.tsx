@@ -139,61 +139,66 @@ function Index() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
-          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover animate-kenburns" width={1920} height={1080} fetchPriority="high" decoding="async" />
-          <div className="absolute inset-0 bg-gradient-to-r from-earth/95 via-earth/80 to-earth/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-earth/80 via-transparent to-transparent" />
-          <div className="pointer-events-none absolute -right-24 top-1/3 h-96 w-96 rounded-full bg-[var(--gold)]/20 blur-3xl animate-float-glow" aria-hidden />
+          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} fetchPriority="high" decoding="async" />
+          <div className="absolute inset-0 bg-gradient-to-br from-earth/95 via-earth/85 to-earth/55" />
+          <div className="absolute inset-0 bg-gradient-to-t from-earth via-earth/30 to-transparent" />
+          <div className="absolute inset-0 bg-dot-gold opacity-[0.08] mix-blend-screen" aria-hidden />
+          <div className="pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[var(--gold)]/25 blur-3xl" aria-hidden />
+          <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-primary/30 blur-3xl" aria-hidden />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
+        <div className="relative mx-auto max-w-7xl px-5 pt-14 pb-20 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
           <motion.div
             className="max-w-2xl text-cream"
             initial="hidden"
             animate="show"
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } }}
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
           >
             <motion.div
               variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-              className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/40 px-3 py-1 text-xs uppercase tracking-[0.18em] text-[var(--gold)] backdrop-blur"
+              className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/50 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[var(--gold)] backdrop-blur-md"
             >
-              <Sparkles className="h-3 w-3" />
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--gold)] opacity-60 animate-ping" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--gold)]" />
+              </span>
               {t("hero.badge")}
             </motion.div>
 
             <motion.h1
               variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-              className="mt-6 font-display text-5xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl"
+              className="mt-6 font-display text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.02em] text-balance sm:text-6xl lg:text-7xl"
             >
               {t("hero.title1")}{" "}
-              <span className="italic text-shimmer-gold">{t("hero.title2")}</span>.
+              <span className="italic font-normal text-shimmer-gold">{t("hero.title2")}</span>.
             </motion.h1>
 
             <motion.p
               variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-              className="mt-6 max-w-xl text-lg text-cream/85"
+              className="mt-5 max-w-xl text-[15px] leading-relaxed text-cream/80 sm:text-lg"
             >
               {t("hero.subtitle")}
             </motion.p>
 
             <motion.div
               variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-              className="mt-9 flex flex-wrap gap-3"
+              className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
             >
-              <Link to="/auth" className="group inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-lg transition hover:bg-[var(--gold)]/90 hover:shadow-xl hover:-translate-y-0.5">
-                {t("btn.chat")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+              <Link to="/auth" className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--gold)] px-6 py-4 text-sm font-semibold text-earth shadow-[0_12px_40px_-8px_rgba(212,164,74,0.5)] transition hover:bg-[var(--gold)]/95 hover:shadow-[0_20px_60px_-12px_rgba(212,164,74,0.7)]">
+                {t("btn.chat")} <ArrowRight className="h-4 w-4" />
               </Link>
-              <a href="#solution" className="inline-flex items-center gap-2 rounded-md border border-cream/30 px-6 py-3 text-sm font-medium text-cream backdrop-blur transition hover:bg-cream/10 hover:border-cream/50">
+              <a href="#solution" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cream/25 bg-cream/[0.04] px-6 py-4 text-sm font-medium text-cream backdrop-blur-md transition hover:border-cream/50 hover:bg-cream/10">
                 {t("btn.discover")}
               </a>
             </motion.div>
 
             <motion.dl
               variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } } }}
-              className="mt-14 grid max-w-md grid-cols-3 gap-6 border-t border-cream/20 pt-6"
+              className="mt-12 grid max-w-md grid-cols-3 gap-4 rounded-2xl border border-cream/15 bg-earth/40 p-5 backdrop-blur-md sm:mt-14 sm:gap-6 sm:p-6"
             >
-              <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.speakers")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">~100 M</dd></div>
-              <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.countries")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">20+</dd></div>
-              <div><dt className="text-xs uppercase tracking-widest text-cream/60">{t("stats.dialects")}</dt><dd className="mt-1 font-display text-2xl font-semibold text-[var(--gold)]">4</dd></div>
+              <div><dt className="text-[10px] uppercase tracking-[0.18em] text-cream/55">{t("stats.speakers")}</dt><dd className="mt-1.5 font-display text-2xl font-semibold text-[var(--gold)]">~100 M</dd></div>
+              <div className="border-x border-cream/10 px-4"><dt className="text-[10px] uppercase tracking-[0.18em] text-cream/55">{t("stats.countries")}</dt><dd className="mt-1.5 font-display text-2xl font-semibold text-[var(--gold)]">20+</dd></div>
+              <div><dt className="text-[10px] uppercase tracking-[0.18em] text-cream/55">{t("stats.dialects")}</dt><dd className="mt-1.5 font-display text-2xl font-semibold text-[var(--gold)]">4</dd></div>
             </motion.dl>
           </motion.div>
         </div>
