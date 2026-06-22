@@ -184,10 +184,24 @@ function DictionaryPage() {
     return Array.from(set).sort();
   }, [entries]);
 
+  const stats = useMemo(() => {
+    const total = entries.length;
+    const domains = categories.length;
+    const trilingual = entries.filter((e) => e.english && e.english.trim() !== "").length;
+    const withArabic = entries.filter((e) => e.arabic && e.arabic.trim() !== "").length;
+    return { total, domains, trilingual, withArabic };
+  }, [entries, categories]);
+
+  const normalizeFirst = (s: string) => {
+    const c = s.trim().charAt(0).toLocaleUpperCase("fr");
+    return c;
+  };
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return entries.filter((e) => {
       if (category !== "all" && e.category !== category) return false;
+      if (letter !== "all" && normalizeFirst(e.pulaar) !== letter) return false;
       if (!q) return true;
       return (
         e.pulaar.toLowerCase().includes(q) ||
@@ -196,7 +210,8 @@ function DictionaryPage() {
         (e.arabic?.includes(q) ?? false)
       );
     });
-  }, [entries, query, category]);
+  }, [entries, query, category, letter]);
+
 
   const favEntries = useMemo(
     () => entries.filter((e) => favorites.includes(e.id)),
