@@ -278,19 +278,29 @@ function DictionaryPage() {
         <PageNav className="mb-4" />
         
         
-        <div className="mb-8 flex items-start gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
-            <BookOpen className="h-6 w-6" />
-          </div>
-          <div>
-            <h1 className="font-display text-3xl font-semibold text-earth sm:text-4xl">
-              {t("dict.title")}
+        <section className="relative mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-earth via-[#1e3a5f] to-[#0c2340] p-6 text-cream shadow-lg sm:p-8">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[var(--gold)]/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[var(--terracotta)]/20 blur-3xl" />
+          <div className="relative">
+            <span className="inline-block rounded-full bg-[var(--terracotta)] px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-cream">
+              FulanIA · Janngude
+            </span>
+            <h1 className="mt-4 font-display text-4xl font-semibold leading-tight sm:text-5xl">
+              {t("dict.title")}{" "}
+              <span className="block text-[var(--gold)]">Pulaar / Fulfulde</span>
             </h1>
-            <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">
+            <p className="mt-3 max-w-2xl text-sm text-cream/80 sm:text-base">
               {t("dict.subtitle")}
             </p>
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <StatCard value={stats.total.toLocaleString("fr-FR")} label={t("dict.stat.entries") || "Entrées"} />
+              <StatCard value={String(stats.domains)} label={t("dict.stat.domains") || "Domaines"} />
+              <StatCard value={stats.trilingual.toLocaleString("fr-FR")} label={t("dict.stat.trilingual") || "Trilingues (+ EN)"} />
+              <StatCard value={stats.withArabic.toLocaleString("fr-FR")} label={t("dict.stat.arabic") || "Avec arabe"} />
+            </div>
           </div>
-        </div>
+        </section>
+
 
         {!user ? (
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-4 py-3 text-sm">
