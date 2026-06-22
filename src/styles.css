@@ -270,10 +270,29 @@
   .cta-bob { animation: ctaBobX 2.2s ease-in-out infinite; }
   .cta-breath { animation: ctaBreath 3s ease-in-out infinite; }
 
+  /* Hub tool cards — gentle float + coloured ring pulse */
+  @keyframes hubFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+  @keyframes hubRingPulse {
+    0%, 100% { box-shadow: 0 0 0 0 currentColor; }
+    50%      { box-shadow: 0 0 0 6px transparent; }
+  }
+  .hub-card {
+    animation: hubFloat 4s ease-in-out infinite;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .hub-icon-ring {
+    animation: hubRingPulse 3s ease-in-out infinite;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .cta-attract,
     .cta-attract::after,
-    .cta-bob { animation: none !important; }
+    .cta-bob,
+    .hub-card,
+    .hub-icon-ring { animation: none !important; }
   }
 
   .hover\:-translate-y-0\.5:hover,
