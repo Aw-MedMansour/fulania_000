@@ -82,9 +82,12 @@ function readSet(key: string): string[] {
   }
 }
 
+const ALPHABET = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Ɓ","Ɗ","Ƴ","Ñ","Ŋ"];
+
 function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const [letter, setLetter] = useState<string>("all");
   const { user } = useAuth();
   const { t, lang } = useLanguage();
   const qc = useQueryClient();
