@@ -353,7 +353,36 @@ function DictionaryPage() {
               ))}
             </div>
           )}
+
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            <button
+              onClick={() => setLetter("all")}
+              className={cn(
+                "rounded-md border px-2.5 py-1 text-xs font-semibold transition",
+                letter === "all"
+                  ? "border-earth bg-earth text-cream"
+                  : "border-border bg-background text-foreground/70 hover:border-earth/40",
+              )}
+            >
+              A–Z
+            </button>
+            {ALPHABET.map((L) => (
+              <button
+                key={L}
+                onClick={() => setLetter(L === letter ? "all" : L)}
+                className={cn(
+                  "h-7 w-7 rounded-md border text-xs font-semibold transition",
+                  letter === L
+                    ? "border-[var(--terracotta)] bg-[var(--terracotta)] text-cream"
+                    : "border-border bg-background text-foreground/70 hover:border-[var(--terracotta)]/40",
+                )}
+              >
+                {L}
+              </button>
+            ))}
+          </div>
         </div>
+
 
         <AITranslator query={query} isAuthed={!!user} />
 
