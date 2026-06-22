@@ -84,6 +84,16 @@ function readSet(key: string): string[] {
 
 const ALPHABET = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","Ɓ","Ɗ","Ƴ","Ñ","Ŋ"];
 
+function StatCard({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="rounded-xl border border-cream/15 bg-white/5 px-3 py-3 backdrop-blur-sm">
+      <div className="font-display text-2xl font-bold text-[var(--gold)] sm:text-3xl">{value}</div>
+      <div className="mt-0.5 text-[11px] uppercase tracking-wider text-cream/70 sm:text-xs">{label}</div>
+    </div>
+  );
+}
+
+
 function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
