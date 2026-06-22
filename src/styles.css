@@ -219,17 +219,17 @@
     animation: none;
   }
 
-  /* CTA attention animations (visible from page load) */
+  /* CTA attention animations — subtle & moderate */
   @keyframes ctaGlow {
     0%, 100% {
       box-shadow:
-        0 12px 40px -8px rgba(212, 164, 74, 0.45),
-        0 0 0 0 rgba(212, 164, 74, 0.55);
+        0 8px 28px -6px rgba(212, 164, 74, 0.35),
+        0 0 0 0 rgba(212, 164, 74, 0.40);
     }
     50% {
       box-shadow:
-        0 18px 55px -8px rgba(212, 164, 74, 0.75),
-        0 0 0 12px rgba(212, 164, 74, 0);
+        0 14px 40px -6px rgba(212, 164, 74, 0.55),
+        0 0 0 8px rgba(212, 164, 74, 0);
     }
   }
   @keyframes ctaShine {
@@ -239,12 +239,16 @@
   }
   @keyframes ctaBobX {
     0%, 100% { transform: translateX(0); }
-    50%      { transform: translateX(4px); }
+    50%      { transform: translateX(2.5px); }
+  }
+  @keyframes ctaBreath {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212, 164, 74, 0.25); border-color: rgba(245, 236, 217, 0.25); }
+    50%      { box-shadow: 0 0 0 6px rgba(212, 164, 74, 0); border-color: rgba(212, 164, 74, 0.45); }
   }
   .cta-attract {
     position: relative;
     overflow: hidden;
-    animation: ctaGlow 2.4s ease-in-out infinite;
+    animation: ctaGlow 3.2s ease-in-out infinite;
   }
   .cta-attract::after {
     content: "";
@@ -255,15 +259,16 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.30) 50%,
       transparent 100%
     );
     transform: translateX(-120%) skewX(-20deg);
-    animation: ctaShine 3.2s ease-in-out infinite;
-    animation-delay: 1s;
+    animation: ctaShine 4.5s ease-in-out infinite;
+    animation-delay: 1.5s;
     pointer-events: none;
   }
-  .cta-bob { animation: ctaBobX 1.6s ease-in-out infinite; }
+  .cta-bob { animation: ctaBobX 2.2s ease-in-out infinite; }
+  .cta-breath { animation: ctaBreath 3s ease-in-out infinite; }
 
   @media (prefers-reduced-motion: reduce) {
     .cta-attract,
