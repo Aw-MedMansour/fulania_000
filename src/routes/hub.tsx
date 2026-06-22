@@ -148,14 +148,15 @@ function HubPage() {
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map(({ to, icon: Icon, title, desc, accent }) => (
+          {features.map(({ to, icon: Icon, title, desc, accent, iconBg, ring, delay }) => (
             <Link
               key={to}
               to={to}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:shadow-lg animate-pulse"
+              className="hub-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 hover:border-[var(--gold)]/50 hover:shadow-lg"
+              style={{ animationDelay: delay }}
             >
               <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-opacity group-hover:opacity-100`} aria-hidden />
-              <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-earth text-cream shadow-sm">
+              <div className={`relative flex h-12 w-12 items-center justify-center rounded-xl ${iconBg} text-cream shadow-sm hub-icon-ring ${ring}`}>
                 <Icon className="h-6 w-6" />
               </div>
               <h2 className="relative mt-5 font-display text-xl font-semibold text-earth">{title}</h2>
