@@ -184,8 +184,9 @@ function Index() {
               variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
               className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
             >
-              <Link to="/auth" className="group inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--gold)] px-6 py-4 text-sm font-semibold text-earth shadow-[0_12px_40px_-8px_rgba(212,164,74,0.5)] transition hover:bg-[var(--gold)]/95 hover:shadow-[0_20px_60px_-12px_rgba(212,164,74,0.7)]">
-                {t("btn.chat")} <ArrowRight className="h-4 w-4" />
+              <Link to="/auth" className="cta-attract group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--gold)] px-6 py-4 text-sm font-semibold text-earth shadow-[0_12px_40px_-8px_rgba(212,164,74,0.5)] transition hover:bg-[var(--gold)]/95 hover:shadow-[0_20px_60px_-12px_rgba(212,164,74,0.7)]">
+                <span className="relative z-10">{t("btn.chat")}</span>
+                <ArrowRight className="relative z-10 h-4 w-4 cta-bob" />
               </Link>
               <a href="#solution" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cream/25 bg-cream/[0.04] px-6 py-4 text-sm font-medium text-cream backdrop-blur-md transition hover:border-cream/50 hover:bg-cream/10">
                 {t("btn.discover")}
