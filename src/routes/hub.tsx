@@ -45,6 +45,9 @@ function HubPage() {
       title: t("hub.f1.title"),
       desc: t("hub.f1.desc"),
       accent: "from-[var(--gold)]/30 to-[var(--gold)]/0",
+      iconBg: "bg-[#d4a44a]",
+      ring: "ring-[#d4a44a]/40",
+      delay: "0s",
     },
     {
       to: "/dictionary",
@@ -52,6 +55,9 @@ function HubPage() {
       title: t("hub.f2.title"),
       desc: t("hub.f2.desc"),
       accent: "from-emerald-500/25 to-transparent",
+      iconBg: "bg-emerald-500",
+      ring: "ring-emerald-400/40",
+      delay: "0.4s",
     },
     {
       to: "/learn",
@@ -59,6 +65,9 @@ function HubPage() {
       title: t("hub.f3.title"),
       desc: t("hub.f3.desc"),
       accent: "from-sky-500/25 to-transparent",
+      iconBg: "bg-sky-500",
+      ring: "ring-sky-400/40",
+      delay: "0.8s",
     },
     {
       to: "/translate",
@@ -66,6 +75,9 @@ function HubPage() {
       title: t("hub.f4.title"),
       desc: t("hub.f4.desc"),
       accent: "from-rose-500/25 to-transparent",
+      iconBg: "bg-rose-500",
+      ring: "ring-rose-400/40",
+      delay: "1.2s",
     },
     {
       to: "/culture",
@@ -73,6 +85,9 @@ function HubPage() {
       title: t("hub.f5.title"),
       desc: t("hub.f5.desc"),
       accent: "from-amber-500/25 to-transparent",
+      iconBg: "bg-amber-500",
+      ring: "ring-amber-400/40",
+      delay: "1.6s",
     },
   ];
 
