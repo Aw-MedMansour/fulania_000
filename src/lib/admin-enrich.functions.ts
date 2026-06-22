@@ -88,10 +88,10 @@ export const enrichDictionaryTranslations = createServerFn({ method: "POST" })
         if (!it.id) continue;
         const row = rows.find((r) => r.id === it.id);
         if (!row) continue;
-        const patch: Record<string, string> = {};
+        const patch: { arabic?: string; english?: string } = {};
         if (it.arabic && !row.arabic) patch.arabic = it.arabic;
         if (it.english && !row.english) patch.english = it.english;
-        if (Object.keys(patch).length === 0) continue;
+        if (!patch.arabic && !patch.english) continue;
         const { error: upErr } = await supabaseAdmin
           .from("dictionary_entries")
           .update(patch)
