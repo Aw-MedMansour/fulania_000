@@ -188,7 +188,7 @@ function Index() {
                 <span className="relative z-10">{t("btn.chat")}</span>
                 <ArrowRight className="relative z-10 h-4 w-4 cta-bob" />
               </Link>
-              <a href="#solution" className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cream/25 bg-cream/[0.04] px-6 py-4 text-sm font-medium text-cream backdrop-blur-md transition hover:border-cream/50 hover:bg-cream/10">
+              <a href="#solution" className="cta-breath inline-flex items-center justify-center gap-2 rounded-2xl border border-cream/25 bg-cream/[0.04] px-6 py-4 text-sm font-medium text-cream backdrop-blur-md transition hover:border-cream/50 hover:bg-cream/10">
                 {t("btn.discover")}
               </a>
             </motion.div>
