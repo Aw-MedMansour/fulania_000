@@ -254,6 +254,7 @@ function DictionaryPage() {
     return entries.filter((e) => {
       if (category !== "all" && e.category !== category) return false;
       if (letter !== "all" && normalizeFirst(e.pulaar) !== letter) return false;
+      if (dialect !== "all" && !e.dialects[dialect]) return false;
       if (!q) return true;
       return (
         e.pulaar.toLowerCase().includes(q) ||
@@ -262,7 +263,7 @@ function DictionaryPage() {
         (e.arabic?.includes(q) ?? false)
       );
     });
-  }, [entries, query, category, letter]);
+  }, [entries, query, category, letter, dialect]);
 
 
   const favEntries = useMemo(
