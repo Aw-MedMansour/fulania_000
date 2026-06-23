@@ -677,6 +677,19 @@ function EntryCard({
         {entry.english && <Row label="EN" value={entry.english} />}
       </dl>
 
+      {(entry.dialects.fouta_tooro || entry.dialects.maasina || entry.dialects.fouta_jallon || entry.dialects.adamaawa) && (
+        <div className="mt-3 grid grid-cols-2 gap-1.5 rounded-md bg-muted/40 p-2 text-[11px]">
+          {entry.dialects.fouta_tooro && <DialectRow code="F. Tooro" value={entry.dialects.fouta_tooro} />}
+          {entry.dialects.maasina && <DialectRow code="Maasina" value={entry.dialects.maasina} />}
+          {entry.dialects.fouta_jallon && <DialectRow code="F. Jallon" value={entry.dialects.fouta_jallon} />}
+          {entry.dialects.adamaawa && <DialectRow code="Adamaawa" value={entry.dialects.adamaawa} />}
+        </div>
+      )}
+
+      {entry.notes && (
+        <p className="mt-2 text-[11px] italic text-muted-foreground">{entry.notes}</p>
+      )}
+
       {entry.example_pulaar && (
         <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
           <p className="font-display italic text-earth">« {entry.example_pulaar} »</p>
