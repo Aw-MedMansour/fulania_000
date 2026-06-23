@@ -131,14 +131,35 @@ function DictionaryPage() {
   }, [user]);
 
   const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary"],
+    queryKey: ["dictionary_v2"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("dictionary_entries")
+        .from("dictionary_v2" as never)
         .select("*")
-        .order("pulaar", { ascending: true });
+        .order("headword", { ascending: true });
       if (error) throw error;
-      return data as Entry[];
+      return (data as any[]).map((r): Entry => ({
+        id: r.id,
+        pulaar: r.headword,
+        french: r.french,
+        arabic: r.arabic,
+        english: r.english,
+        category: r.domain,
+        example_pulaar: r.example_pulaar,
+        example_french: r.example_french,
+        pronunciation: r.pronunciation_ipa,
+        pos: r.pos,
+        noun_class: r.noun_class,
+        status: r.status,
+        origin: r.origin,
+        notes: r.notes,
+        dialects: {
+          fouta_tooro: r.variant_fouta_tooro,
+          maasina: r.variant_maasina,
+          fouta_jallon: r.variant_fouta_jallon,
+          adamaawa: r.variant_adamaawa,
+        },
+      }));
     },
   });
 
