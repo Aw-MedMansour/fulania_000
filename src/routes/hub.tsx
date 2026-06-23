@@ -10,6 +10,7 @@ import {
   LogOut,
   Sparkles,
   Play,
+  Radio,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
@@ -17,6 +18,8 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
+import aliDialloAsset from "@/assets/ali-diallo.jpeg.asset.json";
+import radioAudioAsset from "@/assets/fulania-radio-mauritanie.mp3.asset.json";
 import { SiteFooter } from "@/components/layout";
 import patternImg from "@/assets/pattern.jpg";
 
@@ -191,6 +194,55 @@ function HubPage() {
           />
 
         </section>
+
+        <section className="mt-16">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Radio className="h-3 w-3" />
+              Radio Mauritanie
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              FulanIA à la Radio Mauritanie
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Avec Ali Diallo — Co-fondateur, Responsable des partenariats
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
+            <div className="grid gap-0 md:grid-cols-5">
+              <div className="relative md:col-span-2">
+                <img
+                  src={aliDialloAsset.url}
+                  alt="Ali Diallo, co-fondateur de FulanIA, lors de son passage à la Radio Mauritanie"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-64 w-full object-cover md:h-full"
+                />
+              </div>
+              <div className="flex flex-col justify-center gap-4 p-6 md:col-span-3 sm:p-8">
+                <div>
+                  <p className="font-display text-lg font-semibold text-earth">
+                    Interview à la Radio Mauritanie
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Ali Diallo présente la mission de FulanIA, ses partenariats et l'impact de l'IA au service de la langue pulaar.
+                  </p>
+                </div>
+                <audio
+                  controls
+                  preload="none"
+                  className="w-full"
+                  aria-label="Passage d'Ali Diallo à la Radio Mauritanie"
+                >
+                  <source src={radioAudioAsset.url} type="audio/mpeg" />
+                  Votre navigateur ne prend pas en charge la lecture audio.
+                </audio>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </main>
 
       <SiteFooter />
