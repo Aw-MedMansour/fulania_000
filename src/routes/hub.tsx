@@ -274,8 +274,3 @@ function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
     </div>
   );
 }
-
-      <SiteFooter />
-    </div>
-  );
-}
