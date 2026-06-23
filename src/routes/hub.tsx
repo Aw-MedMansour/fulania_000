@@ -19,7 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
 import aliDialloAsset from "@/assets/ali-diallo.jpeg.asset.json";
-import radioAudioAsset from "@/assets/fulania-radio-mauritanie.mp3.asset.json";
+import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
 import patternImg from "@/assets/pattern.jpg";
 
