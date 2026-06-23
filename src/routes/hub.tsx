@@ -185,12 +185,11 @@ function HubPage() {
             </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
-            <div className="relative aspect-video w-full">
           <LazyYouTube
             videoId="atXu0sjsEF4"
             title="Présentation de FulanIA par Meimouna Sy"
           />
+
         </section>
       </main>
 
