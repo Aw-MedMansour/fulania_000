@@ -223,6 +223,93 @@ export type Database = {
         }
         Relationships: []
       }
+      dictionary_v2: {
+        Row: {
+          arabic: string | null
+          created_at: string
+          domain: string
+          english: string | null
+          example_english: string | null
+          example_french: string | null
+          example_pulaar: string | null
+          french: string
+          headword: string
+          headword_normalized: string | null
+          id: string
+          notes: string | null
+          noun_class: string | null
+          origin: Database["public"]["Enums"]["entry_origin"]
+          pos: Database["public"]["Enums"]["pulaar_pos"]
+          pronunciation_ipa: string | null
+          related: string[] | null
+          sources: string[] | null
+          status: Database["public"]["Enums"]["entry_status"]
+          synonyms: string[] | null
+          updated_at: string
+          variant_adamaawa: string | null
+          variant_fouta_jallon: string | null
+          variant_fouta_tooro: string | null
+          variant_maasina: string | null
+          verb_class: string | null
+        }
+        Insert: {
+          arabic?: string | null
+          created_at?: string
+          domain: string
+          english?: string | null
+          example_english?: string | null
+          example_french?: string | null
+          example_pulaar?: string | null
+          french: string
+          headword: string
+          headword_normalized?: string | null
+          id?: string
+          notes?: string | null
+          noun_class?: string | null
+          origin?: Database["public"]["Enums"]["entry_origin"]
+          pos: Database["public"]["Enums"]["pulaar_pos"]
+          pronunciation_ipa?: string | null
+          related?: string[] | null
+          sources?: string[] | null
+          status?: Database["public"]["Enums"]["entry_status"]
+          synonyms?: string[] | null
+          updated_at?: string
+          variant_adamaawa?: string | null
+          variant_fouta_jallon?: string | null
+          variant_fouta_tooro?: string | null
+          variant_maasina?: string | null
+          verb_class?: string | null
+        }
+        Update: {
+          arabic?: string | null
+          created_at?: string
+          domain?: string
+          english?: string | null
+          example_english?: string | null
+          example_french?: string | null
+          example_pulaar?: string | null
+          french?: string
+          headword?: string
+          headword_normalized?: string | null
+          id?: string
+          notes?: string | null
+          noun_class?: string | null
+          origin?: Database["public"]["Enums"]["entry_origin"]
+          pos?: Database["public"]["Enums"]["pulaar_pos"]
+          pronunciation_ipa?: string | null
+          related?: string[] | null
+          sources?: string[] | null
+          status?: Database["public"]["Enums"]["entry_status"]
+          synonyms?: string[] | null
+          updated_at?: string
+          variant_adamaawa?: string | null
+          variant_fouta_jallon?: string | null
+          variant_fouta_tooro?: string | null
+          variant_maasina?: string | null
+          verb_class?: string | null
+        }
+        Relationships: []
+      }
       donations: {
         Row: {
           amount_cents: number
@@ -701,9 +788,32 @@ export type Database = {
           read_ct: number
         }[]
       }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "admin" | "user"
+      entry_origin:
+        | "traditionnel"
+        | "emprunt_arabe"
+        | "emprunt_francais"
+        | "emprunt_anglais"
+        | "neologisme"
+        | "propose"
+      entry_status: "valide" | "propose" | "incertain"
+      pulaar_pos:
+        | "nom"
+        | "verbe"
+        | "adjectif"
+        | "adverbe"
+        | "pronom"
+        | "interjection"
+        | "expression"
+        | "proverbe"
+        | "conjonction"
+        | "preposition"
+        | "determinant"
+        | "numeral"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -832,6 +942,29 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      entry_origin: [
+        "traditionnel",
+        "emprunt_arabe",
+        "emprunt_francais",
+        "emprunt_anglais",
+        "neologisme",
+        "propose",
+      ],
+      entry_status: ["valide", "propose", "incertain"],
+      pulaar_pos: [
+        "nom",
+        "verbe",
+        "adjectif",
+        "adverbe",
+        "pronom",
+        "interjection",
+        "expression",
+        "proverbe",
+        "conjonction",
+        "preposition",
+        "determinant",
+        "numeral",
+      ],
     },
   },
 } as const

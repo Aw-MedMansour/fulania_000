@@ -67,7 +67,27 @@ type Entry = {
   example_pulaar: string | null;
   example_french: string | null;
   pronunciation: string | null;
+  pos: string | null;
+  noun_class: string | null;
+  status: string | null;
+  origin: string | null;
+  dialects: {
+    fouta_tooro: string | null;
+    maasina: string | null;
+    fouta_jallon: string | null;
+    adamaawa: string | null;
+  };
+  notes: string | null;
 };
+
+const DIALECTS = [
+  { key: "all", label: "Tous dialectes" },
+  { key: "fouta_tooro", label: "Fouta Tooro" },
+  { key: "maasina", label: "Maasina" },
+  { key: "fouta_jallon", label: "Fouta Jallon" },
+  { key: "adamaawa", label: "Adamaawa" },
+] as const;
+type DialectKey = typeof DIALECTS[number]["key"];
 
 const FAV_KEY = "fulania.dict.favorites";
 const HIST_KEY = "fulania.dict.history";
@@ -98,6 +118,7 @@ function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [letter, setLetter] = useState<string>("all");
+  const [dialect, setDialect] = useState<DialectKey>("all");
   const { user } = useAuth();
   const { t, lang } = useLanguage();
   const qc = useQueryClient();
@@ -111,14 +132,35 @@ function DictionaryPage() {
   }, [user]);
 
   const { data: entries = [], isLoading } = useQuery({
-    queryKey: ["dictionary"],
+    queryKey: ["dictionary_v2"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("dictionary_entries")
+        .from("dictionary_v2" as never)
         .select("*")
-        .order("pulaar", { ascending: true });
+        .order("headword", { ascending: true });
       if (error) throw error;
-      return data as Entry[];
+      return (data as any[]).map((r): Entry => ({
+        id: r.id,
+        pulaar: r.headword,
+        french: r.french,
+        arabic: r.arabic,
+        english: r.english,
+        category: r.domain,
+        example_pulaar: r.example_pulaar,
+        example_french: r.example_french,
+        pronunciation: r.pronunciation_ipa,
+        pos: r.pos,
+        noun_class: r.noun_class,
+        status: r.status,
+        origin: r.origin,
+        notes: r.notes,
+        dialects: {
+          fouta_tooro: r.variant_fouta_tooro,
+          maasina: r.variant_maasina,
+          fouta_jallon: r.variant_fouta_jallon,
+          adamaawa: r.variant_adamaawa,
+        },
+      }));
     },
   });
 
@@ -212,6 +254,7 @@ function DictionaryPage() {
     return entries.filter((e) => {
       if (category !== "all" && e.category !== category) return false;
       if (letter !== "all" && normalizeFirst(e.pulaar) !== letter) return false;
+      if (dialect !== "all" && !e.dialects[dialect]) return false;
       if (!q) return true;
       return (
         e.pulaar.toLowerCase().includes(q) ||
@@ -220,7 +263,7 @@ function DictionaryPage() {
         (e.arabic?.includes(q) ?? false)
       );
     });
-  }, [entries, query, category, letter]);
+  }, [entries, query, category, letter, dialect]);
 
 
   const favEntries = useMemo(
@@ -363,6 +406,23 @@ function DictionaryPage() {
               ))}
             </div>
           )}
+
+          <div className="mt-3 flex flex-wrap gap-2">
+            {DIALECTS.map((d) => (
+              <button
+                key={d.key}
+                onClick={() => setDialect(d.key)}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-xs font-semibold transition",
+                  dialect === d.key
+                    ? "border-[var(--gold)] bg-[var(--gold)]/15 text-earth"
+                    : "border-border bg-background text-foreground/70 hover:border-[var(--gold)]/50",
+                )}
+              >
+                {d.label}
+              </button>
+            ))}
+          </div>
 
           <div className="mt-3 flex flex-wrap gap-1.5">
             <button
@@ -560,15 +620,25 @@ function EntryCard({
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <div className="flex items-baseline gap-2">
+          <div className="flex flex-wrap items-baseline gap-2">
             <h2 className="font-display text-xl font-semibold text-earth">{entry.pulaar}</h2>
             {entry.pronunciation && (
               <span className="text-xs italic text-muted-foreground">/{entry.pronunciation}/</span>
             )}
+            {entry.pos && (
+              <span className="rounded-sm bg-earth/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+                {entry.pos}{entry.noun_class ? ` · ${entry.noun_class}` : ""}
+              </span>
+            )}
+            {entry.status === "propose" && (
+              <span className="rounded-sm bg-[var(--terracotta)]/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
+                proposé
+              </span>
+            )}
           </div>
           {entry.category && (
             <Badge variant="outline" className="mt-1 text-[10px] capitalize">
-              {entry.category}
+              {entry.category.replace(/_/g, " ")}
             </Badge>
           )}
         </div>
@@ -607,6 +677,19 @@ function EntryCard({
         {entry.english && <Row label="EN" value={entry.english} />}
       </dl>
 
+      {(entry.dialects.fouta_tooro || entry.dialects.maasina || entry.dialects.fouta_jallon || entry.dialects.adamaawa) && (
+        <div className="mt-3 grid grid-cols-2 gap-1.5 rounded-md bg-muted/40 p-2 text-[11px]">
+          {entry.dialects.fouta_tooro && <DialectRow code="F. Tooro" value={entry.dialects.fouta_tooro} />}
+          {entry.dialects.maasina && <DialectRow code="Maasina" value={entry.dialects.maasina} />}
+          {entry.dialects.fouta_jallon && <DialectRow code="F. Jallon" value={entry.dialects.fouta_jallon} />}
+          {entry.dialects.adamaawa && <DialectRow code="Adamaawa" value={entry.dialects.adamaawa} />}
+        </div>
+      )}
+
+      {entry.notes && (
+        <p className="mt-2 text-[11px] italic text-muted-foreground">{entry.notes}</p>
+      )}
+
       {entry.example_pulaar && (
         <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
           <p className="font-display italic text-earth">« {entry.example_pulaar} »</p>
@@ -628,6 +711,15 @@ function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" 
       <dd className="flex-1 text-foreground" dir={dir}>
         {value}
       </dd>
+    </div>
+  );
+}
+
+function DialectRow({ code, value }: { code: string; value: string }) {
+  return (
+    <div className="flex items-baseline gap-1.5">
+      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{code}</span>
+      <span className="truncate font-medium text-earth">{value}</span>
     </div>
   );
 }
