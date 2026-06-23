@@ -407,6 +407,23 @@ function DictionaryPage() {
             </div>
           )}
 
+          <div className="mt-3 flex flex-wrap gap-2">
+            {DIALECTS.map((d) => (
+              <button
+                key={d.key}
+                onClick={() => setDialect(d.key)}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-xs font-semibold transition",
+                  dialect === d.key
+                    ? "border-[var(--gold)] bg-[var(--gold)]/15 text-earth"
+                    : "border-border bg-background text-foreground/70 hover:border-[var(--gold)]/50",
+                )}
+              >
+                {d.label}
+              </button>
+            ))}
+          </div>
+
           <div className="mt-3 flex flex-wrap gap-1.5">
             <button
               onClick={() => setLetter("all")}
