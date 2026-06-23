@@ -18,7 +18,9 @@ import { Route as DictionaryRouteImport } from './routes/dictionary'
 import { Route as CultureRouteImport } from './routes/culture'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedDictionaryReviewRouteImport } from './routes/_authenticated/dictionary-review'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 
 const TranslateRoute = TranslateRouteImport.update({
@@ -66,11 +68,21 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDictionaryReviewRoute =
+  AuthenticatedDictionaryReviewRouteImport.update({
+    id: '/dictionary-review',
+    path: '/dictionary-review',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -89,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/library': typeof LibraryRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
+  '/dictionary-review': typeof AuthenticatedDictionaryReviewRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
@@ -102,11 +115,13 @@ export interface FileRoutesByTo {
   '/library': typeof LibraryRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
+  '/dictionary-review': typeof AuthenticatedDictionaryReviewRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
   '/culture': typeof CultureRoute
@@ -116,6 +131,7 @@ export interface FileRoutesById {
   '/library': typeof LibraryRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/translate': typeof TranslateRoute
+  '/_authenticated/dictionary-review': typeof AuthenticatedDictionaryReviewRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRouteTypes {
@@ -131,6 +147,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/sitemap.xml'
     | '/translate'
+    | '/dictionary-review'
     | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -144,10 +161,12 @@ export interface FileRouteTypes {
     | '/library'
     | '/sitemap.xml'
     | '/translate'
+    | '/dictionary-review'
     | '/lovable/email/queue/process'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/auth'
     | '/chat'
     | '/culture'
@@ -157,11 +176,13 @@ export interface FileRouteTypes {
     | '/library'
     | '/sitemap.xml'
     | '/translate'
+    | '/_authenticated/dictionary-review'
     | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ChatRoute: typeof ChatRoute
   CultureRoute: typeof CultureRoute
@@ -239,12 +260,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dictionary-review': {
+      id: '/_authenticated/dictionary-review'
+      path: '/dictionary-review'
+      fullPath: '/dictionary-review'
+      preLoaderRoute: typeof AuthenticatedDictionaryReviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -256,8 +291,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDictionaryReviewRoute: typeof AuthenticatedDictionaryReviewRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDictionaryReviewRoute: AuthenticatedDictionaryReviewRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ChatRoute: ChatRoute,
   CultureRoute: CultureRoute,
@@ -272,13 +319,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
