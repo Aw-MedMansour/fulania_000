@@ -331,7 +331,7 @@ function DictionaryPage() {
         <PageNav className="mb-4" />
         
         
-        <section className="relative mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-earth via-[#1e3a5f] to-[#0c2340] p-6 text-cream shadow-lg sm:p-8">
+        <section className="relative mb-6 overflow-hidden rounded-2xl bg-linear-to-br from-earth via-[#1e3a5f] to-[#0c2340] p-6 text-cream shadow-lg sm:p-8">
           <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[var(--gold)]/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[var(--terracotta)]/20 blur-3xl" />
           <div className="relative">
@@ -372,84 +372,86 @@ function DictionaryPage() {
           </div>
         )}
 
-        <div className="sticky top-16 z-30 -mx-4 mb-6 border-b border-border/60 bg-background/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              id="dict-search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("dict.search")}
-              aria-label={t("dict.searchAria")}
-              className="h-12 pl-10 pr-10 text-base"
-            />
-            {query && (
-              <button
-                onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                aria-label={t("dict.clearSearch")}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+        <div className="sticky top-16 z-30 -mx-4 mb-6 px-4 py-3 sm:-mx-6 sm:px-6">
+          <div className="rounded-2xl border border-cream/10 bg-linear-to-br from-[#1A2E44] to-[#0D1826] p-4 shadow-xl shadow-black/20 backdrop-blur-md">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--gold)]" />
+              <input
+                id="dict-search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t("dict.search")}
+                aria-label={t("dict.searchAria")}
+                className="h-11 w-full rounded-lg border border-[var(--gold)]/30 bg-cream/10 pl-10 pr-10 text-sm text-cream placeholder:text-cream/50 focus:border-[var(--gold)] focus:outline-none focus:ring-1 focus:ring-[var(--gold)]/40"
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-cream/60 hover:text-[var(--gold)]"
+                  aria-label={t("dict.clearSearch")}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
 
-          {categories.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              <CategoryChip active={category === "all"} onClick={() => setCategory("all")}>
-                {t("dict.all")}
-              </CategoryChip>
-              {categories.map((c) => (
-                <CategoryChip key={c} active={category === c} onClick={() => setCategory(c)}>
-                  {c}
+            {categories.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                <CategoryChip active={category === "all"} onClick={() => setCategory("all")}>
+                  {t("dict.all")}
                 </CategoryChip>
+                {categories.map((c) => (
+                  <CategoryChip key={c} active={category === c} onClick={() => setCategory(c)}>
+                    {c}
+                  </CategoryChip>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              {DIALECTS.map((d) => (
+                <button
+                  key={d.key}
+                  onClick={() => setDialect(d.key)}
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wider transition",
+                    dialect === d.key
+                      ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+                      : "border-cream/20 text-cream/80 hover:border-[var(--gold)]/60 hover:text-cream",
+                  )}
+                >
+                  {d.label}
+                </button>
               ))}
             </div>
-          )}
 
-          <div className="mt-3 flex flex-wrap gap-2">
-            {DIALECTS.map((d) => (
+            <div className="mt-3 flex flex-wrap gap-1.5">
               <button
-                key={d.key}
-                onClick={() => setDialect(d.key)}
+                onClick={() => setLetter("all")}
                 className={cn(
-                  "rounded-full border px-3 py-1 text-xs font-semibold transition",
-                  dialect === d.key
-                    ? "border-[var(--gold)] bg-[var(--gold)]/15 text-earth"
-                    : "border-border bg-background text-foreground/70 hover:border-[var(--gold)]/50",
+                  "rounded-md border px-2.5 py-1 text-xs font-semibold transition",
+                  letter === "all"
+                    ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+                    : "border-cream/20 text-cream/80 hover:border-[var(--gold)]/50",
                 )}
               >
-                {d.label}
+                A–Z
               </button>
-            ))}
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            <button
-              onClick={() => setLetter("all")}
-              className={cn(
-                "rounded-md border px-2.5 py-1 text-xs font-semibold transition",
-                letter === "all"
-                  ? "border-earth bg-earth text-cream"
-                  : "border-border bg-background text-foreground/70 hover:border-earth/40",
-              )}
-            >
-              A–Z
-            </button>
-            {ALPHABET.map((L) => (
-              <button
-                key={L}
-                onClick={() => setLetter(L === letter ? "all" : L)}
-                className={cn(
-                  "h-7 w-7 rounded-md border text-xs font-semibold transition",
-                  letter === L
-                    ? "border-[var(--terracotta)] bg-[var(--terracotta)] text-cream"
-                    : "border-border bg-background text-foreground/70 hover:border-[var(--terracotta)]/40",
-                )}
-              >
-                {L}
-              </button>
-            ))}
+              {ALPHABET.map((L) => (
+                <button
+                  key={L}
+                  onClick={() => setLetter(L === letter ? "all" : L)}
+                  className={cn(
+                    "h-7 w-7 rounded-md border text-xs font-semibold transition",
+                    letter === L
+                      ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+                      : "border-cream/15 text-cream/70 hover:border-[var(--gold)]/50",
+                  )}
+                >
+                  {L}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -537,10 +539,10 @@ function CategoryChip({
     <button
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3 py-1 text-xs font-medium capitalize transition",
+        "rounded-full border px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider capitalize transition whitespace-nowrap",
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-background text-foreground/70 hover:border-primary/50 hover:text-foreground",
+          ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+          : "border-cream/20 text-cream/80 hover:border-[var(--gold)]/60 hover:text-cream",
       )}
     >
       {children}
@@ -616,31 +618,35 @@ function EntryCard({
   return (
     <article
       onClick={onVisit}
-      className="group relative cursor-pointer rounded-lg border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-sm"
+      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-cream/5 bg-linear-to-br from-[#1A2E44] to-[#0D1826] p-5 shadow-lg shadow-black/10 transition hover:border-[var(--gold)]/40 hover:shadow-xl"
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline gap-2">
-            <h2 className="font-display text-xl font-semibold text-earth">{entry.pulaar}</h2>
+            <h2 className="font-display text-2xl font-semibold leading-tight text-cream">
+              {entry.pulaar}
+            </h2>
             {entry.pronunciation && (
-              <span className="text-xs italic text-muted-foreground">/{entry.pronunciation}/</span>
+              <span className="text-xs italic text-[var(--gold)]/80">/{entry.pronunciation}/</span>
             )}
+          </div>
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
             {entry.pos && (
-              <span className="rounded-sm bg-earth/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+              <span className="rounded border border-[var(--gold)]/40 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[var(--gold)]">
                 {entry.pos}{entry.noun_class ? ` · ${entry.noun_class}` : ""}
               </span>
             )}
+            {entry.category && (
+              <span className="rounded border border-cream/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cream/60 capitalize">
+                {entry.category.replace(/_/g, " ")}
+              </span>
+            )}
             {entry.status === "propose" && (
-              <span className="rounded-sm bg-[var(--terracotta)]/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
+              <span className="rounded border border-[var(--terracotta)]/50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
                 proposé
               </span>
             )}
           </div>
-          {entry.category && (
-            <Badge variant="outline" className="mt-1 text-[10px] capitalize">
-              {entry.category.replace(/_/g, " ")}
-            </Badge>
-          )}
         </div>
         <div className="flex shrink-0 gap-1">
           <button
@@ -648,7 +654,7 @@ function EntryCard({
               e.stopPropagation();
               onSpeak();
             }}
-            className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-md p-1.5 text-cream/60 transition hover:bg-cream/10 hover:text-[var(--gold)]"
             aria-label={t("dict.listen")}
           >
             <Volume2 className="h-4 w-4" />
@@ -661,8 +667,8 @@ function EntryCard({
             className={cn(
               "rounded-md p-1.5 transition",
               isFavorite
-                ? "text-[var(--terracotta)]"
-                : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                ? "text-[var(--gold)]"
+                : "text-cream/60 hover:bg-cream/10 hover:text-[var(--gold)]",
             )}
             aria-label={t("dict.favorite")}
           >
@@ -671,14 +677,14 @@ function EntryCard({
         </div>
       </div>
 
-      <dl className="mt-3 space-y-1.5 text-sm">
+      <dl className="mt-4 space-y-2 border-t border-cream/10 pt-3 text-sm">
         <Row label="FR" value={entry.french} />
-        {entry.arabic && <Row label="AR" value={entry.arabic} dir="rtl" />}
         {entry.english && <Row label="EN" value={entry.english} />}
+        {entry.arabic && <Row label="AR" value={entry.arabic} dir="rtl" />}
       </dl>
 
       {(entry.dialects.fouta_tooro || entry.dialects.maasina || entry.dialects.fouta_jallon || entry.dialects.adamaawa) && (
-        <div className="mt-3 grid grid-cols-2 gap-1.5 rounded-md bg-muted/40 p-2 text-[11px]">
+        <div className="mt-3 grid grid-cols-2 gap-1.5 rounded-md border border-cream/10 bg-cream/5 p-2 text-[11px]">
           {entry.dialects.fouta_tooro && <DialectRow code="F. Tooro" value={entry.dialects.fouta_tooro} />}
           {entry.dialects.maasina && <DialectRow code="Maasina" value={entry.dialects.maasina} />}
           {entry.dialects.fouta_jallon && <DialectRow code="F. Jallon" value={entry.dialects.fouta_jallon} />}
@@ -687,14 +693,14 @@ function EntryCard({
       )}
 
       {entry.notes && (
-        <p className="mt-2 text-[11px] italic text-muted-foreground">{entry.notes}</p>
+        <p className="mt-2 text-[11px] italic text-cream/50">{entry.notes}</p>
       )}
 
       {entry.example_pulaar && (
-        <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
-          <p className="font-display italic text-earth">« {entry.example_pulaar} »</p>
+        <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-cream/5 px-3 py-2 text-xs">
+          <p className="font-display italic text-cream">« {entry.example_pulaar} »</p>
           {entry.example_french && (
-            <p className="mt-0.5 text-muted-foreground">{entry.example_french}</p>
+            <p className="mt-0.5 text-cream/60">{entry.example_french}</p>
           )}
         </div>
       )}
@@ -704,11 +710,11 @@ function EntryCard({
 
 function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" | "ltr" }) {
   return (
-    <div className="flex gap-2">
-      <dt className="w-7 shrink-0 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+    <div className="flex gap-2.5">
+      <dt className="w-7 shrink-0 text-[10px] font-bold uppercase tracking-widest text-[var(--gold)]">
         {label}
       </dt>
-      <dd className="flex-1 text-foreground" dir={dir}>
+      <dd className="flex-1 text-cream/90 leading-snug" dir={dir}>
         {value}
       </dd>
     </div>
@@ -718,8 +724,8 @@ function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" 
 function DialectRow({ code, value }: { code: string; value: string }) {
   return (
     <div className="flex items-baseline gap-1.5">
-      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{code}</span>
-      <span className="truncate font-medium text-earth">{value}</span>
+      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-[var(--gold)]/80">{code}</span>
+      <span className="truncate font-medium text-cream/90">{value}</span>
     </div>
   );
 }
@@ -782,7 +788,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
   if (!word) return null;
 
   return (
-    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
+    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-linear-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
