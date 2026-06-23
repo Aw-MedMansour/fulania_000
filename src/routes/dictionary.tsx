@@ -331,7 +331,7 @@ function DictionaryPage() {
         <PageNav className="mb-4" />
         
         
-        <section className="relative mb-6 overflow-hidden rounded-2xl bg-gradient-to-br from-earth via-[#1e3a5f] to-[#0c2340] p-6 text-cream shadow-lg sm:p-8">
+        <section className="relative mb-6 overflow-hidden rounded-2xl bg-linear-to-br from-earth via-[#1e3a5f] to-[#0c2340] p-6 text-cream shadow-lg sm:p-8">
           <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[var(--gold)]/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[var(--terracotta)]/20 blur-3xl" />
           <div className="relative">
@@ -373,7 +373,7 @@ function DictionaryPage() {
         )}
 
         <div className="sticky top-16 z-30 -mx-4 mb-6 px-4 py-3 sm:-mx-6 sm:px-6">
-          <div className="rounded-2xl border border-cream/10 bg-gradient-to-br from-[#1A2E44] to-[#0D1826] p-4 shadow-xl shadow-black/20 backdrop-blur-md">
+          <div className="rounded-2xl border border-cream/10 bg-linear-to-br from-[#1A2E44] to-[#0D1826] p-4 shadow-xl shadow-black/20 backdrop-blur-md">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--gold)]" />
               <input
@@ -618,7 +618,7 @@ function EntryCard({
   return (
     <article
       onClick={onVisit}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-cream/5 bg-gradient-to-br from-[#1A2E44] to-[#0D1826] p-5 shadow-lg shadow-black/10 transition hover:border-[var(--gold)]/40 hover:shadow-xl"
+      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-cream/5 bg-linear-to-br from-[#1A2E44] to-[#0D1826] p-5 shadow-lg shadow-black/10 transition hover:border-[var(--gold)]/40 hover:shadow-xl"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
@@ -788,7 +788,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
   if (!word) return null;
 
   return (
-    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
+    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-linear-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
