@@ -23,10 +23,10 @@ import { redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   ssr: false,
-  beforeLoad: async () => {
-    const { data } = await supabase.auth.getUser();
-    if (data.user) throw redirect({ to: "/hub" });
+  beforeLoad: () => {
+    throw redirect({ to: "/hub" });
   },
+
   head: () => {
     const l = getCurrentLang();
     return {
