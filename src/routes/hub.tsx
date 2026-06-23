@@ -10,6 +10,7 @@ import {
   LogOut,
   Sparkles,
   Play,
+  Radio,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
@@ -17,6 +18,8 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
+import aliDialloAsset from "@/assets/ali-diallo.jpeg.asset.json";
+import radioAudioAsset from "@/assets/fulania-radio-mauritanie.mp3.asset.json";
 import { SiteFooter } from "@/components/layout";
 import patternImg from "@/assets/pattern.jpg";
 
