@@ -618,31 +618,35 @@ function EntryCard({
   return (
     <article
       onClick={onVisit}
-      className="group relative cursor-pointer rounded-lg border border-border bg-card p-4 transition hover:border-primary/40 hover:shadow-sm"
+      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-cream/5 bg-gradient-to-br from-[#1A2E44] to-[#0D1826] p-5 shadow-lg shadow-black/10 transition hover:border-[var(--gold)]/40 hover:shadow-xl"
     >
-      <div className="flex items-start justify-between gap-2">
-        <div className="min-w-0">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline gap-2">
-            <h2 className="font-display text-xl font-semibold text-earth">{entry.pulaar}</h2>
+            <h2 className="font-display text-2xl font-semibold leading-tight text-cream">
+              {entry.pulaar}
+            </h2>
             {entry.pronunciation && (
-              <span className="text-xs italic text-muted-foreground">/{entry.pronunciation}/</span>
+              <span className="text-xs italic text-[var(--gold)]/80">/{entry.pronunciation}/</span>
             )}
+          </div>
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
             {entry.pos && (
-              <span className="rounded-sm bg-earth/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+              <span className="rounded border border-[var(--gold)]/40 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-[var(--gold)]">
                 {entry.pos}{entry.noun_class ? ` · ${entry.noun_class}` : ""}
               </span>
             )}
+            {entry.category && (
+              <span className="rounded border border-cream/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cream/60 capitalize">
+                {entry.category.replace(/_/g, " ")}
+              </span>
+            )}
             {entry.status === "propose" && (
-              <span className="rounded-sm bg-[var(--terracotta)]/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
+              <span className="rounded border border-[var(--terracotta)]/50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
                 proposé
               </span>
             )}
           </div>
-          {entry.category && (
-            <Badge variant="outline" className="mt-1 text-[10px] capitalize">
-              {entry.category.replace(/_/g, " ")}
-            </Badge>
-          )}
         </div>
         <div className="flex shrink-0 gap-1">
           <button
@@ -650,7 +654,7 @@ function EntryCard({
               e.stopPropagation();
               onSpeak();
             }}
-            className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+            className="rounded-md p-1.5 text-cream/60 transition hover:bg-cream/10 hover:text-[var(--gold)]"
             aria-label={t("dict.listen")}
           >
             <Volume2 className="h-4 w-4" />
@@ -663,8 +667,8 @@ function EntryCard({
             className={cn(
               "rounded-md p-1.5 transition",
               isFavorite
-                ? "text-[var(--terracotta)]"
-                : "text-muted-foreground hover:bg-accent hover:text-foreground",
+                ? "text-[var(--gold)]"
+                : "text-cream/60 hover:bg-cream/10 hover:text-[var(--gold)]",
             )}
             aria-label={t("dict.favorite")}
           >
@@ -673,14 +677,14 @@ function EntryCard({
         </div>
       </div>
 
-      <dl className="mt-3 space-y-1.5 text-sm">
+      <dl className="mt-4 space-y-2 border-t border-cream/10 pt-3 text-sm">
         <Row label="FR" value={entry.french} />
-        {entry.arabic && <Row label="AR" value={entry.arabic} dir="rtl" />}
         {entry.english && <Row label="EN" value={entry.english} />}
+        {entry.arabic && <Row label="AR" value={entry.arabic} dir="rtl" />}
       </dl>
 
       {(entry.dialects.fouta_tooro || entry.dialects.maasina || entry.dialects.fouta_jallon || entry.dialects.adamaawa) && (
-        <div className="mt-3 grid grid-cols-2 gap-1.5 rounded-md bg-muted/40 p-2 text-[11px]">
+        <div className="mt-3 grid grid-cols-2 gap-1.5 rounded-md border border-cream/10 bg-cream/5 p-2 text-[11px]">
           {entry.dialects.fouta_tooro && <DialectRow code="F. Tooro" value={entry.dialects.fouta_tooro} />}
           {entry.dialects.maasina && <DialectRow code="Maasina" value={entry.dialects.maasina} />}
           {entry.dialects.fouta_jallon && <DialectRow code="F. Jallon" value={entry.dialects.fouta_jallon} />}
@@ -689,14 +693,14 @@ function EntryCard({
       )}
 
       {entry.notes && (
-        <p className="mt-2 text-[11px] italic text-muted-foreground">{entry.notes}</p>
+        <p className="mt-2 text-[11px] italic text-cream/50">{entry.notes}</p>
       )}
 
       {entry.example_pulaar && (
-        <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
-          <p className="font-display italic text-earth">« {entry.example_pulaar} »</p>
+        <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-cream/5 px-3 py-2 text-xs">
+          <p className="font-display italic text-cream">« {entry.example_pulaar} »</p>
           {entry.example_french && (
-            <p className="mt-0.5 text-muted-foreground">{entry.example_french}</p>
+            <p className="mt-0.5 text-cream/60">{entry.example_french}</p>
           )}
         </div>
       )}
@@ -706,11 +710,11 @@ function EntryCard({
 
 function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" | "ltr" }) {
   return (
-    <div className="flex gap-2">
-      <dt className="w-7 shrink-0 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+    <div className="flex gap-2.5">
+      <dt className="w-7 shrink-0 text-[10px] font-bold uppercase tracking-widest text-[var(--gold)]">
         {label}
       </dt>
-      <dd className="flex-1 text-foreground" dir={dir}>
+      <dd className="flex-1 text-cream/90 leading-snug" dir={dir}>
         {value}
       </dd>
     </div>
@@ -720,8 +724,8 @@ function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" 
 function DialectRow({ code, value }: { code: string; value: string }) {
   return (
     <div className="flex items-baseline gap-1.5">
-      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{code}</span>
-      <span className="truncate font-medium text-earth">{value}</span>
+      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-[var(--gold)]/80">{code}</span>
+      <span className="truncate font-medium text-cream/90">{value}</span>
     </div>
   );
 }
