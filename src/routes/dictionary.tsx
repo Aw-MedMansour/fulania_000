@@ -620,15 +620,25 @@ function EntryCard({
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
-          <div className="flex items-baseline gap-2">
+          <div className="flex flex-wrap items-baseline gap-2">
             <h2 className="font-display text-xl font-semibold text-earth">{entry.pulaar}</h2>
             {entry.pronunciation && (
               <span className="text-xs italic text-muted-foreground">/{entry.pronunciation}/</span>
             )}
+            {entry.pos && (
+              <span className="rounded-sm bg-earth/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+                {entry.pos}{entry.noun_class ? ` · ${entry.noun_class}` : ""}
+              </span>
+            )}
+            {entry.status === "propose" && (
+              <span className="rounded-sm bg-[var(--terracotta)]/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
+                proposé
+              </span>
+            )}
           </div>
           {entry.category && (
             <Badge variant="outline" className="mt-1 text-[10px] capitalize">
-              {entry.category}
+              {entry.category.replace(/_/g, " ")}
             </Badge>
           )}
         </div>
