@@ -118,6 +118,7 @@ function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [letter, setLetter] = useState<string>("all");
+  const [dialect, setDialect] = useState<DialectKey>("all");
   const { user } = useAuth();
   const { t, lang } = useLanguage();
   const qc = useQueryClient();
