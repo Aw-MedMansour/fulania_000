@@ -67,7 +67,27 @@ type Entry = {
   example_pulaar: string | null;
   example_french: string | null;
   pronunciation: string | null;
+  pos: string | null;
+  noun_class: string | null;
+  status: string | null;
+  origin: string | null;
+  dialects: {
+    fouta_tooro: string | null;
+    maasina: string | null;
+    fouta_jallon: string | null;
+    adamaawa: string | null;
+  };
+  notes: string | null;
 };
+
+const DIALECTS = [
+  { key: "all", label: "Tous dialectes" },
+  { key: "fouta_tooro", label: "Fouta Tooro" },
+  { key: "maasina", label: "Maasina" },
+  { key: "fouta_jallon", label: "Fouta Jallon" },
+  { key: "adamaawa", label: "Adamaawa" },
+] as const;
+type DialectKey = typeof DIALECTS[number]["key"];
 
 const FAV_KEY = "fulania.dict.favorites";
 const HIST_KEY = "fulania.dict.history";
