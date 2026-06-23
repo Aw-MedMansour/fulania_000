@@ -167,6 +167,35 @@ function HubPage() {
             </Link>
           ))}
         </section>
+
+        <section className="mt-16">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Sparkles className="h-3 w-3" />
+              Présentation
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              Découvrez FulanIA en vidéo
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Par Meimouna Sy — Vice-présidente, Responsable communication & sensibilisation
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
+            <div className="relative aspect-video w-full">
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/atXu0sjsEF4?rel=0&modestbranding=1"
+                title="Présentation de FulanIA par Meimouna Sy"
+                loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute inset-0 h-full w-full"
+              />
+            </div>
+          </div>
+        </section>
       </main>
 
       <SiteFooter />
