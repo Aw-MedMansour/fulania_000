@@ -372,84 +372,86 @@ function DictionaryPage() {
           </div>
         )}
 
-        <div className="sticky top-16 z-30 -mx-4 mb-6 border-b border-border/60 bg-background/90 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              id="dict-search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("dict.search")}
-              aria-label={t("dict.searchAria")}
-              className="h-12 pl-10 pr-10 text-base"
-            />
-            {query && (
-              <button
-                onClick={() => setQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                aria-label={t("dict.clearSearch")}
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
+        <div className="sticky top-16 z-30 -mx-4 mb-6 px-4 py-3 sm:-mx-6 sm:px-6">
+          <div className="rounded-2xl border border-cream/10 bg-gradient-to-br from-[#1A2E44] to-[#0D1826] p-4 shadow-xl shadow-black/20 backdrop-blur-md">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--gold)]" />
+              <input
+                id="dict-search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t("dict.search")}
+                aria-label={t("dict.searchAria")}
+                className="h-11 w-full rounded-lg border border-[var(--gold)]/30 bg-cream/10 pl-10 pr-10 text-sm text-cream placeholder:text-cream/50 focus:border-[var(--gold)] focus:outline-none focus:ring-1 focus:ring-[var(--gold)]/40"
+              />
+              {query && (
+                <button
+                  onClick={() => setQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-cream/60 hover:text-[var(--gold)]"
+                  aria-label={t("dict.clearSearch")}
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              )}
+            </div>
 
-          {categories.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              <CategoryChip active={category === "all"} onClick={() => setCategory("all")}>
-                {t("dict.all")}
-              </CategoryChip>
-              {categories.map((c) => (
-                <CategoryChip key={c} active={category === c} onClick={() => setCategory(c)}>
-                  {c}
+            {categories.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                <CategoryChip active={category === "all"} onClick={() => setCategory("all")}>
+                  {t("dict.all")}
                 </CategoryChip>
+                {categories.map((c) => (
+                  <CategoryChip key={c} active={category === c} onClick={() => setCategory(c)}>
+                    {c}
+                  </CategoryChip>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              {DIALECTS.map((d) => (
+                <button
+                  key={d.key}
+                  onClick={() => setDialect(d.key)}
+                  className={cn(
+                    "rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-wider transition",
+                    dialect === d.key
+                      ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+                      : "border-cream/20 text-cream/80 hover:border-[var(--gold)]/60 hover:text-cream",
+                  )}
+                >
+                  {d.label}
+                </button>
               ))}
             </div>
-          )}
 
-          <div className="mt-3 flex flex-wrap gap-2">
-            {DIALECTS.map((d) => (
+            <div className="mt-3 flex flex-wrap gap-1.5">
               <button
-                key={d.key}
-                onClick={() => setDialect(d.key)}
+                onClick={() => setLetter("all")}
                 className={cn(
-                  "rounded-full border px-3 py-1 text-xs font-semibold transition",
-                  dialect === d.key
-                    ? "border-[var(--gold)] bg-[var(--gold)]/15 text-earth"
-                    : "border-border bg-background text-foreground/70 hover:border-[var(--gold)]/50",
+                  "rounded-md border px-2.5 py-1 text-xs font-semibold transition",
+                  letter === "all"
+                    ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+                    : "border-cream/20 text-cream/80 hover:border-[var(--gold)]/50",
                 )}
               >
-                {d.label}
+                A–Z
               </button>
-            ))}
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            <button
-              onClick={() => setLetter("all")}
-              className={cn(
-                "rounded-md border px-2.5 py-1 text-xs font-semibold transition",
-                letter === "all"
-                  ? "border-earth bg-earth text-cream"
-                  : "border-border bg-background text-foreground/70 hover:border-earth/40",
-              )}
-            >
-              A–Z
-            </button>
-            {ALPHABET.map((L) => (
-              <button
-                key={L}
-                onClick={() => setLetter(L === letter ? "all" : L)}
-                className={cn(
-                  "h-7 w-7 rounded-md border text-xs font-semibold transition",
-                  letter === L
-                    ? "border-[var(--terracotta)] bg-[var(--terracotta)] text-cream"
-                    : "border-border bg-background text-foreground/70 hover:border-[var(--terracotta)]/40",
-                )}
-              >
-                {L}
-              </button>
-            ))}
+              {ALPHABET.map((L) => (
+                <button
+                  key={L}
+                  onClick={() => setLetter(L === letter ? "all" : L)}
+                  className={cn(
+                    "h-7 w-7 rounded-md border text-xs font-semibold transition",
+                    letter === L
+                      ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+                      : "border-cream/15 text-cream/70 hover:border-[var(--gold)]/50",
+                  )}
+                >
+                  {L}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
