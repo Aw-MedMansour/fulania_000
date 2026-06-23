@@ -210,35 +210,23 @@ function HubPage() {
           </div>
 
           <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
-            <div className="grid gap-0 md:grid-cols-5">
-              <div className="relative md:col-span-2">
-                <img
-                  src={aliDialloAsset.url}
-                  alt="Ali Diallo, co-fondateur de FulanIA, lors de son passage à la Radio Mauritanie"
-                  loading="lazy"
-                  decoding="async"
-                  className="h-64 w-full object-cover md:h-full"
-                />
-              </div>
-              <div className="flex flex-col justify-center gap-4 p-6 md:col-span-3 sm:p-8">
-                <div>
-                  <p className="font-display text-lg font-semibold text-earth">
-                    Interview à la Radio Mauritanie
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Ali Diallo présente la mission de FulanIA, ses partenariats et l'impact de l'IA au service de la langue pulaar.
-                  </p>
-                </div>
-                <audio
-                  controls
-                  preload="none"
-                  className="w-full"
-                  aria-label="Passage d'Ali Diallo à la Radio Mauritanie"
-                >
-                  <source src={radioAudioAsset.url} type="audio/mpeg" />
-                  Votre navigateur ne prend pas en charge la lecture audio.
-                </audio>
-              </div>
+            <video
+              controls
+              preload="none"
+              poster={aliDialloAsset.url}
+              className="aspect-video w-full bg-black"
+              aria-label="Passage d'Ali Diallo à la Radio Mauritanie"
+            >
+              <source src={radioVideoAsset.url} type="video/mp4" />
+              Votre navigateur ne prend pas en charge la lecture vidéo.
+            </video>
+            <div className="border-t border-border p-6 sm:p-8">
+              <p className="font-display text-lg font-semibold text-earth">
+                Interview à la Radio Mauritanie
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Ali Diallo présente la mission de FulanIA, ses partenariats et l'impact de l'IA au service de la langue pulaar.
+              </p>
             </div>
           </div>
         </section>
