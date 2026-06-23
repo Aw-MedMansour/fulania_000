@@ -148,12 +148,13 @@ export const updateEntry = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { id, ...patch } = data;
-    const cleaned = Object.fromEntries(
-      Object.entries(patch).map(([k, v]) => [k, v === "" ? null : v]),
-    );
+    const cleaned: Record<string, string | null> = {};
+    for (const [k, v] of Object.entries(patch)) {
+      cleaned[k] = v === "" || v === undefined ? null : (v as string);
+    }
     const { error } = await context.supabase
       .from("dictionary_v2")
-      .update(cleaned)
+      .update(cleaned as never)
       .eq("id", id);
     if (error) throw new Error(error.message);
     return { ok: true };
