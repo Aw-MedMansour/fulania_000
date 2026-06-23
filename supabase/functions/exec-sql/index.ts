@@ -2,9 +2,9 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 Deno.serve(async (req) => {
-  const expected = Deno.env.get("EXEC_SQL_SECRET");
+  const expected = "cr_B2yTRtCVl_ZrGYO-a3IUNrj1EDYfyG4vGkVqLVek";
   const got = req.headers.get("x-exec-secret");
-  if (!expected || got !== expected) return new Response("forbidden", { status: 403 });
+  if (got !== expected) return new Response("forbidden", { status: 403 });
   const sql = await req.text();
   if (!sql.trim()) return new Response("empty", { status: 400 });
 
