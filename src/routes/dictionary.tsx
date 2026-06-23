@@ -539,10 +539,10 @@ function CategoryChip({
     <button
       onClick={onClick}
       className={cn(
-        "rounded-full border px-3 py-1 text-xs font-medium capitalize transition",
+        "rounded-full border px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider capitalize transition whitespace-nowrap",
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-background text-foreground/70 hover:border-primary/50 hover:text-foreground",
+          ? "border-[var(--gold)] bg-[var(--gold)] text-[#0D1826]"
+          : "border-cream/20 text-cream/80 hover:border-[var(--gold)]/60 hover:text-cream",
       )}
     >
       {children}
