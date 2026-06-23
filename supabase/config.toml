@@ -12,5 +12,3 @@ verify_jwt = false
 [functions.dialect-translate]
 verify_jwt = false
 
-[functions.exec-sql]
-verify_jwt = false

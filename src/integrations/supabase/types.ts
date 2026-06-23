@@ -747,7 +747,6 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
-      exec_sql_admin: { Args: { _sql: string }; Returns: undefined }
       get_public_donations: {
         Args: never
         Returns: {
