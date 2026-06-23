@@ -715,6 +715,15 @@ function Row({ label, value, dir }: { label: string; value: string; dir?: "rtl" 
   );
 }
 
+function DialectRow({ code, value }: { code: string; value: string }) {
+  return (
+    <div className="flex items-baseline gap-1.5">
+      <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-muted-foreground">{code}</span>
+      <span className="truncate font-medium text-earth">{value}</span>
+    </div>
+  );
+}
+
 type AICard = {
   pulaar: string;
   pronunciation: string | null;
