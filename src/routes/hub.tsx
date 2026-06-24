@@ -209,18 +209,11 @@ function HubPage() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
-            <video
-              controls
-              playsInline
-              preload="metadata"
-              poster={radioCoverAsset.url}
-              className="aspect-video w-full bg-black object-cover"
-              aria-label="Passage d'Ali Diallo à la Radio Mauritanie"
-            >
-              <source src={radioVideoAsset.url} type="video/mp4" />
-              Votre navigateur ne prend pas en charge la lecture vidéo.
-            </video>
+          <LazyVideo
+            src={radioVideoAsset.url}
+            poster={radioCoverAsset.url}
+            title="Passage d'Ali Diallo à la Radio Mauritanie"
+          />
             <div className="border-t border-border p-6 sm:p-8">
               <p className="font-display text-lg font-semibold text-earth">
                 Interview à la Radio Mauritanie
