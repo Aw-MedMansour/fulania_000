@@ -309,3 +309,50 @@ function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
     </div>
   );
 }
+
+function LazyVideo({ src, poster, title }: { src: string; poster: string; title: string }) {
+  const [activated, setActivated] = useState(false);
+  const [posterLoaded, setPosterLoaded] = useState(false);
+
+  if (activated) {
+    return (
+      <video
+        controls
+        autoPlay
+        playsInline
+        preload="auto"
+        poster={poster}
+        className="aspect-video w-full bg-black"
+        aria-label={title}
+      >
+        <source src={src} type="video/mp4" />
+        Votre navigateur ne prend pas en charge la lecture vidéo.
+      </video>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setActivated(true)}
+      aria-label={`Lire la vidéo : ${title}`}
+      className="group relative block aspect-video w-full overflow-hidden bg-muted"
+    >
+      {!posterLoaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
+      <img
+        src={poster}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setPosterLoaded(true)}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
+      <span className="absolute inset-0 flex items-center justify-center">
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
+          <Play className="h-7 w-7 translate-x-0.5 fill-current" />
+        </span>
+      </span>
+    </button>
+  );
+}
