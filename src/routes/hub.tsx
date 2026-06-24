@@ -212,9 +212,10 @@ function HubPage() {
           <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
             <video
               controls
-              preload="none"
+              playsInline
+              preload="metadata"
               poster={radioCoverAsset.url}
-              className="aspect-video w-full bg-black"
+              className="aspect-video w-full bg-black object-cover"
               aria-label="Passage d'Ali Diallo à la Radio Mauritanie"
             >
               <source src={radioVideoAsset.url} type="video/mp4" />
