@@ -19,6 +19,7 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
+import { ToolsMarquee } from "@/components/tools-marquee";
 import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
 import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
