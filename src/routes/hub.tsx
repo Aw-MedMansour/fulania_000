@@ -11,6 +11,7 @@ import {
   Sparkles,
   Play,
   Radio,
+  Download,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
