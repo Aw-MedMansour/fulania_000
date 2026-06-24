@@ -72,14 +72,16 @@ function Row({
 }
 
 export function ToolsMarquee() {
-  // Deux rangées qui défilent en sens opposé, à partir des 7 vrais outils.
+  // Trois rangées qui défilent, à partir des 7 vrais outils.
   const rowA = tools;
   const rowB = [...tools.slice(3), ...tools.slice(0, 3)];
+  const rowC = [...tools.slice(5), ...tools.slice(0, 5)];
 
   return (
     <div className="relative space-y-3 py-2">
       <Row items={rowA} duration="50s" />
       <Row items={rowB} duration="64s" reverse />
+      <Row items={rowC} duration="56s" />
     </div>
   );
 }
