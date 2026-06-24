@@ -12,6 +12,7 @@ import {
   Play,
   Radio,
   Download,
+  Home,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
@@ -118,6 +119,15 @@ function HubPage() {
         </Link>
         <div className="flex items-center gap-2">
           <PageNav />
+
+          <Button asChild size="sm" variant="outline" className="gap-1.5">
+            <Link to="/">
+              <Home className="h-4 w-4" />
+              <span className="hidden sm:inline">Accueil</span>
+            </Link>
+          </Button>
+
+
 
           
           {session ? (
