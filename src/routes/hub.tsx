@@ -190,6 +190,9 @@ function HubPage() {
             </p>
           </div>
           <ToolsMarquee />
+        </section>
+
+
 
         <section className="mt-16">
           <div className="mb-6">
