@@ -16,6 +16,7 @@ import meimounaPhoto from "@/assets/meimouna-sy.jpeg.asset.json";
 import ousmanePhoto from "@/assets/ousmane-deh.jpeg.asset.json";
 import awMansourPhoto from "@/assets/aw-mansour.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
+import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
