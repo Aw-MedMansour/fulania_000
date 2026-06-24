@@ -16,6 +16,7 @@ import meimounaPhoto from "@/assets/meimouna-sy.jpeg.asset.json";
 import ousmanePhoto from "@/assets/ousmane-deh.jpeg.asset.json";
 import awMansourPhoto from "@/assets/aw-mansour.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
+import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
@@ -291,6 +292,22 @@ function Index() {
               <p className="mt-1 text-xs text-muted-foreground">{t("sol.quoteCaption")}</p>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* TOOLS MARQUEE */}
+      <section className="border-y border-border bg-secondary/30 py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal className="mb-8 max-w-2xl">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">La plateforme</span>
+            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
+              Un écosystème d'outils au service du Pulaar
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Assistants, tuteurs, traducteurs, gardiens de la culture — chaque outil est un compagnon spécialisé.
+            </p>
+          </Reveal>
+          <ToolsMarquee />
         </div>
       </section>
 
