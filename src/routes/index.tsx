@@ -20,13 +20,11 @@ import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
-import { redirect } from "@tanstack/react-router";
+
 
 export const Route = createFileRoute("/")({
   ssr: false,
-  beforeLoad: () => {
-    throw redirect({ to: "/hub" });
-  },
+
 
   head: () => {
     const l = getCurrentLang();
