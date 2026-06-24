@@ -287,11 +287,26 @@
     animation: hubRingPulse 3s ease-in-out infinite;
   }
 
+  @keyframes marqueeX {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  .marquee-track {
+    animation: marqueeX var(--marquee-duration, 40s) linear infinite;
+    will-change: transform;
+  }
+  .marquee-track.reverse { animation-direction: reverse; }
+  .marquee-mask {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .cta-attract,
     .cta-attract::after,
     .cta-bob,
     .hub-card,
+    .marquee-track,
     .hub-icon-ring { animation: none !important; }
   }
 
