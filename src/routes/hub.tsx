@@ -19,6 +19,7 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
+import { ToolsMarquee } from "@/components/tools-marquee";
 import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
 import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
@@ -174,6 +175,24 @@ function HubPage() {
             </Link>
           ))}
         </section>
+
+        <section className="mt-16">
+          <div className="mb-6 max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Sparkles className="h-3 w-3" />
+              La plateforme en mouvement
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              Un écosystème d'outils au service du Pulaar
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Chaque outil est pensé comme un compagnon spécialisé — assistants, tuteurs, traducteurs, gardiens de la culture.
+            </p>
+          </div>
+          <ToolsMarquee />
+        </section>
+
+
 
         <section className="mt-16">
           <div className="mb-6">
