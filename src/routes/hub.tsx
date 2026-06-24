@@ -11,6 +11,7 @@ import {
   Sparkles,
   Play,
   Radio,
+  Download,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
@@ -222,6 +223,14 @@ function HubPage() {
               <p className="mt-1 text-sm text-muted-foreground">
                 Ali Diallo présente la mission de FulanIA, ses partenariats et l'impact de l'IA au service de la langue pulaar.
               </p>
+              <a
+                href={radioVideoAsset.url}
+                download="fulania-radio-mauritanie.mp4"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--gold)] px-4 py-2 text-sm font-medium text-earth shadow-sm transition-transform hover:scale-[1.02]"
+              >
+                <Download className="h-4 w-4" />
+                Télécharger la vidéo
+              </a>
             </div>
           </div>
         </section>
