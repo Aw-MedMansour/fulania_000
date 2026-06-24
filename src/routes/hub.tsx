@@ -213,7 +213,7 @@ function HubPage() {
             <video
               controls
               preload="none"
-              poster={aliDialloAsset.url}
+              poster={radioCoverAsset.url}
               className="aspect-video w-full bg-black"
               aria-label="Passage d'Ali Diallo à la Radio Mauritanie"
             >
