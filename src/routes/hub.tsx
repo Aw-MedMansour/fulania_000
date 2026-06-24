@@ -12,6 +12,7 @@ import {
   Play,
   Radio,
   Download,
+  Home,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
