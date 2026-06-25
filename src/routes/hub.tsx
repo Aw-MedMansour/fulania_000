@@ -223,6 +223,13 @@ function HubPage() {
             title="Présentation de FulanIA par Meimouna Sy"
           />
 
+          <div className="mt-6">
+            <LazyYouTube
+              videoId="XXDGAmGVJFU"
+              title="Présentation FulanIA — vidéo complémentaire"
+            />
+          </div>
+
         </section>
 
         <section className="mt-16">
