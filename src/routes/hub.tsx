@@ -208,6 +208,26 @@ function HubPage() {
           <div className="mb-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
               <Sparkles className="h-3 w-3" />
+              Entretien exclusif
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              FulanIA : L'Entretien Exclusif avec L'Infos Plus
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              L'équipe FulanIA revient sur la naissance, la mission et les ambitions de la première IA dédiée à la langue et à la culture peules.
+            </p>
+          </div>
+
+          <LazyYouTube
+            videoId="XXDGAmGVJFU"
+            title="FulanIA : L'Entretien Exclusif avec L'Infos Plus"
+          />
+        </section>
+
+        <section className="mt-16">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Sparkles className="h-3 w-3" />
               Présentation
             </div>
             <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
@@ -222,13 +242,6 @@ function HubPage() {
             videoId="atXu0sjsEF4"
             title="Présentation de FulanIA par Meimouna Sy"
           />
-
-          <div className="mt-6">
-            <LazyYouTube
-              videoId="XXDGAmGVJFU"
-              title="Présentation FulanIA — vidéo complémentaire"
-            />
-          </div>
 
         </section>
 
