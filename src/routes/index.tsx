@@ -109,12 +109,8 @@ function Index() {
     { name: "Togo", zone: "Fulfulde", speakers: "0,13 – 0,19 M", note: "" },
   ];
 
-  const pulaaku = [
-    { word: "Semteende", meaning: t("pulaaku.semteende"), icon: Shield },
-    { word: "Munyal", meaning: t("pulaaku.munyal"), icon: Heart },
-    { word: "Hakkiilo", meaning: t("pulaaku.hakkiilo"), icon: Lightbulb },
-    { word: "Neddaaku", meaning: t("pulaaku.neddaaku"), icon: Users },
-  ];
+
+
 
   const piliers = [
     { icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d") },
