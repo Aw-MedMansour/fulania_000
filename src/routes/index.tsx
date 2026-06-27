@@ -213,15 +213,18 @@ function Index() {
         </div>
       </section>
 
+      {/* CREDIBILITY BAND */}
+      <CredibilityBand />
+
       {/* TOOLS MARQUEE */}
-      <section className="border-y border-border bg-secondary/30 py-16">
+      <section className="bg-secondary/30 py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="mb-8 max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">La plateforme</span>
-            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
+          <Reveal className="mb-10 max-w-2xl">
+            <Eyebrow>La plateforme</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.01em] text-balance sm:text-4xl lg:text-5xl">
               Un écosystème d'outils au service du Pulaar
             </h2>
-            <p className="mt-4 text-base text-muted-foreground">
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
               Assistants, tuteurs, traducteurs, gardiens de la culture — chaque outil est un compagnon spécialisé.
             </p>
           </Reveal>
