@@ -3,7 +3,7 @@ import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
-  XCircle, CheckCircle2, Languages, Users, Globe, Heart, Lightbulb, Shield,
+  XCircle, CheckCircle2, Languages, Users, Globe, Heart, Shield,
   Mail, Phone, MapPin,
 } from "lucide-react";
 import { motion } from "framer-motion";
