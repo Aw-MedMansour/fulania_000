@@ -527,9 +527,10 @@ function Index() {
                         src={m.photo}
                         alt={`Portrait de ${m.name}`}
                         loading="lazy"
-                        className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        className="h-full w-full object-cover object-top transition duration-700 [filter:grayscale(0.55)_sepia(0.18)_contrast(1.02)] group-hover:[filter:none] group-hover:scale-[1.03]"
                       />
                     ) : (
+
                       <div className="flex h-full w-full items-center justify-center">
                         <span className="font-display text-6xl font-semibold text-[var(--gold)]">{initials}</span>
                       </div>
