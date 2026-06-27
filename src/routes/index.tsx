@@ -3,9 +3,10 @@ import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
-  XCircle, CheckCircle2, Languages, Users, Globe, Heart, Shield,
+  Languages, Users, Globe, Heart, Shield,
   Mail, Phone, MapPin,
 } from "lucide-react";
+
 import { motion } from "framer-motion";
 import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
@@ -211,9 +212,11 @@ function Index() {
         </div>
       </section>
 
-
+      {/* PRESS BAND */}
+      <PressBand />
 
       {/* TOOLS MARQUEE */}
+
       <section className="bg-secondary/30 py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="mb-10 max-w-2xl">
@@ -320,7 +323,7 @@ function Index() {
               <ul className="mt-4 space-y-3 text-sm">
                 {[t("problem.other1"), t("problem.other2"), t("problem.other3"), t("problem.other4")].map((x) => (
                   <li key={x} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald-700" />
+                    <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-foreground/40" aria-hidden />
                     <span className="text-foreground/80">{x}</span>
                   </li>
                 ))}
@@ -331,13 +334,14 @@ function Index() {
               <ul className="mt-4 space-y-3 text-sm">
                 {[t("problem.pulaar1"), t("problem.pulaar2"), t("problem.pulaar3"), t("problem.pulaar4")].map((x, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <XCircle className="mt-0.5 h-5 w-5 flex-none text-primary" />
+                    <span className="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-primary" aria-hidden />
                     <span className="text-foreground/80">{x}</span>
                   </li>
                 ))}
               </ul>
             </StaggerItem>
           </StaggerGroup>
+
 
           <Reveal>
             <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
