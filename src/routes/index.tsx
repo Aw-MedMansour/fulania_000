@@ -18,6 +18,8 @@ import awMansourPhoto from "@/assets/aw-mansour.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
 import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
+import { Eyebrow } from "@/components/eyebrow";
+import { CredibilityBand } from "@/components/credibility-band";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -211,15 +213,18 @@ function Index() {
         </div>
       </section>
 
+      {/* CREDIBILITY BAND */}
+      <CredibilityBand />
+
       {/* TOOLS MARQUEE */}
-      <section className="border-y border-border bg-secondary/30 py-16">
+      <section className="bg-secondary/30 py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="mb-8 max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">La plateforme</span>
-            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
+          <Reveal className="mb-10 max-w-2xl">
+            <Eyebrow>La plateforme</Eyebrow>
+            <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.01em] text-balance sm:text-4xl lg:text-5xl">
               Un écosystème d'outils au service du Pulaar
             </h2>
-            <p className="mt-4 text-base text-muted-foreground">
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
               Assistants, tuteurs, traducteurs, gardiens de la culture — chaque outil est un compagnon spécialisé.
             </p>
           </Reveal>
@@ -231,7 +236,7 @@ function Index() {
       <section id="solution" className="py-24">
         <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
           <Reveal>
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("sol.tag")}</span>
+            <Eyebrow>{t("sol.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("sol.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("sol.body")}</p>
 
@@ -271,7 +276,7 @@ function Index() {
       <section id="piliers" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("pillars.tag")}</span>
+            <Eyebrow>{t("pillars.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("pillars.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
           </Reveal>
@@ -307,7 +312,7 @@ function Index() {
       <section className="bg-secondary/40 bg-grain py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("problem.tag")}</span>
+            <Eyebrow>{t("problem.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("problem.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("problem.body")}</p>
           </Reveal>
@@ -350,7 +355,7 @@ function Index() {
         <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "400px" }} aria-hidden />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("culture.tag")}</span>
+            <Eyebrow tone="gold">{t("culture.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("culture.title")}</h2>
             <p className="mt-5 text-lg text-cream/75">{t("culture.body")}</p>
           </Reveal>
@@ -427,7 +432,7 @@ function Index() {
       <section className="bg-secondary/40 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("public.tag")}</span>
+            <Eyebrow>{t("public.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("public.title")}</h2>
           </Reveal>
           <StaggerGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -448,7 +453,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
             <Reveal>
-              <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("vision.tag")}</span>
+              <Eyebrow>{t("vision.tag")}</Eyebrow>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance">{t("vision.title")}</h2>
               <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
               <StaggerGroup className="mt-8 grid grid-cols-2 gap-3">
@@ -490,7 +495,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="mx-auto max-w-3xl text-center">
-              <span className="text-xs uppercase tracking-[0.2em] text-primary">Équipe</span>
+              <Eyebrow align="center">Équipe</Eyebrow>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">
                 Comité Exécutif FulanIA
               </h2>
@@ -568,7 +573,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <Reveal>
-              <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.porter")}</span>
+              <Eyebrow tone="gold">{t("contact.porter")}</Eyebrow>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
               <p className="mt-5 whitespace-pre-line text-cream/80">
                 {t("contact.bio")}
@@ -576,7 +581,7 @@ function Index() {
             </Reveal>
 
             <Reveal delay={0.1}>
-              <span className="text-xs uppercase tracking-[0.2em] text-[var(--gold)]">{t("contact.callTag")}</span>
+              <Eyebrow tone="gold">{t("contact.callTag")}</Eyebrow>
               <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("contact.callTitle")}</h2>
               <p className="mt-5 text-cream/80">{t("contact.callBody")}</p>
 
