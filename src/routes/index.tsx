@@ -19,6 +19,8 @@ import { SiteHeader, SiteFooter } from "@/components/layout";
 import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
+import { PressBand } from "@/components/press-band";
+
 
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
