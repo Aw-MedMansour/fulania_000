@@ -3,7 +3,7 @@ import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
-  XCircle, CheckCircle2, Languages, Users, Globe, Heart, Lightbulb, Shield,
+  XCircle, CheckCircle2, Languages, Users, Globe, Heart, Shield,
   Mail, Phone, MapPin,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -109,12 +109,8 @@ function Index() {
     { name: "Togo", zone: "Fulfulde", speakers: "0,13 – 0,19 M", note: "" },
   ];
 
-  const pulaaku = [
-    { word: "Semteende", meaning: t("pulaaku.semteende"), icon: Shield },
-    { word: "Munyal", meaning: t("pulaaku.munyal"), icon: Heart },
-    { word: "Hakkiilo", meaning: t("pulaaku.hakkiilo"), icon: Lightbulb },
-    { word: "Neddaaku", meaning: t("pulaaku.neddaaku"), icon: Users },
-  ];
+
+
 
   const piliers = [
     { icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d") },
@@ -403,27 +399,6 @@ function Index() {
             </Reveal>
           )}
 
-          <div className="mt-20">
-            <Reveal>
-              <h3 className="font-display text-3xl font-semibold sm:text-4xl">{t("pulaaku.title")}</h3>
-              <p className="mt-3 max-w-2xl text-cream/75">{t("pulaaku.body")}</p>
-            </Reveal>
-
-            <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {pulaaku.map(({ word, meaning, icon: Icon }) => (
-                <StaggerItem
-                  key={word}
-                  className="group rounded-2xl border border-cream/15 bg-cream/[0.03] p-6 transition hover:-translate-y-1 hover:border-[var(--gold)]/50 hover:bg-cream/[0.06] hover:shadow-xl"
-                >
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--gold)]/15 text-[var(--gold)] transition group-hover:scale-110">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <p className="mt-5 font-display text-2xl font-semibold text-[var(--gold)]">{word}</p>
-                  <p className="mt-2 text-sm text-cream/75">{meaning}</p>
-                </StaggerItem>
-              ))}
-            </StaggerGroup>
-          </div>
         </div>
       </section>
 
