@@ -211,45 +211,19 @@ function Index() {
         </div>
       </section>
 
-      {/* PROBLEM */}
-      <section className="bg-secondary/40 bg-grain py-24">
+      {/* TOOLS MARQUEE */}
+      <section className="border-y border-border bg-secondary/30 py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("problem.tag")}</span>
-            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("problem.title")}</h2>
-            <p className="mt-5 text-lg text-muted-foreground">{t("problem.body")}</p>
-          </Reveal>
-
-          <StaggerGroup className="mt-12 grid gap-4 lg:grid-cols-2">
-            <StaggerItem className="rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:shadow-lg">
-              <h3 className="font-display text-lg font-semibold text-foreground">{t("problem.other")}</h3>
-              <ul className="mt-4 space-y-3 text-sm">
-                {[t("problem.other1"), t("problem.other2"), t("problem.other3"), t("problem.other4")].map((x) => (
-                  <li key={x} className="flex items-start gap-3">
-                    <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald-700" />
-                    <span className="text-foreground/80">{x}</span>
-                  </li>
-                ))}
-              </ul>
-            </StaggerItem>
-            <StaggerItem className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7 transition hover:-translate-y-1 hover:shadow-lg">
-              <h3 className="font-display text-lg font-semibold text-primary">{t("problem.pulaar")}</h3>
-              <ul className="mt-4 space-y-3 text-sm">
-                {[t("problem.pulaar1"), t("problem.pulaar2"), t("problem.pulaar3"), t("problem.pulaar4")].map((x, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <XCircle className="mt-0.5 h-5 w-5 flex-none text-primary" />
-                    <span className="text-foreground/80">{x}</span>
-                  </li>
-                ))}
-              </ul>
-            </StaggerItem>
-          </StaggerGroup>
-
-          <Reveal>
-            <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
-              {t("problem.quote")}
+          <Reveal className="mb-8 max-w-2xl">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">La plateforme</span>
+            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
+              Un écosystème d'outils au service du Pulaar
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Assistants, tuteurs, traducteurs, gardiens de la culture — chaque outil est un compagnon spécialisé.
             </p>
           </Reveal>
+          <ToolsMarquee />
         </div>
       </section>
 
@@ -293,19 +267,81 @@ function Index() {
         </div>
       </section>
 
-      {/* TOOLS MARQUEE */}
-      <section className="border-y border-border bg-secondary/30 py-16">
+      {/* PILIERS */}
+      <section id="piliers" className="py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="mb-8 max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">La plateforme</span>
-            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
-              Un écosystème d'outils au service du Pulaar
-            </h2>
-            <p className="mt-4 text-base text-muted-foreground">
-              Assistants, tuteurs, traducteurs, gardiens de la culture — chaque outil est un compagnon spécialisé.
+          <Reveal className="max-w-2xl">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("pillars.tag")}</span>
+            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("pillars.title")}</h2>
+            <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
+          </Reveal>
+
+          <StaggerGroup className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {piliers.map(({ icon: Icon, title, desc }, idx) => (
+              <StaggerItem key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
+                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
+                  <Icon className="h-6 w-6" />
+                </div>
+                <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+              </StaggerItem>
+            ))}
+            <StaggerItem>
+              <Link to="/auth" className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90 hover:shadow-2xl">
+                <Sparkles className="h-8 w-8 transition group-hover:rotate-12" />
+                <div>
+                  <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
+                  <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
+                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
+                    {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </Link>
+            </StaggerItem>
+          </StaggerGroup>
+        </div>
+      </section>
+
+      {/* PROBLEM */}
+      <section className="bg-secondary/40 bg-grain py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Reveal className="max-w-2xl">
+            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("problem.tag")}</span>
+            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("problem.title")}</h2>
+            <p className="mt-5 text-lg text-muted-foreground">{t("problem.body")}</p>
+          </Reveal>
+
+          <StaggerGroup className="mt-12 grid gap-4 lg:grid-cols-2">
+            <StaggerItem className="rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:shadow-lg">
+              <h3 className="font-display text-lg font-semibold text-foreground">{t("problem.other")}</h3>
+              <ul className="mt-4 space-y-3 text-sm">
+                {[t("problem.other1"), t("problem.other2"), t("problem.other3"), t("problem.other4")].map((x) => (
+                  <li key={x} className="flex items-start gap-3">
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 flex-none text-emerald-700" />
+                    <span className="text-foreground/80">{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </StaggerItem>
+            <StaggerItem className="rounded-2xl border-2 border-primary/30 bg-primary/5 p-7 transition hover:-translate-y-1 hover:shadow-lg">
+              <h3 className="font-display text-lg font-semibold text-primary">{t("problem.pulaar")}</h3>
+              <ul className="mt-4 space-y-3 text-sm">
+                {[t("problem.pulaar1"), t("problem.pulaar2"), t("problem.pulaar3"), t("problem.pulaar4")].map((x, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <XCircle className="mt-0.5 h-5 w-5 flex-none text-primary" />
+                    <span className="text-foreground/80">{x}</span>
+                  </li>
+                ))}
+              </ul>
+            </StaggerItem>
+          </StaggerGroup>
+
+          <Reveal>
+            <p className="mt-10 max-w-3xl border-l-2 border-primary pl-5 font-display text-xl italic text-foreground/90">
+              {t("problem.quote")}
             </p>
           </Reveal>
-          <ToolsMarquee />
         </div>
       </section>
 
@@ -387,42 +423,6 @@ function Index() {
         </div>
       </section>
 
-      {/* PILIERS */}
-      <section id="piliers" className="py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("pillars.tag")}</span>
-            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("pillars.title")}</h2>
-            <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
-          </Reveal>
-
-          <StaggerGroup className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {piliers.map(({ icon: Icon, title, desc }, idx) => (
-              <StaggerItem key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
-              </StaggerItem>
-            ))}
-            <StaggerItem>
-              <Link to="/auth" className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90 hover:shadow-2xl">
-                <Sparkles className="h-8 w-8 transition group-hover:rotate-12" />
-                <div>
-                  <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
-                  <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
-                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
-                    {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </Link>
-            </StaggerItem>
-          </StaggerGroup>
-        </div>
-      </section>
-
       {/* PUBLIC */}
       <section className="bg-secondary/40 py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -440,6 +440,48 @@ function Index() {
               </StaggerItem>
             ))}
           </StaggerGroup>
+        </div>
+      </section>
+
+      {/* VISION */}
+      <section id="vision" className="py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
+            <Reveal>
+              <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("vision.tag")}</span>
+              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance">{t("vision.title")}</h2>
+              <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
+              <StaggerGroup className="mt-8 grid grid-cols-2 gap-3">
+                {[
+                  { icon: Shield, label: t("vision.preserve") },
+                  { icon: Heart, label: t("vision.transmit") },
+                  { icon: GraduationCap, label: t("vision.educate") },
+                  { icon: Globe, label: t("vision.value") },
+                  { icon: Users, label: t("vision.gather") },
+                  { icon: Languages, label: t("vision.include") },
+                ].map(({ icon: Icon, label }) => (
+                  <StaggerItem key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:bg-primary/5">
+                    <Icon className="h-4 w-4 text-primary" />{label}
+                  </StaggerItem>
+                ))}
+              </StaggerGroup>
+            </Reveal>
+
+            <div>
+              <Reveal>
+                <h3 className="font-display text-2xl font-semibold">{t("vision.roadmap")}</h3>
+              </Reveal>
+              <StaggerGroup className="mt-6 space-y-5">
+                {phases.map((p) => (
+                  <StaggerItem key={p.id} className="relative rounded-2xl border border-border bg-card p-6 pl-20 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
+                    <div className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-primary-foreground shadow-md">{p.id}</div>
+                    <h4 className="font-display text-lg font-semibold">{t("vision.phase")} {p.id} — {p.title}</h4>
+                    <p className="mt-1 text-sm text-muted-foreground">{p.body}</p>
+                  </StaggerItem>
+                ))}
+              </StaggerGroup>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -518,48 +560,6 @@ function Index() {
               );
             })}
           </StaggerGroup>
-        </div>
-      </section>
-
-      {/* VISION */}
-      <section id="vision" className="py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-[1fr_2fr]">
-            <Reveal>
-              <span className="text-xs uppercase tracking-[0.2em] text-primary">{t("vision.tag")}</span>
-              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance">{t("vision.title")}</h2>
-              <p className="mt-5 text-muted-foreground">{t("vision.body")}</p>
-              <StaggerGroup className="mt-8 grid grid-cols-2 gap-3">
-                {[
-                  { icon: Shield, label: t("vision.preserve") },
-                  { icon: Heart, label: t("vision.transmit") },
-                  { icon: GraduationCap, label: t("vision.educate") },
-                  { icon: Globe, label: t("vision.value") },
-                  { icon: Users, label: t("vision.gather") },
-                  { icon: Languages, label: t("vision.include") },
-                ].map(({ icon: Icon, label }) => (
-                  <StaggerItem key={label} className="flex items-center gap-2 rounded-md border border-border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:bg-primary/5">
-                    <Icon className="h-4 w-4 text-primary" />{label}
-                  </StaggerItem>
-                ))}
-              </StaggerGroup>
-            </Reveal>
-
-            <div>
-              <Reveal>
-                <h3 className="font-display text-2xl font-semibold">{t("vision.roadmap")}</h3>
-              </Reveal>
-              <StaggerGroup className="mt-6 space-y-5">
-                {phases.map((p) => (
-                  <StaggerItem key={p.id} className="relative rounded-2xl border border-border bg-card p-6 pl-20 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-                    <div className="absolute left-6 top-6 flex h-10 w-10 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-primary-foreground shadow-md">{p.id}</div>
-                    <h4 className="font-display text-lg font-semibold">{t("vision.phase")} {p.id} — {p.title}</h4>
-                    <p className="mt-1 text-sm text-muted-foreground">{p.body}</p>
-                  </StaggerItem>
-                ))}
-              </StaggerGroup>
-            </div>
-          </div>
         </div>
       </section>
 
