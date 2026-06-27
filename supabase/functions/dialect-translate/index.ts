@@ -1,4 +1,6 @@
 // FulanIA — Multi-dialect Pulaar translator
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+
 
 
 const corsHeaders = {
@@ -43,6 +45,8 @@ const TOOL = {
   },
 } as const;
 
+
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
   try {
@@ -50,7 +54,15 @@ Deno.serve(async (req) => {
     if (!auth?.startsWith("Bearer ")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     }
-    // JWT déjà vérifié par la gateway Supabase (verify_jwt = true)
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: auth } } },
+    );
+    const { data: ud, error: uerr } = await supabase.auth.getUser();
+    if (uerr || !ud?.user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
 
 
     const body = await req.json();
