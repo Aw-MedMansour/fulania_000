@@ -1,43 +1,38 @@
+## Problème
+
+Un correctif de sécurité a ajouté `supabase.auth.getUser()` + rejet 401 dans 4 edge functions IA :
+- `chat` (assistant)
+- `translate` (traducteur)
+- `dialect-translate` (variantes dialectales)
+- `generate-lesson` (mini‑leçons Janngude)
+
+Résultat : chaque clic envoie une requête → 401 « Unauthorized » → l'erreur passe presque inaperçue dans l'UI. Aucune réponse IA ne s'affiche pour les visiteurs non connectés.
+
 ## Objectif
 
-Ajouter un historique de discussions, un système de crédits pour les invités, fixer l'OG image et nettoyer la navigation sur les pages outils.
+Garder les fonctionnalités telles quelles. Rétablir leur fonctionnement pour TOUS les visiteurs, sans connexion obligatoire.
 
-## 1. Sidebar de discussions (chat)
+## Changements
 
-- Sidebar pliable à gauche dans `/chat`, bouton hamburger en haut à gauche du composer.
-- Visible **uniquement si connecté** ; sinon un encart "Connectez-vous pour conserver l'historique".
-- Contient : bouton **"+ Nouvelle discussion"** et la liste des conversations passées (titre = 1ère question tronquée, date).
-- Sélection d'une conversation → recharge ses messages. Suppression possible (corbeille au survol).
-- Persistance backend : nouvelle table `chat_conversations` (id, user_id, title, created_at, updated_at) et `chat_messages` (id, conversation_id, role, content, sources jsonb, created_at) avec RLS `auth.uid() = user_id`.
+Dans chacun des 4 fichiers ci‑dessous, retirer le bloc de vérification d'authentification ajouté récemment (le check `Authorization: Bearer`, la création du client Supabase « user‑bound », et le `getUser()` qui renvoie 401). Conserver le reste : validation d'input, appel à l'AI Gateway via `LOVABLE_API_KEY` côté serveur, gestion 429/402/502, RAG dictionnaire.
 
-## 2. Crédits invités (device-based)
+1. `supabase/functions/chat/index.ts` — supprimer le bloc auth (lignes ~257‑271).
+2. `supabase/functions/translate/index.ts` — supprimer le bloc auth (lignes ~58‑67). Le client Supabase reste créé avec la clé anon pour le RAG dictionnaire (lectures publiques).
+3. `supabase/functions/dialect-translate/index.ts` — supprimer le bloc auth (lignes ~53‑66). Supprimer le client Supabase (non utilisé pour le RAG dans cette fonction).
+4. `supabase/functions/generate-lesson/index.ts` — supprimer le bloc auth (lignes ~75‑83). Le client Supabase reste pour le RAG dictionnaire.
 
-- **Connecté → illimité.**
-- **Non connecté →** quota par appareil, fenêtre glissante de 5 h :
-  - 10 actions simples (chat normal)
-  - 7 recherches web
-  - 5 recherches approfondies
-- Fingerprint local : ID stable en `localStorage` (`fulania_device_id`, uuid) + horodatages des actions par catégorie en `localStorage`. (Note : facilement contournable côté client ; un vrai blocage nécessite un backend de tracking — je signale la limite.)
-- Quand un compteur atteint 0 : message **"Connectez-vous pour continuer — ou réessayez dans Xh Ymin"**, avec bouton "Se connecter".
-- Affichage discret du quota restant sous le composer.
+Les 4 fonctions ont déjà `verify_jwt = false` dans `supabase/config.toml` — aucun changement de config nécessaire.
 
-## 3. Nettoyer la navigation des pages outils
+## Vérification
 
-- Retirer `<PageNav />` (boutons Retour / Accueil / Espace) sur : `/chat`, `/dictionary`, `/learn`, `/translate`, `/culture`, `/hub`.
-- L'utilisateur navigue via les gestes tactiles natifs (swipe back) et le bouton du navigateur.
+Après déploiement, tester via `curl_edge_functions` SANS Authorization :
+- `POST /chat` avec un petit message → réponse SSE qui stream
+- `POST /translate` avec un mot → carte JSON
+- `POST /dialect-translate` avec un mot → carte dialectale JSON
+- `POST /generate-lesson` avec un thème → leçon JSON
 
-## 4. Image OG (URL preview)
+Puis dans le preview : ouvrir `/chat`, envoyer un message en navigation invité, vérifier qu'une réponse s'affiche.
 
-- Générer une image OG de marque (1200×630) et la référencer dans `__root.tsx` via `og:image` + `twitter:image` (URL absolue).
-- Une image par défaut au niveau root (les routes feuilles existantes n'en ont pas, donc pas de conflit).
+## Note
 
-## Détails techniques
-
-- Migration Supabase pour `chat_conversations` + `chat_messages` + RLS.
-- `chat.tsx` : refactor pour lire/écrire les messages dans Supabase si `user`, sinon état local + compteurs `localStorage`.
-- Nouveau hook `useGuestQuota()` exposant `{ remaining, canUse(kind), consume(kind), resetAt }`.
-- Image OG via `imagegen` (premium, motif culturel Peul + logo FulanIA), enregistrée dans `src/assets/og-cover.jpg` et servie en URL absolue.
-
-## Limites signalées
-
-- Le blocage par appareil sans backend est contournable (vider le storage / navigation privée). Pour un blocage robuste il faudrait stocker les compteurs côté serveur indexés par device_id + IP — à faire dans une 2ᵉ itération si nécessaire.
+C'est le retour au comportement d'avant le correctif `chat_open_endpoint`. La sécurité du `LOVABLE_API_KEY` reste assurée (jamais exposée au client). Le seul risque est l'abus de crédits par des bots : la limite de quota navigateur (`useGuestQuota`, 10 actions / 5h) reste en place côté client. Si on observe un abus réel, on pourra ajouter plus tard une protection serveur (rate‑limit par IP) sans rebloquer les invités.
