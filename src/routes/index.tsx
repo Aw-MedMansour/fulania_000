@@ -617,9 +617,14 @@ function Index() {
               <div className="mt-6">
                 <SocialLinks />
               </div>
-              <Link to="/auth" className="group mt-6 inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
-                {t("contact.tryAi")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-              </Link>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link to="/contact" className="group inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
+                  {t("contact.fullPage")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                </Link>
+                <Link to="/chat" className="inline-flex items-center gap-2 rounded-md border border-cream/25 bg-cream/[0.04] px-6 py-3 text-sm font-medium text-cream transition hover:border-cream/50 hover:bg-cream/10">
+                  {t("contact.tryAi")}
+                </Link>
+              </div>
             </Reveal>
           </div>
         </div>

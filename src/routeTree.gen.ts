@@ -16,6 +16,7 @@ import { Route as LearnRouteImport } from './routes/learn'
 import { Route as HubRouteImport } from './routes/hub'
 import { Route as DictionaryRouteImport } from './routes/dictionary'
 import { Route as CultureRouteImport } from './routes/culture'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -58,6 +59,11 @@ const CultureRoute = CultureRouteImport.update({
   path: '/culture',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ChatRoute = ChatRouteImport.update({
   id: '/chat',
   path: '/chat',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
+  '/contact': typeof ContactRoute
   '/culture': typeof CultureRoute
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
+  '/contact': typeof ContactRoute
   '/culture': typeof CultureRoute
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/chat': typeof ChatRoute
+  '/contact': typeof ContactRoute
   '/culture': typeof CultureRoute
   '/dictionary': typeof DictionaryRoute
   '/hub': typeof HubRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/chat'
+    | '/contact'
     | '/culture'
     | '/dictionary'
     | '/hub'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/chat'
+    | '/contact'
     | '/culture'
     | '/dictionary'
     | '/hub'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/chat'
+    | '/contact'
     | '/culture'
     | '/dictionary'
     | '/hub'
@@ -185,6 +197,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ChatRoute: typeof ChatRoute
+  ContactRoute: typeof ContactRoute
   CultureRoute: typeof CultureRoute
   DictionaryRoute: typeof DictionaryRoute
   HubRoute: typeof HubRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       path: '/culture'
       fullPath: '/culture'
       preLoaderRoute: typeof CultureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/chat': {
@@ -307,6 +327,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ChatRoute: ChatRoute,
+  ContactRoute: ContactRoute,
   CultureRoute: CultureRoute,
   DictionaryRoute: DictionaryRoute,
   HubRoute: HubRoute,
