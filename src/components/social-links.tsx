@@ -37,7 +37,14 @@ const socials = [
   },
 ];
 
-export function SocialLinks({ className = "" }: { className?: string }) {
+export function SocialLinks({
+  className = "",
+  variant = "dark",
+}: {
+  className?: string;
+  variant?: "dark" | "light";
+}) {
+  const isLight = variant === "light";
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       {socials.map((s) => (
@@ -47,7 +54,11 @@ export function SocialLinks({ className = "" }: { className?: string }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={s.name}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/20 bg-cream/[0.05] text-cream/80 transition hover:border-[var(--gold)]/60 hover:bg-[var(--gold)]/15 hover:text-[var(--gold)]"
+          className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition ${
+            isLight
+              ? "border-foreground/20 bg-foreground/[0.05] text-foreground/80 hover:border-primary/60 hover:bg-primary/10 hover:text-primary"
+              : "border-cream/20 bg-cream/[0.05] text-cream/80 hover:border-[var(--gold)]/60 hover:bg-[var(--gold)]/15 hover:text-[var(--gold)]"
+          }`}
         >
           {s.icon}
         </a>
