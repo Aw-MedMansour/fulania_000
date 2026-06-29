@@ -281,6 +281,7 @@ export const translations: Record<Lang, Dict> = {
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Algérie",
     "contact.fullPage": "Voir la fiche de contact",
+    "contact.backHome": "Retour à l'accueil",
     "contact.founderRole": "Fondateur · Responsable du Développement Informatique",
     "contact.follow": "Suivez-nous",
     "contact.formTitle": "Envoyer un message",
