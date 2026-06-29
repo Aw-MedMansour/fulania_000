@@ -171,7 +171,7 @@ function ContactPage() {
               <Reveal delay={0.2}>
                 <div className="mt-8">
                   <p className="mb-3 text-sm font-medium text-foreground">{t("contact.follow")}</p>
-                  <SocialLinks />
+                  <SocialLinks variant="light" />
                 </div>
               </Reveal>
             </div>
