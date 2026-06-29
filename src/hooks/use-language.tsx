@@ -39,6 +39,8 @@ export const translations: Record<Lang, Dict> = {
     "seo./hub.desc": "Accède à l'assistant IA, au dictionnaire, à l'apprentissage, au traducteur multi-dialectes et à la bibliothèque culturelle Peule.",
     "seo./culture.title": "Bibliothèque culturelle Peule — FulanIA",
     "seo./culture.desc": "Proverbes, contes, traditions, musique, cuisine et tenues Fulɓe : une bibliothèque vivante de la culture Peule.",
+    "seo./contact.title": "Contact — FulanIA",
+    "seo./contact.desc": "Contactez l'équipe FulanIA : partenariats, collaborations, questions et presse autour de la langue et de la culture Peule.",
     // Hub
     "hub.tag": "Ton espace",
     "hub.hello": "Bienvenue",
