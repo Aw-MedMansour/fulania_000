@@ -478,6 +478,8 @@ export const translations: Record<Lang, Dict> = {
     "seo./hub.desc": "Heɓ kuɓɓal IA, saggitorde, janngingol, pirtoowo dialɛkti e ɓibliyotɛk pinal Fulɓe.",
     "seo./culture.title": "Ɓibliyotɛk pinal Fulɓe — FulanIA",
     "seo./culture.desc": "Tindi, daari, aadaaji, gimi, ñaamde e comci Fulɓe : ɓibliyotɛk wuurnde pinal Fulɓe.",
+    "seo./contact.title": "Heɓtugol — FulanIA",
+    "seo./contact.desc": "Heɓto ɓe FulanIA: golle, hawtugol, lamɗi e jaŋde ɗemngal e pinal Fulɓe.",
     "nav.solution": "Solisiyon", "nav.pillars": "Tugaale", "nav.dictionary": "Saggitorde",
     "nav.learn": "Janngude",
     "nav.library": "Defte",
