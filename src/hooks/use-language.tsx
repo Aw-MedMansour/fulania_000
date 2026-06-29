@@ -280,7 +280,7 @@ export const translations: Record<Lang, Dict> = {
     "contact.tryAi": "Essayer l'assistant IA",
     "author.name": "Aw Mohamedou Mansour",
     "contact.location": "Boumerdes, Algérie",
-    "contact.backHome": "Retour à l'accueil",
+    "contact.fullPage": "Voir la fiche de contact",
     "contact.founderRole": "Fondateur · Responsable du Développement Informatique",
     "contact.follow": "Suivez-nous",
     "contact.formTitle": "Envoyer un message",
