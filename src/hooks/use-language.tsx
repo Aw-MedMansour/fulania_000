@@ -849,6 +849,8 @@ export const translations: Record<Lang, Dict> = {
     "seo./hub.desc": "Access the AI assistant, dictionary, learning platform, multi-dialect translator and Fulani cultural library.",
     "seo./culture.title": "Fulani Cultural Library — FulanIA",
     "seo./culture.desc": "Proverbs, tales, traditions, music, food and dress of the Fulɓe: a living library of Fulani culture.",
+    "seo./contact.title": "Contact — FulanIA",
+    "seo./contact.desc": "Get in touch with the FulanIA team: partnerships, collaborations, questions and press about the Fulani language and culture.",
     "nav.solution": "Solution", "nav.pillars": "Pillars", "nav.dictionary": "Dictionary",
     "nav.learn": "Learn",
     "nav.library": "Books",
