@@ -197,6 +197,7 @@ export function SiteFooter() {
               <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
               <li><a href="/#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
               <li><a href="/#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
+              <li><Link to="/contact" className="hover:text-[var(--gold)]">{t("nav.contact")}</Link></li>
             </ul>
           </div>
 
