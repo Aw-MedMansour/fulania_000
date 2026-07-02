@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
   Languages, Users, Globe, Heart, Shield,
-  Mail, Phone, MapPin,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -22,10 +20,10 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
 import { HeroProductPreview } from "@/components/hero-product-preview";
+import { ContactSection } from "@/components/contact-section";
 
 
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
-import { supabase } from "@/integrations/supabase/client";
 
 
 export const Route = createFileRoute("/")({
@@ -570,65 +568,7 @@ function Index() {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="relative overflow-hidden bg-earth py-24 text-cream">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <Reveal>
-              <Eyebrow tone="gold">{t("contact.porter")}</Eyebrow>
-              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("author.name")}</h2>
-              <p className="mt-5 whitespace-pre-line text-cream/80">
-                {t("contact.bio")}
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <Eyebrow tone="gold">{t("contact.callTag")}</Eyebrow>
-              <h2 className="mt-3 font-display text-4xl font-semibold leading-tight">{t("contact.callTitle")}</h2>
-              <p className="mt-5 text-cream/80">{t("contact.callBody")}</p>
-
-              <StaggerGroup className="mt-8 space-y-3">
-                <StaggerItem>
-                  <a href="mailto:awmedmansour@outlook.com" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
-                    <Mail className="h-5 w-5 text-[var(--gold)]" />
-                    <div>
-                      <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.email")}</p>
-                      <p className="text-cream">awmedmansour@outlook.com</p>
-                    </div>
-                  </a>
-                </StaggerItem>
-                <StaggerItem>
-                  <a href="tel:+213780306486" className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4 transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:bg-cream/[0.08]">
-                    <Phone className="h-5 w-5 text-[var(--gold)]" />
-                    <div>
-                      <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.phone")}</p>
-                      <p className="text-cream">+213 780 30 64 86</p>
-                    </div>
-                  </a>
-                </StaggerItem>
-                <StaggerItem className="flex items-center gap-4 rounded-xl border border-cream/15 bg-cream/[0.03] p-4">
-                  <MapPin className="h-5 w-5 text-[var(--gold)]" />
-                  <div>
-                    <p className="text-[10px] uppercase tracking-widest text-cream/60">{t("contact.address")}</p>
-                    <p className="text-cream">{t("contact.location")}</p>
-                  </div>
-                </StaggerItem>
-              </StaggerGroup>
-
-              <div className="mt-6">
-                <SocialLinks />
-              </div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link to="/contact" className="group inline-flex items-center gap-2 rounded-md bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-lg">
-                  {t("contact.fullPage")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                </Link>
-                <Link to="/chat" className="inline-flex items-center gap-2 rounded-md border border-cream/25 bg-cream/[0.04] px-6 py-3 text-sm font-medium text-cream transition hover:border-cream/50 hover:bg-cream/10">
-                  {t("contact.tryAi")}
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <ContactSection />
 
       <SiteFooter />
     </div>
