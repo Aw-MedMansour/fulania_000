@@ -1,10 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { SocialLinks } from "@/components/social-links";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
   Languages, Users, Globe, Heart, Shield,
-  Mail, Phone, MapPin,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
@@ -22,10 +20,10 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
 import { HeroProductPreview } from "@/components/hero-product-preview";
+import { ContactSection } from "@/components/contact-section";
 
 
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
-import { supabase } from "@/integrations/supabase/client";
 
 
 export const Route = createFileRoute("/")({
