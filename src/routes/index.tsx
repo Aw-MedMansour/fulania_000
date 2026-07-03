@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
-  Languages, Users, Globe, Heart, Shield,
+  Languages, Users, Globe, Heart, Shield, Mail, Phone,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
