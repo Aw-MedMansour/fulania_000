@@ -613,6 +613,8 @@ export const translations: Record<Lang, Dict> = {
     "vision.phase": "Tappi",
 
     "contact.porter": "Jeyɗo projet on",
+    "founder.title": "Gite, yankiro, e renndo.",
+    "founder.bio": "Aw Mohamedou Mansour woni jeyɗo FulanIA. Mo obbo Master e biotechnologie végétale e Université M'Hamed Bougara Boumerdés (Alaseri) e mo heɓii licence professionnelle e agronomie e ISET Rosso, o yahii projek on e goonga wonde intelligence artificielle waawi wallude e renndude e yahde Pulaagu.",
     "contact.callTag": "Noddaango golle",
     "contact.callTitle": "Naatu e laawol FulanIA.",
     "contact.callBody": "Min ɗaɓɓi cifotooɓe, ekspeer ɗemɗe, mooɓooɓe, wonɓe ballal e wallidiiɓe.",
@@ -984,6 +986,8 @@ export const translations: Record<Lang, Dict> = {
     "vision.roadmap": "Roadmap", "vision.phase": "Phase",
 
     "contact.porter": "Project founder",
+    "founder.title": "A vision, a commitment, a community.",
+    "founder.bio": "Aw Mohamedou Mansour is the founder of FulanIA. A Master's student in plant biotechnology at the University of M'Hamed Bougara Boumerdés (Algeria) and holder of a professional degree in agronomy from ISET Rosso, he carries the project with the conviction that artificial intelligence can serve the preservation and transmission of Pulaagu.",
     "contact.callTag": "Call for collaboration",
     "contact.callTitle": "Join the FulanIA adventure.",
     "contact.callBody": "We are looking for developers, linguists, data collectors, institutional partners, cultural ambassadors and financial supporters.",
@@ -1357,6 +1361,8 @@ export const translations: Record<Lang, Dict> = {
     "vision.roadmap": "خارطة الطريق", "vision.phase": "المرحلة",
 
     "contact.porter": "حامل المشروع",
+    "founder.title": "رؤية، التزام، مجتمع.",
+    "founder.bio": "آو محمدُ منصور هو مؤسس FulanIA. طالب ماجستير في التقنية الحيوية النباتية بجامعة أمحمد بوقرة بومرداس (الجزائر) وحاصل على رخصة مهنية في الزراعة بمعهد ISET Rosso، يحمل المشروع باقتناع تام بأن الذكاء الاصطناعي يمكن أن يخدم الحفاظ على إرث البولانية ونقله.",
     "contact.callTag": "دعوة للتعاون",
     "contact.callTitle": "انضم إلى مغامرة FulanIA.",
     "contact.callBody": "نبحث عن مطورين ولغويين وجامعي بيانات وشركاء مؤسسيين وسفراء ثقافيين وداعمين ماليين.",
