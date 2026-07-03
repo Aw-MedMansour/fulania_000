@@ -568,56 +568,37 @@ function Index() {
       </section>
 
       {/* PORTEUR DU PROJET */}
-      <section id="founder" className="bg-secondary/30 py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
-            <Reveal className="lg:col-span-5">
-              <div className="relative mx-auto max-w-sm lg:mx-0">
-                <div className="absolute -inset-3 rounded-[2rem] bg-[var(--gold)]/20 blur-2xl" aria-hidden />
-                <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
-                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-br from-earth to-earth/80">
-                    <img
-                      src={awMansourPhoto.url}
-                      alt={`Portrait de ${t("author.name")}`}
-                      loading="lazy"
-                      className="h-full w-full object-cover object-top [filter:grayscale(0.4)_sepia(0.12)_contrast(1.02)]"
-                    />
-                    <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-earth/90 to-transparent" />
-                  </div>
-                  <div className="p-5">
-                    <p className="font-display text-lg font-semibold text-foreground">{t("author.name")}</p>
-                    <p className="text-xs font-medium uppercase tracking-wider text-primary">{t("contact.founderRole")}</p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+      <section id="founder" className="relative overflow-hidden bg-earth py-20 text-cream sm:py-24">
+        <div className="absolute inset-0 bg-dot-gold opacity-[0.06] mix-blend-screen" aria-hidden />
+        <div className="pointer-events-none absolute -right-24 top-1/4 h-[24rem] w-[24rem] rounded-full bg-[var(--gold)]/20 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-primary/25 blur-3xl" aria-hidden />
 
-            <Reveal delay={0.1} className="lg:col-span-7">
-              <Eyebrow>{t("contact.porter")}</Eyebrow>
-              <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.01em] text-balance sm:text-4xl lg:text-5xl">
-                {t("founder.title")}
-              </h2>
-              <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-                {t("founder.bio")}
-              </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="mailto:awmedmansour@outlook.com"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:bg-primary/90"
-                >
-                  <Mail className="h-4 w-4" />
-                  {t("contact.send")}
-                </a>
-                <a
-                  href="tel:+213780306486"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/5"
-                >
-                  <Phone className="h-4 w-4" />
-                  +213 780 30 64 86
-                </a>
-              </div>
-            </Reveal>
-          </div>
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <Reveal>
+            <Eyebrow tone="gold">{t("contact.porter")}</Eyebrow>
+            <h2 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-[-0.02em] text-balance sm:text-5xl lg:text-6xl">
+              {t("author.name")}
+            </h2>
+            <p className="mt-6 whitespace-pre-line text-base leading-relaxed text-cream/80 sm:text-lg">
+              {t("contact.bio")}
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a
+                href="mailto:awmedmansour@outlook.com"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-3 text-sm font-semibold text-earth shadow-sm transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/90"
+              >
+                <Mail className="h-4 w-4" />
+                {t("contact.send")}
+              </a>
+              <a
+                href="tel:+213780306486"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/20 bg-cream/5 px-6 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:border-[var(--gold)]/40 hover:bg-cream/10"
+              >
+                <Phone className="h-4 w-4" />
+                +213 780 30 64 86
+              </a>
+            </div>
+          </Reveal>
         </div>
       </section>
 
