@@ -271,6 +271,8 @@ export const translations: Record<Lang, Dict> = {
 
     // Contact
     "contact.porter": "Le porteur du projet",
+    "founder.title": "Une vision, un engagement, une communauté.",
+    "founder.bio": "Aw Mohamedou Mansour est le fondateur de FulanIA. Étudiant en Master en biotechnologie végétale à l'Université M'Hamed Bougara Boumerdés (Algérie) et titulaire d'une licence professionnelle en agronomie à l'ISET Rosso, il porte le projet avec la conviction que l'intelligence artificielle peut servir la préservation et la transmission du Pulaagu.",
     "contact.callTag": "Appel à collaboration",
     "contact.callTitle": "Rejoignez l'aventure FulanIA.",
     "contact.callBody": "Nous cherchons développeurs, linguistes, collecteurs de données, partenaires institutionnels, ambassadeurs culturels et soutiens financiers.",
