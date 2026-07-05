@@ -12,8 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
 
 export const Route = createFileRoute("/dictionary")({
+  beforeLoad: () => {
+    if (DICTIONARY_DISABLED) throw redirect({ to: "/" });
+  },
   head: () => {
     const l = getCurrentLang();
     return {
