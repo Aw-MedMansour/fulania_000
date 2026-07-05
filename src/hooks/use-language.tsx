@@ -381,7 +381,7 @@ export const translations: Record<Lang, Dict> = {
     "dict.favorite": "Favori",
     "dict.signin": "Se connecter",
     "dict.disabled.title": "Dictionnaire temporairement indisponible",
-    "dict.disabled.body": "Nous améliorons la base de données et nettoyons les entrées. Le dictionnaire sera de retour le {date}.",
+    "dict.disabled.body": "Nous améliorons la base de données et nettoyons les entrées. Le dictionnaire sera de retour {date}.",
     "dict.disabled.back": "Retour à l'accueil",
     "dict.disabled.date": "bientôt",
 
