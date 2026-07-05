@@ -1087,6 +1087,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.empty.hist": "No word viewed yet.",
     "dict.clear": "Clear history", "dict.clearSearch": "Clear",
     "dict.listen": "Listen", "dict.favorite": "Favorite", "dict.signin": "Sign in",
+    "dict.disabled.title": "Dictionary temporarily unavailable",
+    "dict.disabled.body": "We are improving the database and cleaning up entries. The dictionary will be back on {date}.",
+    "dict.disabled.back": "Back to home",
+    "dict.disabled.date": "soon",
 
     "auth.welcome": "Welcome, jaaraama",
     "auth.heroTitle": "The griot of the 21st century awaits you.",
