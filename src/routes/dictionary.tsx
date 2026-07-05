@@ -118,7 +118,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
 }
 
 
-function DictionaryPage() {
+function DictionaryActive() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [letter, setLetter] = useState<string>("all");
