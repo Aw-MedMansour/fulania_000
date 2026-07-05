@@ -53,11 +53,6 @@ export const Route = createFileRoute("/")({
             url: "https://fulania.com/",
             inLanguage: ["fr", "ff", "en", "ar"],
             description: tFor(l, "seo./.desc"),
-            potentialAction: {
-              "@type": "SearchAction",
-              target: "https://fulania.com/dictionary?q={search_term_string}",
-              "query-input": "required name=search_term_string",
-            },
           }),
         },
         {

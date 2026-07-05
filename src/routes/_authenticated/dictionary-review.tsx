@@ -79,8 +79,8 @@ function ReviewPage() {
         <p className="mt-2 text-muted-foreground">
           Cette page est réservée aux administrateurs.
         </p>
-        <Link to="/dictionary" className="mt-6 inline-block underline">
-          Retour au dictionnaire
+        <Link to="/" className="mt-6 inline-block underline">
+          Retour à l'accueil
         </Link>
       </div>
     );
