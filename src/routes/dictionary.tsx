@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
+import { DICTIONARY_DISABLED, DICTIONARY_DISABLED_UNTIL } from "@/lib/feature-flags";
 
 export const Route = createFileRoute("/dictionary")({
   head: () => {
