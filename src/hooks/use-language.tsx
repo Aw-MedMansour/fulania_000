@@ -710,6 +710,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.empty.hist": "Alaa konngol yiyaa tawo.",
     "dict.clear": "Momtu daartol", "dict.clearSearch": "Momtu",
     "dict.listen": "Heɗo", "dict.favorite": "Njiɗɗo", "dict.signin": "Naatu",
+    "dict.disabled.title": "Saggitorde nyiɓɓataa tawo",
+    "dict.disabled.body": "Ngonɗen ko ngal e moƴƴitinde e laɓɓinde naatirɗe. Saggitorde ruttoto ñande {date}.",
+    "dict.disabled.back": "Rutto to jaɓɓorgo",
+    "dict.disabled.date": "so ƴoƴii",
 
     "auth.welcome": "Jaaraama, bismilla",
     "auth.heroTitle": "Gawlo ñalnde XXI no fadi maa.",
