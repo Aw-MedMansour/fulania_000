@@ -1466,6 +1466,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.empty.hist": "لم تطّلع على أي كلمة بعد.",
     "dict.clear": "مسح السجل", "dict.clearSearch": "مسح",
     "dict.listen": "استمع", "dict.favorite": "مفضلة", "dict.signin": "تسجيل الدخول",
+    "dict.disabled.title": "القاموس غير متاح مؤقتًا",
+    "dict.disabled.body": "نحن نحسّن قاعدة البيانات وننظّف المدخلات. سيعود القاموس في {date}.",
+    "dict.disabled.back": "العودة إلى الرئيسية",
+    "dict.disabled.date": "قريبًا",
 
     "auth.welcome": "أهلًا، jaaraama",
     "auth.heroTitle": "راوي القرن الحادي والعشرين بانتظارك.",
