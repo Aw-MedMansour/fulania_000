@@ -711,7 +711,7 @@ export const translations: Record<Lang, Dict> = {
     "dict.clear": "Momtu daartol", "dict.clearSearch": "Momtu",
     "dict.listen": "Heɗo", "dict.favorite": "Njiɗɗo", "dict.signin": "Naatu",
     "dict.disabled.title": "Saggitorde nyiɓɓataa tawo",
-    "dict.disabled.body": "Ngonɗen ko ngal e moƴƴitinde e laɓɓinde naatirɗe. Saggitorde ruttoto ñande {date}.",
+    "dict.disabled.body": "Ngonɗen ko ngal e moƴƴitinde e laɓɓinde naatirɗe. Saggitorde ruttoto {date}.",
     "dict.disabled.back": "Rutto to jaɓɓorgo",
     "dict.disabled.date": "so ƴoƴii",
 
