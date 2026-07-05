@@ -22,7 +22,7 @@ type Tool = {
 // Uniquement les outils réellement disponibles sur la plateforme.
 const tools: Tool[] = [
   { to: "/chat",       name: "Janngo",     role: "Assistant Pulaar",         icon: MessageSquareText, iconBg: "bg-[#d4a44a]" },
-  { to: "/dictionary", name: "Saggitorde", role: "Dictionnaire Pulaar",      icon: BookOpen,          iconBg: "bg-emerald-500" },
+  ...(!DICTIONARY_DISABLED ? [{ to: "/dictionary", name: "Saggitorde", role: "Dictionnaire Pulaar",      icon: BookOpen,          iconBg: "bg-emerald-500" }] : []),
   { to: "/learn",      name: "Janngude",   role: "Cours interactifs",        icon: GraduationCap,     iconBg: "bg-sky-500" },
   { to: "/translate",  name: "Firo",       role: "Traducteur multidialecte", icon: Languages,         iconBg: "bg-rose-500" },
   { to: "/culture",    name: "Pulaaku",    role: "Culture & traditions",     icon: Library,           iconBg: "bg-amber-500" },
