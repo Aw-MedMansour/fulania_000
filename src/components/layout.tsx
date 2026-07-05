@@ -4,6 +4,7 @@ import { SocialLinks } from "@/components/social-links";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { DIALECTS, LANGUAGES, useLanguage } from "@/hooks/use-language";
+import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
 
 async function signOut() {
   const { supabase } = await import("@/integrations/supabase/client");
