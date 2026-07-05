@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
 import {
   MessageSquareText,
   BookOpen,
