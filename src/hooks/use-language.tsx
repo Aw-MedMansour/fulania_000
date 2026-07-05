@@ -380,6 +380,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.listen": "Écouter",
     "dict.favorite": "Favori",
     "dict.signin": "Se connecter",
+    "dict.disabled.title": "Dictionnaire temporairement indisponible",
+    "dict.disabled.body": "Nous améliorons la base de données et nettoyons les entrées. Le dictionnaire sera de retour {date}.",
+    "dict.disabled.back": "Retour à l'accueil",
+    "dict.disabled.date": "bientôt",
 
     // Auth
     "auth.welcome": "Bienvenue, jaaraama",
@@ -706,6 +710,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.empty.hist": "Alaa konngol yiyaa tawo.",
     "dict.clear": "Momtu daartol", "dict.clearSearch": "Momtu",
     "dict.listen": "Heɗo", "dict.favorite": "Njiɗɗo", "dict.signin": "Naatu",
+    "dict.disabled.title": "Saggitorde nyiɓɓataa tawo",
+    "dict.disabled.body": "Ngonɗen ko ngal e moƴƴitinde e laɓɓinde naatirɗe. Saggitorde ruttoto {date}.",
+    "dict.disabled.back": "Rutto to jaɓɓorgo",
+    "dict.disabled.date": "so ƴoƴii",
 
     "auth.welcome": "Jaaraama, bismilla",
     "auth.heroTitle": "Gawlo ñalnde XXI no fadi maa.",
@@ -1079,6 +1087,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.empty.hist": "No word viewed yet.",
     "dict.clear": "Clear history", "dict.clearSearch": "Clear",
     "dict.listen": "Listen", "dict.favorite": "Favorite", "dict.signin": "Sign in",
+    "dict.disabled.title": "Dictionary temporarily unavailable",
+    "dict.disabled.body": "We are improving the database and cleaning up entries. The dictionary will be back {date}.",
+    "dict.disabled.back": "Back to home",
+    "dict.disabled.date": "soon",
 
     "auth.welcome": "Welcome, jaaraama",
     "auth.heroTitle": "The griot of the 21st century awaits you.",
@@ -1454,6 +1466,10 @@ export const translations: Record<Lang, Dict> = {
     "dict.empty.hist": "لم تطّلع على أي كلمة بعد.",
     "dict.clear": "مسح السجل", "dict.clearSearch": "مسح",
     "dict.listen": "استمع", "dict.favorite": "مفضلة", "dict.signin": "تسجيل الدخول",
+    "dict.disabled.title": "القاموس غير متاح مؤقتًا",
+    "dict.disabled.body": "نحن نحسّن قاعدة البيانات وننظّف المدخلات. سيعود القاموس {date}.",
+    "dict.disabled.back": "العودة إلى الرئيسية",
+    "dict.disabled.date": "قريبًا",
 
     "auth.welcome": "أهلًا، jaaraama",
     "auth.heroTitle": "راوي القرن الحادي والعشرين بانتظارك.",

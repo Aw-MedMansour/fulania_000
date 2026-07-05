@@ -1,7 +1,7 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { BookOpen, Heart, History, Search, Sparkles, Star, Volume2, X, Cloud, Loader2 } from "lucide-react";
+import { BookOpen, Heart, History, Search, Sparkles, Star, Volume2, X, Cloud, Loader2, Construction } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -12,12 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
+import { DICTIONARY_DISABLED, DICTIONARY_DISABLED_UNTIL } from "@/lib/feature-flags";
 
 export const Route = createFileRoute("/dictionary")({
-  beforeLoad: () => {
-    if (DICTIONARY_DISABLED) throw redirect({ to: "/" });
-  },
   head: () => {
     const l = getCurrentLang();
     return {
@@ -119,6 +116,40 @@ function StatCard({ value, label }: { value: string; label: string }) {
 
 
 function DictionaryPage() {
+  return DICTIONARY_DISABLED ? <DictionaryDisabled /> : <DictionaryActive />;
+}
+
+function DictionaryDisabled() {
+  const { t } = useLanguage();
+  const until = DICTIONARY_DISABLED_UNTIL ?? t("dict.disabled.date");
+  return (
+    <div className="min-h-screen bg-background">
+      <SiteHeader />
+      <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl flex-col items-center justify-center px-4 py-20 text-center">
+        <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)]/20">
+            <Construction className="h-8 w-8 text-[var(--gold)]" />
+          </div>
+          <h1 className="mt-6 font-display text-2xl font-semibold text-earth">
+            {t("dict.disabled.title")}
+          </h1>
+          <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+            {t("dict.disabled.body").replace("{date}", until)}
+          </p>
+          <Link
+            to="/"
+            className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            {t("dict.disabled.back")}
+          </Link>
+        </div>
+      </main>
+      <SiteFooter />
+    </div>
+  );
+}
+
+function DictionaryActive() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
   const [letter, setLetter] = useState<string>("all");
