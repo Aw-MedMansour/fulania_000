@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
 import {
   MessageSquareText,
   BookOpen,
@@ -19,10 +18,10 @@ type Tool = {
   iconBg: string;
 };
 
-// Uniquement les outils réellement disponibles sur la plateforme.
+// Tous les outils disponibles sur la plateforme.
 const tools: Tool[] = [
   { to: "/chat",       name: "Janngo",     role: "Assistant Pulaar",         icon: MessageSquareText, iconBg: "bg-[#d4a44a]" },
-  ...(!DICTIONARY_DISABLED ? [{ to: "/dictionary", name: "Saggitorde", role: "Dictionnaire Pulaar",      icon: BookOpen,          iconBg: "bg-emerald-500" }] : []),
+  { to: "/dictionary", name: "Saggitorde", role: "Dictionnaire Pulaar",      icon: BookOpen,          iconBg: "bg-emerald-500" },
   { to: "/learn",      name: "Janngude",   role: "Cours interactifs",        icon: GraduationCap,     iconBg: "bg-sky-500" },
   { to: "/translate",  name: "Firo",       role: "Traducteur multidialecte", icon: Languages,         iconBg: "bg-rose-500" },
   { to: "/culture",    name: "Pulaaku",    role: "Culture & traditions",     icon: Library,           iconBg: "bg-amber-500" },
