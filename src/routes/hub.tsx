@@ -21,7 +21,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
 import { ToolsMarquee } from "@/components/tools-marquee";
-import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
 import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
 import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
@@ -167,26 +166,24 @@ function HubPage() {
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features
-            .filter((f) => !DICTIONARY_DISABLED || f.to !== "/dictionary")
-            .map(({ to, icon: Icon, title, desc, accent, iconBg, ring, delay }) => (
-              <Link
-                key={to}
-                to={to}
-                className="hub-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 hover:border-[var(--gold)]/50 hover:shadow-lg"
-                style={{ animationDelay: delay }}
-              >
-                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-opacity group-hover:opacity-100`} aria-hidden />
-                <div className={`relative flex h-12 w-12 items-center justify-center rounded-xl ${iconBg} text-cream shadow-sm hub-icon-ring ${ring}`}>
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h2 className="relative mt-5 font-display text-xl font-semibold text-earth">{title}</h2>
-                <p className="relative mt-1.5 text-sm text-muted-foreground">{desc}</p>
-                <span className="relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
-                  {t("hub.open")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                </span>
-              </Link>
-            ))}
+          {features.map(({ to, icon: Icon, title, desc, accent, iconBg, ring, delay }) => (
+            <Link
+              key={to}
+              to={to}
+              className="hub-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 hover:border-[var(--gold)]/50 hover:shadow-lg"
+              style={{ animationDelay: delay }}
+            >
+              <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${accent} opacity-0 transition-opacity group-hover:opacity-100`} aria-hidden />
+              <div className={`relative flex h-12 w-12 items-center justify-center rounded-xl ${iconBg} text-cream shadow-sm hub-icon-ring ${ring}`}>
+                <Icon className="h-6 w-6" />
+              </div>
+              <h2 className="relative mt-5 font-display text-xl font-semibold text-earth">{title}</h2>
+              <p className="relative mt-1.5 text-sm text-muted-foreground">{desc}</p>
+              <span className="relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                {t("hub.open")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
+          ))}
         </section>
 
         <section className="mt-16">
