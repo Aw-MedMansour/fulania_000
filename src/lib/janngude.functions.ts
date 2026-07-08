@@ -443,7 +443,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
     const { hearts: currentHearts } = computeHearts(storedHearts, lastLost);
     storedHearts = currentHearts;
 
-    if (data.correct) {
+    if (correct) {
       xp += 10;
     } else {
       if (storedHearts > 0) {
