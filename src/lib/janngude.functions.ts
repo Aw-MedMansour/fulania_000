@@ -345,7 +345,7 @@ export const getOrGenerateDailyMissions = createServerFn({ method: "POST" })
 /* ====== Soumission d'une réponse ====== */
 
 const submitInput = z.object({
-  mission_id: z.string().uuid(),
+  mission_id: z.string().uuid().nullable().optional(),
   exercise_id: z.string(),
   entry_id: z.string().uuid(),
   answer: z.string().max(200),
@@ -361,26 +361,44 @@ export const submitAnswer = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
 
-    // Server-side correctness validation from stored mission exercises
-    const { data: mission } = await supabase
-      .from("daily_missions")
-      .select("exercises")
-      .eq("id", data.mission_id)
-      .eq("user_id", userId)
-      .maybeSingle();
+    // Server-side correctness validation.
+    // Preferred path: user's own daily_missions.exercises jsonb.
+    let accepted: Set<string> | null = null;
+    if (data.mission_id) {
+      const { data: mission } = await supabase
+        .from("daily_missions")
+        .select("exercises")
+        .eq("id", data.mission_id)
+        .eq("user_id", userId)
+        .maybeSingle();
+      const exercises = (mission?.exercises as unknown as Exercise[] | null) ?? null;
+      const exercise = exercises?.find((e) => e.id === data.exercise_id && e.entry_id === data.entry_id);
+      if (exercise) {
+        accepted = new Set<string>([
+          normalizeAnswer(exercise.answer),
+          ...(exercise.accept ?? []).map(normalizeAnswer),
+        ]);
+      }
+    }
 
-    const exercises = (mission?.exercises as unknown as Exercise[] | null) ?? null;
-    const exercise = exercises?.find((e) => e.id === data.exercise_id && e.entry_id === data.entry_id);
-    if (!exercise) {
-      throw new Error("Exercise not found");
+    // Fallback (endless / batch mode): validate against the dictionary entry itself.
+    if (!accepted) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: entry } = await supabaseAdmin
+        .from("dictionary_entries")
+        .select("pulaar, french")
+        .eq("id", data.entry_id)
+        .maybeSingle();
+      if (!entry) throw new Error("Entry not found");
+      accepted = new Set<string>([
+        normalizeAnswer(entry.pulaar ?? ""),
+        normalizeAnswer(entry.french ?? ""),
+      ]);
     }
 
     const submitted = normalizeAnswer(data.answer);
-    const accepted = new Set<string>([
-      normalizeAnswer(exercise.answer),
-      ...(exercise.accept ?? []).map(normalizeAnswer),
-    ]);
     const correct = accepted.has(submitted);
+
 
     // SRS update
     const { data: existing } = await supabase
