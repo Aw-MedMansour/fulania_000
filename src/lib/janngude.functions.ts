@@ -490,12 +490,22 @@ export const completeMission = createServerFn({ method: "POST" })
   .inputValidator((d) => completeInput.parse(d))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+    const today = new Date().toISOString().slice(0, 10);
 
-    await supabase
+    // Only award XP if a valid, not-yet-completed mission for today gets flipped.
+    const { data: updated, error: updErr } = await supabase
       .from("daily_missions")
       .update({ completed: true, score: data.score, completed_at: new Date().toISOString() })
       .eq("id", data.mission_id)
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .eq("mission_date", today)
+      .eq("completed", false)
+      .select("id");
+
+    if (updErr) throw new Error(updErr.message);
+    if (!updated || updated.length === 0) {
+      return { ok: false, xp_gained: 0, badges: [] as string[] };
+    }
 
     // bonus mission : 50 XP
     const { data: prog } = await supabase
@@ -508,6 +518,7 @@ export const completeMission = createServerFn({ method: "POST" })
       .from("user_learning_progress")
       .update({ xp: newXp, level: xpToLevel(newXp).level })
       .eq("user_id", userId);
+
 
     // check badges
     const { count: missionsCount } = await supabase
