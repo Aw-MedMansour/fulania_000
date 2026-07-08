@@ -116,7 +116,10 @@ function StatCard({ value, label }: { value: string; label: string }) {
 
 
 function DictionaryPage() {
-  return DICTIONARY_DISABLED ? <DictionaryDisabled /> : <DictionaryActive />;
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  if (!user) return <DictionaryDisabled />;
+  return <DictionaryActive />;
 }
 
 function DictionaryDisabled() {
