@@ -123,7 +123,7 @@ export function EndlessPlayer({
   function choose(opt: string) {
     if (picked || !ex) return;
     setPicked(opt);
-    judge(opt === ex.answer);
+    judge(opt === ex.answer, opt);
   }
 
   function checkTyped() {
@@ -132,7 +132,8 @@ export function EndlessPlayer({
     const accept = ex.accept ?? [ex.answer.toLowerCase().trim()];
     const ok = accept.includes(v);
     setPicked(v || "—");
-    judge(ok);
+    judge(ok, typed);
+
   }
 
   function next() {
