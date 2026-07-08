@@ -345,17 +345,60 @@ export const getOrGenerateDailyMissions = createServerFn({ method: "POST" })
 /* ====== Soumission d'une réponse ====== */
 
 const submitInput = z.object({
-  mission_id: z.string().uuid(),
+  mission_id: z.string().uuid().nullable().optional(),
   exercise_id: z.string(),
   entry_id: z.string().uuid(),
-  correct: z.boolean(),
+  answer: z.string().max(200),
 });
+
+function normalizeAnswer(s: string): string {
+  return s.toLowerCase().trim().replace(/\s+/g, " ");
+}
 
 export const submitAnswer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => submitInput.parse(d))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+
+    // Server-side correctness validation.
+    // Preferred path: user's own daily_missions.exercises jsonb.
+    let accepted: Set<string> | null = null;
+    if (data.mission_id) {
+      const { data: mission } = await supabase
+        .from("daily_missions")
+        .select("exercises")
+        .eq("id", data.mission_id)
+        .eq("user_id", userId)
+        .maybeSingle();
+      const exercises = (mission?.exercises as unknown as Exercise[] | null) ?? null;
+      const exercise = exercises?.find((e) => e.id === data.exercise_id && e.entry_id === data.entry_id);
+      if (exercise) {
+        accepted = new Set<string>([
+          normalizeAnswer(exercise.answer),
+          ...(exercise.accept ?? []).map(normalizeAnswer),
+        ]);
+      }
+    }
+
+    // Fallback (endless / batch mode): validate against the dictionary entry itself.
+    if (!accepted) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: entry } = await supabaseAdmin
+        .from("dictionary_entries")
+        .select("pulaar, french")
+        .eq("id", data.entry_id)
+        .maybeSingle();
+      if (!entry) throw new Error("Entry not found");
+      accepted = new Set<string>([
+        normalizeAnswer(entry.pulaar ?? ""),
+        normalizeAnswer(entry.french ?? ""),
+      ]);
+    }
+
+    const submitted = normalizeAnswer(data.answer);
+    const correct = accepted.has(submitted);
+
 
     // SRS update
     const { data: existing } = await supabase
@@ -365,12 +408,14 @@ export const submitAnswer = createServerFn({ method: "POST" })
       .eq("entry_id", data.entry_id)
       .maybeSingle();
 
+
     let ease = existing?.ease ?? 2.5;
     let interval = existing?.interval_days ?? 0;
     let reps = existing?.reps ?? 0;
     let lapses = existing?.lapses ?? 0;
 
-    if (data.correct) {
+    if (correct) {
+
       reps += 1;
       ease = Math.min(2.8, ease + 0.05);
       interval = reps === 1 ? 1 : reps === 2 ? 3 : Math.round(interval * ease);
@@ -416,7 +461,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
     const { hearts: currentHearts } = computeHearts(storedHearts, lastLost);
     storedHearts = currentHearts;
 
-    if (data.correct) {
+    if (correct) {
       xp += 10;
     } else {
       if (storedHearts > 0) {
@@ -447,7 +492,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
         { onConflict: "user_id" },
       );
 
-    return { ok: true };
+    return { ok: true, correct };
   });
 
 /* ====== Finalisation d'une mission ====== */
@@ -463,12 +508,22 @@ export const completeMission = createServerFn({ method: "POST" })
   .inputValidator((d) => completeInput.parse(d))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+    const today = new Date().toISOString().slice(0, 10);
 
-    await supabase
+    // Only award XP if a valid, not-yet-completed mission for today gets flipped.
+    const { data: updated, error: updErr } = await supabase
       .from("daily_missions")
       .update({ completed: true, score: data.score, completed_at: new Date().toISOString() })
       .eq("id", data.mission_id)
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .eq("mission_date", today)
+      .eq("completed", false)
+      .select("id");
+
+    if (updErr) throw new Error(updErr.message);
+    if (!updated || updated.length === 0) {
+      return { ok: false, xp_gained: 0, badges: [] as string[] };
+    }
 
     // bonus mission : 50 XP
     const { data: prog } = await supabase
@@ -481,6 +536,7 @@ export const completeMission = createServerFn({ method: "POST" })
       .from("user_learning_progress")
       .update({ xp: newXp, level: xpToLevel(newXp).level })
       .eq("user_id", userId);
+
 
     // check badges
     const { count: missionsCount } = await supabase

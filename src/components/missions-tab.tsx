@@ -304,7 +304,7 @@ function MissionPlayer({
     if (ok) setCorrectCount((c) => c + 1);
     else setHearts((h) => Math.max(0, h - 1));
     // fire-and-forget côté serveur
-    submit({ data: { mission_id: mission.id, exercise_id: ex.id, entry_id: ex.entry_id, correct: ok } }).catch(() => {});
+    submit({ data: { mission_id: mission.id, exercise_id: ex.id, entry_id: ex.entry_id, answer: opt } }).catch(() => {});
   };
 
   const next = async () => {
