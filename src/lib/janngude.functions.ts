@@ -396,7 +396,8 @@ export const submitAnswer = createServerFn({ method: "POST" })
     let reps = existing?.reps ?? 0;
     let lapses = existing?.lapses ?? 0;
 
-    if (data.correct) {
+    if (correct) {
+
       reps += 1;
       ease = Math.min(2.8, ease + 0.05);
       interval = reps === 1 ? 1 : reps === 2 ? 3 : Math.round(interval * ease);
