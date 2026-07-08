@@ -97,7 +97,7 @@ export function EndlessPlayer({
     navigate({ to: "/chat" });
   }
 
-  function judge(correct: boolean) {
+  function judge(correct: boolean, submittedAnswer: string) {
     if (!ex) return;
     setFeedback(correct ? "ok" : "no");
     if (correct) {
@@ -110,14 +110,15 @@ export function EndlessPlayer({
     }
     submit({
       data: {
-        mission_id: "00000000-0000-0000-0000-000000000000",
+        mission_id: null,
         exercise_id: ex.id,
         entry_id: ex.entry_id,
-        correct,
+        answer: submittedAnswer,
       },
     }).catch(() => {});
     onTick();
   }
+
 
   function choose(opt: string) {
     if (picked || !ex) return;
