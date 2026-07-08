@@ -348,14 +348,39 @@ const submitInput = z.object({
   mission_id: z.string().uuid(),
   exercise_id: z.string(),
   entry_id: z.string().uuid(),
-  correct: z.boolean(),
+  answer: z.string().max(200),
 });
+
+function normalizeAnswer(s: string): string {
+  return s.toLowerCase().trim().replace(/\s+/g, " ");
+}
 
 export const submitAnswer = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d) => submitInput.parse(d))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+
+    // Server-side correctness validation from stored mission exercises
+    const { data: mission } = await supabase
+      .from("daily_missions")
+      .select("exercises")
+      .eq("id", data.mission_id)
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    const exercises = (mission?.exercises as unknown as Exercise[] | null) ?? null;
+    const exercise = exercises?.find((e) => e.id === data.exercise_id && e.entry_id === data.entry_id);
+    if (!exercise) {
+      throw new Error("Exercise not found");
+    }
+
+    const submitted = normalizeAnswer(data.answer);
+    const accepted = new Set<string>([
+      normalizeAnswer(exercise.answer),
+      ...(exercise.accept ?? []).map(normalizeAnswer),
+    ]);
+    const correct = accepted.has(submitted);
 
     // SRS update
     const { data: existing } = await supabase
@@ -364,6 +389,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
       .eq("user_id", userId)
       .eq("entry_id", data.entry_id)
       .maybeSingle();
+
 
     let ease = existing?.ease ?? 2.5;
     let interval = existing?.interval_days ?? 0;
