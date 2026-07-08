@@ -474,7 +474,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
         { onConflict: "user_id" },
       );
 
-    return { ok: true };
+    return { ok: true, correct };
   });
 
 /* ====== Finalisation d'une mission ====== */
