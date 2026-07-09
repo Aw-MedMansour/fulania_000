@@ -8,21 +8,21 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { loadEnv } from "vite";
 import path from "path";
 
-export default defineConfig(({ mode }) => {
-  // Existing client env injection (VITE_* prefix) is handled by the TanStack config plugin.
-  // We load all env vars here so server routes can access non-VITE keys like SUPABASE_SERVICE_ROLE_KEY.
-  const serverEnv = loadEnv(mode, process.cwd(), "");
-  Object.assign(process.env, serverEnv);
+// Server routes need non-VITE env vars (e.g., SUPABASE_SERVICE_ROLE_KEY). Load them into process.env.
+const serverEnv = loadEnv(process.env.NODE_ENV || "development", process.cwd(), "");
+Object.assign(process.env, serverEnv);
 
-  return {
-    vite: {
-      resolve: {
-        alias: {
-          "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
-          "entities/lib/encode.js": path.resolve(__dirname, "node_modules/entities/lib/encode.js"),
-          entities: path.resolve(__dirname, "node_modules/entities"),
-        },
+export default defineConfig({
+  tanstackStart: {
+    server: { entry: "server" },
+  },
+  vite: {
+    resolve: {
+      alias: {
+        "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
+        "entities/lib/encode.js": path.resolve(__dirname, "node_modules/entities/lib/encode.js"),
+        entities: path.resolve(__dirname, "node_modules/entities"),
       },
     },
-  };
+  },
 });
