@@ -96,5 +96,10 @@
     "test": "vitest run"
   },
   "sideEffects": false,
-  "type": "module"
+  "type": "module",
+  "pnpm": {
+    "overrides": {
+      "entities": "4.5.0"
+    }
+  }
 }
