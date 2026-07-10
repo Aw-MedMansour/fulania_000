@@ -117,34 +117,37 @@ function StatCard({ value, label }: { value: string; label: string }) {
 
 function DictionaryPage() {
   const { user, loading } = useAuth();
-  if (loading) return null;
-  if (!user) return <DictionaryDisabled />;
+  const { isAdmin, loading: adminLoading } = useIsAdmin();
+  if (loading || (user && adminLoading)) return null;
+  if (!user || !isAdmin) return <DictionaryDisabled loggedIn={!!user} />;
   return <DictionaryActive />;
 }
 
-function DictionaryDisabled() {
+function DictionaryDisabled({ loggedIn }: { loggedIn: boolean }) {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl flex-col items-center justify-center px-4 py-20 text-center">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)]/20">
-            <BookOpen className="h-8 w-8 text-[var(--gold)]" />
+            <Construction className="h-8 w-8 text-[var(--gold)]" />
           </div>
           <h1 className="mt-6 font-display text-2xl font-semibold text-earth">
-            Accès réservé aux membres
+            Dictionnaire temporairement indisponible
           </h1>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
-            Le dictionnaire Pulaar complet est accessible aux utilisateurs connectés. Créez un compte gratuit ou connectez-vous pour explorer les entrées, favoris et historique.
+            Nous améliorons la base de données et nettoyons les entrées. Le dictionnaire sera de nouveau accessible {DICTIONARY_DISABLED_UNTIL ?? "bientôt"}.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/auth"
-              search={{ next: "/dictionary" }}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
-            >
-              Se connecter
-            </Link>
+            {!loggedIn && (
+              <Link
+                to="/auth"
+                search={{ next: "/dictionary" }}
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+              >
+                Accès équipe
+              </Link>
+            )}
             <Link
               to="/"
               className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-4 py-2 text-sm font-medium hover:bg-muted"
