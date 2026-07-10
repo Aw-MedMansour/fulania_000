@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { BookOpen, Heart, History, Search, Sparkles, Star, Volume2, X, Cloud, Loader2, Construction } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsAdmin } from "@/hooks/use-is-admin";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { SiteFooter, SiteHeader } from "@/components/layout";
 import { PageNav } from "@/components/page-nav";
