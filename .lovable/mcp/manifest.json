@@ -1,0 +1,447 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "fulania-mcp",
+      "version": "0.1.0",
+      "title": "FulanIA — Pulaar & Fulɓe culture"
+    },
+    "tools": [
+      {
+        "name": "translate",
+        "title": "Translate (Pulaar / French / English / Arabic)",
+        "description": "Translate a short text between Pulaar (Fulfulde/Pular), French, English, and Arabic. Returns the translation only.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "description": "Text to translate."
+            },
+            "from": {
+              "type": "string",
+              "enum": [
+                "pulaar",
+                "french",
+                "english",
+                "arabic"
+              ],
+              "description": "Source language."
+            },
+            "to": {
+              "type": "string",
+              "enum": [
+                "pulaar",
+                "french",
+                "english",
+                "arabic"
+              ],
+              "description": "Target language."
+            },
+            "dialect": {
+              "type": "string",
+              "enum": [
+                "fouta_toro",
+                "fouta_djallon",
+                "macina",
+                "adamawa"
+              ],
+              "description": "Optional Pulaar dialect to prefer when source or target is Pulaar."
+            }
+          },
+          "required": [
+            "text",
+            "from",
+            "to"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "dictionary_lookup",
+        "title": "Pulaar dictionary lookup",
+        "description": "Look up a Pulaar word (or a word in French/English/Arabic) and return its meaning, part of speech, example sentence, and pronunciation notes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "word": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80,
+              "description": "Word or short phrase to look up."
+            },
+            "source_language": {
+              "type": "string",
+              "enum": [
+                "pulaar",
+                "french",
+                "english",
+                "arabic"
+              ],
+              "default": "pulaar",
+              "description": "Language the input word is written in."
+            }
+          },
+          "required": [
+            "word"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "grammar_explain",
+        "title": "Pulaar grammar explanation",
+        "description": "Explain a Pulaar grammar topic — noun classes (ɗo/ngo/ndi/ɗi…), tenses, negation, pronouns, plurals, etc. — with 1–2 mini examples.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "topic": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 300,
+              "description": "Grammar topic or question."
+            },
+            "language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic"
+              ],
+              "default": "french"
+            }
+          },
+          "required": [
+            "topic"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "vocabulary_lesson",
+        "title": "Pulaar vocabulary lesson",
+        "description": "Generate a themed vocabulary list (family, market, travel, food, religion, etc.) with Pulaar + translations and example sentences.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "theme": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "Topic of the lesson."
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 3,
+              "maximum": 20,
+              "default": 8,
+              "description": "Number of words."
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "beginner",
+                "intermediate",
+                "advanced"
+              ],
+              "default": "beginner"
+            },
+            "language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic"
+              ],
+              "default": "french"
+            }
+          },
+          "required": [
+            "theme"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "generate_exercise",
+        "title": "Generate a Pulaar exercise or quiz",
+        "description": "Create a self-contained Pulaar learning exercise (fill-in-the-blank, multiple-choice, translation, or matching) with an answer key.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "theme": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 120,
+              "description": "Topic or grammar point."
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "fill_blank",
+                "multiple_choice",
+                "translation",
+                "matching"
+              ],
+              "default": "multiple_choice"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "default": 5
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "beginner",
+                "intermediate",
+                "advanced"
+              ],
+              "default": "beginner"
+            },
+            "language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic"
+              ],
+              "default": "french"
+            }
+          },
+          "required": [
+            "theme"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "text_correction",
+        "title": "Correct Pulaar text",
+        "description": "Correct spelling, grammar, orthography (ɓ ɗ ƴ ŋ), and word choice in a short Pulaar text. Returns the corrected version plus a brief explanation.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1500,
+              "description": "Pulaar text to correct."
+            },
+            "dialect": {
+              "type": "string",
+              "enum": [
+                "fouta_toro",
+                "fouta_djallon",
+                "macina",
+                "adamawa"
+              ],
+              "default": "fouta_toro"
+            },
+            "explanation_language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic"
+              ],
+              "default": "french"
+            }
+          },
+          "required": [
+            "text"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "culture_qa",
+        "title": "Fulani culture Q&A",
+        "description": "Answer questions about Fulani (Fulɓe) history, traditions, pulaaku code of conduct, transhumance, oral literature, music, cuisine, and diaspora.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "question": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 1000,
+              "description": "The question about Fulani culture."
+            },
+            "language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic",
+                "pulaar"
+              ],
+              "default": "french",
+              "description": "Language of the answer."
+            }
+          },
+          "required": [
+            "question"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "chat_with_janngude",
+        "title": "Chat with Janngude (FulanIA assistant)",
+        "description": "Ask FulanIA's Pulaar tutor 'Janngude' anything about the Pulaar language, Fulɓe culture, or learning tips. Stateless — pass prior turns in `history` for context.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": false,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "description": "Your message to the assistant."
+            },
+            "history": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "user",
+                      "assistant"
+                    ]
+                  },
+                  "content": {
+                    "type": "string",
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "role",
+                  "content"
+                ],
+                "additionalProperties": false
+              },
+              "maxItems": 20,
+              "default": [],
+              "description": "Prior conversation turns (optional)."
+            },
+            "language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic",
+                "pulaar"
+              ],
+              "default": "french"
+            }
+          },
+          "required": [
+            "message"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "search_resources",
+        "title": "Search FulanIA public resources",
+        "description": "Search FulanIA's public educational resources — articles, culture pages, learning modules, and dictionary highlights — and return a brief summary with pointers.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 200,
+              "description": "What you are looking for."
+            },
+            "language": {
+              "type": "string",
+              "enum": [
+                "french",
+                "english",
+                "arabic"
+              ],
+              "default": "french"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
