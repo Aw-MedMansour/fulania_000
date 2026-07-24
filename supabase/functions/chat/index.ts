@@ -65,10 +65,10 @@ Classes nominales : o, ngal, ndi, ndu, ɗum, ɗe, ɗi, ɓe, kal, kol, ka, ki, ko
 CONSIGNE : Applique strictement cet alphabet et ces accords. Corrige tout mot mal orthographié.`;
 
 const LANG_INSTRUCTIONS: Record<string, string> = {
-  fr: "Réponds en français, mais donne TOUJOURS en priorité les équivalents/exemples en Pulaar (caractères ɓ ɗ ƴ ŋ corrects).",
-  ff: "Jaabo SAHA fof e ɗemngal Pulaar/Fulfulde tan, huutoraa alkule ɓ, ɗ, ƴ, ŋ no haaniri. So a anndaa, wi'u 'mi anndaa'.",
-  en: "Answer in English, but ALWAYS prioritize Pulaar equivalents/examples (with correct ɓ ɗ ƴ ŋ).",
-  ar: "أجب بالعربية، مع إعطاء الأولوية دائمًا للمكافئات والأمثلة بالبولارية (مع الأحرف ɓ ɗ ƴ ŋ الصحيحة).",
+  fr: "L'interface utilisateur de l'utilisateur est en français. Réponds dans la langue du dernier message de l'utilisateur (Pulaar par défaut s'il écrit en Pulaar ou reste ambigu, sinon français). N'ajoute PAS de traductions ou d'équivalents Pulaar spontanés.",
+  ff: "Kuutorgal ngal woni e ɗemngal Pulaar. Jaabo e ɗemngal Pulaar so tawii kaɓɓoowo winndii e Pulaar. Huutoraa alkule ɓ, ɗ, ƴ, ŋ no haaniri. So a anndaa, wi'u 'mi anndaa'.",
+  en: "The user's interface is in English. Reply in the language of the user's last message (Pulaar by default if they write in Pulaar or it's ambiguous, otherwise English). Do NOT add spontaneous Pulaar translations or equivalents.",
+  ar: "واجهة المستخدم بالعربية. أجب بلغة آخر رسالة للمستخدم (البولارية افتراضيًا إذا كتب بالبولارية أو كان ذلك غامضًا، وإلا فبالعربية). لا تُضِف ترجمات أو مكافئات بولارية تلقائية.",
 };
 
 const MAX_MESSAGES = 20;
