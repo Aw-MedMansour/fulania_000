@@ -195,12 +195,13 @@ export function SiteFooter() {
               {t("footer.explore")}
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
-              <li><a href="/#solution" className="hover:text-[var(--gold)]">{t("nav.solution")}</a></li>
-              <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
-              <li><a href="/#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
-              <li><a href="/#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
+              <li><Link to="/" className="hover:text-[var(--gold)]">Application</Link></li>
+              <li><Link to="/about" className="hover:text-[var(--gold)]">À propos</Link></li>
+              <li><a href="/about#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
+              <li><a href="/about#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
               <li><Link to="/contact" className="hover:text-[var(--gold)]">{t("nav.contact")}</Link></li>
             </ul>
+
           </div>
 
           <div>
