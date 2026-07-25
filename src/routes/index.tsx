@@ -61,8 +61,10 @@ function Index() {
   const submitPrompt = (e: React.FormEvent) => {
     e.preventDefault();
     const q = prompt.trim();
-    navigate({ to: "/chat", search: q ? { q } : undefined });
+    if (q) try { sessionStorage.setItem("fulania.pendingPrompt", q); } catch {}
+    navigate({ to: "/chat" });
   };
+
 
   return (
     <SidebarProvider>
