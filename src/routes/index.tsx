@@ -148,7 +148,7 @@ function Index() {
           <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-primary/30 blur-3xl" aria-hidden />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-5 pt-14 pb-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <div className="relative mx-auto max-w-7xl px-5 pt-10 pb-16 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
             {/* Colonne texte */}
             <motion.div
