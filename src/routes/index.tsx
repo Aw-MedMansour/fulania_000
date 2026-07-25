@@ -20,6 +20,7 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
 import { HeroProductPreview } from "@/components/hero-product-preview";
+import { ContactSection } from "@/components/contact-section";
 
 
 
@@ -597,34 +598,8 @@ function Index() {
         </div>
       </section>
 
-      {/* CONTACT CTA compact */}
-      <section className="border-t border-border/60 bg-secondary/30 py-16 sm:py-20">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <Eyebrow align="center">Contact</Eyebrow>
-          <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
-            {t("contact.title") || "Une question, un partenariat, une idée ?"}
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Écrivez-nous — l'équipe FulanIA vous répond en 24–48 h.
-          </p>
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-            >
-              <Mail className="h-4 w-4" />
-              Nous contacter
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <a
-              href="mailto:contact@fulania.com"
-              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:border-primary/40"
-            >
-              contact@fulania.com
-            </a>
-          </div>
-        </div>
-      </section>
+      {/* CONTACT */}
+      <ContactSection />
 
       <SiteFooter />
     </div>
