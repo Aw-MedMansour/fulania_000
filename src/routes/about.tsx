@@ -29,60 +29,23 @@ import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 
 export const Route = createFileRoute("/about")({
   ssr: false,
-
-
-  head: () => {
-    const l = getCurrentLang();
-    return {
-      meta: [
-        { title: tFor(l, "seo./.title") },
-        { name: "description", content: tFor(l, "seo./.desc") },
-        { property: "og:title", content: tFor(l, "seo./.title") },
-        { property: "og:description", content: tFor(l, "seo./.desc") },
-        { property: "og:url", content: "https://fulania.com/" },
-      ],
-      links: [
-        { rel: "canonical", href: "https://fulania.com/" },
-      ],
-      scripts: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "FulanIA",
-            url: "https://fulania.com/",
-            inLanguage: ["fr", "ff", "en", "ar"],
-            description: tFor(l, "seo./.desc"),
-          }),
-        },
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "FulanIA",
-            url: "https://fulania.com/",
-            logo: "https://fulania.com/favicon.ico",
-            description:
-              "FulanIA — assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule.",
-            founder: { "@type": "Person", name: "Aw Mohamedou Mansour" },
-            sameAs: [
-              "https://fulania.com",
-              "https://www.facebook.com/share/1D6ac9C3Qs/?mibextid=wwXIfr",
-              "https://whatsapp.com/channel/0029VabnVHaDuMRcgOMKpM3s",
-              "https://www.tiktok.com/@anssour",
-              "https://www.youtube.com/@FulanIA-TV",
-            ],
-          }),
-        },
-      ],
-    };
-  },
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "À propos de FulanIA — Mission, équipe, presse" },
+      { name: "description", content: "Découvrez FulanIA : mission, équipe, presse, partenaires et vision pour la langue Pulaar et la culture Peule." },
+      { property: "og:title", content: "À propos de FulanIA" },
+      { property: "og:description", content: "Mission, équipe, presse et vision de FulanIA — la première IA dédiée au Pulaagu." },
+      { property: "og:url", content: "https://fulania.com/about" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "https://fulania.com/about" }],
+  }),
+  component: About,
 });
 
-function Index() {
+function About() {
+
   const { t } = useLanguage();
   const [showDialects, setShowDialects] = useState(false);
 
