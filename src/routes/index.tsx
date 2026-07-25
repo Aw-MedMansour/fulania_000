@@ -20,7 +20,7 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
 import { HeroProductPreview } from "@/components/hero-product-preview";
-import { ContactSection } from "@/components/contact-section";
+
 
 
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
