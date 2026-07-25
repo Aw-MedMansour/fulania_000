@@ -50,9 +50,9 @@ export function HeroProductPreview() {
           {messages.map((m, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 + i * 0.18 }}
+              transition={{ duration: 0.35, delay: 0.15 + i * 0.1 }}
               className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
