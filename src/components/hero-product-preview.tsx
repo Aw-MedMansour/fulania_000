@@ -76,7 +76,7 @@ export function HeroProductPreview() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.4 }}
+            transition={{ delay: 0.6, duration: 0.3 }}
             className="flex justify-start"
           >
             <div className="flex items-center gap-1 rounded-2xl rounded-tl-sm border border-white/10 bg-white/[0.04] px-4 py-3">
