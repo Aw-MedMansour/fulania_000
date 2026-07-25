@@ -48,7 +48,7 @@ export function ContactSection() {
               <StaggerGroup className="mt-8 space-y-3">
                 <StaggerItem>
                   <a
-                    href="mailto:awmedmansour@outlook.com"
+                    href="mailto:contact.fulania@gmail.com"
                     className="flex items-center gap-4 rounded-xl border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
                   >
                     <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -59,7 +59,7 @@ export function ContactSection() {
                         {t("contact.email")}
                       </p>
                       <p className="font-medium text-foreground">
-                        awmedmansour@outlook.com
+                        contact.fulania@gmail.com
                       </p>
                     </div>
                   </a>
