@@ -20,7 +20,7 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
 import { HeroProductPreview } from "@/components/hero-product-preview";
-import { ContactSection } from "@/components/contact-section";
+
 
 
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -148,7 +148,7 @@ function Index() {
           <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-primary/30 blur-3xl" aria-hidden />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-5 pt-14 pb-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <div className="relative mx-auto max-w-7xl px-5 pt-10 pb-16 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
             {/* Colonne texte */}
             <motion.div
@@ -178,7 +178,7 @@ function Index() {
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-5 max-w-xl text-[15px] leading-relaxed text-cream/80 sm:text-lg"
+                className="mt-5 max-w-xl text-[15px] leading-relaxed text-cream/90 sm:text-lg"
               >
                 {t("hero.subtitle")}
               </motion.p>
@@ -597,8 +597,34 @@ function Index() {
         </div>
       </section>
 
-      {/* CONTACT */}
-      <ContactSection />
+      {/* CONTACT CTA compact */}
+      <section className="border-t border-border/60 bg-secondary/30 py-16 sm:py-20">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          <Eyebrow align="center">Contact</Eyebrow>
+          <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">
+            {t("contact.title") || "Une question, un partenariat, une idée ?"}
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Écrivez-nous — l'équipe FulanIA vous répond en 24–48 h.
+          </p>
+          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              <Mail className="h-4 w-4" />
+              Nous contacter
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="mailto:contact@fulania.com"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:border-primary/40"
+            >
+              contact@fulania.com
+            </a>
+          </div>
+        </div>
+      </section>
 
       <SiteFooter />
     </div>

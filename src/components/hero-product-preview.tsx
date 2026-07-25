@@ -26,9 +26,9 @@ export function HeroProductPreview() {
 
       {/* Fenêtre principale */}
       <motion.div
-        initial={{ opacity: 0, y: 24, rotateX: 6 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative overflow-hidden rounded-2xl border border-cream/15 bg-[#0e1014]/95 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.7)] backdrop-blur-xl"
       >
         {/* Barre de titre macOS */}
@@ -50,9 +50,9 @@ export function HeroProductPreview() {
           {messages.map((m, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 + i * 0.18 }}
+              transition={{ duration: 0.35, delay: 0.15 + i * 0.1 }}
               className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
@@ -76,7 +76,7 @@ export function HeroProductPreview() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.4 }}
+            transition={{ delay: 0.6, duration: 0.3 }}
             className="flex justify-start"
           >
             <div className="flex items-center gap-1 rounded-2xl rounded-tl-sm border border-white/10 bg-white/[0.04] px-4 py-3">
