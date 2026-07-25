@@ -122,17 +122,16 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="/#solution" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.solution")}</a>
-          <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.pillars")}</a>
+          <Link to="/" className="text-sm font-medium text-foreground/80 hover:text-primary">Application</Link>
           {!DICTIONARY_DISABLED && (
             <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.dictionary")}</Link>
           )}
           <Link to="/learn" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.learn")}</Link>
           <Link to="/culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.library")}</Link>
-          <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
-          <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
+          <Link to="/about" className="text-sm font-medium text-foreground/80 hover:text-primary">À propos</Link>
           <Link to="/contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</Link>
         </nav>
+
 
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
@@ -196,12 +195,13 @@ export function SiteFooter() {
               {t("footer.explore")}
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
-              <li><a href="/#solution" className="hover:text-[var(--gold)]">{t("nav.solution")}</a></li>
-              <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
-              <li><a href="/#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
-              <li><a href="/#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
+              <li><Link to="/" className="hover:text-[var(--gold)]">Application</Link></li>
+              <li><Link to="/about" className="hover:text-[var(--gold)]">À propos</Link></li>
+              <li><a href="/about#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
+              <li><a href="/about#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
               <li><Link to="/contact" className="hover:text-[var(--gold)]">{t("nav.contact")}</Link></li>
             </ul>
+
           </div>
 
           <div>

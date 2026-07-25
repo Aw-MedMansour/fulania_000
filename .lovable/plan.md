@@ -1,38 +1,90 @@
-## Problème
+# Refonte : FulanIA en app web
 
-Un correctif de sécurité a ajouté `supabase.auth.getUser()` + rejet 401 dans 4 edge functions IA :
-- `chat` (assistant)
-- `translate` (traducteur)
-- `dialect-translate` (variantes dialectales)
-- `generate-lesson` (mini‑leçons Janngude)
+Transformer la page d'accueil `/` en interface d'application (dashboard produit) façon ChatGPT / Linear / Notion, et déplacer toute la landing marketing actuelle vers `/about`.
 
-Résultat : chaque clic envoie une requête → 401 « Unauthorized » → l'erreur passe presque inaperçue dans l'UI. Aucune réponse IA ne s'affiche pour les visiteurs non connectés.
+## Ce que voit l'utilisateur
 
-## Objectif
+**Nouvelle `/` (app shell)**
 
-Garder les fonctionnalités telles quelles. Rétablir leur fonctionnement pour TOUS les visiteurs, sans connexion obligatoire.
+```text
+┌──────────┬─────────────────────────────────────────┐
+│          │  Header : logo · recherche · langue · │
+│  Sidebar │           connexion / avatar            │
+│          ├─────────────────────────────────────────┤
+│  Accueil │                                         │
+│  Chat    │   « Bienvenue sur FulanIA »            │
+│  Traduire│   Barre de prompt rapide → envoie      │
+│  Diction.│   direct vers /chat                     │
+│  Culture │                                         │
+│  Learn   │   Grille d'outils (cartes cliquables) :│
+│  Biblio. │   Chat · Traduire · Dictionnaire ·     │
+│  Hub     │   Culture · Learn · Bibliothèque · Hub │
+│          │                                         │
+│  ─────   │   Section « Continuer » (récent) si    │
+│  À propos│   connecté, sinon « Découvrir »         │
+│  Contact │                                         │
+│  Réglages│   Footer discret : lien /about · legal │
+└──────────┴─────────────────────────────────────────┘
+```
 
-## Changements
+- Sidebar rétractable (icon-only) via shadcn `Sidebar` déjà installé.
+- Sur mobile : sidebar en drawer (bouton hamburger dans le header).
+- Header compact avec `SidebarTrigger`, sélecteur de langue, bouton connexion / avatar.
+- Zone principale : prompt hero + grille d'outils au lieu du hero Sahel plein écran.
 
-Dans chacun des 4 fichiers ci‑dessous, retirer le bloc de vérification d'authentification ajouté récemment (le check `Authorization: Bearer`, la création du client Supabase « user‑bound », et le `getUser()` qui renvoie 401). Conserver le reste : validation d'input, appel à l'AI Gateway via `LOVABLE_API_KEY` côté serveur, gestion 429/402/502, RAG dictionnaire.
+**Nouvelle `/about`**
 
-1. `supabase/functions/chat/index.ts` — supprimer le bloc auth (lignes ~257‑271).
-2. `supabase/functions/translate/index.ts` — supprimer le bloc auth (lignes ~58‑67). Le client Supabase reste créé avec la clé anon pour le RAG dictionnaire (lectures publiques).
-3. `supabase/functions/dialect-translate/index.ts` — supprimer le bloc auth (lignes ~53‑66). Supprimer le client Supabase (non utilisé pour le RAG dans cette fonction).
-4. `supabase/functions/generate-lesson/index.ts` — supprimer le bloc auth (lignes ~75‑83). Le client Supabase reste pour le RAG dictionnaire.
+Reçoit tel quel tout le contenu marketing actuel de `/` :
+hero Sahel, tools marquee, press band, founder spotlight, comité exécutif, section contact. C'est la page « vitrine » pour partager le projet, la presse, les partenaires.
 
-Les 4 fonctions ont déjà `verify_jwt = false` dans `supabase/config.toml` — aucun changement de config nécessaire.
+**Navigation ajoutée**
 
-## Vérification
+- Header/sidebar de l'app : lien discret « À propos » vers `/about`.
+- Sur `/about` : header standard du site (comme aujourd'hui) + un CTA « Ouvrir l'app » qui ramène vers `/`.
 
-Après déploiement, tester via `curl_edge_functions` SANS Authorization :
-- `POST /chat` avec un petit message → réponse SSE qui stream
-- `POST /translate` avec un mot → carte JSON
-- `POST /dialect-translate` avec un mot → carte dialectale JSON
-- `POST /generate-lesson` avec un thème → leçon JSON
+## Détail technique
 
-Puis dans le preview : ouvrir `/chat`, envoyer un message en navigation invité, vérifier qu'une réponse s'affiche.
+1. **Nouveau composant `AppShell`** (`src/components/app-shell.tsx`)
+   - Wrappe `SidebarProvider` + `AppSidebar` + header + `<main>`.
+   - Utilisable par `/` (et potentiellement les routes outils plus tard).
 
-## Note
+2. **Nouveau `AppSidebar`** (`src/components/app-sidebar.tsx`)
+   - Groupes : **Outils** (Chat, Traduire, Dictionnaire, Culture, Learn, Bibliothèque, Hub) et **Plus** (À propos, Contact).
+   - Actif basé sur `useRouterState`.
+   - Collapsible `icon`.
 
-C'est le retour au comportement d'avant le correctif `chat_open_endpoint`. La sécurité du `LOVABLE_API_KEY` reste assurée (jamais exposée au client). Le seul risque est l'abus de crédits par des bots : la limite de quota navigateur (`useGuestQuota`, 10 actions / 5h) reste en place côté client. Si on observe un abus réel, on pourra ajouter plus tard une protection serveur (rate‑limit par IP) sans rebloquer les invités.
+3. **Nouvelle `/` (app home)** — réécriture de `src/routes/index.tsx`
+   - Supprime hero Sahel, marquee, press, founder, comité, contact du `/`.
+   - Rend `AppShell` + :
+     - Bloc d'accueil bilingue court (« Bienvenue · Bismillah »).
+     - `PromptInputHero` : textarea + bouton « Demander à Janngude » → redirige vers `/chat?q=...`.
+     - Grille responsive de cartes outils (2 col mobile → 4 col desktop) avec icône, titre, description courte, lien.
+     - Section « Continuer » (masquée pour l'instant, placeholder « bientôt »).
+   - `head()` mis à jour : titre « FulanIA — Application » / description app-first.
+
+4. **Nouvelle `/about`** (`src/routes/about.tsx`)
+   - Reçoit **exactement** le JSX marketing actuel de `/` : `SiteHeader`, hero Sahel, `ToolsMarquee`, sections mission, `PressBand`, `HeroProductPreview`, founder Aw Mansour, comité exécutif, `ContactSection`, `SiteFooter`.
+   - Ajoute un bouton « Ouvrir l'app → » en tête qui `<Link to="/">`.
+   - `head()` : « À propos de FulanIA — La première IA Pulaar ».
+
+5. **Header (`SiteHeader`)** dans `src/components/layout.tsx`
+   - Ajoute lien « À propos » dans la nav.
+   - Le reste des pages (`/chat`, `/translate`, etc.) conserve le `SiteHeader` classique.
+
+6. **SEO / metadata**
+   - `/` : title/description orientés produit (« Application Pulaar — chat, traduction, dictionnaire »).
+   - `/about` : reprend l'ancien SEO de `/` (hero Sahel, presse, équipe).
+   - `sitemap.xml.ts` : ajouter `/about`.
+
+7. **Non touché**
+   - Backend, edge functions, MCP, dictionnaire gate, auth, i18n, feature flags, données, config email : rien.
+   - Autres routes existantes (`/chat`, `/translate`, `/dictionary`, `/culture`, `/learn`, `/library`, `/hub`, `/contact`, `/auth`) : inchangées visuellement pour ce round. On peut les migrer sous `AppShell` plus tard si tu valides le résultat sur `/`.
+
+## Livrable
+
+Après ces modifs :
+- `/` = app shell FulanIA (sidebar + prompt + grille d'outils).
+- `/about` = ta landing actuelle complète, intacte.
+- Lien mutuel entre les deux.
+
+Je n'implémente que ça — pas d'autres changements. Tu approuves ce plan ?
