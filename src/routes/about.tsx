@@ -24,7 +24,7 @@ import { ContactSection } from "@/components/contact-section";
 
 
 
-import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
+import { useLanguage } from "@/hooks/use-language";
 
 
 export const Route = createFileRoute("/about")({
