@@ -22,7 +22,7 @@ export function ContactSection() {
       `Nom: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
     );
     window.open(
-      `mailto:awmedmansour@outlook.com?subject=${encodeURIComponent(form.subject)}&body=${body}`,
+      `mailto:contact.fulania@gmail.com?subject=${encodeURIComponent(form.subject)}&body=${body}`,
       "_blank"
     );
     setSubmitted(true);
