@@ -178,7 +178,7 @@ function Index() {
 
               <motion.p
                 variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-5 max-w-xl text-[15px] leading-relaxed text-cream/80 sm:text-lg"
+                className="mt-5 max-w-xl text-[15px] leading-relaxed text-cream/90 sm:text-lg"
               >
                 {t("hero.subtitle")}
               </motion.p>
