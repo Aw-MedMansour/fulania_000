@@ -26,9 +26,9 @@ export function HeroProductPreview() {
 
       {/* Fenêtre principale */}
       <motion.div
-        initial={{ opacity: 0, y: 24, rotateX: 6 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         className="relative overflow-hidden rounded-2xl border border-cream/15 bg-[#0e1014]/95 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.7)] backdrop-blur-xl"
       >
         {/* Barre de titre macOS */}
