@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useGuestQuota } from "@/hooks/use-guest-quota";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChatSidebar, SidebarToggle } from "@/components/chat-sidebar";
+import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { PageNav } from "@/components/page-nav";
 
 type Source = { title: string; url: string };
