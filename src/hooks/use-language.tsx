@@ -202,7 +202,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "L'IA au service de la langue et de la culture peules",
     "hero.title1": "Une intelligence artificielle",
     "hero.title2": "pulaar & fulfulde",
-    "hero.subtitle": "FulanIA parle, écrit et enseigne le Pulaar — un griot du XXIᵉ siècle qui préserve et transmet le Pulaagu, pour tous, partout.",
+    "hero.subtitle": "FulanIA est un assistant d'intelligence artificielle capable de comprendre, de parler et de traduire la langue pulaar — une IA spécialisée, entièrement dédiée à la préservation et à la valorisation de la langue et de la culture peules.",
     "stats.speakers": "Locuteurs",
     "stats.countries": "Pays",
     "stats.dialects": "Dialectes",
