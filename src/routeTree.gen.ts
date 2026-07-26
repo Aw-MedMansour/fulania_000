@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TranslateRouteImport } from './routes/translate'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as LibraryRouteImport } from './routes/library'
@@ -33,6 +34,11 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 const TranslateRoute = TranslateRouteImport.update({
   id: '/translate',
   path: '/translate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/library': typeof LibraryRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/support': typeof SupportRoute
   '/translate': typeof TranslateRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -168,6 +175,7 @@ export interface FileRoutesByTo {
   '/library': typeof LibraryRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/support': typeof SupportRoute
   '/translate': typeof TranslateRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -191,6 +199,7 @@ export interface FileRoutesById {
   '/library': typeof LibraryRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/support': typeof SupportRoute
   '/translate': typeof TranslateRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -214,6 +223,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/mcp'
     | '/sitemap.xml'
+    | '/support'
     | '/translate'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/mcp'
     | '/sitemap.xml'
+    | '/support'
     | '/translate'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/mcp'
     | '/sitemap.xml'
+    | '/support'
     | '/translate'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -280,6 +292,7 @@ export interface RootRouteChildren {
   LibraryRoute: typeof LibraryRoute
   McpRoute: typeof McpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SupportRoute: typeof SupportRoute
   TranslateRoute: typeof TranslateRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       path: '/translate'
       fullPath: '/translate'
       preLoaderRoute: typeof TranslateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -458,6 +478,7 @@ const rootRouteChildren: RootRouteChildren = {
   LibraryRoute: LibraryRoute,
   McpRoute: McpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SupportRoute: SupportRoute,
   TranslateRoute: TranslateRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
