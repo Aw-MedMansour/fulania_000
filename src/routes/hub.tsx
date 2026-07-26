@@ -118,7 +118,7 @@ function HubPage() {
         aria-hidden
       />
 
-      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
+      <header className="relative z-10 mx-auto hidden max-w-6xl items-center justify-between px-5 py-5 sm:px-8 md:flex">
         <Link to="/" className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
             <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
