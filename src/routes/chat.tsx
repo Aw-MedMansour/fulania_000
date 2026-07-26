@@ -301,7 +301,7 @@ function ChatPage() {
   }
 
   return (
-    <div className="fixed inset-0 flex flex-col bg-background">
+    <div className="chat-mobile-dark fixed inset-0 flex flex-col bg-background">
       <ChatSidebar
         user={user}
         open={sidebarOpen}
