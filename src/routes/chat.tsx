@@ -554,6 +554,8 @@ function ChatPage() {
           </button>
         </form>
       </div>
+      <div className="h-16 flex-none md:hidden" aria-hidden="true" />
+      <MobileTabBar />
     </div>
   );
 }
