@@ -20,6 +20,7 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
 import { HeroProductPreview } from "@/components/hero-product-preview";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ContactSection } from "@/components/contact-section";
 
 
@@ -84,6 +85,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
@@ -219,9 +221,11 @@ function Index() {
             </motion.div>
 
             {/* Colonne mockup produit */}
-            <div className="hidden lg:block lg:col-span-5">
-              <HeroProductPreview />
-            </div>
+            {!isMobile && (
+              <div className="hidden lg:block lg:col-span-5">
+                <HeroProductPreview />
+              </div>
+            )}
           </div>
         </div>
       </section>
