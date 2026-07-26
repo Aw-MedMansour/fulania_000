@@ -559,7 +559,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "Ballal IA ngam ɗemngal e pinal Fulɓe",
     "hero.title1": "Hakkille kuɓɓinaaɗo",
     "hero.title2": "pulaar & fulfulde",
-    "hero.subtitle": "FulanIA no wolwa, no winnda, no janngina Pulaar — gawlo ñalnde XXI mo reeni e yettina Pulaagu, ngam kala neɗɗo, e kala nokku.",
+    "hero.subtitle": "FulanIA ko kaaloowo miijo kuuɓal (IA) baawɗo faamude, wolwude e firtude ɗemngal Pulaar — IA heeriinde, fawaande hen kala e reende e teddinde ɗemngal e pinal Fulɓe.",
     "stats.speakers": "Wolwooɓe", "stats.countries": "Leyɗe", "stats.dialects": "Ƴeewndeeji",
 
     "problem.tag": "Hawritannde",
