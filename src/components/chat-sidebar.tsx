@@ -69,7 +69,7 @@ export function ChatSidebar({
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 max-w-[85vw] flex-col border-r border-border bg-card transition-transform duration-200 ${
+        className={`chat-sidebar-mobile-full fixed inset-y-0 left-0 z-40 flex w-72 max-w-[85vw] flex-col border-r border-border bg-card transition-transform duration-200 md:w-72 md:max-w-[85vw] ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-hidden={!open}
