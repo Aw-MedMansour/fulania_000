@@ -19,7 +19,7 @@ export function MobileTabBar() {
       className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#0b1020]/95 backdrop-blur-md md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <ul className="mx-auto grid max-w-md grid-cols-5">
+      <ul className="mx-auto grid max-w-md grid-cols-6">
         {tabs.map(({ to, label, icon: Icon }) => {
           const active =
             to === "/hub" ? pathname === "/hub" : pathname.startsWith(to);
