@@ -137,12 +137,23 @@ export function SiteHeader() {
         <div className="flex items-center gap-2">
           <Link
             to="/support"
-            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-2 text-xs font-semibold text-earth shadow-sm transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/20 sm:text-sm"
-            aria-label="Soutenir FulanIA"
+            aria-label="Soutenir FulanIA — faire un don"
+            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-earth px-3 py-2 text-xs font-semibold text-cream shadow-[0_1px_0_rgba(0,0,0,0.04),0_6px_16px_-8px_rgba(120,72,20,0.45)] ring-1 ring-[var(--gold)]/40 transition hover:-translate-y-0.5 hover:ring-[var(--gold)] sm:text-sm"
           >
-            <Heart className="h-3.5 w-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-            <span>Soutenir</span>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[var(--gold)]/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+            />
+            <span className="relative flex h-5 w-5 items-center justify-center">
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-full bg-[var(--gold)]/30 blur-[3px] animate-ping opacity-70"
+              />
+              <Heart className="relative h-3.5 w-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+            </span>
+            <span className="relative">Soutenir</span>
           </Link>
+
           <LanguageSwitcher />
           {user ? (
             <button
