@@ -85,6 +85,7 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
   const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
