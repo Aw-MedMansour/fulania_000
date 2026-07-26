@@ -937,7 +937,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "AI for the Fulani language and culture",
     "hero.title1": "An artificial intelligence",
     "hero.title2": "in Pulaar & Fulfulde",
-    "hero.subtitle": "FulanIA speaks, writes and teaches Pulaar — a 21st-century griot preserving and transmitting the Pulaagu, for everyone, everywhere.",
+    "hero.subtitle": "FulanIA is an AI assistant able to understand, speak and translate the Pulaar language — a specialised AI, fully dedicated to preserving and promoting the Fulani language and culture.",
     "stats.speakers": "Speakers", "stats.countries": "Countries", "stats.dialects": "Dialects",
 
     "problem.tag": "The reality",
