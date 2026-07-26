@@ -202,7 +202,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "L'IA au service de la langue et de la culture peules",
     "hero.title1": "Une intelligence artificielle",
     "hero.title2": "pulaar & fulfulde",
-    "hero.subtitle": "FulanIA parle, écrit et enseigne le Pulaar — un griot du XXIᵉ siècle qui préserve et transmet le Pulaagu, pour tous, partout.",
+    "hero.subtitle": "FulanIA est un assistant d'intelligence artificielle capable de comprendre, de parler et de traduire la langue pulaar — une IA spécialisée, entièrement dédiée à la préservation et à la valorisation de la langue et de la culture peules.",
     "stats.speakers": "Locuteurs",
     "stats.countries": "Pays",
     "stats.dialects": "Dialectes",
@@ -559,7 +559,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "Ballal IA ngam ɗemngal e pinal Fulɓe",
     "hero.title1": "Hakkille kuɓɓinaaɗo",
     "hero.title2": "pulaar & fulfulde",
-    "hero.subtitle": "FulanIA no wolwa, no winnda, no janngina Pulaar — gawlo ñalnde XXI mo reeni e yettina Pulaagu, ngam kala neɗɗo, e kala nokku.",
+    "hero.subtitle": "FulanIA ko kaaloowo miijo kuuɓal (IA) baawɗo faamude, wolwude e firtude ɗemngal Pulaar — IA heeriinde, fawaande hen kala e reende e teddinde ɗemngal e pinal Fulɓe.",
     "stats.speakers": "Wolwooɓe", "stats.countries": "Leyɗe", "stats.dialects": "Ƴeewndeeji",
 
     "problem.tag": "Hawritannde",
@@ -937,7 +937,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "AI for the Fulani language and culture",
     "hero.title1": "An artificial intelligence",
     "hero.title2": "in Pulaar & Fulfulde",
-    "hero.subtitle": "FulanIA speaks, writes and teaches Pulaar — a 21st-century griot preserving and transmitting the Pulaagu, for everyone, everywhere.",
+    "hero.subtitle": "FulanIA is an AI assistant able to understand, speak and translate the Pulaar language — a specialised AI, fully dedicated to preserving and promoting the Fulani language and culture.",
     "stats.speakers": "Speakers", "stats.countries": "Countries", "stats.dialects": "Dialects",
 
     "problem.tag": "The reality",
@@ -1316,7 +1316,7 @@ export const translations: Record<Lang, Dict> = {
     "hero.badge": "ذكاء اصطناعي للغة والثقافة الفولانية",
     "hero.title1": "ذكاء اصطناعي",
     "hero.title2": "بالبولارية والفولفولديه",
-    "hero.subtitle": "تتحدّث FulanIA وتكتب وتُعلّم البولارية — راوٍ من القرن الحادي والعشرين يحفظ Pulaagu وينقله، لكلّ الناس، في كلّ مكان.",
+    "hero.subtitle": "FulanIA مساعد ذكاء اصطناعي قادر على فهم اللغة البولارية والتحدّث بها وترجمتها — ذكاء اصطناعي متخصّص، مكرَّس بالكامل للحفاظ على لغة الفولاني وثقافتهم وإبرازها.",
     "stats.speakers": "المتحدثون", "stats.countries": "الدول", "stats.dialects": "اللهجات",
 
     "problem.tag": "الواقع",
