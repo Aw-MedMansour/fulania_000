@@ -159,7 +159,16 @@ function HubPage() {
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-4 sm:px-8">
+      <MobileHubHome
+        signedIn={!!session}
+        onSignOut={async () => {
+          await supabase.auth.signOut();
+          navigate({ to: "/", replace: true });
+        }}
+      />
+
+      <main className="relative z-10 mx-auto hidden max-w-6xl px-5 pb-20 pt-4 sm:px-8 md:block">
+
         <section className="mb-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
             <Sparkles className="h-3 w-3" />
