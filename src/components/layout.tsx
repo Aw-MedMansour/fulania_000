@@ -132,6 +132,7 @@ export function SiteHeader() {
           <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
           <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
           <Link to="/contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</Link>
+          <Link to="/support" className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--gold)] hover:text-primary">❤ Soutenir</Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -201,6 +202,7 @@ export function SiteFooter() {
               <li><a href="/#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
               <li><a href="/#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
               <li><Link to="/contact" className="hover:text-[var(--gold)]">{t("nav.contact")}</Link></li>
+              <li><Link to="/support" className="font-semibold text-[var(--gold)] hover:opacity-80">❤ Soutenir FulanIA</Link></li>
             </ul>
           </div>
 
