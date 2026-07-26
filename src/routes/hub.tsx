@@ -24,7 +24,9 @@ import { ToolsMarquee } from "@/components/tools-marquee";
 import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
 import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
+import { MobileTabBar } from "@/components/mobile-tab-bar";
 import patternImg from "@/assets/pattern.jpg";
+
 
 export const Route = createFileRoute("/hub")({
   head: () => {
@@ -103,7 +105,7 @@ function HubPage() {
   const firstName = (user?.email ?? "").split("@")[0];
 
   return (
-    <div className="relative min-h-screen bg-background">
+    <div className="hub-mobile-dark relative min-h-screen bg-background pb-24 md:pb-0">
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.05]"
         style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "420px" }}
@@ -286,8 +288,12 @@ function HubPage() {
 
       </main>
 
-      <SiteFooter />
+      <div className="md:block hidden">
+        <SiteFooter />
+      </div>
+      <MobileTabBar />
     </div>
+
   );
 }
 
