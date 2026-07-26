@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import ogCover from "@/assets/og-cover.jpg";
+const ogCover = "/og-cover.jpg";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
 
