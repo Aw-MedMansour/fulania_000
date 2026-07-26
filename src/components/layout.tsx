@@ -135,6 +135,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            to="/support"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-2 text-xs font-semibold text-earth shadow-sm transition hover:-translate-y-0.5 hover:bg-[var(--gold)]/20 sm:text-sm"
+            aria-label="Soutenir FulanIA"
+          >
+            <Heart className="h-3.5 w-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+            <span>Soutenir</span>
+          </Link>
           <LanguageSwitcher />
           {user ? (
             <button
