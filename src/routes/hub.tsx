@@ -13,6 +13,12 @@ import {
   Radio,
   Download,
   Home,
+  Menu,
+  Bell,
+  ArrowUp,
+  MessageCircle,
+  User,
+  Leaf,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
