@@ -1,8 +1,9 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, BookOpen, GraduationCap, Languages, Library } from "lucide-react";
+import { Home, MessageSquareText, BookOpen, GraduationCap, Languages, Library } from "lucide-react";
 
 const tabs = [
-  { to: "/hub", label: "Janggo", icon: Home },
+  { to: "/hub", label: "Accueil", icon: Home },
+  { to: "/chat", label: "Janggo", icon: MessageSquareText },
   { to: "/dictionary", label: "Saggitorde", icon: BookOpen },
   { to: "/learn", label: "Janngude", icon: GraduationCap },
   { to: "/translate", label: "Firo", icon: Languages },
