@@ -24,7 +24,9 @@ import { ToolsMarquee } from "@/components/tools-marquee";
 import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
 import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
+import { MobileTabBar } from "@/components/mobile-tab-bar";
 import patternImg from "@/assets/pattern.jpg";
+
 
 export const Route = createFileRoute("/hub")({
   head: () => {
