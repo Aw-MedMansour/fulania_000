@@ -132,7 +132,6 @@ export function SiteHeader() {
           <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
           <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
           <Link to="/contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</Link>
-          <Link to="/support" className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--gold)] hover:text-primary">❤ Soutenir</Link>
         </nav>
 
         <div className="flex items-center gap-2">
