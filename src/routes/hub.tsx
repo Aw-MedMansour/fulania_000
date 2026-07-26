@@ -288,8 +288,12 @@ function HubPage() {
 
       </main>
 
-      <SiteFooter />
+      <div className="md:block hidden">
+        <SiteFooter />
+      </div>
+      <MobileTabBar />
     </div>
+
   );
 }
 
