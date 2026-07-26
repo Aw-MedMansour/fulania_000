@@ -219,7 +219,7 @@ function Index() {
             </motion.div>
 
             {/* Colonne mockup produit */}
-            <div className="lg:col-span-5">
+            <div className="hidden lg:block lg:col-span-5">
               <HeroProductPreview />
             </div>
           </div>
