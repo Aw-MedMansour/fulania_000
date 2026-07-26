@@ -13,12 +13,6 @@ import {
   Radio,
   Download,
   Home,
-  Menu,
-  Bell,
-  ArrowUp,
-  MessageCircle,
-  User,
-  Leaf,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
@@ -118,7 +112,7 @@ function HubPage() {
         aria-hidden
       />
 
-      <header className="relative z-10 mx-auto hidden max-w-6xl items-center justify-between px-5 py-5 sm:px-8 md:flex">
+      <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
         <Link to="/" className="flex items-center gap-2.5">
           <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
             <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
@@ -159,16 +153,7 @@ function HubPage() {
         </div>
       </header>
 
-      <MobileHubHome
-        signedIn={!!session}
-        onSignOut={async () => {
-          await supabase.auth.signOut();
-          navigate({ to: "/", replace: true });
-        }}
-      />
-
-      <main className="relative z-10 mx-auto hidden max-w-6xl px-5 pb-20 pt-4 sm:px-8 md:block">
-
+      <main className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-4 sm:px-8">
         <section className="mb-10 max-w-2xl">
           <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
             <Sparkles className="h-3 w-3" />
@@ -311,152 +296,6 @@ function HubPage() {
 
   );
 }
-
-import hubHeroSahel from "@/assets/hub-hero-sahel.jpg.asset.json";
-
-const POPULAR_QUESTIONS = [
-  { icon: MessageCircle, tone: "text-violet-300", bg: "bg-violet-500/15", q: "Comment dit-on « bonjour » en Pulaar ?" },
-  { icon: BookOpen, tone: "text-amber-300", bg: "bg-amber-500/15", q: "Explique-moi le Pulaagu en quelques phrases." },
-  { icon: User, tone: "text-emerald-300", bg: "bg-emerald-500/15", q: "Qui était El Hadj Oumar Tall ?" },
-  { icon: Leaf, tone: "text-sky-300", bg: "bg-sky-500/15", q: "Donne-moi 3 proverbes peules avec leur sens." },
-];
-
-function MobileHubHome({ signedIn, onSignOut }: { signedIn: boolean; onSignOut: () => void }) {
-  const [draft, setDraft] = useState("");
-
-  const goToChat = (q?: string) => {
-    const prompt = (q ?? draft).trim();
-    if (prompt) {
-      try {
-        sessionStorage.setItem("fulania.pendingPrompt", prompt);
-      } catch {
-        /* ignore */
-      }
-    }
-    window.location.href = "/chat";
-  };
-
-  return (
-    <div className="relative z-10 md:hidden">
-      {/* Header */}
-      <header className="flex items-center justify-between px-5 pt-4 pb-3">
-        <Link
-          to="/"
-          aria-label="Accueil"
-          className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-white/80 ring-1 ring-white/10"
-        >
-          <Menu className="h-5 w-5" />
-        </Link>
-        <Link to="/hub" className="flex flex-col items-center leading-none">
-          <span className="font-display text-xl font-semibold text-white">
-            Fulan<span className="text-[var(--gold)]">IA</span>
-          </span>
-          <span className="mt-0.5 text-[10px] uppercase tracking-[0.25em] text-white/50">
-            Assistant IA
-          </span>
-        </Link>
-        <div className="flex items-center gap-2">
-          {signedIn ? (
-            <button
-              onClick={onSignOut}
-              aria-label="Se déconnecter"
-              className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-white/70 ring-1 ring-white/10"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
-          ) : (
-            <Link
-              to="/auth"
-              aria-label="Notifications"
-              className="grid h-10 w-10 place-items-center rounded-full bg-white/5 text-white/80 ring-1 ring-white/10"
-            >
-              <Bell className="h-4 w-4" />
-            </Link>
-          )}
-        </div>
-      </header>
-
-      {/* Hero card */}
-      <section className="px-4 pt-2">
-        <div className="relative overflow-hidden rounded-3xl ring-1 ring-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
-          <img
-            src={hubHeroSahel.url}
-            alt=""
-            width={1200}
-            height={800}
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0b1020]/40 via-[#0b1020]/55 to-[#0b1020]/85" />
-
-          <div className="relative flex flex-col gap-5 p-5 pt-6 min-h-[300px]">
-            <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--gold)]/90 text-earth shadow-lg">
-              <Sparkles className="h-5 w-5" />
-            </div>
-
-            <div className="mt-auto">
-              <h1 className="font-display text-3xl font-semibold leading-tight text-white">
-                Salaam alaykum
-              </h1>
-              <p className="mt-2 max-w-[80%] text-sm leading-relaxed text-white/80">
-                Posez-moi vos questions sur la langue Pulaar, la culture Peule, l'histoire des Fulɓe.
-              </p>
-            </div>
-
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                goToChat();
-              }}
-              className="mt-1 flex items-center gap-2 rounded-2xl bg-black/40 p-1.5 pl-4 ring-1 ring-white/15 backdrop-blur"
-            >
-              <input
-                value={draft}
-                onChange={(e) => setDraft(e.target.value)}
-                placeholder="Comment puis-je vous aider aujourd'hui ?"
-                className="flex-1 bg-transparent py-2 text-sm text-white placeholder:text-white/50 focus:outline-none"
-              />
-              <button
-                type="submit"
-                aria-label="Envoyer"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--gold)] text-earth shadow-md transition-transform active:scale-95"
-              >
-                <ArrowUp className="h-5 w-5" strokeWidth={2.5} />
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      {/* Popular questions */}
-      <section className="px-4 pt-8">
-        <div className="mb-3 flex items-center gap-2 px-1">
-          <Sparkles className="h-3.5 w-3.5 text-[var(--gold)]" />
-          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/60">
-            Questions populaires
-          </span>
-        </div>
-
-        <ul className="flex flex-col gap-2.5">
-          {POPULAR_QUESTIONS.map(({ icon: Icon, tone, bg, q }) => (
-            <li key={q}>
-              <button
-                onClick={() => goToChat(q)}
-                className="flex w-full items-center gap-3 rounded-2xl bg-white/[0.04] px-3.5 py-3.5 text-left ring-1 ring-white/10 transition-colors hover:bg-white/[0.07]"
-              >
-                <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl ${bg} ${tone}`}>
-                  <Icon className="h-4.5 w-4.5" strokeWidth={2} />
-                </span>
-                <span className="flex-1 text-[13.5px] leading-snug text-white/90">{q}</span>
-                <ArrowRight className="h-4 w-4 shrink-0 text-white/40" />
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
-  );
-}
-
 
 function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
   const containerRef = useRef<HTMLDivElement>(null);

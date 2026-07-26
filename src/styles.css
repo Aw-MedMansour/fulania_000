@@ -331,54 +331,23 @@ html { scroll-behavior: auto; }
   }
 }
 
-/* Hub / Chat — thème sombre navy + or, mobile uniquement */
+/* Hub — thème sombre navy + or, mobile uniquement */
 @media (max-width: 767px) {
-  .hub-mobile-dark,
-  .chat-mobile-dark {
+  .hub-mobile-dark {
     background: radial-gradient(120% 80% at 50% 0%, #171f3a 0%, #0b1020 55%, #070a17 100%) !important;
     color: #f5efe4;
   }
-  .hub-mobile-dark .text-earth,
-  .chat-mobile-dark .text-earth,
-  .chat-mobile-dark .text-foreground { color: #f5efe4 !important; }
-  .hub-mobile-dark .text-muted-foreground,
-  .chat-mobile-dark .text-muted-foreground { color: rgba(245, 239, 228, 0.65) !important; }
-  .hub-mobile-dark .bg-card,
-  .chat-mobile-dark .bg-card,
-  .chat-mobile-dark .bg-popover {
+  .hub-mobile-dark .text-earth { color: #f5efe4 !important; }
+  .hub-mobile-dark .text-muted-foreground { color: rgba(245, 239, 228, 0.65) !important; }
+  .hub-mobile-dark .bg-card {
     background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02)) !important;
     border-color: rgba(255,255,255,0.08) !important;
-    color: #f5efe4 !important;
   }
-  .hub-mobile-dark .border-border,
-  .chat-mobile-dark .border-border { border-color: rgba(255,255,255,0.08) !important; }
-  .hub-mobile-dark .bg-muted,
-  .chat-mobile-dark .bg-muted { background: rgba(255,255,255,0.05) !important; }
-  .hub-mobile-dark .bg-background,
-  .chat-mobile-dark .bg-background { background: transparent !important; }
+  .hub-mobile-dark .border-border { border-color: rgba(255,255,255,0.08) !important; }
+  .hub-mobile-dark .bg-muted { background: rgba(255,255,255,0.05) !important; }
+  .hub-mobile-dark .bg-background { background: transparent !important; }
   .hub-mobile-dark a[href="/"] .text-earth,
   .hub-mobile-dark header .text-earth { color: #f5efe4 !important; }
-  .hub-mobile-dark [class*="ring-[var(--gold)]"],
-  .chat-mobile-dark [class*="ring-[var(--gold)]"] { --tw-ring-color: rgba(212,164,74,0.35); }
-
-  /* Chat: bulle utilisateur en or, prose lisible sur fond sombre */
-  .chat-mobile-dark .msg-user {
-    background: linear-gradient(180deg, #e6b855, #c99738) !important;
-    color: #0b1020 !important;
-    border: none !important;
-  }
-  .chat-mobile-dark .msg-user * { color: #0b1020 !important; }
-  .chat-mobile-dark .prose,
-  .chat-mobile-dark .prose * { color: #f5efe4 !important; }
-  .chat-mobile-dark .prose strong,
-  .chat-mobile-dark .prose h1,
-  .chat-mobile-dark .prose h2,
-  .chat-mobile-dark .prose h3 { color: var(--gold) !important; }
-  .chat-mobile-dark textarea,
-  .chat-mobile-dark input[type="text"] { color: #f5efe4 !important; }
-  .chat-mobile-dark textarea::placeholder { color: rgba(245,239,228,0.45) !important; }
-
-  /* Sidebar chat plein écran sur mobile */
-  .chat-sidebar-mobile-full { width: 100vw !important; max-width: 100vw !important; }
+  .hub-mobile-dark [class*="ring-[var(--gold)]"] { --tw-ring-color: rgba(212,164,74,0.35); }
 }
 

@@ -8,7 +8,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { useGuestQuota } from "@/hooks/use-guest-quota";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChatSidebar, SidebarToggle } from "@/components/chat-sidebar";
-import { MobileTabBar } from "@/components/mobile-tab-bar";
 import { PageNav } from "@/components/page-nav";
 
 type Source = { title: string; url: string };
@@ -302,7 +301,7 @@ function ChatPage() {
   }
 
   return (
-    <div className="chat-mobile-dark fixed inset-0 flex flex-col bg-background">
+    <div className="fixed inset-0 flex flex-col bg-background">
       <ChatSidebar
         user={user}
         open={sidebarOpen}
@@ -554,8 +553,6 @@ function ChatPage() {
           </button>
         </form>
       </div>
-      <div className="h-16 flex-none md:hidden" aria-hidden="true" />
-      <MobileTabBar />
     </div>
   );
 }
@@ -726,7 +723,7 @@ function MessageBubble({ role, content, sources }: Msg) {
         <div
           className={`rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
             isUser
-              ? "msg-user bg-primary text-primary-foreground whitespace-pre-wrap"
+              ? "bg-primary text-primary-foreground whitespace-pre-wrap"
               : "border border-border bg-card text-foreground shadow-sm"
           }`}
         >
