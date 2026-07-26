@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Check, ChevronDown, Globe, LogOut, Sparkles, User as UserIcon } from "lucide-react";
+import { Check, ChevronDown, Globe, Heart, LogOut, Sparkles, User as UserIcon } from "lucide-react";
 import { SocialLinks } from "@/components/social-links";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
