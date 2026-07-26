@@ -199,10 +199,10 @@ export const translations: Record<Lang, Dict> = {
     "lang.switcher": "Langue",
 
     // Hero
-    "hero.badge": "Premier assistant IA dédié à la culture Peule",
-    "hero.title1": "L'intelligence artificielle au service du",
-    "hero.title2": "Pulaagu",
-    "hero.subtitle": "FulanIA préserve, transmet et valorise la langue Pulaar et la culture Fulɓe grâce à l'IA. Un griot du XXIᵉ siècle, accessible à tous, partout.",
+    "hero.badge": "L'IA au service de la langue et de la culture peules",
+    "hero.title1": "Une intelligence artificielle",
+    "hero.title2": "pulaar & fulfulde",
+    "hero.subtitle": "FulanIA parle, écrit et enseigne le Pulaar — un griot du XXIᵉ siècle qui préserve et transmet le Pulaagu, pour tous, partout.",
     "stats.speakers": "Locuteurs",
     "stats.countries": "Pays",
     "stats.dialects": "Dialectes",
@@ -556,10 +556,10 @@ export const translations: Record<Lang, Dict> = {
     "btn.try": "Eto", "btn.signin": "Naatugol", "btn.signout": "Yaltugol",
     "btn.discover": "Yiy projet on", "btn.chat": "Yeewtu e FulanIA", "lang.switcher": "Ɗemngal",
 
-    "hero.badge": "Gardiiɗo assistant IA fuɗɗiiɗo e pinal Fulɓe",
-    "hero.title1": "Hakkille kuɓɓinaaɗo ngam",
-    "hero.title2": "Pulaagu",
-    "hero.subtitle": "FulanIA no reena, yettina e teddina ɗemngal Pulaar e pinal Fulɓe e ballal IA. Gawlo ñalnde XXI, jeyaaɗo e kala nokku.",
+    "hero.badge": "Ballal IA ngam ɗemngal e pinal Fulɓe",
+    "hero.title1": "Hakkille kuɓɓinaaɗo",
+    "hero.title2": "pulaar & fulfulde",
+    "hero.subtitle": "FulanIA no wolwa, no winnda, no janngina Pulaar — gawlo ñalnde XXI mo reeni e yettina Pulaagu, ngam kala neɗɗo, e kala nokku.",
     "stats.speakers": "Wolwooɓe", "stats.countries": "Leyɗe", "stats.dialects": "Ƴeewndeeji",
 
     "problem.tag": "Hawritannde",
@@ -934,10 +934,10 @@ export const translations: Record<Lang, Dict> = {
     "btn.try": "Try it", "btn.signin": "Sign in", "btn.signout": "Sign out",
     "btn.discover": "Discover the project", "btn.chat": "Chat with FulanIA", "lang.switcher": "Language",
 
-    "hero.badge": "The first AI assistant dedicated to Fulani culture",
-    "hero.title1": "Artificial intelligence serving the",
-    "hero.title2": "Pulaagu",
-    "hero.subtitle": "FulanIA preserves, transmits and celebrates the Pulaar language and Fulɓe culture through AI. A griot for the 21st century, accessible to everyone, everywhere.",
+    "hero.badge": "AI for the Fulani language and culture",
+    "hero.title1": "An artificial intelligence",
+    "hero.title2": "in Pulaar & Fulfulde",
+    "hero.subtitle": "FulanIA speaks, writes and teaches Pulaar — a 21st-century griot preserving and transmitting the Pulaagu, for everyone, everywhere.",
     "stats.speakers": "Speakers", "stats.countries": "Countries", "stats.dialects": "Dialects",
 
     "problem.tag": "The reality",
@@ -1313,10 +1313,10 @@ export const translations: Record<Lang, Dict> = {
     "btn.try": "جرّب", "btn.signin": "تسجيل الدخول", "btn.signout": "تسجيل الخروج",
     "btn.discover": "اكتشف المشروع", "btn.chat": "تحدّث مع FulanIA", "lang.switcher": "اللغة",
 
-    "hero.badge": "أول مساعد ذكاء اصطناعي مخصّص للثقافة الفولانية",
-    "hero.title1": "الذكاء الاصطناعي في خدمة",
-    "hero.title2": "Pulaagu",
-    "hero.subtitle": "تحافظ FulanIA على اللغة البولارية والثقافة الهلبولارية وتنقلها وتثمّنها بفضل الذكاء الاصطناعي. راوٍ تقليدي في القرن الحادي والعشرين، متاح للجميع في كل مكان.",
+    "hero.badge": "ذكاء اصطناعي للغة والثقافة الفولانية",
+    "hero.title1": "ذكاء اصطناعي",
+    "hero.title2": "بالبولارية والفولفولديه",
+    "hero.subtitle": "تتحدّث FulanIA وتكتب وتُعلّم البولارية — راوٍ من القرن الحادي والعشرين يحفظ Pulaagu وينقله، لكلّ الناس، في كلّ مكان.",
     "stats.speakers": "المتحدثون", "stats.countries": "الدول", "stats.dialects": "اللهجات",
 
     "problem.tag": "الواقع",
