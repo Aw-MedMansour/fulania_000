@@ -723,7 +723,7 @@ function MessageBubble({ role, content, sources }: Msg) {
         <div
           className={`rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
             isUser
-              ? "bg-primary text-primary-foreground whitespace-pre-wrap"
+              ? "msg-user bg-primary text-primary-foreground whitespace-pre-wrap"
               : "border border-border bg-card text-foreground shadow-sm"
           }`}
         >
