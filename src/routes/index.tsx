@@ -591,11 +591,11 @@ function Index() {
                 {t("contact.send")}
               </a>
               <a
-                href="tel:+213780306486"
+                href="tel:+22232256718"
                 className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/20 bg-cream/5 px-6 py-3 text-sm font-semibold text-cream transition hover:-translate-y-0.5 hover:border-[var(--gold)]/40 hover:bg-cream/10"
               >
                 <Phone className="h-4 w-4" />
-                +213 780 30 64 86
+                +222 32 25 67 18
               </a>
             </div>
           </Reveal>

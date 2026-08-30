@@ -236,8 +236,8 @@ export function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href="tel:+213780306486" className="hover:text-[var(--gold)]">
-                  +213 780 30 64 86
+                <a href="tel:+22232256718" className="hover:text-[var(--gold)]">
+                  +222 32 25 67 18
                 </a>
               </li>
               <li className="text-cream/60">{t("contact.location")}</li>

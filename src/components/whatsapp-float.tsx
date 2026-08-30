@@ -9,7 +9,7 @@ export function WhatsAppFloat() {
     return null;
   }
 
-  const phone = "213780306486";
+  const phone = "22232256718";
   const message = encodeURIComponent("Salam ! Je viens de FulanIA.");
   const href = `https://wa.me/${phone}?text=${message}`;
 

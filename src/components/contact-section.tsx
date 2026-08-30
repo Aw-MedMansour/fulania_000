@@ -67,7 +67,7 @@ export function ContactSection() {
 
                 <StaggerItem>
                   <a
-                    href="tel:+213780306486"
+                    href="tel:+22232256718"
                     className="flex items-center gap-4 rounded-xl border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
                   >
                     <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -78,7 +78,7 @@ export function ContactSection() {
                         {t("contact.phone")}
                       </p>
                       <p className="font-medium text-foreground">
-                        +213 780 30 64 86
+                        +222 32 25 67 18
                       </p>
                     </div>
                   </a>
