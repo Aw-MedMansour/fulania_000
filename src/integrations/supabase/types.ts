@@ -715,6 +715,87 @@ export type Database = {
         }
         Relationships: []
       }
+      video_credits: {
+        Row: {
+          balance: number
+          created_at: string
+          total_purchased: number
+          total_used: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string
+          total_purchased?: number
+          total_used?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string
+          total_purchased?: number
+          total_used?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      video_generations: {
+        Row: {
+          aspect_ratio: string
+          created_at: string
+          credits_spent: number
+          description: string
+          duration_seconds: number
+          error_message: string | null
+          id: string
+          job_id: string | null
+          model: string
+          prompt: string
+          resolution: string
+          status: string
+          storage_path: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          aspect_ratio?: string
+          created_at?: string
+          credits_spent?: number
+          description: string
+          duration_seconds?: number
+          error_message?: string | null
+          id?: string
+          job_id?: string | null
+          model: string
+          prompt: string
+          resolution?: string
+          status?: string
+          storage_path?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          aspect_ratio?: string
+          created_at?: string
+          credits_spent?: number
+          description?: string
+          duration_seconds?: number
+          error_message?: string | null
+          id?: string
+          job_id?: string | null
+          model?: string
+          prompt?: string
+          resolution?: string
+          status?: string
+          storage_path?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       donations_public: {
