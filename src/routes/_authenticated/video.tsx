@@ -63,7 +63,7 @@ function VideoPage() {
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const reload = useCallback(async () => {
-    const [c, v] = await Promise.all([creditsFn({ data: {} }), listFn({ data: {} })]);
+    const [c, v] = await Promise.all([creditsFn(), listFn()]);
     setBalance(c.balance);
     setVideos(v);
   }, [creditsFn, listFn]);
