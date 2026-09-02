@@ -1,34 +1,38 @@
-# Génération de vidéos pulaar (fonctionnalité payante)
+## Problème
 
-Nouvelle fonctionnalité : l'utilisateur décrit une scène (en pulaar, français, anglais ou arabe), FulanIA génère un clip vidéo de 5 à 8 secondes avec bande-son, puis le clip est stocké dans son espace personnel.
+Un correctif de sécurité a ajouté `supabase.auth.getUser()` + rejet 401 dans 4 edge functions IA :
+- `chat` (assistant)
+- `translate` (traducteur)
+- `dialect-translate` (variantes dialectales)
+- `generate-lesson` (mini‑leçons Janngude)
 
-## Page `/video` (Widito)
+Résultat : chaque clic envoie une requête → 401 « Unauthorized » → l'erreur passe presque inaperçue dans l'UI. Aucune réponse IA ne s'affiche pour les visiteurs non connectés.
 
-- Réservée aux comptes connectés (redirection vers `/auth` sinon).
-- Champ de description + choix du format (16:9 / 9:16), de la durée (5s ou 8s) et de la qualité (720p / 1080p).
-- Un assistant IA reformule automatiquement la description en un prompt vidéo en anglais et enrichi (le modèle vidéo n'accepte que l'anglais) — l'utilisateur voit et peut corriger le prompt avant de lancer.
-- Bouton « Générer » explicite : rien n'est lancé automatiquement.
-- Barre de progression pendant la génération (1 à 3 minutes), puis lecteur vidéo + bouton de téléchargement.
-- Galerie « Mes vidéos » sous le formulaire, avec suppression.
+## Objectif
 
-## Modèle payant (crédits)
+Garder les fonctionnalités telles quelles. Rétablir leur fonctionnement pour TOUS les visiteurs, sans connexion obligatoire.
 
-- Chaque compte possède un solde de crédits vidéo. 1 crédit = 1 clip.
-- 1 crédit offert à l'inscription pour essayer.
-- Pas de génération possible à 0 crédit : message clair + lien vers la page d'achat.
-- Le débit se fait au lancement du job ; en cas d'échec du job, le crédit est automatiquement recrédité.
-- Pour l'instant, l'achat de crédits pointe vers la page `/support` (Bankily, Wave, PayPal…) avec un message « contacte-nous pour créditer ton compte », et un écran admin permet d'ajouter des crédits à un compte manuellement.
-- Étape suivante (à valider séparément) : brancher Paddle pour l'achat automatique de packs de crédits.
+## Changements
 
-## Détails techniques
+Dans chacun des 4 fichiers ci‑dessous, retirer le bloc de vérification d'authentification ajouté récemment (le check `Authorization: Bearer`, la création du client Supabase « user‑bound », et le `getUser()` qui renvoie 401). Conserver le reste : validation d'input, appel à l'AI Gateway via `LOVABLE_API_KEY` côté serveur, gestion 429/402/502, RAG dictionnaire.
 
-- Table `video_credits` (solde par utilisateur) et `video_generations` (prompt, statut, modèle, coût en crédits, chemin du fichier). RLS : chaque utilisateur ne voit que ses lignes ; les écritures de solde passent uniquement par le serveur (service_role).
-- Bucket de stockage privé `generated-videos`, lecture via URL signée courte.
-- Fonctions serveur (`src/lib/video.functions.ts`, protégées par `requireSupabaseAuth`) :
-  - `refineVideoPrompt` — réécrit la description en prompt vidéo anglais.
-  - `startVideoGeneration` — vérifie le solde, débite, crée le job sur `google/gemini-omni-1.1-flash` via l'AI Gateway, enregistre la ligne.
-  - `pollVideoGeneration` — interroge le job ; à la complétion, télécharge le MP4, l'envoie dans le stockage et renvoie l'URL signée ; en cas d'échec, rembourse le crédit.
-  - `listMyVideos`, `deleteMyVideo`, et côté admin `grantVideoCredits`.
-- Le client interroge le statut toutes les 8 secondes ; un seul job à la fois par utilisateur (la vidéo IA est coûteuse et le fournisseur limite les jobs simultanés).
-- Ajout de la carte « Widito — Vidéos pulaar » dans le carrousel d'outils de la page d'accueil et dans le menu.
-- Métadonnées SEO propres sur la nouvelle page.
+1. `supabase/functions/chat/index.ts` — supprimer le bloc auth (lignes ~257‑271).
+2. `supabase/functions/translate/index.ts` — supprimer le bloc auth (lignes ~58‑67). Le client Supabase reste créé avec la clé anon pour le RAG dictionnaire (lectures publiques).
+3. `supabase/functions/dialect-translate/index.ts` — supprimer le bloc auth (lignes ~53‑66). Supprimer le client Supabase (non utilisé pour le RAG dans cette fonction).
+4. `supabase/functions/generate-lesson/index.ts` — supprimer le bloc auth (lignes ~75‑83). Le client Supabase reste pour le RAG dictionnaire.
+
+Les 4 fonctions ont déjà `verify_jwt = false` dans `supabase/config.toml` — aucun changement de config nécessaire.
+
+## Vérification
+
+Après déploiement, tester via `curl_edge_functions` SANS Authorization :
+- `POST /chat` avec un petit message → réponse SSE qui stream
+- `POST /translate` avec un mot → carte JSON
+- `POST /dialect-translate` avec un mot → carte dialectale JSON
+- `POST /generate-lesson` avec un thème → leçon JSON
+
+Puis dans le preview : ouvrir `/chat`, envoyer un message en navigation invité, vérifier qu'une réponse s'affiche.
+
+## Note
+
+C'est le retour au comportement d'avant le correctif `chat_open_endpoint`. La sécurité du `LOVABLE_API_KEY` reste assurée (jamais exposée au client). Le seul risque est l'abus de crédits par des bots : la limite de quota navigateur (`useGuestQuota`, 10 actions / 5h) reste en place côté client. Si on observe un abus réel, on pourra ajouter plus tard une protection serveur (rate‑limit par IP) sans rebloquer les invités.

@@ -12,7 +12,6 @@ import {
   Play,
   Radio,
   Download,
-  Clapperboard,
   Home,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -98,16 +97,6 @@ function HubPage() {
       iconBg: "bg-amber-500",
       ring: "ring-amber-400/40",
       delay: "1.6s",
-    },
-    {
-      to: "/video",
-      icon: Clapperboard,
-      title: "Widito",
-      desc: "Génère de courtes vidéos pulaar avec l'IA, à partir d'une simple description.",
-      accent: "from-indigo-500/25 to-transparent",
-      iconBg: "bg-indigo-500",
-      ring: "ring-indigo-400/40",
-      delay: "2s",
     },
   ];
 
