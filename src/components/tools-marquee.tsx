@@ -7,6 +7,7 @@ import {
   Library,
   BookMarked,
   Radio,
+  Clapperboard,
   type LucideIcon,
 } from "lucide-react";
 
