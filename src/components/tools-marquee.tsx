@@ -27,6 +27,7 @@ const tools: Tool[] = [
   { to: "/culture",    name: "Pulaaku",    role: "Culture & traditions",     icon: Library,           iconBg: "bg-amber-500" },
   { to: "/library",    name: "Deftere",    role: "Bibliothèque peule",       icon: BookMarked,        iconBg: "bg-teal-500" },
   { to: "/hub",        name: "Sawtu",      role: "Radio Fulania Mauritanie", icon: Radio,             iconBg: "bg-red-500" },
+  { to: "/video",      name: "Widito",     role: "Vidéos pulaar par IA",     icon: Clapperboard,      iconBg: "bg-indigo-500" },
 ];
 
 function Card({ tool }: { tool: Tool }) {
