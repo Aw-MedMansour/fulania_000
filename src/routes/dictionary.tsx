@@ -119,6 +119,7 @@ function StatCard({ value, label }: { value: string; label: string }) {
 function DictionaryPage() {
   const { user, loading } = useAuth();
   const { isAdmin, loading: adminLoading } = useIsAdmin();
+  if (!DICTIONARY_DISABLED) return <DictionaryActive />;
   if (loading || (user && adminLoading)) return null;
   if (!user || !isAdmin) return <DictionaryDisabled loggedIn={!!user} />;
   return <DictionaryActive />;
