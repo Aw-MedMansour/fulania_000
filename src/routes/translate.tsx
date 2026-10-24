@@ -67,12 +67,12 @@ function TranslatePage() {
     setCard(null);
     try {
       const { data: { session: s } } = await supabase.auth.getSession();
-      if (!s?.access_token) throw new Error(t("chat.errAuth"));
       const r = await fetch(FN_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${s.access_token}`,
+          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string,
+          ...(s?.access_token ? { Authorization: `Bearer ${s.access_token}` } : {}),
         },
         body: JSON.stringify({ text: q, lang }),
       });
