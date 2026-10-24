@@ -356,7 +356,7 @@ Deno.serve(async (req) => {
       method: "POST",
       headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: deepSearch ? "google/gemini-2.5-pro" : "google/gemini-2.5-flash",
+        model: deepSearch ? "google/gemini-2.5-pro" : "google/gemini-3.8-flash",
         stream: true,
         messages: [{ role: "system", content: systemPrompt }, ...finalMessages],
       }),
