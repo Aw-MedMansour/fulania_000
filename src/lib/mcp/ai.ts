@@ -18,7 +18,7 @@ export async function callAI(
       "X-Lovable-AIG-SDK": "raw-fetch",
     },
     body: JSON.stringify({
-      model: opts.model ?? "google/gemini-2.5-flash",
+      model: opts.model ?? "google/gemini-3.8-flash",
       messages,
       ...(opts.temperature !== undefined ? { temperature: opts.temperature } : {}),
     }),
