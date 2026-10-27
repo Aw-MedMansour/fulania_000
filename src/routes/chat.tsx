@@ -716,9 +716,11 @@ function MessageBubble({ role, content, sources }: Msg) {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
       <div className={`flex max-w-[88%] gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}>
-        <div className={`flex h-9 w-9 flex-none items-center justify-center rounded-full font-display text-sm font-bold ${isUser ? "bg-primary text-primary-foreground" : "bg-earth text-[var(--gold)]"}`}>
-          {isUser ? "Vo" : "F"}
-        </div>
+        {isUser ? (
+          <div className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-primary font-display text-sm font-bold text-primary-foreground">Vo</div>
+        ) : (
+          <BrandLogo size={36} withName={false} className="flex-none" />
+        )}
         <div
           className={`rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
             isUser

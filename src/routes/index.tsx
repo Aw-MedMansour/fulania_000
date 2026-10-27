@@ -17,6 +17,7 @@ import { SiteHeader, SiteFooter } from "@/components/layout";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { ContactSection } from "@/components/contact-section";
+import { PressBand } from "@/components/press-band";
 import { DiscoverVideos } from "@/components/discover-videos";
 import { LOGO_URL } from "@/components/brand-logo";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
@@ -268,6 +269,7 @@ function Index() {
 
       {/* DÉCOUVREZ FULANIA — vidéos */}
       <DiscoverVideos />
+      <PressBand />
 
 
       {/* PROBLEM */}
