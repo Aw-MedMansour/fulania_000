@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/brand-logo";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -189,9 +190,7 @@ function AuthPage() {
 
           <div className="relative z-10 flex items-center gap-2.5 p-10">
             <Link to="/" className="group flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[var(--gold)] text-earth shadow-lg transition group-hover:scale-105">
-                <span className="font-display text-xl font-bold">F</span>
-              </div>
+              <BrandLogo size={40} withName={false} />
               <div className="flex flex-col leading-none">
                 <span className="font-display text-xl font-semibold tracking-tight">FulanIA</span>
                 <span className="text-[10px] uppercase tracking-[0.18em] text-cream/60">Pulaagu &amp; IA</span>
@@ -239,10 +238,7 @@ function AuthPage() {
         <main className="relative flex min-h-screen flex-col justify-between px-5 py-8 sm:px-10 sm:py-12 lg:px-14">
           <div className="mb-8 flex items-center justify-between lg:hidden">
             <Link to="/" className="flex items-center gap-2.5" aria-label={t("auth.backHome")}>
-              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
-                <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
-              </div>
-              <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
+              <BrandLogo size={36} />
             </Link>
             <Link to="/" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-3.5 w-3.5" /> {t("auth.home")}

@@ -11,7 +11,7 @@ import { Menu, X } from "lucide-react";
 function MobileMenu() {
   const { t } = useLanguage();
   const [open, setOpen] = useState(false);
-  const links: { label: string; to?: string; href?: string }[] = [
+  const links: { label: string; to?: "/dictionary" | "/learn" | "/culture" | "/hub" | "/about" | "/contact"; href?: string }[] = [
     { label: t("nav.pillars"), href: "/#piliers" },
     { label: "Vidéos", href: "/#decouvrir" },
     ...(!DICTIONARY_DISABLED ? [{ label: t("nav.dictionary"), to: "/dictionary" }] : []),
