@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  ArrowRight, Sparkles, BookOpen, GraduationCap, Mic, Library, Bot,
+  ArrowRight, BookOpen, GraduationCap, Library, Bot, MessageCircle, PlayCircle, LayoutGrid,
   Languages, Users, Globe, Heart, Shield, Mail, Phone,
 } from "lucide-react";
 
 import { motion } from "framer-motion";
-import heroImg from "@/assets/hero-sahel.jpg";
 import portraitImg from "@/assets/culture-portrait.jpg";
 import patternImg from "@/assets/pattern.jpg";
 import issaPhoto from "@/assets/issa-mboh.jpeg.asset.json";
@@ -15,17 +14,26 @@ import meimounaPhoto from "@/assets/meimouna-sy.jpeg.asset.json";
 import ousmanePhoto from "@/assets/ousmane-deh.jpeg.asset.json";
 import awMansourPhoto from "@/assets/aw-mansour.jpeg.asset.json";
 import { SiteHeader, SiteFooter } from "@/components/layout";
-import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
-import { PressBand } from "@/components/press-band";
-import { HeroProductPreview } from "@/components/hero-product-preview";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { ContactSection } from "@/components/contact-section";
-
-
-
+import { DiscoverVideos } from "@/components/discover-videos";
+import { LOGO_URL } from "@/components/brand-logo";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+};
+
+const TOOLS = [
+  { to: "/chat", icon: Bot, title: "Assistant IA", desc: "Posez vos questions et échangez en Pulaar, français, anglais ou arabe avec une IA dédiée au monde peul." },
+  { to: "/translate", icon: Languages, title: "Traduction dialectale", desc: "Comparez un mot ou une phrase entre Fuuta Tooro, Fuuta Jaloo, Maasina et Aadamaawa, avec écoute audio." },
+  { to: "/dictionary", icon: BookOpen, title: "Dictionnaire", desc: "Cherchez un mot Pulaar ↔ français ↔ anglais ↔ arabe, classé par domaine et dialecte." },
+  { to: "/learn", icon: GraduationCap, title: "Apprentissage", desc: "Leçons, flashcards, quiz et tuteur IA pour progresser à votre rythme." },
+  { to: "/culture", icon: Library, title: "Culture & bibliothèque", desc: "Proverbes, contes, traditions et livres autour de la culture peule." },
+] as const;
+
 
 
 export const Route = createFileRoute("/")({
