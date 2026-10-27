@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 import {
   MessageSquareText,
   BookOpen,
@@ -8,15 +9,21 @@ import {
   ArrowRight,
   LogOut,
   Sparkles,
+  Play,
+  Radio,
+  Download,
   Home,
 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
+import { ToolsMarquee } from "@/components/tools-marquee";
+import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
+import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
-import { BrandLogo } from "@/components/brand-logo";
 import patternImg from "@/assets/pattern.jpg";
 
 export const Route = createFileRoute("/hub")({
@@ -28,9 +35,7 @@ export const Route = createFileRoute("/hub")({
         { name: "description", content: tFor(l, "seo./hub.desc") },
         { property: "og:title", content: tFor(l, "seo./hub.title") },
         { property: "og:description", content: tFor(l, "seo./hub.desc") },
-        { property: "og:url", content: "https://www.fulania.com/hub" },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary" },
+        { property: "og:url", content: "https://fulania.com/hub" },
       ],
     };
   },
@@ -107,7 +112,10 @@ function HubPage() {
 
       <header className="relative z-10 mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
         <Link to="/" className="flex items-center gap-2.5">
-          <BrandLogo size={36} />
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
+            <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
+          </div>
+          <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
         </Link>
         <div className="flex items-center gap-2">
           <PageNav />
@@ -169,10 +177,7 @@ function HubPage() {
               <div className={`relative flex h-12 w-12 items-center justify-center rounded-xl ${iconBg} text-cream shadow-sm hub-icon-ring ${ring}`}>
                 <Icon className="h-6 w-6" />
               </div>
-              <span className="relative mt-5 inline-flex w-fit items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-primary">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden /> Disponible
-              </span>
-              <h2 className="relative mt-3 font-display text-xl font-semibold text-earth">{title}</h2>
+              <h2 className="relative mt-5 font-display text-xl font-semibold text-earth">{title}</h2>
               <p className="relative mt-1.5 text-sm text-muted-foreground">{desc}</p>
               <span className="relative mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
                 {t("hub.open")} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -181,29 +186,231 @@ function HubPage() {
           ))}
         </section>
 
-        <section className="mt-14">
-          <h2 className="font-display text-2xl font-semibold tracking-tight text-earth">En développement</h2>
-          <p className="mt-1.5 text-sm text-muted-foreground">Ces fonctions ne sont pas encore disponibles. Elles sont affichées à titre informatif.</p>
-          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
-            {[
-              { t: "Reconnaissance vocale", d: "Dicter en Pulaar avec prise en compte des sons ɓ, ɗ, ƴ, ŋ." },
-              { t: "Correction de textes en temps réel", d: "Suggestions orthographiques pendant la saisie en Pulaar." },
-            ].map((x) => (
-              <li key={x.t} className="rounded-xl border border-dashed border-border bg-card/60 p-5">
-                <span className="inline-flex rounded-full bg-muted px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Bientôt</span>
-                <p className="mt-2 font-display text-lg font-semibold text-earth">{x.t}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{x.d}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 text-sm text-muted-foreground">
-            Envie de voir FulanIA en vidéo ? <a href="/#decouvrir" className="font-medium text-primary underline-offset-4 hover:underline">Regarder les présentations</a>
-          </p>
+        <section className="mt-16">
+          <div className="mb-6 max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Sparkles className="h-3 w-3" />
+              La plateforme en mouvement
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              Un écosystème d'outils au service du Pulaar
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Chaque outil est pensé comme un compagnon spécialisé — assistants, tuteurs, traducteurs, gardiens de la culture.
+            </p>
+          </div>
+          <ToolsMarquee />
+        </section>
+
+
+
+        <section className="mt-16">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Sparkles className="h-3 w-3" />
+              Entretien exclusif
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              FulanIA : L'Entretien Exclusif avec L'Infos Plus
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              L'équipe FulanIA revient sur la naissance, la mission et les ambitions de la première IA dédiée à la langue et à la culture peules.
+            </p>
+          </div>
+
+          <LazyYouTube
+            videoId="XXDGAmGVJFU"
+            title="FulanIA : L'Entretien Exclusif avec L'Infos Plus"
+          />
+        </section>
+
+        <section className="mt-16">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Sparkles className="h-3 w-3" />
+              Présentation
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              Découvrez FulanIA en vidéo
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Par Meimouna Sy — Vice-présidente, Responsable communication & sensibilisation
+            </p>
+          </div>
+
+          <LazyYouTube
+            videoId="atXu0sjsEF4"
+            title="Présentation de FulanIA par Meimouna Sy"
+          />
+
+        </section>
+
+        <section className="mt-16">
+          <div className="mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
+              <Radio className="h-3 w-3" />
+              Radio Mauritanie
+            </div>
+            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
+              FulanIA à la Radio Mauritanie
+            </h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              Avec Ali Diallo — Co-fondateur, Responsable des partenariats
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
+            <LazyVideo
+              src={radioVideoAsset.url}
+              poster={radioCoverAsset.url}
+              title="Passage d'Ali Diallo à la Radio Mauritanie"
+            />
+            <div className="border-t border-border p-6 sm:p-8">
+              <p className="font-display text-lg font-semibold text-earth">
+                Interview à la Radio Mauritanie
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Ali Diallo présente la mission de FulanIA, ses partenariats et l'impact de l'IA au service de la langue pulaar.
+              </p>
+              <a
+                href={radioVideoAsset.url}
+                download="fulania-radio-mauritanie.mp4"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--gold)] px-4 py-2 text-sm font-medium text-earth shadow-sm transition-transform hover:scale-[1.02]"
+              >
+                <Download className="h-4 w-4" />
+                Télécharger la vidéo
+              </a>
+            </div>
+          </div>
         </section>
 
       </main>
 
       <SiteFooter />
     </div>
+  );
+}
+
+function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  const [activated, setActivated] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setInView(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10"
+    >
+      <div className="relative aspect-video w-full bg-muted">
+        {!loaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
+
+        {inView && !activated && (
+          <button
+            type="button"
+            onClick={() => setActivated(true)}
+            aria-label={`Lire la vidéo : ${title}`}
+            className="group absolute inset-0 flex items-center justify-center"
+          >
+            <img
+              src={thumb}
+              alt={title}
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setLoaded(true)}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
+            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
+              <Play className="h-7 w-7 translate-x-0.5 fill-current" />
+            </span>
+          </button>
+        )}
+
+        {activated && (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1`}
+            title={title}
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+            onLoad={() => setLoaded(true)}
+            className="absolute inset-0 h-full w-full"
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LazyVideo({ src, poster, title }: { src: string; poster: string; title: string }) {
+  const [activated, setActivated] = useState(false);
+  const [posterLoaded, setPosterLoaded] = useState(false);
+
+  if (activated) {
+    return (
+      <video
+        controls
+        autoPlay
+        playsInline
+        preload="auto"
+        poster={poster}
+        className="aspect-video w-full bg-black"
+        aria-label={title}
+      >
+        <source src={src} type="video/mp4" />
+        Votre navigateur ne prend pas en charge la lecture vidéo.
+      </video>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setActivated(true)}
+      aria-label={`Lire la vidéo : ${title}`}
+      className="group relative block aspect-video w-full overflow-hidden bg-muted"
+    >
+      {!posterLoaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
+      <img
+        src={poster}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setPosterLoaded(true)}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
+      <span className="absolute inset-0 flex items-center justify-center">
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
+          <Play className="h-7 w-7 translate-x-0.5 fill-current" />
+        </span>
+      </span>
+    </button>
   );
 }

@@ -1,2 +1,0 @@
-- The brand logo is referenced only through `src/components/brand-logo.tsx` (`BrandLogo`, `LOGO_URL`); why: one place to swap the logo site-wide.
-- Presentation videos live on the home page (`DiscoverVideos`, players in `video-players.tsx`); the Hub lists tools only; why: Hub is action-oriented.

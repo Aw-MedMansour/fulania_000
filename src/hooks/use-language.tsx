@@ -199,10 +199,10 @@ export const translations: Record<Lang, Dict> = {
     "lang.switcher": "Langue",
 
     // Hero
-    "hero.badge": "L'intelligence artificielle au service du Pulaar",
-    "hero.title1": "Votre langue. Votre intelligence.",
-    "hero.title2": "Votre avenir.",
-    "hero.subtitle": "Découvrez FulanIA, une plateforme d'intelligence artificielle dédiée au Pulaar et au Fulfulde, conçue pour faciliter les échanges, la traduction et l'apprentissage.", "hero.cta1": "Explorer FulanIA", "hero.cta2": "Découvrir la plateforme",
+    "hero.badge": "L'IA au service de la langue et de la culture peules",
+    "hero.title1": "Une intelligence artificielle",
+    "hero.title2": "pulaar & fulfulde",
+    "hero.subtitle": "FulanIA est un assistant d'intelligence artificielle capable de comprendre, de parler et de traduire la langue pulaar — une IA spécialisée, entièrement dédiée à la préservation et à la valorisation de la langue et de la culture peules.",
     "stats.speakers": "Locuteurs",
     "stats.countries": "Pays",
     "stats.dialects": "Dialectes",
@@ -556,10 +556,10 @@ export const translations: Record<Lang, Dict> = {
     "btn.try": "Eto", "btn.signin": "Naatugol", "btn.signout": "Yaltugol",
     "btn.discover": "Yiy projet on", "btn.chat": "Yeewtu e FulanIA", "lang.switcher": "Ɗemngal",
 
-    "hero.badge": "Hakkille kuɓɓinaaɗo e ballal Pulaar",
-    "hero.title1": "Ɗemngal maa. Hakkille maa.",
-    "hero.title2": "Jaŋngo maa.",
-    "hero.subtitle": "Anndu FulanIA, palateforme hakkille kuɓɓinaaɗo fawaaɗo e Pulaar e Fulfulde, ngam newnude jokkondiral, firo e ekkitaare.", "hero.cta1": "Yiylo FulanIA", "hero.cta2": "Anndu palateforme nde",
+    "hero.badge": "Ballal IA ngam ɗemngal e pinal Fulɓe",
+    "hero.title1": "Hakkille kuɓɓinaaɗo",
+    "hero.title2": "pulaar & fulfulde",
+    "hero.subtitle": "FulanIA ko kaaloowo miijo kuuɓal (IA) baawɗo faamude, wolwude e firtude ɗemngal Pulaar — IA heeriinde, fawaande hen kala e reende e teddinde ɗemngal e pinal Fulɓe.",
     "stats.speakers": "Wolwooɓe", "stats.countries": "Leyɗe", "stats.dialects": "Ƴeewndeeji",
 
     "problem.tag": "Hawritannde",
@@ -934,10 +934,10 @@ export const translations: Record<Lang, Dict> = {
     "btn.try": "Try it", "btn.signin": "Sign in", "btn.signout": "Sign out",
     "btn.discover": "Discover the project", "btn.chat": "Chat with FulanIA", "lang.switcher": "Language",
 
-    "hero.badge": "Artificial intelligence for Pulaar",
-    "hero.title1": "Your language. Your intelligence.",
-    "hero.title2": "Your future.",
-    "hero.subtitle": "Discover FulanIA, an artificial intelligence platform dedicated to Pulaar and Fulfulde, designed to make communication, translation and learning easier.", "hero.cta1": "Explore FulanIA", "hero.cta2": "Discover the platform",
+    "hero.badge": "AI for the Fulani language and culture",
+    "hero.title1": "An artificial intelligence",
+    "hero.title2": "in Pulaar & Fulfulde",
+    "hero.subtitle": "FulanIA is an AI assistant able to understand, speak and translate the Pulaar language — a specialised AI, fully dedicated to preserving and promoting the Fulani language and culture.",
     "stats.speakers": "Speakers", "stats.countries": "Countries", "stats.dialects": "Dialects",
 
     "problem.tag": "The reality",
@@ -1313,10 +1313,10 @@ export const translations: Record<Lang, Dict> = {
     "btn.try": "جرّب", "btn.signin": "تسجيل الدخول", "btn.signout": "تسجيل الخروج",
     "btn.discover": "اكتشف المشروع", "btn.chat": "تحدّث مع FulanIA", "lang.switcher": "اللغة",
 
-    "hero.badge": "الذكاء الاصطناعي في خدمة لغة البولار",
-    "hero.title1": "لغتك. ذكاؤك.",
-    "hero.title2": "مستقبلك.",
-    "hero.subtitle": "اكتشف FulanIA، منصة ذكاء اصطناعي مخصّصة للبولار والفولفولديه، صُمّمت لتسهيل التواصل والترجمة والتعلّم.", "hero.cta1": "استكشف FulanIA", "hero.cta2": "اكتشف المنصة",
+    "hero.badge": "ذكاء اصطناعي للغة والثقافة الفولانية",
+    "hero.title1": "ذكاء اصطناعي",
+    "hero.title2": "بالبولارية والفولفولديه",
+    "hero.subtitle": "FulanIA مساعد ذكاء اصطناعي قادر على فهم اللغة البولارية والتحدّث بها وترجمتها — ذكاء اصطناعي متخصّص، مكرَّس بالكامل للحفاظ على لغة الفولاني وثقافتهم وإبرازها.",
     "stats.speakers": "المتحدثون", "stats.countries": "الدول", "stats.dialects": "اللهجات",
 
     "problem.tag": "الواقع",

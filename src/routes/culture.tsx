@@ -1,4 +1,3 @@
-import { BrandLogo } from "@/components/brand-logo";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, Library, Quote, BookMarked, Music2, Shirt, Utensils, Crown, BookOpen } from "lucide-react";
@@ -182,10 +181,7 @@ function CulturePage() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3 sm:px-8">
-          <div className="flex min-w-0 items-center gap-3">
-            <Link to="/" aria-label="FulanIA — accueil" className="shrink-0"><BrandLogo size={30} withName={false} /></Link>
-            <PageNav />
-          </div>
+          <PageNav />
 
 
 
