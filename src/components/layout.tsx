@@ -5,6 +5,51 @@ import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { DIALECTS, LANGUAGES, useLanguage } from "@/hooks/use-language";
 import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
+import { BrandLogo } from "@/components/brand-logo";
+import { Menu, X } from "lucide-react";
+
+function MobileMenu() {
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const links: { label: string; to?: "/dictionary" | "/learn" | "/culture" | "/hub" | "/about" | "/contact"; href?: string }[] = [
+    { label: t("nav.pillars"), href: "/#piliers" },
+    { label: "Vidéos", href: "/#decouvrir" },
+    ...(!DICTIONARY_DISABLED ? [{ label: t("nav.dictionary"), to: "/dictionary" as const }] : []),
+    { label: t("nav.learn"), to: "/learn" },
+    { label: t("nav.library"), to: "/culture" },
+    { label: "Outils (Hub)", to: "/hub" },
+    { label: "À propos", to: "/about" },
+    { label: t("nav.contact"), to: "/contact" },
+  ];
+  return (
+    <div className="lg:hidden">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+        className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-foreground/80 hover:bg-accent"
+      >
+        {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
+      {open && (
+        <nav aria-label="Menu mobile" className="absolute inset-x-0 top-16 z-50 border-b border-border bg-background shadow-lg">
+          <ul className="mx-auto max-w-7xl px-4 py-3">
+            {links.map((l) => (
+              <li key={l.label}>
+                {l.to ? (
+                  <Link to={l.to} onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm font-medium hover:bg-accent">{l.label}</Link>
+                ) : (
+                  <a href={l.href} onClick={() => setOpen(false)} className="block rounded-md px-3 py-3 text-sm font-medium hover:bg-accent">{l.label}</a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </div>
+  );
+}
 
 async function signOut() {
   const { supabase } = await import("@/integrations/supabase/client");
@@ -107,30 +152,19 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="group flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
-            <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
-          </div>
-          <div className="flex flex-col leading-none">
-            <span className="font-display text-lg font-semibold tracking-tight text-earth">
-              FulanIA
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              Pulaagu &amp; IA
-            </span>
-          </div>
+        <Link to="/" className="group flex min-w-0 items-center" aria-label="FulanIA — accueil">
+          <BrandLogo size={38} tagline="Pulaagu & IA" compactOnMobile />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
-          <a href="/#solution" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.solution")}</a>
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Navigation principale">
           <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.pillars")}</a>
           {!DICTIONARY_DISABLED && (
             <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.dictionary")}</Link>
           )}
           <Link to="/learn" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.learn")}</Link>
           <Link to="/culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.library")}</Link>
-          <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
-          <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
+          <Link to="/hub" className="text-sm font-medium text-foreground/80 hover:text-primary">Outils</Link>
+          <Link to="/about" className="text-sm font-medium text-foreground/80 hover:text-primary">À propos</Link>
           <Link to="/contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</Link>
         </nav>
 
@@ -175,6 +209,7 @@ export function SiteHeader() {
               <span className="hidden sm:inline">{t("btn.signin")}</span>
             </Link>
           )}
+          <MobileMenu />
           <Link
             to="/chat"
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
@@ -196,12 +231,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[var(--gold)] text-earth">
-                <span className="font-display text-lg font-bold">F</span>
-              </div>
-              <span className="font-display text-xl font-semibold">FulanIA</span>
-            </div>
+            <BrandLogo size={40} tone="dark" />
             <p className="mt-4 max-w-xs text-sm text-cream/70">
               {t("footer.tagline")}
             </p>
@@ -217,8 +247,10 @@ export function SiteFooter() {
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
               <li><a href="/#solution" className="hover:text-[var(--gold)]">{t("nav.solution")}</a></li>
               <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
+              <li><a href="/#decouvrir" className="hover:text-[var(--gold)]">Vidéos</a></li>
+              <li><Link to="/hub" className="hover:text-[var(--gold)]">Outils (Hub)</Link></li>
+              <li><Link to="/about" className="hover:text-[var(--gold)]">À propos</Link></li>
               <li><a href="/#culture" className="hover:text-[var(--gold)]">{t("nav.culture")}</a></li>
-              <li><a href="/#vision" className="hover:text-[var(--gold)]">{t("nav.vision")}</a></li>
               <li><Link to="/contact" className="hover:text-[var(--gold)]">{t("nav.contact")}</Link></li>
               <li><Link to="/support" className="font-semibold text-[var(--gold)] hover:opacity-80">❤ Soutenir FulanIA</Link></li>
             </ul>

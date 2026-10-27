@@ -98,6 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
+      { rel: "icon", type: "image/png", sizes: "64x64", href: "/favicon.png" },
       { rel: "icon", type: "image/png", sizes: "192x192", href: "/icons/icon-192.png" },
       { rel: "icon", type: "image/png", sizes: "512x512", href: "/icons/icon-512.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

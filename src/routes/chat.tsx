@@ -1,3 +1,4 @@
+import { BrandLogo } from "@/components/brand-logo";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope, Copy, Volume2, ThumbsUp, ThumbsDown, Share, MoreHorizontal } from "lucide-react";
@@ -321,9 +322,7 @@ function ChatPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
-              <span className="font-display text-base font-bold">F</span>
-            </div>
+            <BrandLogo size={32} withName={false} />
             <div className="hidden flex-col leading-tight sm:flex">
               <span className="font-display text-sm font-semibold">FulanIA</span>
               <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground">
