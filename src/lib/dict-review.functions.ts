@@ -70,9 +70,10 @@ export const listProposedEntries = createServerFn({ method: "GET" })
       .order("headword", { ascending: true })
       .range(data.offset, data.offset + data.limit - 1);
 
-    if (data.search) {
+    const safeSearch = data.search.replace(/[,()%_*\\."']/g, " ").trim();
+    if (safeSearch) {
       q = q.or(
-        `headword.ilike.%${data.search}%,french.ilike.%${data.search}%`,
+        `headword.ilike.%${safeSearch}%,french.ilike.%${safeSearch}%`,
       );
     }
     if (data.domain) q = q.eq("domain", data.domain);

@@ -321,9 +321,9 @@ export const getOrGenerateDailyMissions = createServerFn({ method: "POST" })
     if (!missionsToInsert.length) return [];
 
     // efface les vieilles missions du jour (si partielles)
-    await supabase.from("daily_missions").delete().eq("user_id", userId).eq("mission_date", today);
+    await (await import("@/integrations/supabase/client.server")).supabaseAdmin.from("daily_missions").delete().eq("user_id", userId).eq("mission_date", today);
 
-    const { data: inserted, error } = await supabase
+    const { data: inserted, error } = await (await import("@/integrations/supabase/client.server")).supabaseAdmin
       .from("daily_missions")
       .insert(missionsToInsert)
       .select("id, slot, title, theme, exercises, completed, score")
@@ -477,7 +477,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
       streak = dayDiff === 1 ? streak + 1 : 1;
     }
 
-    await supabase
+    await (await import("@/integrations/supabase/client.server")).supabaseAdmin
       .from("user_learning_progress")
       .upsert(
         {
@@ -511,7 +511,7 @@ export const completeMission = createServerFn({ method: "POST" })
     const today = new Date().toISOString().slice(0, 10);
 
     // Only award XP if a valid, not-yet-completed mission for today gets flipped.
-    const { data: updated, error: updErr } = await supabase
+    const { data: updated, error: updErr } = await (await import("@/integrations/supabase/client.server")).supabaseAdmin
       .from("daily_missions")
       .update({ completed: true, score: data.score, completed_at: new Date().toISOString() })
       .eq("id", data.mission_id)
@@ -532,7 +532,7 @@ export const completeMission = createServerFn({ method: "POST" })
       .eq("user_id", userId)
       .maybeSingle();
     const newXp = (prog?.xp ?? 0) + 50;
-    await supabase
+    await (await import("@/integrations/supabase/client.server")).supabaseAdmin
       .from("user_learning_progress")
       .update({ xp: newXp, level: xpToLevel(newXp).level })
       .eq("user_id", userId);
@@ -559,7 +559,7 @@ export const completeMission = createServerFn({ method: "POST" })
 
     const unlocks = BADGES.filter((b) => b.check(stats));
     if (unlocks.length) {
-      await supabase
+      await (await import("@/integrations/supabase/client.server")).supabaseAdmin
         .from("user_badges")
         .upsert(
           unlocks.map((b) => ({ user_id: userId, badge_code: b.code })),
