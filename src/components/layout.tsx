@@ -14,7 +14,7 @@ function MobileMenu() {
   const links: { label: string; to?: "/dictionary" | "/learn" | "/culture" | "/hub" | "/about" | "/contact"; href?: string }[] = [
     { label: t("nav.pillars"), href: "/#piliers" },
     { label: "Vidéos", href: "/#decouvrir" },
-    ...(!DICTIONARY_DISABLED ? [{ label: t("nav.dictionary"), to: "/dictionary" }] : []),
+    ...(!DICTIONARY_DISABLED ? [{ label: t("nav.dictionary"), to: "/dictionary" as const }] : []),
     { label: t("nav.learn"), to: "/learn" },
     { label: t("nav.library"), to: "/culture" },
     { label: "Outils (Hub)", to: "/hub" },
