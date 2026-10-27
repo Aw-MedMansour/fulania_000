@@ -48,10 +48,12 @@ export const Route = createFileRoute("/")({
         { name: "description", content: tFor(l, "seo./.desc") },
         { property: "og:title", content: tFor(l, "seo./.title") },
         { property: "og:description", content: tFor(l, "seo./.desc") },
-        { property: "og:url", content: "https://fulania.com/" },
+        { property: "og:url", content: "https://www.fulania.com/" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
       links: [
-        { rel: "canonical", href: "https://fulania.com/" },
+        { rel: "canonical", href: "https://www.fulania.com/" },
       ],
       scripts: [
         {
@@ -72,7 +74,7 @@ export const Route = createFileRoute("/")({
             "@type": "Organization",
             name: "FulanIA",
             url: "https://fulania.com/",
-            logo: "https://fulania.com/favicon.ico",
+            logo: "https://fulania.com/icons/icon-512.png",
             description:
               "FulanIA — assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule.",
             founder: { "@type": "Person", name: "Aw Mohamedou Mansour" },
@@ -93,7 +95,6 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   const { t } = useLanguage();
-  const isMobile = useIsMobile();
   const [showDialects, setShowDialects] = useState(false);
 
   const dialects = [
@@ -119,23 +120,6 @@ function Index() {
 
 
 
-
-  const piliers = [
-    { icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d") },
-    { icon: BookOpen, title: t("pillar.dict.t"), desc: t("pillar.dict.d") },
-    { icon: GraduationCap, title: t("pillar.learn.t"), desc: t("pillar.learn.d") },
-    { icon: Mic, title: t("pillar.voice.t"), desc: t("pillar.voice.d") },
-    { icon: Library, title: t("pillar.lib.t"), desc: t("pillar.lib.d") },
-  ];
-
-  const publics = [
-    { tag: t("public.t1"), desc: t("public.d1") },
-    { tag: t("public.t2"), desc: t("public.d2") },
-    { tag: t("public.t3"), desc: t("public.d3") },
-    { tag: t("public.t4"), desc: t("public.d4") },
-    { tag: t("public.t5"), desc: t("public.d5") },
-    { tag: t("public.t6"), desc: t("public.d6") },
-  ];
 
   const phases = [
     { id: 1, title: t("phase.1.t"), body: t("phase.1.b") },
