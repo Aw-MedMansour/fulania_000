@@ -141,190 +141,142 @@ function Index() {
       <SiteHeader />
 
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} fetchPriority="high" decoding="async" />
-          <div className="absolute inset-0 bg-gradient-to-br from-earth/95 via-earth/85 to-earth/55" />
-          <div className="absolute inset-0 bg-gradient-to-t from-earth via-earth/30 to-transparent" />
-          <div className="absolute inset-0 bg-dot-gold opacity-[0.08] mix-blend-screen" aria-hidden />
-          <div className="pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[var(--gold)]/25 blur-3xl" aria-hidden />
-          <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-primary/30 blur-3xl" aria-hidden />
-        </div>
+      <section className="relative overflow-hidden bg-earth text-cream">
+        <div className="absolute inset-0 bg-dot-gold opacity-[0.07]" aria-hidden />
+        <div className="pointer-events-none absolute -right-40 -top-40 h-[34rem] w-[34rem] rounded-full bg-[var(--gold)]/15 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -bottom-40 left-1/4 h-80 w-80 rounded-full bg-primary/20 blur-3xl" aria-hidden />
 
-        <div className="relative mx-auto max-w-7xl px-5 pt-10 pb-16 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
-          <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
-            {/* Colonne texte */}
-            <motion.div
-              className="text-cream lg:col-span-7"
-              initial="hidden"
-              animate="show"
-              variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } } }}
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-5 pb-20 pt-12 sm:px-6 sm:pt-20 lg:grid-cols-12 lg:gap-8 lg:px-8 lg:pb-28 lg:pt-24">
+          <motion.div
+            className="min-w-0 lg:col-span-7"
+            initial="hidden"
+            animate="show"
+            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+          >
+            <motion.p
+              variants={fadeUp}
+              className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--gold)]"
             >
-              <motion.div
-                variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/50 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[var(--gold)] backdrop-blur-md"
-              >
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--gold)] opacity-60 animate-ping" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--gold)]" />
-                </span>
-                {t("hero.badge")}
-              </motion.div>
+              <span className="h-px w-8 bg-[var(--gold)]" aria-hidden />
+              {t("hero.badge")}
+            </motion.p>
 
-              <motion.h1
-                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
-                className="mt-6 font-display text-[2.5rem] font-semibold leading-[1.02] tracking-[-0.02em] text-balance sm:text-6xl lg:text-[4.25rem]"
-              >
-                {t("hero.title1")}{" "}
-                <span className="italic font-normal text-shimmer-gold">{t("hero.title2")}</span>.
-              </motion.h1>
+            <motion.h1
+              variants={fadeUp}
+              className="mt-6 font-display text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.025em] text-balance sm:text-6xl lg:text-[4.5rem]"
+            >
+              {t("hero.title1")}{" "}
+              <span className="italic font-normal text-[var(--gold)]">{t("hero.title2")}</span>
+            </motion.h1>
 
-              <motion.p
-                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-5 max-w-xl text-[15px] leading-relaxed text-cream/90 sm:text-lg"
-              >
-                {t("hero.subtitle")}
-              </motion.p>
+            <motion.p variants={fadeUp} className="mt-6 max-w-xl text-base leading-relaxed text-cream/85 sm:text-lg">
+              {t("hero.subtitle")}
+            </motion.p>
 
-              <motion.div
-                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7 } } }}
-                className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+            <motion.div variants={fadeUp} className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/chat"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--gold)] px-6 py-4 text-sm font-semibold text-earth shadow-[0_12px_40px_-12px_var(--gold)] transition hover:brightness-105"
               >
-                <Link to="/auth" className="cta-attract group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-[var(--gold)] px-6 py-4 text-sm font-semibold text-earth shadow-[0_12px_40px_-8px_rgba(212,164,74,0.5)] transition hover:bg-[var(--gold)]/95 hover:shadow-[0_20px_60px_-12px_rgba(212,164,74,0.7)]">
-                  <span className="relative z-10">{t("btn.chat")}</span>
-                  <ArrowRight className="relative z-10 h-4 w-4 cta-bob" />
-                </Link>
-                <a href="#solution" className="cta-breath inline-flex items-center justify-center gap-2 rounded-2xl border border-cream/25 bg-cream/[0.04] px-6 py-4 text-sm font-medium text-cream backdrop-blur-md transition hover:border-cream/50 hover:bg-cream/10">
-                  {t("btn.discover")}
-                </a>
-              </motion.div>
-
-              <motion.dl
-                variants={{ hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } } }}
-                className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-cream/10 pt-6 sm:mt-12"
+                {t("hero.cta1")}
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <a
+                href="#decouvrir"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/25 px-6 py-4 text-sm font-medium text-cream transition hover:border-cream/60 hover:bg-cream/5"
               >
-                <div>
-                  <dt className="text-[10px] uppercase tracking-[0.18em] text-cream/55">{t("stats.speakers")}</dt>
-                  <dd className="mt-1 font-display text-xl font-semibold text-[var(--gold)]">~100 M</dd>
-                </div>
-                <div className="h-8 w-px bg-cream/10" aria-hidden />
-                <div>
-                  <dt className="text-[10px] uppercase tracking-[0.18em] text-cream/55">{t("stats.countries")}</dt>
-                  <dd className="mt-1 font-display text-xl font-semibold text-[var(--gold)]">20+</dd>
-                </div>
-                <div className="h-8 w-px bg-cream/10" aria-hidden />
-                <div>
-                  <dt className="text-[10px] uppercase tracking-[0.18em] text-cream/55">{t("stats.dialects")}</dt>
-                  <dd className="mt-1 font-display text-xl font-semibold text-[var(--gold)]">4</dd>
-                </div>
-              </motion.dl>
+                <PlayCircle className="h-4 w-4" />
+                {t("hero.cta2")}
+              </a>
             </motion.div>
+          </motion.div>
 
-            {/* Colonne mockup produit */}
-            {!isMobile && (
-              <div className="hidden lg:block lg:col-span-5">
-                <HeroProductPreview />
+          {/* Visuel : logo + langues, purement illustratif */}
+          <motion.div
+            className="relative mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+            aria-hidden
+          >
+            <div className="relative mx-auto aspect-square w-full max-w-[26rem]">
+              <div className="absolute inset-0 rounded-full border border-cream/10" />
+              <div className="absolute inset-[12%] rounded-full border border-dashed border-[var(--gold)]/25" />
+              <div className="absolute inset-[26%] overflow-hidden rounded-[2rem] bg-[oklch(1_0_0)] shadow-[0_30px_80px_-20px_oklch(0_0_0/0.6)] ring-1 ring-[var(--gold)]/40">
+                <img src={LOGO_URL} alt="" className="h-full w-full scale-[1.2] object-contain" decoding="async" />
               </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* PRESS BAND */}
-      <PressBand />
-
-      {/* TOOLS MARQUEE */}
-
-      <section className="bg-secondary/30 py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="mb-10 max-w-2xl">
-            <Eyebrow>La plateforme</Eyebrow>
-            <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.01em] text-balance sm:text-4xl lg:text-5xl">
-              Un écosystème d'outils au service du Pulaar
-            </h2>
-            <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Assistants, tuteurs, traducteurs, gardiens de la culture — chaque outil est un compagnon spécialisé.
-            </p>
-          </Reveal>
-          <ToolsMarquee />
-        </div>
-      </section>
-
-      {/* SOLUTION */}
-      <section id="solution" className="py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center lg:px-8">
-          <Reveal>
-            <Eyebrow>{t("sol.tag")}</Eyebrow>
-            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("sol.title")}</h2>
-            <p className="mt-5 text-lg text-muted-foreground">{t("sol.body")}</p>
-
-            <div className="mt-8 space-y-4">
-              <div className="rounded-xl border border-border bg-card p-5 transition hover:border-muted-foreground/40">
-                <p className="text-sm uppercase tracking-wider text-muted-foreground">{t("sol.notLabel")}</p>
-                <p className="mt-1.5 text-foreground/80">{t("sol.notText")}</p>
-              </div>
-              <div className="rounded-xl border-2 border-primary/40 bg-primary/5 p-5 transition hover:border-primary/60">
-                <p className="text-sm uppercase tracking-wider text-primary">{t("sol.isLabel")}</p>
-                <p className="mt-1.5 text-foreground">{t("sol.isText")}</p>
-              </div>
+              {[
+                { label: "Pulaar", pos: "left-[2%] top-[18%]" },
+                { label: "Français", pos: "right-[0%] top-[10%]" },
+                { label: "English", pos: "right-[-2%] bottom-[22%]" },
+                { label: "العربية", pos: "left-[4%] bottom-[12%]" },
+              ].map((c) => (
+                <span
+                  key={c.label}
+                  className={`absolute ${c.pos} inline-flex items-center gap-1.5 rounded-full border border-cream/15 bg-earth/80 px-3 py-1.5 text-xs font-medium text-cream shadow-lg backdrop-blur`}
+                >
+                  <MessageCircle className="h-3 w-3 text-[var(--gold)]" />
+                  {c.label}
+                </span>
+              ))}
             </div>
-          </Reveal>
-
-          <Reveal delay={0.15} className="relative">
-            <div className="absolute -inset-4 rounded-3xl bg-[var(--gold)]/20 blur-2xl animate-float-glow" aria-hidden />
-            <motion.img
-              src={portraitImg}
-              alt={t("alt.portrait")}
-              loading="lazy"
-              width={1024}
-              height={1024}
-              whileHover={{ scale: 1.02 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl"
-            />
-            <div className="absolute -bottom-6 -left-6 max-w-[240px] rounded-xl border border-border bg-card p-4 shadow-xl">
-              <p className="font-display text-sm italic text-primary">« Pulaagu ko ngallu mawngu »</p>
-              <p className="mt-1 text-xs text-muted-foreground">{t("sol.quoteCaption")}</p>
-            </div>
-          </Reveal>
+          </motion.div>
         </div>
       </section>
 
-      {/* PILIERS */}
-      <section id="piliers" className="py-24">
+      {/* FONCTIONNALITÉS */}
+      <section id="piliers" className="scroll-mt-20 py-20 sm:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Reveal className="max-w-2xl">
-            <Eyebrow>{t("pillars.tag")}</Eyebrow>
-            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("pillars.title")}</h2>
-            <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
+            <Eyebrow>La plateforme</Eyebrow>
+            <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-5xl">
+              Ce que vous pouvez faire avec FulanIA
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+              Des outils disponibles dès maintenant, gratuitement et sans compte obligatoire.
+            </p>
           </Reveal>
 
-          <StaggerGroup className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {piliers.map(({ icon: Icon, title, desc }, idx) => (
-              <StaggerItem key={title} className="group relative overflow-hidden rounded-2xl border border-border bg-card p-7 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
-                  <Icon className="h-6 w-6" />
-                </div>
-                <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+          <StaggerGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {TOOLS.map(({ to, icon: Icon, title, desc }) => (
+              <StaggerItem key={to}>
+                <Link
+                  to={to}
+                  className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition hover:border-primary/50 hover:shadow-lg"
+                >
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                    Ouvrir <ArrowRight className="h-4 w-4" />
+                  </span>
+                </Link>
               </StaggerItem>
             ))}
             <StaggerItem>
-              <Link to="/auth" className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border-2 border-primary bg-primary p-7 text-primary-foreground transition hover:-translate-y-1 hover:bg-primary/90 hover:shadow-2xl">
-                <Sparkles className="h-8 w-8 transition group-hover:rotate-12" />
-                <div>
-                  <h3 className="font-display text-xl font-semibold">{t("pillars.try")}</h3>
-                  <p className="mt-2 text-sm text-primary-foreground/85">{t("pillars.tryBody")}</p>
-                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium">
-                    {t("pillars.open")} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                  </div>
+              <Link
+                to="/hub"
+                className="group flex h-full flex-col justify-between rounded-2xl bg-earth p-6 text-cream transition hover:shadow-lg"
+              >
+                <LayoutGrid className="h-7 w-7 text-[var(--gold)]" />
+                <div className="mt-6">
+                  <h3 className="font-display text-xl font-semibold">Tous les outils</h3>
+                  <p className="mt-2 text-sm text-cream/75">Retrouvez l'ensemble des services et leur statut dans le Hub.</p>
+                  <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--gold)]">
+                    Accéder au Hub <ArrowRight className="h-4 w-4" />
+                  </span>
                 </div>
               </Link>
             </StaggerItem>
           </StaggerGroup>
         </div>
       </section>
+
+      {/* DÉCOUVREZ FULANIA — vidéos */}
+      <DiscoverVideos />
+
 
       {/* PROBLEM */}
       <section className="bg-secondary/40 bg-grain py-24">
@@ -426,25 +378,6 @@ function Index() {
         </div>
       </section>
 
-      {/* PUBLIC */}
-      <section className="bg-secondary/40 py-24">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Reveal className="max-w-2xl">
-            <Eyebrow>{t("public.tag")}</Eyebrow>
-            <h2 className="mt-3 font-display text-4xl font-semibold leading-tight text-balance sm:text-5xl">{t("public.title")}</h2>
-          </Reveal>
-          <StaggerGroup className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {publics.map(({ tag, desc }) => (
-              <StaggerItem key={tag} className="rounded-2xl border border-border bg-card p-6 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
-                <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-primary">
-                  <Users className="h-3 w-3" />{tag}
-                </div>
-                <p className="mt-4 text-sm text-foreground/80">{desc}</p>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </div>
-      </section>
 
       {/* VISION */}
       <section id="vision" className="py-24">
