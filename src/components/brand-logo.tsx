@@ -13,13 +13,15 @@ type Props = {
   /** "light" = fond clair, "dark" = texte crème pour fonds sombres. */
   tone?: "light" | "dark";
   className?: string;
+  /** Masquer le nom sous 640 px (en-têtes chargés). */
+  compactOnMobile?: boolean;
 };
 
 /**
  * Logo FulanIA. L'image originale a un fond blanc : elle est posée dans une
  * tuile blanche arrondie pour rester lisible sur les fonds sombres comme clairs.
  */
-export function BrandLogo({ size = 36, withName = true, tagline, tone = "light", className = "" }: Props) {
+export function BrandLogo({ size = 36, withName = true, tagline, tone = "light", className = "", compactOnMobile = false }: Props) {
   return (
     <span className={`inline-flex min-w-0 items-center gap-2.5 ${className}`}>
       <span
@@ -36,7 +38,7 @@ export function BrandLogo({ size = 36, withName = true, tagline, tone = "light",
         />
       </span>
       {withName && (
-        <span className="flex min-w-0 flex-col leading-none">
+        <span className={`${compactOnMobile ? "hidden sm:flex" : "flex"} min-w-0 flex-col leading-none`}>
           <span className={`font-display text-lg font-semibold tracking-tight ${tone === "dark" ? "text-cream" : "text-earth"}`}>
             FulanIA
           </span>

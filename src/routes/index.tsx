@@ -185,7 +185,7 @@ function Index() {
 
           {/* Visuel : logo + langues, purement illustratif */}
           <motion.div
-            className="relative mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
+            className="relative mx-auto w-full max-w-[17rem] sm:max-w-sm lg:col-span-5 lg:max-w-none"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}

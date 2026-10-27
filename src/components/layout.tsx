@@ -153,7 +153,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link to="/" className="group flex min-w-0 items-center" aria-label="FulanIA — accueil">
-          <BrandLogo size={38} tagline="Pulaagu & IA" />
+          <BrandLogo size={38} tagline="Pulaagu & IA" compactOnMobile />
         </Link>
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Navigation principale">
