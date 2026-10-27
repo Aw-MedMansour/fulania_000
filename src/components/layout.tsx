@@ -158,6 +158,7 @@ export function SiteHeader() {
 
         <nav className="hidden items-center gap-6 lg:flex" aria-label="Navigation principale">
           <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.pillars")}</a>
+          <a href="/#decouvrir" className="text-sm font-medium text-foreground/80 hover:text-primary">Vidéos</a>
           {!DICTIONARY_DISABLED && (
             <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.dictionary")}</Link>
           )}
@@ -245,8 +246,7 @@ export function SiteFooter() {
               {t("footer.explore")}
             </h4>
             <ul className="mt-4 space-y-2 text-sm text-cream/80">
-              <li><a href="/#solution" className="hover:text-[var(--gold)]">{t("nav.solution")}</a></li>
-              <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
+                            <li><a href="/#piliers" className="hover:text-[var(--gold)]">{t("nav.pillars")}</a></li>
               <li><a href="/#decouvrir" className="hover:text-[var(--gold)]">Vidéos</a></li>
               <li><Link to="/hub" className="hover:text-[var(--gold)]">Outils (Hub)</Link></li>
               <li><Link to="/about" className="hover:text-[var(--gold)]">À propos</Link></li>

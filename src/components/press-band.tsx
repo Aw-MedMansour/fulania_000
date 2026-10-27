@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { Radio, Mic2, Youtube, ArrowUpRight } from "lucide-react";
 
 /**
@@ -29,13 +28,13 @@ export function PressBand() {
             </div>
           ))}
         </div>
-        <Link
-          to="/hub"
+        <a
+          href="#decouvrir"
           className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.18em] text-primary hover:text-primary/80"
         >
           Voir tout
           <ArrowUpRight className="h-3.5 w-3.5" />
-        </Link>
+        </a>
       </div>
     </section>
   );
