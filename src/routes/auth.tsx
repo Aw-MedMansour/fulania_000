@@ -64,6 +64,8 @@ export const Route = createFileRoute("/auth")({
         { property: "og:title", content: tFor(l, "seo./auth.title") },
         { property: "og:description", content: tFor(l, "seo./auth.desc") },
         { property: "og:url", content: "https://fulania.com/auth" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
     };
   },
@@ -83,6 +85,7 @@ function AuthPage() {
   const [idError, setIdError] = useState<string | null>(null);
   const [pwdError, setPwdError] = useState<string | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   // After successful auth (or "continue without account"), go to `next` if
   // provided (the tool the user was trying to reach), else /hub. We use
@@ -124,48 +127,61 @@ function AuthPage() {
 
   const onSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     if (!validate("signin")) return;
+    setAuthError(null);
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: idToEmail(identifier),
-      password,
-    });
-    setLoading(false);
-    if (error) {
-      return toast.error(t("auth.err.badCreds"));
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: idToEmail(identifier),
+        password,
+      });
+      if (error) {
+        setAuthError(error.code === "invalid_credentials" ? t("auth.err.badCreds") : error.message);
+        return;
+      }
+      toast.success(t("auth.welcomeToast"));
+      goNext();
+    } catch {
+      setAuthError(t("auth.oauthErr"));
+    } finally {
+      setLoading(false);
     }
-    toast.success(t("auth.welcomeToast"));
-    goNext();
   };
 
   const onSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     if (!validate("signup")) return;
+    setAuthError(null);
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    try {
+    const { data, error } = await supabase.auth.signUp({
       email: idToEmail(identifier),
       password,
       options: {
-        // No email confirmation: accounts are username+password only.
-        // auto_confirm_email is enabled on the backend so no email is sent.
         data: { username: identifier.trim().toLowerCase() },
       },
     });
-    setLoading(false);
     if (error) {
       const msg = /registered|exists/i.test(error.message)
         ? t("auth.err.idTaken")
         : error.message;
-      return toast.error(msg);
+      setAuthError(msg);
+      return;
     }
-    // Auto sign-in (auto_confirm is enabled)
-    const { error: signInErr } = await supabase.auth.signInWithPassword({
-      email: idToEmail(identifier),
-      password,
-    });
-    if (signInErr) return toast.error(signInErr.message);
+    if (!data.session) {
+      setAuthError(t("auth.err.idTaken"));
+      setTab("signin");
+      return;
+    }
     toast.success(t("auth.welcomeToast"));
     goNext();
+    } catch {
+      setAuthError(t("auth.oauthErr"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -269,6 +285,7 @@ function AuthPage() {
                 setIdError(null);
                 setPwdError(null);
                 setConfirmError(null);
+                setAuthError(null);
               }}
             >
               <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
@@ -326,6 +343,12 @@ function AuthPage() {
                 </form>
               </TabsContent>
             </Tabs>
+            {authError && (
+              <p role="alert" className="mt-4 flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+                <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                {authError}
+              </p>
+            )}
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center" aria-hidden>
