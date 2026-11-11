@@ -13,6 +13,8 @@ export const MAINTENANCE_UNTIL: string | null = null;
 
 // Ces adresses restent ouvertes pendant la maintenance (outils techniques, robots, sitemap).
 export const MAINTENANCE_EXEMPT_PREFIXES = [
+  "/auth",
+  "/.lovable/oauth/consent",
   "/mcp",
   "/.mcp",
   "/.well-known",
