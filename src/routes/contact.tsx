@@ -29,6 +29,8 @@ export const Route = createFileRoute("/contact")({
         { property: "og:title", content: tFor(l, "seo./contact.title") },
         { property: "og:description", content: tFor(l, "seo./contact.desc") },
         { property: "og:url", content: "https://fulania.com/contact" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
       links: [
         { rel: "canonical", href: "https://fulania.com/contact" },

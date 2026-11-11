@@ -23,6 +23,8 @@ export const Route = createFileRoute("/chat")({
         { property: "og:title", content: tFor(l, "seo./chat.title") },
         { property: "og:description", content: tFor(l, "seo./chat.desc") },
         { property: "og:url", content: "https://fulania.com/chat" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
     };
   },
