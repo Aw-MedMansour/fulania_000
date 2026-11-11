@@ -1,4 +1,4 @@
-import { auth, defineMcp } from "@lovable.dev/mcp-js";
+import { defineMcp } from "@lovable.dev/mcp-js";
 import translateTool from "./tools/translate";
 import cultureQaTool from "./tools/culture-qa";
 import dictionaryLookupTool from "./tools/dictionary-lookup";
@@ -10,16 +10,11 @@ import chatWithJanngudeTool from "./tools/chat-with-janngude";
 import searchResourcesTool from "./tools/search-resources";
 
 export default defineMcp({
-  name: "fulania",
-  title: "Fulania",
+  name: "fulania-mcp",
+  title: "FulanIA — Pulaar & Fulɓe culture",
   version: "0.1.0",
   instructions:
-    "FulanIA tools for Pulaar / Fulfulde / Pular and Fulɓe culture: translation, dictionary, grammar, vocabulary, exercises, text correction, culture Q&A, resource search, and Janngude conversation. OAuth authorization with a FulanIA account is required. These tools do not expose stored profiles, progress, conversations, favorites or donations.",
-  auth: auth.oauth.issuer({
-    issuer: `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "project-ref-unset"}.supabase.co/auth/v1`,
-    acceptedAudiences: "authenticated",
-    requireOAuthClientClaim: true,
-  }),
+    "FulanIA's public MCP server. Tools for the Pulaar / Fulfulde / Pular language and Fulɓe (Fulani/Peul) culture: translation between Pulaar / French / English / Arabic, dictionary lookup, grammar explanations, vocabulary lessons, exercises, text correction, culture Q&A, resource search, and chat with the Janngude tutor. All tools are public and read-only; per-user features (profile, progress) are available in the FulanIA web app.",
   tools: [
     translateTool,
     dictionaryLookupTool,

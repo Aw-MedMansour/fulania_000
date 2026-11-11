@@ -5,7 +5,6 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -14,15 +13,6 @@ import appCss from "../styles.css?url";
 const ogCover = "/og-cover.jpg";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
-import { MaintenancePage } from "@/components/maintenance-page";
-import {
-  MAINTENANCE_ENABLED,
-  MAINTENANCE_EXEMPT_PREFIXES,
-} from "@/lib/feature-flags";
-
-function isExemptPath(pathname: string): boolean {
-  return MAINTENANCE_EXEMPT_PREFIXES.some((prefix) => pathname.startsWith(prefix));
-}
 
 function NotFoundComponent() {
   const { t } = useLanguage();
@@ -103,7 +93,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: "FulanIA — IA au service de la langue et de la culture Peules" },
       { name: "twitter:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
       { name: "twitter:image", content: `https://fulania.com${ogCover}` },
-      ...(MAINTENANCE_ENABLED ? [{ name: "robots", content: "noindex, nofollow" }] : []),
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -141,17 +130,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-  if (MAINTENANCE_ENABLED && !isExemptPath(pathname)) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        <LanguageProvider>
-          <MaintenancePage />
-        </LanguageProvider>
-      </QueryClientProvider>
-    );
-  }
 
   return (
     <QueryClientProvider client={queryClient}>

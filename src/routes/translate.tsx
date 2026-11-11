@@ -18,8 +18,6 @@ export const Route = createFileRoute("/translate")({
         { property: "og:title", content: tFor(l, "seo./translate.title") },
         { property: "og:description", content: tFor(l, "seo./translate.desc") },
         { property: "og:url", content: "https://fulania.com/translate" },
-        { property: "og:type", content: "website" },
-        { name: "twitter:card", content: "summary" },
       ],
     };
   },

@@ -3,18 +3,13 @@
   "sdk_version": "0.23.0",
   "path": "/mcp",
   "auth": {
-    "type": "oauth",
-    "issuer": "https://cmhzxjibieecwtglabip.supabase.co/auth/v1",
-    "require_oauth_client_claim": true,
-    "accepted_audiences": [
-      "authenticated"
-    ]
+    "type": "none"
   },
   "mcp": {
     "server": {
-      "name": "fulania",
+      "name": "fulania-mcp",
       "version": "0.1.0",
-      "title": "Fulania"
+      "title": "FulanIA — Pulaar & Fulɓe culture"
     },
     "tools": [
       {

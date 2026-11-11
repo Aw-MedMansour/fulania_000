@@ -23,11 +23,6 @@ export const Route = createFileRoute("/_authenticated/dictionary-review")({
   head: () => ({
     meta: [
       { title: "Revue du dictionnaire — Admin" },
-      { name: "description", content: "Espace de révision des propositions du dictionnaire FulanIA." },
-      { property: "og:title", content: "Revue du dictionnaire FulanIA" },
-      { property: "og:description", content: "Révision des propositions de mots du dictionnaire FulanIA." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
