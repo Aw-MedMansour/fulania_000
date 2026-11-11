@@ -36,6 +36,8 @@ export const Route = createFileRoute("/hub")({
         { property: "og:title", content: tFor(l, "seo./hub.title") },
         { property: "og:description", content: tFor(l, "seo./hub.desc") },
         { property: "og:url", content: "https://fulania.com/hub" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
     };
   },

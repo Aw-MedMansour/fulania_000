@@ -17,6 +17,8 @@ export const Route = createFileRoute("/culture")({
         { property: "og:title", content: tFor(l, "seo./culture.title") },
         { property: "og:description", content: tFor(l, "seo./culture.desc") },
         { property: "og:url", content: "https://fulania.com/culture" },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
       ],
     };
   },
