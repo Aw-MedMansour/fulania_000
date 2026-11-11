@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { oauthReturnPath } from "@/lib/oauth-return-path";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,8 +52,8 @@ const idToEmail = (id: string) => `${id.trim().toLowerCase()}@${ID_DOMAIN}`;
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>): { next?: string } => ({
     next:
-      typeof s.next === "string" && s.next.startsWith("/") && !s.next.startsWith("//")
-        ? s.next
+      typeof s.next === "string"
+        ? oauthReturnPath(s.next)
         : undefined,
   }),
   head: () => {
@@ -91,7 +92,7 @@ function AuthPage() {
   // provided (the tool the user was trying to reach), else /hub. We use
   // `replace: true` so the auth page is not kept on the back stack.
   const destination = next ?? "/hub";
-  const goNext = () => navigate({ to: destination as "/hub", replace: true });
+  const goNext = () => navigate({ to: destination, replace: true });
 
   useEffect(() => {
     let active = true;
@@ -100,8 +101,8 @@ function AuthPage() {
       if (session) goNext();
     });
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (active && data.session) goNext();
+    supabase.auth.getUser().then(({ data }) => {
+      if (active && data.user) goNext();
     });
 
     return () => {
@@ -160,6 +161,7 @@ function AuthPage() {
       email: idToEmail(identifier),
       password,
       options: {
+        emailRedirectTo: new URL(destination, window.location.origin).href,
         data: { username: identifier.trim().toLowerCase() },
       },
     });
@@ -350,7 +352,7 @@ function AuthPage() {
               </p>
             )}
 
-            <div className="relative my-6">
+            {!destination.startsWith("/.lovable/oauth/consent") && <><div className="relative my-6">
               <div className="absolute inset-0 flex items-center" aria-hidden>
                 <span className="w-full border-t border-border" />
               </div>
@@ -364,13 +366,13 @@ function AuthPage() {
             <Button
               variant="outline"
               className="h-11 w-full gap-2 text-sm font-medium"
-              onClick={() => navigate({ to: destination as "/hub", replace: true })}
+              onClick={goNext}
             >
               {t("auth.continueGuest")} <ArrowRight className="h-4 w-4" />
             </Button>
             <p className="mt-2 text-center text-xs text-muted-foreground">
               {t("auth.guestHint")}
-            </p>
+            </p></>}
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
