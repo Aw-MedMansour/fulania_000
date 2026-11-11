@@ -34,7 +34,7 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
     return data;
   },
   pendingComponent: () => <ConsentFrame><Loader2 className="mx-auto h-6 w-6 animate-spin text-primary" /><p className="mt-4 text-center">Chargement de la demande…</p></ConsentFrame>,
-  errorComponent: ({ error }) => <ConsentFrame><h1 className="font-display text-2xl text-foreground">Connexion indisponible</h1><p role="alert" className="mt-4 text-muted-foreground">{error.message}</p></ConsentFrame>,
+  errorComponent: ({ error }) => <ConsentFrame><h1 className="font-display text-2xl text-foreground">Connexion indisponible</h1><p role="alert" className="mt-4 text-muted-foreground">{error instanceof Error ? error.message : "Impossible de charger cette demande."}</p></ConsentFrame>,
   component: Consent,
 });
 
