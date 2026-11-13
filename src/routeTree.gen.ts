@@ -19,6 +19,7 @@ import { Route as DictionaryRouteImport } from './routes/dictionary'
 import { Route as HubRouteImport } from './routes/hub'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SupportRouteImport } from './routes/support'
@@ -78,6 +79,11 @@ const LearnRoute = LearnRouteImport.update({
 const LibraryRoute = LibraryRouteImport.update({
   id: '/library',
   path: '/library',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MaintenanceRoute = MaintenanceRouteImport.update({
+  id: '/maintenance',
+  path: '/maintenance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
   '/library': typeof LibraryRoute
+  '/maintenance': typeof MaintenanceRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
   '/library': typeof LibraryRoute
+  '/maintenance': typeof MaintenanceRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/hub': typeof HubRoute
   '/learn': typeof LearnRoute
   '/library': typeof LibraryRoute
+  '/maintenance': typeof MaintenanceRoute
   '/mcp': typeof McpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
@@ -221,6 +230,7 @@ export interface FileRouteTypes {
     | '/hub'
     | '/learn'
     | '/library'
+    | '/maintenance'
     | '/mcp'
     | '/sitemap.xml'
     | '/support'
@@ -243,6 +253,7 @@ export interface FileRouteTypes {
     | '/hub'
     | '/learn'
     | '/library'
+    | '/maintenance'
     | '/mcp'
     | '/sitemap.xml'
     | '/support'
@@ -266,6 +277,7 @@ export interface FileRouteTypes {
     | '/hub'
     | '/learn'
     | '/library'
+    | '/maintenance'
     | '/mcp'
     | '/sitemap.xml'
     | '/support'
@@ -290,6 +302,7 @@ export interface RootRouteChildren {
   HubRoute: typeof HubRoute
   LearnRoute: typeof LearnRoute
   LibraryRoute: typeof LibraryRoute
+  MaintenanceRoute: typeof MaintenanceRoute
   McpRoute: typeof McpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SupportRoute: typeof SupportRoute
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/library'
       fullPath: '/library'
       preLoaderRoute: typeof LibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/maintenance': {
+      id: '/maintenance'
+      path: '/maintenance'
+      fullPath: '/maintenance'
+      preLoaderRoute: typeof MaintenanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -476,6 +496,7 @@ const rootRouteChildren: RootRouteChildren = {
   HubRoute: HubRoute,
   LearnRoute: LearnRoute,
   LibraryRoute: LibraryRoute,
+  MaintenanceRoute: MaintenanceRoute,
   McpRoute: McpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SupportRoute: SupportRoute,
