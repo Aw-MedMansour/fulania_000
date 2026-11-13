@@ -4,6 +4,7 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  redirect,
   useRouter,
   HeadContent,
   Scripts,
@@ -13,6 +14,7 @@ import appCss from "../styles.css?url";
 const ogCover = "/og-cover.jpg";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
+import { MAINTENANCE_MODE } from "@/lib/feature-flags";
 
 function NotFoundComponent() {
   const { t } = useLanguage();
@@ -68,6 +70,11 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  beforeLoad: ({ location }) => {
+    if (MAINTENANCE_MODE && location.pathname !== "/maintenance") {
+      throw redirect({ to: "/maintenance" });
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
