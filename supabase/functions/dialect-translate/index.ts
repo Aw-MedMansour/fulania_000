@@ -1,5 +1,5 @@
 // FulanIA — Multi-dialect Pulaar translator
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.95.0";
 
 
 
@@ -49,6 +49,19 @@ const TOOL = {
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  {
+    const authHeader = req.headers.get("Authorization") ?? "";
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+    const authClient = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: authData, error: authErr } = token ? await authClient.auth.getClaims(token) : { data: null, error: true };
+    if (authErr || !authData?.claims?.sub) {
+      return new Response(JSON.stringify({ error: "Veuillez vous connecter pour utiliser l'assistant." }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+  }
   try {
 
 
