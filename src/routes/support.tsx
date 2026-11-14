@@ -35,9 +35,9 @@ type Method = {
 };
 
 const METHODS: Method[] = [
-  { key: "bankily", label: "Bankily", value: "48524983", hint: "Mauritanie" },
+  { key: "bankily", label: "Bankily & Sedad", value: "42815162", hint: "Mauritanie" },
   { key: "wave", label: "Wave", value: "+221 78 380 52 71", hint: "Sénégal", href: "https://wave.com" },
-  { key: "masrivi", label: "Masrivi & Sedad", value: "42815162", hint: "Mauritanie" },
+  { key: "masrivi", label: "Masrivi", value: "48524983", hint: "Mauritanie" },
   { key: "iban", label: "IBAN", value: "RO81REVO0000174020020066", hint: "Revolut EUR" },
   { key: "paypal", label: "PayPal", value: "Awmedmansour@outlook.com", href: "https://paypal.me/awmedmansour" },
 ];
