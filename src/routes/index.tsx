@@ -141,8 +141,8 @@ function Index() {
       <SiteHeader />
 
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative overflow-hidden bg-earth">
+        <div className="absolute inset-0 bg-earth">
           <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} fetchPriority="high" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-br from-earth/95 via-earth/85 to-earth/55" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth via-earth/30 to-transparent" />
