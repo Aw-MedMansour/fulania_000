@@ -162,7 +162,7 @@ function Index() {
             >
               <motion.div
                 variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
-                className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/50 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[var(--gold)] backdrop-blur-md"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-earth/80 px-3.5 py-1.5 text-[11px] uppercase tracking-[0.2em] text-[var(--gold)]"
               >
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--gold)] opacity-60 animate-ping" />
