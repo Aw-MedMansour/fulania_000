@@ -146,9 +146,9 @@ function Index() {
           <img src={heroImg} alt={t("alt.hero")} className="h-full w-full object-cover" width={1920} height={1080} fetchPriority="high" decoding="async" />
           <div className="absolute inset-0 bg-gradient-to-br from-earth/95 via-earth/85 to-earth/55" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth via-earth/30 to-transparent" />
-          <div className="absolute inset-0 bg-dot-gold opacity-[0.08] mix-blend-screen" aria-hidden />
-          <div className="pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[var(--gold)]/25 blur-3xl" aria-hidden />
-          <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-primary/30 blur-3xl" aria-hidden />
+          <div className="absolute inset-0 bg-dot-gold opacity-[0.08]" aria-hidden />
+          <div className="pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_25%,transparent)_0%,transparent_70%)]" aria-hidden />
+          <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--primary)_30%,transparent)_0%,transparent_70%)]" aria-hidden />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 pt-10 pb-16 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
@@ -569,9 +569,9 @@ function Index() {
 
       {/* PORTEUR DU PROJET */}
       <section id="founder" className="relative overflow-hidden bg-earth py-20 text-cream sm:py-24">
-        <div className="absolute inset-0 bg-dot-gold opacity-[0.06] mix-blend-screen" aria-hidden />
-        <div className="pointer-events-none absolute -right-24 top-1/4 h-[24rem] w-[24rem] rounded-full bg-[var(--gold)]/20 blur-3xl" aria-hidden />
-        <div className="pointer-events-none absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-primary/25 blur-3xl" aria-hidden />
+        <div className="absolute inset-0 bg-dot-gold opacity-[0.06]" aria-hidden />
+        <div className="pointer-events-none absolute -right-24 top-1/4 h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_20%,transparent)_0%,transparent_70%)]" aria-hidden />
+        <div className="pointer-events-none absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--primary)_25%,transparent)_0%,transparent_70%)]" aria-hidden />
 
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <Reveal>
