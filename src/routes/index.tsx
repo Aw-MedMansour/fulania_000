@@ -147,8 +147,8 @@ function Index() {
           <div className="absolute inset-0 bg-gradient-to-br from-earth/95 via-earth/85 to-earth/55" />
           <div className="absolute inset-0 bg-gradient-to-t from-earth via-earth/30 to-transparent" />
           <div className="absolute inset-0 bg-dot-gold opacity-[0.08]" aria-hidden />
-          <div className="pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[var(--gold)]/25 blur-3xl" aria-hidden />
-          <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-primary/30 blur-3xl" aria-hidden />
+          <div className="pointer-events-none absolute -right-24 top-1/4 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_25%,transparent)_0%,transparent_70%)]" aria-hidden />
+          <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--primary)_30%,transparent)_0%,transparent_70%)]" aria-hidden />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-5 pt-10 pb-16 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
