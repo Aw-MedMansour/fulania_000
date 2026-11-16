@@ -570,8 +570,8 @@ function Index() {
       {/* PORTEUR DU PROJET */}
       <section id="founder" className="relative overflow-hidden bg-earth py-20 text-cream sm:py-24">
         <div className="absolute inset-0 bg-dot-gold opacity-[0.06]" aria-hidden />
-        <div className="pointer-events-none absolute -right-24 top-1/4 h-[24rem] w-[24rem] rounded-full bg-[var(--gold)]/20 blur-3xl" aria-hidden />
-        <div className="pointer-events-none absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-primary/25 blur-3xl" aria-hidden />
+        <div className="pointer-events-none absolute -right-24 top-1/4 h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--gold)_20%,transparent)_0%,transparent_70%)]" aria-hidden />
+        <div className="pointer-events-none absolute -left-32 bottom-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--primary)_25%,transparent)_0%,transparent_70%)]" aria-hidden />
 
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <Reveal>
