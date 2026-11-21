@@ -22,8 +22,14 @@ export default defineTool({
   handler: async ({ text, from, to, dialect }) => {
     if (from === to) return textResult(text);
     try {
-      const dialectNote = dialect
-        ? `When Pulaar is involved, prefer the ${dialect} variant (orthography ɓ ɗ ƴ ŋ).`
+      const DIALECT_LABELS = {
+        fouta_toro: "Fuuta Tooro",
+        fouta_djallon: "Fuuta Jaloo",
+        macina: "Maasina",
+        adamawa: "Aadamaawa",
+      } as const;
+      const dialectNote = dialect && dialect in DIALECT_LABELS
+        ? `When Pulaar is involved, prefer the ${DIALECT_LABELS[dialect]} variant (orthography ɓ ɗ ƴ ŋ).`
         : "For Pulaar, use standard orthography with ɓ ɗ ƴ ŋ.";
       const out = await callAI([
         {

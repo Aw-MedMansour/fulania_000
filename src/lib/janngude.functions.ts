@@ -364,6 +364,7 @@ export const submitAnswer = createServerFn({ method: "POST" })
     // Server-side correctness validation.
     // Preferred path: user's own daily_missions.exercises jsonb.
     let accepted: Set<string> | null = null;
+    let missionExercises: (Exercise & { answered_correct?: boolean })[] | null = null;
     if (data.mission_id) {
       const { data: mission } = await supabase
         .from("daily_missions")
@@ -371,7 +372,8 @@ export const submitAnswer = createServerFn({ method: "POST" })
         .eq("id", data.mission_id)
         .eq("user_id", userId)
         .maybeSingle();
-      const exercises = (mission?.exercises as unknown as Exercise[] | null) ?? null;
+      const exercises = (mission?.exercises as unknown as (Exercise & { answered_correct?: boolean })[] | null) ?? null;
+      missionExercises = exercises;
       const exercise = exercises?.find((e) => e.id === data.exercise_id && e.entry_id === data.entry_id);
       if (exercise) {
         accepted = new Set<string>([
@@ -398,6 +400,22 @@ export const submitAnswer = createServerFn({ method: "POST" })
 
     const submitted = normalizeAnswer(data.answer);
     const correct = accepted.has(submitted);
+
+    // Record the first answer for this mission exercise server-side so that
+    // completeMission can verify completion and compute the score itself.
+    if (data.mission_id && missionExercises) {
+      const target = missionExercises.find((e) => e.id === data.exercise_id && e.entry_id === data.entry_id);
+      if (target && typeof target.answered_correct !== "boolean") {
+        target.answered_correct = correct;
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        await supabaseAdmin
+          .from("daily_missions")
+          .update({ exercises: missionExercises as unknown as never })
+          .eq("id", data.mission_id)
+          .eq("user_id", userId)
+          .eq("completed", false);
+      }
+    }
 
 
     // SRS update
@@ -510,10 +528,26 @@ export const completeMission = createServerFn({ method: "POST" })
     const { supabase, userId } = context;
     const today = new Date().toISOString().slice(0, 10);
 
-    // Only award XP if a valid, not-yet-completed mission for today gets flipped.
-    const { data: updated, error: updErr } = await (await import("@/integrations/supabase/client.server")).supabaseAdmin
+    const { supabaseAdmin: admin } = await import("@/integrations/supabase/client.server");
+    // Verify server-side that every exercise was actually answered, and compute the score.
+    const { data: missionRow } = await admin
       .from("daily_missions")
-      .update({ completed: true, score: data.score, completed_at: new Date().toISOString() })
+      .select("exercises")
+      .eq("id", data.mission_id)
+      .eq("user_id", userId)
+      .eq("mission_date", today)
+      .eq("completed", false)
+      .maybeSingle();
+    const exs = (missionRow?.exercises as unknown as { answered_correct?: boolean }[] | null) ?? [];
+    if (exs.length === 0 || exs.some((e) => typeof e.answered_correct !== "boolean")) {
+      return { ok: false, xp_gained: 0, badges: [] as string[] };
+    }
+    const serverScore = Math.round((exs.filter((e) => e.answered_correct).length / exs.length) * 100);
+
+    // Only award XP if a valid, not-yet-completed mission for today gets flipped.
+    const { data: updated, error: updErr } = await admin
+      .from("daily_missions")
+      .update({ completed: true, score: serverScore, completed_at: new Date().toISOString() })
       .eq("id", data.mission_id)
       .eq("user_id", userId)
       .eq("mission_date", today)

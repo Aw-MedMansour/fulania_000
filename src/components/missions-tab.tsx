@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { Link } from "@tanstack/react-router";
@@ -285,6 +285,7 @@ function MissionPlayer({
 }) {
   const submit = useServerFn(submitAnswer);
   const finish = useServerFn(completeMission);
+  const pendingRef = useRef<Promise<unknown>[]>([]);
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
@@ -304,7 +305,9 @@ function MissionPlayer({
     if (ok) setCorrectCount((c) => c + 1);
     else setHearts((h) => Math.max(0, h - 1));
     // fire-and-forget côté serveur
-    submit({ data: { mission_id: mission.id, exercise_id: ex.id, entry_id: ex.entry_id, answer: opt } }).catch(() => {});
+    pendingRef.current.push(
+      submit({ data: { mission_id: mission.id, exercise_id: ex.id, entry_id: ex.entry_id, answer: opt } }).catch(() => {}),
+    );
   };
 
   const next = async () => {
@@ -317,6 +320,7 @@ function MissionPlayer({
     setFinishing(true);
     const score = Math.round((correctCount / total) * 100);
     try {
+      await Promise.allSettled(pendingRef.current);
       await finish({ data: { mission_id: mission.id, score, total } });
     } catch (e) {
       console.error(e);
