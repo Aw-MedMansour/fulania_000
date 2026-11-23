@@ -71,6 +71,22 @@ async function fetchContext(supabase: ReturnType<typeof createClient>, topic: st
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+
+    // Sign-in required: these AI calls spend paid credits.
+    {
+      const _auth = req.headers.get("Authorization") ?? "";
+      const _tok = _auth.startsWith("Bearer ") ? _auth.slice(7) : "";
+      const _url = Deno.env.get("SUPABASE_URL")!;
+      const _anon = Deno.env.get("SUPABASE_ANON_KEY")!;
+      let _ok = false;
+      if (_tok && _tok !== _anon) {
+        const { data: _u } = await createClient(_url, _anon).auth.getUser(_tok);
+        _ok = !!_u?.user;
+      }
+      if (!_ok) {
+        return new Response(JSON.stringify({ error: "Connectez-vous pour utiliser cette fonctionnalité." }), { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+    }
   try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
