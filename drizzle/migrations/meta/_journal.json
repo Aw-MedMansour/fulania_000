@@ -8,6 +8,13 @@
       "when": 1793132977693,
       "tag": "0000_lock_learning_writes",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795449041031,
+      "tag": "0001_lock_book_download_counter",
+      "breakpoints": true
     }
   ]
 }
