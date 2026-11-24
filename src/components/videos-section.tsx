@@ -6,6 +6,8 @@ import { Reveal } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
 import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
+import interviewPreview from "@/assets/entretien-infos-plus.jpg.asset.json";
+import presentationPreview from "@/assets/presentation-meimouna.jpg.asset.json";
 
 /**
  * Section dédiée « FulanIA en vidéo » de la page d'accueil :
@@ -131,7 +133,7 @@ function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
     return () => io.disconnect();
   }, []);
 
-  const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+  const thumb = videoId === "XXDGAmGVJFU" ? interviewPreview.url : presentationPreview.url;
 
   return (
     <div ref={containerRef} className="relative aspect-video w-full bg-muted">
