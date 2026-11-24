@@ -23,6 +23,12 @@ import { VideosSection } from "@/components/videos-section";
 import { Button } from "@/components/ui/button";
 
 import { ContactSection } from "@/components/contact-section";
+import { StudioGallery } from "@/components/studio-gallery";
+import assistantCapture from "@/assets/fulania-assistant-capture.jpg.asset.json";
+import dictionaryCapture from "@/assets/fulania-dictionary-capture.jpg.asset.json";
+import learningCapture from "@/assets/fulania-learning-capture.jpg.asset.json";
+import dialectsCapture from "@/assets/fulania-dialects-capture.jpg.asset.json";
+import libraryCapture from "@/assets/fulania-library-capture.jpg.asset.json";
 
 
 
@@ -115,11 +121,11 @@ function Index() {
 
 
   const piliers = [
-    { to: "/chat", icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d") },
-    { to: "/dictionary", icon: BookOpen, title: t("pillar.dict.t"), desc: t("pillar.dict.d") },
-    { to: "/learn", icon: GraduationCap, title: t("pillar.learn.t"), desc: t("pillar.learn.d") },
-    { to: "/translate", icon: Languages, title: t("hub.f4.title"), desc: t("hub.f4.desc") },
-    { to: "/culture", icon: Library, title: t("pillar.lib.t"), desc: t("pillar.lib.d") },
+    { to: "/chat", icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d"), capture: assistantCapture },
+    { to: "/dictionary", icon: BookOpen, title: t("pillar.dict.t"), desc: t("pillar.dict.d"), capture: dictionaryCapture },
+    { to: "/learn", icon: GraduationCap, title: t("pillar.learn.t"), desc: t("pillar.learn.d"), capture: learningCapture },
+    { to: "/translate", icon: Languages, title: t("hub.f4.title"), desc: t("hub.f4.desc"), capture: dialectsCapture },
+    { to: "/culture", icon: Library, title: t("pillar.lib.t"), desc: t("pillar.lib.d"), capture: libraryCapture },
   ];
 
   const publics = [
@@ -253,6 +259,7 @@ function Index() {
             <Eyebrow>{t("sol.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">{t("sol.title")}</h2>
             <p className="mt-5 text-lg text-muted-foreground">{t("sol.body")}</p>
+            <p className="mt-6 border-y border-gold/30 py-4 font-sans text-base font-semibold">FulanIA = Fulani (Pulaar) + IA (Intelligence artificielle)</p>
 
             <div className="mt-8 space-y-4">
               <div className="border-l border-border py-2 pl-5">
@@ -295,14 +302,16 @@ function Index() {
           </Reveal>
 
           <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {piliers.map(({ to, icon: Icon, title, desc }, idx) => (
+            {piliers.map(({ to, icon: Icon, title, desc, capture }, idx) => (
               <StaggerItem key={title}><Button asChild variant="ghost" className="group relative block h-full whitespace-normal rounded-lg border border-border bg-card p-6 text-left hover:border-gold/60 hover:bg-card"><Link to={to}>
                 <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
-                <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">{desc}</p><ArrowRight className="mt-5 text-gold-ink" />
+                <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">{desc}</p>
+                <img src={capture.url} alt={title} loading="lazy" decoding="async" width={360} height={660} className="mx-auto mt-5 h-64 w-full rounded-md bg-secondary object-contain" />
+                <ArrowRight className="mt-5 text-gold-ink" />
               </Link></Button></StaggerItem>
             ))}
           </StaggerGroup>
@@ -325,6 +334,11 @@ function Index() {
           <div className="mt-12 grid gap-6 border-t border-cream/15 pt-8 sm:grid-cols-3">
             {[{ icon: Sparkles, name: 'Génération vidéo' }, { icon: Languages, name: 'Génération audio' }, { icon: Bot, name: 'Contenus visuels & motion design' }].map(({ icon: Icon, name }) => <div key={name} className="flex items-start gap-3"><Icon className="h-5 w-5 shrink-0 text-gold" /><h3 className="font-sans text-base font-semibold">{name}</h3></div>)}
           </div>
+          <div className="mt-8 max-w-3xl space-y-4 text-sm leading-relaxed text-cream/80 sm:text-base">
+            <p>FulanIA Studio est l’espace de FulanIA dédié à la création de vidéos par intelligence artificielle. Actuellement en cours de développement, il est conçu comme une fonctionnalité de FulanIA, tout en disposant d’une plateforme distincte consacrée à la génération de vidéos et de l’audio qui les accompagne.</p>
+            <p>Sa vocation est de démocratiser l’accès à la génération de vidéos par IA, souvent difficile d’accès depuis l’Afrique et d’autres régions, notamment grâce à l’intégration de moyens de paiement locaux. Il s’adresse à la communauté Pulaar (peule) comme à toute personne intéressée par la création de vidéos par IA, quelle que soit sa communauté.</p>
+          </div>
+          <StudioGallery />
         </div>
       </section>
       {/* CULTURE */}
@@ -395,7 +409,7 @@ function Index() {
             <Eyebrow>{t("public.tag")}</Eyebrow>
             <h2 className="mt-3 font-display text-3xl font-semibold leading-tight text-balance sm:text-4xl">{t("public.title")}</h2>
           </Reveal>
-          <StaggerGroup className="mt-12 grid grid-cols-2 gap-3 lg:grid-cols-3">
+          <StaggerGroup className="audience-grid mt-12 grid grid-cols-2 gap-3 lg:grid-cols-3">
             {publics.map(({ tag, desc }) => (
               <StaggerItem key={tag} className="rounded-2xl border border-border bg-card p-4 sm:p-6 transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg">
                 <div className="flex items-center gap-2 items-start text-sm font-semibold text-foreground">
@@ -563,10 +577,10 @@ function Index() {
 
       </section>
 
-      <section id="appel" className="bg-earth py-16 text-cream sm:py-20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><h2 className="font-display text-4xl font-semibold sm:text-5xl">Salam ! Parlons Pulaar.</h2><p className="mt-4 max-w-xl text-cream/75">{t("contact.ctaBody")}</p><div className="mt-7 flex flex-wrap gap-3"><Button asChild variant="gold" size="lg" className="h-12"><Link to="/auth">{t("btn.chat")}<ArrowRight /></Link></Button><Button asChild variant="inverse" size="lg" className="h-12"><Link to="/contact">{t("nav.contact")}</Link></Button></div></div>
+      <section id="appel" className="bg-background">
+        <div className="bg-earth py-16 text-cream sm:py-20"><div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8"><h2 className="font-display text-4xl font-semibold sm:text-5xl">Salam ! Parlons Pulaar.</h2><p className="mt-4 max-w-xl text-cream/75">{t("contact.ctaBody")}</p><div className="mt-7 flex flex-wrap gap-3"><Button asChild variant="gold" size="lg" className="h-12"><Link to="/auth">{t("btn.chat")}<ArrowRight /></Link></Button><Button asChild variant="inverse" size="lg" className="h-12"><Link to="/contact">{t("nav.contact")}</Link></Button></div></div></div>
+        <ContactSection embedded />
       </section>
-      <ContactSection />
       <SiteFooter />
     </div>
   );

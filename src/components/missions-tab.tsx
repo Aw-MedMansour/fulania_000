@@ -53,7 +53,7 @@ export function MissionsTab() {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-card p-10 text-center">
         <Sparkles className="mx-auto h-8 w-8 text-[var(--gold)]" />
-        <h3 className="mt-3 font-display text-xl font-semibold text-earth">Janngude — Apprends chaque jour</h3>
+        <h3 className="mt-3 font-display text-xl font-semibold text-foreground">Janngude — Apprends chaque jour</h3>
         <p className="mt-2 text-sm text-muted-foreground">
           Missions quotidiennes, séries, cœurs et badges culturels Peuls.
           <br />Connecte-toi pour commencer.
@@ -73,36 +73,36 @@ export function MissionsTab() {
       <StatsBar state={state} loading={stateQ.isLoading} />
 
       {/* Hero — Aventure infinie */}
-      <button
+      <Button variant="ghost"
         type="button"
         onClick={() => setEndless(true)}
         disabled={!state || state.hearts === 0}
         className={cn(
-          "group relative w-full overflow-hidden rounded-3xl border-2 border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/15 via-card to-[var(--terracotta)]/20 p-5 text-left transition-all sm:p-6",
+          "group relative h-auto w-full justify-start whitespace-normal overflow-hidden rounded-lg border-2 border-gold/40 bg-secondary p-5 text-left transition-all sm:p-6",
           state && state.hearts > 0 && "hover:-translate-y-0.5 hover:shadow-lg hover:border-[var(--gold)]",
           (!state || state.hearts === 0) && "opacity-60",
         )}
       >
         <div className="absolute -right-6 -top-6 text-[140px] opacity-10 transition-transform group-hover:rotate-12">✨</div>
         <div className="relative flex items-center gap-4">
-          <div className="flex h-16 w-16 flex-none items-center justify-center rounded-2xl bg-gradient-to-br from-[var(--gold)] to-[var(--terracotta)] text-3xl shadow-lg sm:h-20 sm:w-20 sm:text-4xl">
+          <div className="flex h-16 w-16 flex-none items-center justify-center rounded-2xl bg-gradient-to-br from-gold to-gold-ink text-3xl shadow-lg sm:h-20 sm:w-20 sm:text-4xl">
             🚀
           </div>
           <div className="flex-1">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-earth/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-cream">
               <InfinityIcon className="h-3 w-3" /> Nouveauté
             </div>
-            <h3 className="mt-1.5 font-display text-xl font-bold text-earth sm:text-2xl">Aventure infinie</h3>
+            <h3 className="mt-1.5 font-display text-xl font-bold text-foreground sm:text-2xl">Aventure infinie</h3>
             <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
               Exercices générés en continu par l'IA · QCM · Écoute · Saisie
             </p>
           </div>
           <Zap className="hidden h-6 w-6 text-[var(--gold)] transition-transform group-hover:scale-125 sm:block" />
         </div>
-      </button>
+      </Button>
 
       <div>
-        <h3 className="mb-3 font-display text-lg font-semibold text-earth">Missions du jour</h3>
+        <h3 className="mb-3 font-display text-lg font-semibold text-foreground">Missions du jour</h3>
         {missionsQ.isLoading ? (
           <div className="grid gap-3 sm:grid-cols-3">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -169,15 +169,15 @@ function StatsBar({ state, loading }: { state: LearningState | undefined; loadin
     <div className="rounded-2xl border border-border bg-card p-4 sm:p-5">
       <div className="flex flex-wrap items-center gap-4">
         <Stat icon={<Trophy className="h-4 w-4" />} label="Niveau" value={String(state.level)} accent="text-[var(--gold)]" />
-        <Stat icon={<Star className="h-4 w-4" />} label="XP" value={String(state.xp)} accent="text-amber-500" />
-        <Stat icon={<Flame className="h-4 w-4" />} label="Série" value={`${state.streak_days} j`} accent="text-orange-500" />
+        <Stat icon={<Star className="h-4 w-4" />} label="XP" value={String(state.xp)} accent="text-gold-ink" />
+        <Stat icon={<Flame className="h-4 w-4" />} label="Série" value={`${state.streak_days} j`} accent="text-clay" />
         <Stat
           icon={<Heart className="h-4 w-4" />}
           label="Cœurs"
           value={`${state.hearts}/${state.max_hearts}`}
-          accent={state.hearts === 0 ? "text-destructive" : "text-rose-500"}
+          accent={state.hearts === 0 ? "text-destructive" : "text-destructive"}
         />
-        <Stat icon={<Sparkles className="h-4 w-4" />} label="À réviser" value={String(state.due_count)} accent="text-sky-500" />
+        <Stat icon={<Sparkles className="h-4 w-4" />} label="À réviser" value={String(state.due_count)} accent="text-primary" />
       </div>
       <div className="mt-4">
         <div className="mb-1 flex justify-between text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -185,7 +185,7 @@ function StatsBar({ state, loading }: { state: LearningState | undefined; loadin
           <span>{state.xp} / {state.next_level_xp} XP</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-muted">
-          <div className="h-full bg-gradient-to-r from-[var(--gold)] to-[var(--terracotta)] transition-all" style={{ width: `${pct}%` }} />
+          <div className="h-full bg-gradient-to-r from-gold to-gold-ink transition-all" style={{ width: `${pct}%` }} />
         </div>
       </div>
     </div>
@@ -198,7 +198,7 @@ function Stat({ icon, label, value, accent }: { icon: React.ReactNode; label: st
       <span className={cn("flex h-7 w-7 items-center justify-center rounded-md bg-muted", accent)}>{icon}</span>
       <div className="leading-tight">
         <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</p>
-        <p className="font-display text-sm font-semibold text-earth">{value}</p>
+        <p className="font-display text-sm font-semibold text-foreground">{value}</p>
       </div>
     </div>
   );
@@ -208,33 +208,33 @@ function Stat({ icon, label, value, accent }: { icon: React.ReactNode; label: st
 
 function MissionCard({ mission, onStart, disabled }: { mission: Mission; onStart: () => void; disabled: boolean }) {
   return (
-    <button
+    <Button variant="ghost"
       type="button"
       onClick={onStart}
       disabled={disabled || mission.completed}
       className={cn(
-        "group relative flex flex-col rounded-xl border border-border bg-card p-4 text-left transition",
+        "group relative flex h-auto flex-col items-stretch whitespace-normal rounded-lg border border-border bg-card p-4 text-left transition",
         !disabled && !mission.completed && "hover:-translate-y-0.5 hover:border-[var(--gold)]/60 hover:shadow-md",
         disabled && "opacity-60",
-        mission.completed && "border-emerald-500/40 bg-emerald-50/40 dark:bg-emerald-950/20",
+        mission.completed && "border-success/40 bg-success/10",
       )}
     >
       <div className="flex items-start justify-between">
-        <span className="rounded-full bg-earth/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+        <span className="rounded-full bg-earth/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-foreground">
           Mission {mission.slot}
         </span>
-        {mission.completed && <Check className="h-4 w-4 text-emerald-600" />}
+        {mission.completed && <Check className="h-4 w-4 text-success" />}
       </div>
-      <h4 className="mt-3 font-display text-lg font-semibold text-earth">{mission.title}</h4>
+      <h4 className="mt-3 font-display text-lg font-semibold text-foreground">{mission.title}</h4>
       <p className="mt-1 text-xs text-muted-foreground">
         {mission.exercises.length} exercices · ~5 min
       </p>
       {mission.completed && mission.score !== null && (
-        <p className="mt-2 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+        <p className="mt-2 text-xs font-medium text-success">
           ✓ Terminée — {mission.score}%
         </p>
       )}
-    </button>
+    </Button>
   );
 }
 
@@ -244,7 +244,7 @@ function BadgesRow({ unlocked }: { unlocked: string[] }) {
   const set = new Set(unlocked);
   return (
     <div>
-      <h3 className="mb-3 font-display text-lg font-semibold text-earth">Badges culturels</h3>
+      <h3 className="mb-3 font-display text-lg font-semibold text-foreground">Badges culturels</h3>
       <div className="flex flex-wrap gap-2">
         {Object.entries(BADGE_META).map(([code, meta]) => {
           const has = set.has(code);
@@ -255,7 +255,7 @@ function BadgesRow({ unlocked }: { unlocked: string[] }) {
               className={cn(
                 "flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs",
                 has
-                  ? "border-[var(--gold)]/60 bg-[var(--gold)]/10 text-earth"
+                  ? "border-[var(--gold)]/60 bg-[var(--gold)]/10 text-foreground"
                   : "border-border bg-muted/40 text-muted-foreground opacity-60",
               )}
             >
@@ -342,19 +342,19 @@ function MissionPlayer({
     <div className="fixed inset-0 z-50 flex flex-col bg-background">
       {/* header */}
       <div className="flex flex-none items-center gap-3 border-b border-border px-4 py-3">
-        <button
+        <Button variant="ghost"
           onClick={onClose}
           aria-label="Fermer"
           className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           <X className="h-5 w-5" />
-        </button>
+        </Button>
         <div className="flex-1">
           <div className="h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full bg-gradient-to-r from-[var(--gold)] to-[var(--terracotta)] transition-all" style={{ width: `${progress}%` }} />
+            <div className="h-full bg-gradient-to-r from-gold to-gold-ink transition-all" style={{ width: `${progress}%` }} />
           </div>
         </div>
-        <div className="flex items-center gap-1 text-sm font-medium text-rose-500">
+        <div className="flex items-center gap-1 text-sm font-medium text-destructive">
           <Heart className="h-4 w-4 fill-current" /> {hearts}
         </div>
       </div>
@@ -366,7 +366,7 @@ function MissionPlayer({
             <p className="text-xs uppercase tracking-widest text-muted-foreground">
               Question {idx + 1} / {total}
             </p>
-            <h2 className="mt-3 font-display text-2xl font-semibold text-earth sm:text-3xl">{ex.prompt}</h2>
+            <h2 className="mt-3 font-display text-2xl font-semibold text-foreground sm:text-3xl">{ex.prompt}</h2>
 
             <div className="mt-6 grid gap-2">
               {ex.options.map((opt) => {
@@ -374,20 +374,20 @@ function MissionPlayer({
                 const showRight = picked && opt === ex.answer;
                 const showWrong = isThis && !isCorrect;
                 return (
-                  <button
+                  <Button variant="ghost"
                     key={opt}
                     onClick={() => choose(opt)}
                     disabled={!!picked}
                     className={cn(
-                      "rounded-xl border-2 px-4 py-4 text-left text-base transition",
+                      "h-auto justify-start whitespace-normal rounded-lg border-2 px-4 py-4 text-left text-base transition",
                       !picked && "border-border bg-card hover:border-[var(--gold)]/60 hover:bg-[var(--gold)]/5",
-                      showRight && "border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30",
+                      showRight && "border-success bg-success/10 text-success",
                       showWrong && "border-destructive bg-destructive/10 text-destructive",
                       picked && !isThis && opt !== ex.answer && "opacity-50",
                     )}
                   >
                     {opt}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -397,7 +397,7 @@ function MissionPlayer({
                 className={cn(
                   "mt-5 rounded-xl border p-3 text-sm",
                   isCorrect
-                    ? "border-emerald-500/40 bg-emerald-50/60 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200"
+                    ? "border-success/40 bg-success/10 text-success"
                     : "border-destructive/40 bg-destructive/5 text-destructive",
                 )}
               >
@@ -421,7 +421,7 @@ function MissionPlayer({
         {done && (
           <div className="flex flex-1 flex-col items-center justify-center text-center">
             <div className="text-6xl">🎉</div>
-            <h2 className="mt-4 font-display text-3xl font-semibold text-earth">Mission complétée</h2>
+            <h2 className="mt-4 font-display text-3xl font-semibold text-foreground">Mission complétée</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               Score : {correctCount} / {total}
             </p>
@@ -432,7 +432,7 @@ function MissionPlayer({
               </div>
               <div className="rounded-lg border border-border bg-card px-4 py-3">
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Précision</p>
-                <p className="mt-1 font-display text-xl font-semibold text-earth">{Math.round((correctCount / total) * 100)}%</p>
+                <p className="mt-1 font-display text-xl font-semibold text-foreground">{Math.round((correctCount / total) * 100)}%</p>
               </div>
             </div>
             <Button className="mt-8" size="lg" disabled={finishing} onClick={onCompleted}>

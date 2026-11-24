@@ -7,7 +7,7 @@ import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { SocialLinks } from "@/components/social-links";
 import { useLanguage } from "@/hooks/use-language";
 
-export function ContactSection() {
+export function ContactSection({ embedded = false }: { embedded?: boolean }) {
   const { t } = useLanguage();
   const [form, setForm] = useState({
     name: "",
@@ -16,6 +16,7 @@ export function ContactSection() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const Container = embedded ? "div" : "section";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +31,7 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="bg-secondary/30 py-16 sm:py-24">
+    <Container id="contact" className="bg-secondary/30 py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Colonne informations */}
@@ -247,6 +248,6 @@ export function ContactSection() {
           </div>
         </div>
       </div>
-    </section>
+    </Container>
   );
 }

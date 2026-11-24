@@ -136,7 +136,7 @@ function DictionaryDisabled({ loggedIn }: { loggedIn: boolean }) {
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)]/20">
             <Construction className="h-8 w-8 text-[var(--gold)]" />
           </div>
-          <h1 className="mt-6 font-display text-2xl font-semibold text-earth">
+          <h1 className="mt-6 font-display text-2xl font-semibold text-foreground">
             Dictionnaire temporairement indisponible
           </h1>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
@@ -383,11 +383,9 @@ function DictionaryActive() {
         <PageNav className="mb-4" />
         
         
-        <section className="relative mb-6 overflow-hidden rounded-2xl bg-linear-to-br from-earth via-[#1e3a5f] to-[#0c2340] p-6 text-cream shadow-lg sm:p-8">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-[var(--gold)]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-[var(--terracotta)]/20 blur-3xl" />
+        <section className="relative mb-6 overflow-hidden rounded-lg bg-earth p-6 text-cream sm:p-8">
           <div className="relative">
-            <span className="inline-block rounded-full bg-[var(--terracotta)] px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-cream">
+            <span className="inline-block rounded-md border border-gold/40 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-gold">
               FulanIA · Janngude
             </span>
             <h1 className="mt-4 font-display text-4xl font-semibold leading-tight sm:text-5xl">
@@ -409,7 +407,7 @@ function DictionaryActive() {
 
         {!user ? (
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-4 py-3 text-sm">
-            <div className="flex items-center gap-2 text-earth">
+            <div className="flex items-center gap-2 text-foreground">
               <Cloud className="h-4 w-4" />
               <span>{t("dict.cloudCta")}</span>
             </div>
@@ -694,7 +692,7 @@ function EntryCard({
               </span>
             )}
             {entry.status === "propose" && (
-              <span className="rounded border border-[var(--terracotta)]/50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[var(--terracotta)]">
+              <span className="rounded border border-clay/50 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-clay">
                 proposé
               </span>
             )}
@@ -840,14 +838,14 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
   if (!word) return null;
 
   return (
-    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-linear-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
+    <div className="mb-6 rounded-xl border border-[var(--gold)]/40 bg-linear-to-br from-[var(--gold)]/5 to-clay/5 p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-earth">{t("ai.translate.title")}</p>
+            <p className="text-sm font-semibold text-foreground">{t("ai.translate.title")}</p>
             <p className="text-xs text-muted-foreground">« {word} »</p>
           </div>
         </div>
@@ -866,7 +864,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
         <article className="mt-4 rounded-lg border border-border bg-card p-4">
           <div className="flex items-baseline justify-between gap-3">
             <div>
-              <h3 className="font-display text-2xl font-semibold text-earth">{card.pulaar}</h3>
+              <h3 className="font-display text-2xl font-semibold text-foreground">{card.pulaar}</h3>
               {card.pronunciation && (
                 <span className="text-xs italic text-muted-foreground">/{card.pronunciation}/</span>
               )}
@@ -874,8 +872,8 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
             <span
               className={cn(
                 "rounded-full px-2 py-0.5 text-[10px] font-medium",
-                card.confidence === "high" && "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300",
-                card.confidence === "medium" && "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300",
+                card.confidence === "high" && "bg-success/10 text-success",
+                card.confidence === "medium" && "bg-warning/10 text-warning",
                 card.confidence === "low" && "bg-destructive/15 text-destructive",
               )}
             >
@@ -894,7 +892,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
 
           {card.example_pulaar && (
             <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
-              <p className="font-display italic text-earth">« {card.example_pulaar} »</p>
+              <p className="font-display italic text-foreground">« {card.example_pulaar} »</p>
               {card.example_french && (
                 <p className="mt-0.5 text-muted-foreground">{card.example_french}</p>
               )}
@@ -913,7 +911,7 @@ function AITranslator({ query, isAuthed }: { query: string; isAuthed: boolean })
               <>
                 <span className="font-semibold text-foreground">{t("ai.translate.sources")} : </span>
                 {sources.map((s, i) => (
-                  <span key={i}>{i > 0 && " · "}<span className="text-earth">{s.pulaar}</span></span>
+                  <span key={i}>{i > 0 && " · "}<span className="text-foreground">{s.pulaar}</span></span>
                 ))}
               </>
             ) : (

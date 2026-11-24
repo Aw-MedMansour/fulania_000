@@ -145,7 +145,7 @@ export function EndlessPlayer({
   }
 
   const accent = useMemo(
-    () => (feedback === "ok" ? "from-emerald-400 to-teal-500" : feedback === "no" ? "from-rose-400 to-red-500" : "from-[var(--gold)] to-[var(--terracotta)]"),
+    () => (feedback === "ok" ? "from-success to-success" : feedback === "no" ? "from-destructive to-destructive" : "from-gold to-gold-ink"),
     [feedback],
   );
 
@@ -155,7 +155,7 @@ export function EndlessPlayer({
       <Shell onClose={onClose}>
         <div className="flex flex-1 flex-col items-center justify-center text-center">
           <div className="text-7xl">💔</div>
-          <h2 className="mt-4 font-display text-3xl font-semibold text-earth">Plus de cœurs !</h2>
+          <h2 className="mt-4 font-display text-3xl font-semibold text-foreground">Plus de cœurs !</h2>
           <p className="mt-2 text-sm text-muted-foreground">Tu as terminé {done} exercices · +{xpGain} XP</p>
         </div>
       </Shell>
@@ -194,26 +194,26 @@ export function EndlessPlayer({
               <div className={cn("h-full bg-gradient-to-r transition-all", accent)} style={{ width: `${Math.min(100, (done % 10) * 10 + 10)}%` }} />
             </div>
           </div>
-          <div className="flex items-center gap-1.5 rounded-full bg-rose-500/10 px-2.5 py-1 text-sm font-semibold text-rose-500">
+          <div className="flex items-center gap-1.5 rounded-full bg-destructive/10 px-2.5 py-1 text-sm font-semibold text-destructive">
             <Heart className="h-4 w-4 fill-current" /> {hearts}
           </div>
           {combo >= 2 && (
-            <div className="flex items-center gap-1 rounded-full bg-orange-500/10 px-2.5 py-1 text-sm font-semibold text-orange-500 animate-in zoom-in">
+            <div className="flex items-center gap-1 rounded-full bg-clay/10 px-2.5 py-1 text-sm font-semibold text-clay animate-in zoom-in">
               <Flame className="h-4 w-4 fill-current" /> ×{combo}
             </div>
           )}
-          <div className="hidden items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-1 text-sm font-semibold text-amber-600 sm:flex">
+          <div className="hidden items-center gap-1 rounded-full bg-gold/10 px-2.5 py-1 text-sm font-semibold text-gold-ink sm:flex">
             <Star className="h-4 w-4 fill-current" /> {xpGain}
           </div>
-          <button
+          <Button variant="ghost"
             onClick={askFulanIA}
             aria-label="Demander à FulanIA"
             title="Demander à FulanIA"
-            className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--terracotta)] px-3 py-1.5 text-sm font-bold text-white shadow-md shadow-[var(--terracotta)]/30 hover:brightness-110"
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-sm font-bold text-primary-foreground shadow-md shadow-sm hover:brightness-110"
           >
             <MessageCircle className="h-4 w-4" />
             <span>FulanIA</span>
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -225,21 +225,21 @@ export function EndlessPlayer({
             key={ex.id}
             className={cn(
               "flex h-32 w-32 items-center justify-center rounded-3xl text-7xl shadow-md transition-all duration-300 sm:h-40 sm:w-40 sm:text-8xl",
-              "bg-gradient-to-br from-[var(--gold)]/15 via-card to-[var(--terracotta)]/15 border-2 border-[var(--gold)]/30",
-              feedback === "ok" && "border-emerald-400 scale-110",
-              feedback === "no" && "border-rose-400 animate-pulse",
+              "bg-secondary border-2 border-[var(--gold)]/30",
+              feedback === "ok" && "border-success scale-110",
+              feedback === "no" && "border-destructive animate-pulse",
             )}
           >
             {ex.emoji}
           </div>
           {ex.category && (
-            <span className="mt-3 rounded-full bg-earth/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-earth">
+            <span className="mt-3 rounded-full bg-earth/10 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-foreground">
               {ex.category}
             </span>
           )}
         </div>
 
-        <h2 className="mt-5 text-center font-display text-xl font-semibold text-earth sm:text-2xl">
+        <h2 className="mt-5 text-center font-display text-xl font-semibold text-foreground sm:text-2xl">
           {ex.prompt}
         </h2>
 
@@ -266,20 +266,20 @@ export function EndlessPlayer({
                 const showRight = picked && opt === ex.answer;
                 const showWrong = isThis && opt !== ex.answer;
                 return (
-                  <button
+                  <Button variant="ghost"
                     key={opt}
                     onClick={() => choose(opt)}
                     disabled={!!picked}
                     className={cn(
-                      "rounded-2xl border-2 px-4 py-4 text-left text-base font-medium transition-all",
+                      "h-auto justify-start whitespace-normal rounded-lg border-2 px-4 py-4 text-left text-base font-medium transition-all",
                       !picked && "border-border bg-card hover:-translate-y-0.5 hover:border-[var(--gold)] hover:shadow-md",
-                      showRight && "border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/40",
-                      showWrong && "border-rose-500 bg-rose-50 text-rose-900 dark:bg-rose-950/40",
+                      showRight && "border-success bg-success/10 text-success",
+                      showWrong && "border-destructive bg-destructive/10 text-destructive",
                       picked && !isThis && opt !== ex.answer && "opacity-40",
                     )}
                   >
                     {opt}
-                  </button>
+                  </Button>
                 );
               })}
             </div>
@@ -292,8 +292,8 @@ export function EndlessPlayer({
             className={cn(
               "mt-5 rounded-2xl border-2 p-4 text-sm animate-in slide-in-from-bottom-2",
               isCorrect
-                ? "border-emerald-400 bg-emerald-50/80 text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-100"
-                : "border-rose-400 bg-rose-50/80 text-rose-900 dark:bg-rose-950/40 dark:text-rose-100",
+                ? "border-success bg-success/10 text-success"
+                : "border-destructive bg-destructive/10 text-destructive",
             )}
           >
             <p className="font-display text-base font-semibold">
@@ -328,13 +328,13 @@ function Shell({ children, onClose }: { children: React.ReactNode; onClose: () =
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-background">
       <div className="absolute right-3 top-3 z-10">
-        <button
+        <Button variant="ghost"
           onClick={onClose}
           aria-label="Fermer"
           className="rounded-full bg-card/80 p-2 text-muted-foreground shadow-sm backdrop-blur hover:bg-card hover:text-foreground"
         >
           <X className="h-5 w-5" />
-        </button>
+        </Button>
       </div>
       {children}
     </div>

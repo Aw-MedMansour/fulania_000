@@ -73,7 +73,7 @@ function LearnPage() {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="learning-page min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
         <PageNav className="mb-4" />
@@ -84,7 +84,7 @@ function LearnPage() {
             <GraduationCap className="h-6 w-6" />
           </div>
           <div>
-            <h1 className="font-display text-3xl font-semibold text-earth sm:text-4xl">{t("learn.title")}</h1>
+            <h1 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">{t("learn.title")}</h1>
             <p className="mt-2 max-w-2xl text-sm text-muted-foreground sm:text-base">{t("learn.subtitle")}</p>
           </div>
         </div>
@@ -95,7 +95,7 @@ function LearnPage() {
           </div>
           <div className="flex flex-wrap gap-2">
             {categories.map(([c, n]) => (
-              <button
+              <Button variant="ghost"
                 key={c}
                 onClick={() => setCategory(c)}
                 className={cn(
@@ -106,7 +106,7 @@ function LearnPage() {
                 )}
               >
                 {c} <span className="opacity-60">· {n}</span>
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -170,19 +170,19 @@ function LessonView({ entries, isLoading }: { entries: Entry[]; isLoading: boole
         <article key={e.id} className="rounded-lg border border-border bg-card p-4 transition hover:border-primary/40">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <h3 className="font-display text-xl font-semibold text-earth">{e.pulaar}</h3>
+              <h3 className="font-display text-xl font-semibold text-foreground">{e.pulaar}</h3>
               {e.pronunciation && <span className="text-xs italic text-muted-foreground">/{e.pronunciation}/</span>}
             </div>
-            <button onClick={() => speak(e.pulaar)} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t("entry.listen")}>
+            <Button variant="ghost" onClick={() => speak(e.pulaar)} className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t("entry.listen")}>
               <Volume2 className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
           <p className="mt-2 text-sm">{e.french}</p>
           {e.english && <p className="text-xs text-muted-foreground">{t("learn.langEN")} — {e.english}</p>}
           {e.arabic && <p className="text-xs text-muted-foreground" dir="rtl">{t("learn.langAR")} — {e.arabic}</p>}
           {e.example_pulaar && (
             <div className="mt-3 rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2 text-xs">
-              <p className="font-display italic text-earth">« {e.example_pulaar} »</p>
+              <p className="font-display italic text-foreground">« {e.example_pulaar} »</p>
               {e.example_french && <p className="mt-0.5 text-muted-foreground">{e.example_french}</p>}
             </div>
           )}
@@ -216,7 +216,7 @@ function FlashcardsView({ entries, isLoading }: { entries: Entry[]; isLoading: b
         <span>{t("learn.cardOf").replace("{n}", String(idx + 1)).replace("{total}", String(entries.length))}</span>
         <span>{t("learn.known")} : {knownIds.size}</span>
       </div>
-      <button
+      <Button variant="ghost"
         onClick={() => setFlipped((f) => !f)}
         className="group relative flex min-h-[260px] w-full flex-col items-center justify-center rounded-2xl border-2 border-border bg-card p-8 text-center transition hover:border-primary/40 hover:shadow-lg"
         aria-label={t("learn.flip")}
@@ -224,7 +224,7 @@ function FlashcardsView({ entries, isLoading }: { entries: Entry[]; isLoading: b
         {!flipped ? (
           <>
             <span className="mb-2 text-[10px] uppercase tracking-widest text-muted-foreground">Pulaar</span>
-            <span className="font-display text-3xl font-semibold text-earth">{card.pulaar}</span>
+            <span className="font-display text-3xl font-semibold text-foreground">{card.pulaar}</span>
             {card.pronunciation && <span className="mt-2 text-sm italic text-muted-foreground">/{card.pronunciation}/</span>}
           </>
         ) : (
@@ -236,7 +236,7 @@ function FlashcardsView({ entries, isLoading }: { entries: Entry[]; isLoading: b
           </>
         )}
         <span className="absolute bottom-3 right-3 text-[10px] text-muted-foreground opacity-60 group-hover:opacity-100">↻ {t("learn.flip")}</span>
-      </button>
+      </Button>
 
       <div className="mt-4 grid grid-cols-2 gap-2">
         <Button variant="outline" onClick={markReview}><X className="mr-1.5 h-4 w-4" /> {t("learn.review")}</Button>
@@ -295,8 +295,8 @@ function QuizView({ entries, allEntries, isLoading }: { entries: Entry[]; allEnt
     const msg = pct >= 80 ? t("learn.resultGood") : pct >= 50 ? t("learn.resultMid") : t("learn.resultLow");
     return (
       <div className="rounded-lg border border-border bg-card p-8 text-center">
-        <h3 className="font-display text-2xl font-semibold text-earth">{t("learn.resultTitle")}</h3>
-        <p className="mt-4 font-display text-5xl font-bold text-[var(--terracotta)]">{score} / {questions.length}</p>
+        <h3 className="font-display text-2xl font-semibold text-foreground">{t("learn.resultTitle")}</h3>
+        <p className="mt-4 font-display text-5xl font-bold text-clay">{score} / {questions.length}</p>
         <p className="mt-2 text-sm text-muted-foreground">{msg}</p>
         <div className="mt-6 flex justify-center gap-2">
           <Button variant="outline" onClick={() => setQuestions(null)}><RefreshCw className="mr-1.5 h-4 w-4" /> {t("learn.restart")}</Button>
@@ -326,7 +326,7 @@ function QuizView({ entries, allEntries, isLoading }: { entries: Entry[]; allEnt
       </div>
       <div className="rounded-2xl border border-border bg-card p-6">
         <p className="text-xs uppercase tracking-widest text-muted-foreground">Pulaar</p>
-        <p className="mt-1 font-display text-3xl font-semibold text-earth">{q.entry.pulaar}</p>
+        <p className="mt-1 font-display text-3xl font-semibold text-foreground">{q.entry.pulaar}</p>
         {q.entry.pronunciation && <p className="mt-1 text-xs italic text-muted-foreground">/{q.entry.pronunciation}/</p>}
         <div className="mt-5 grid gap-2">
           {q.options.map((opt) => {
@@ -334,25 +334,25 @@ function QuizView({ entries, allEntries, isLoading }: { entries: Entry[]; allEnt
             const showRight = picked && opt === q.answer;
             const showWrong = isThis && !isCorrect;
             return (
-              <button
+              <Button variant="ghost"
                 key={opt}
                 onClick={() => !picked && setPicked(opt)}
                 disabled={!!picked}
                 className={cn(
-                  "rounded-lg border px-4 py-3 text-left text-sm transition",
+                  "h-auto justify-start whitespace-normal rounded-lg border px-4 py-3 text-left text-sm transition",
                   !picked && "border-border bg-background hover:border-primary/50 hover:bg-primary/5",
-                  showRight && "border-emerald-500 bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30",
+                  showRight && "border-success bg-success/10 text-success",
                   showWrong && "border-destructive bg-destructive/10 text-destructive",
                   picked && !isThis && opt !== q.answer && "opacity-50",
                 )}
               >
                 {opt}
-              </button>
+              </Button>
             );
           })}
         </div>
         {picked && (
-          <p className={cn("mt-3 text-sm font-medium", isCorrect ? "text-emerald-700 dark:text-emerald-400" : "text-destructive")}>
+          <p className={cn("mt-3 text-sm font-medium", isCorrect ? "text-success" : "text-destructive")}>
             {isCorrect ? `✓ ${t("learn.correct")}` : `✗ ${t("learn.wrong")} — ${q.answer}`}
           </p>
         )}
@@ -436,12 +436,12 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/5 to-[var(--terracotta)]/5 p-4">
+      <div className="rounded-xl border border-[var(--gold)]/40 bg-gradient-to-br from-[var(--gold)]/5 to-clay/5 p-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
             <Wand2 className="h-4 w-4" />
           </div>
-          <p className="text-sm font-semibold text-earth">{t("ai.lesson.title")}</p>
+          <p className="text-sm font-semibold text-foreground">{t("ai.lesson.title")}</p>
         </div>
         <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto_auto]">
           <Input
@@ -474,7 +474,7 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
       {lesson && (
         <article className="space-y-5 rounded-xl border border-border bg-card p-5">
           <header>
-            <h3 className="font-display text-2xl font-semibold text-earth">{lesson.title}</h3>
+            <h3 className="font-display text-2xl font-semibold text-foreground">{lesson.title}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{lesson.intro}</p>
           </header>
 
@@ -486,17 +486,17 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
               {lesson.vocabulary.map((v, i) => (
                 <div key={i} className="flex items-start justify-between gap-2 rounded-md border border-border bg-background p-3">
                   <div>
-                    <p className="font-display font-semibold text-earth">{v.pulaar}</p>
+                    <p className="font-display font-semibold text-foreground">{v.pulaar}</p>
                     {v.pronunciation && <p className="text-xs italic text-muted-foreground">/{v.pronunciation}/</p>}
                     <p className="mt-0.5 text-sm">{v.french}</p>
                   </div>
-                  <button
+                  <Button variant="ghost"
                     onClick={() => speak(v.pulaar)}
                     className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
                     aria-label="Listen"
                   >
                     <Volume2 className="h-4 w-4" />
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -510,8 +510,8 @@ function AILessonView({ defaultTopic }: { defaultTopic: string }) {
               <div className="space-y-2">
                 {lesson.dialogue.map((d, i) => (
                   <div key={i} className="rounded-md border-l-2 border-[var(--gold)] bg-muted/40 px-3 py-2">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-[var(--terracotta)]">{d.speaker}</p>
-                    <p className="font-display italic text-earth">« {d.pulaar} »</p>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-clay">{d.speaker}</p>
+                    <p className="font-display italic text-foreground">« {d.pulaar} »</p>
                     <p className="text-xs text-muted-foreground">{d.french}</p>
                   </div>
                 ))}

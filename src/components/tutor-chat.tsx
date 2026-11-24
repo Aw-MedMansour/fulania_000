@@ -75,11 +75,11 @@ export function TutorChat({
       : `Je suis ton tuteur Janngude. Pose-moi n'importe quoi sur le Pulaar !`;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 backdrop-blur-sm sm:items-center">
+    <div className="fixed inset-0 z-[60] flex items-end justify-center bg-earth/60 backdrop-blur-sm sm:items-center">
       <div className="flex h-[88vh] w-full max-w-lg flex-col overflow-hidden rounded-t-3xl border border-border bg-background shadow-2xl sm:h-[80vh] sm:rounded-3xl">
         {/* Header */}
         <div className="flex flex-none items-center gap-3 border-b border-border/60 px-4 py-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--gold)] to-[var(--terracotta)] text-white shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-earth text-gold shadow-sm">
             <Sparkles className="h-5 w-5" />
           </div>
           <div className="flex-1 min-w-0">
@@ -88,13 +88,13 @@ export function TutorChat({
               {context.pulaar ? `Mot : ${context.pulaar}` : "Apprentissage du Pulaar"}
             </p>
           </div>
-          <button
+          <Button variant="ghost"
             onClick={onClose}
             aria-label="Fermer"
             className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
           >
             <X className="h-5 w-5" />
-          </button>
+          </Button>
         </div>
 
         {/* Messages */}
@@ -107,12 +107,12 @@ export function TutorChat({
             <Bubble key={i} role={m.role}>
               <Markdown text={m.content} />
               {m.role === "assistant" && (
-                <button
+                <Button variant="ghost"
                   onClick={() => speak(m.content.replace(/[*_`#]/g, ""))}
                   className="mt-1.5 inline-flex items-center gap-1 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground"
                 >
                   <Volume2 className="h-3 w-3" /> Écouter
-                </button>
+                </Button>
               )}
             </Bubble>
           ))}
@@ -128,13 +128,13 @@ export function TutorChat({
           {messages.length === 0 && !loading && (
             <div className="flex flex-wrap gap-2 pt-1">
               {suggestions.map((s) => (
-                <button
+                <Button variant="ghost"
                   key={s}
                   onClick={() => send(s)}
                   className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-[var(--gold)] hover:bg-[var(--gold)]/10"
                 >
                   {s}
-                </button>
+                </Button>
               ))}
             </div>
           )}
@@ -180,7 +180,7 @@ function Bubble({ role, children }: { role: "user" | "assistant"; children: Reac
         className={cn(
           "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
           role === "user"
-            ? "bg-[var(--gold)] text-white rounded-br-sm"
+            ? "bg-primary text-primary-foreground rounded-br-sm"
             : "bg-muted text-foreground rounded-bl-sm",
         )}
       >
@@ -192,7 +192,7 @@ function Bubble({ role, children }: { role: "user" | "assistant"; children: Reac
 
 function Markdown({ text }: { text: string }) {
   return (
-    <div className="prose prose-sm max-w-none dark:prose-invert prose-p:my-1 prose-strong:font-display prose-strong:italic prose-strong:text-[var(--terracotta)] dark:prose-strong:text-[var(--gold)]">
+    <div className="prose prose-sm max-w-none dark:prose-invert prose-p:my-1 prose-strong:font-display prose-strong:italic prose-strong:text-gold-ink">
       <ReactMarkdown>{text}</ReactMarkdown>
     </div>
   );
