@@ -20,21 +20,21 @@ type Tool = {
 
 // Tous les outils disponibles sur la plateforme.
 const tools: Tool[] = [
-  { to: "/chat",       name: "Janngo",     role: "Assistant Pulaar",         icon: MessageSquareText, iconBg: "bg-[#d4a44a]" },
-  { to: "/dictionary", name: "Saggitorde", role: "Dictionnaire Pulaar",      icon: BookOpen,          iconBg: "bg-emerald-500" },
-  { to: "/learn",      name: "Janngude",   role: "Cours interactifs",        icon: GraduationCap,     iconBg: "bg-sky-500" },
-  { to: "/translate",  name: "Firo",       role: "Traducteur multidialecte", icon: Languages,         iconBg: "bg-rose-500" },
-  { to: "/culture",    name: "Pulaaku",    role: "Culture & traditions",     icon: Library,           iconBg: "bg-amber-500" },
-  { to: "/library",    name: "Deftere",    role: "Bibliothèque peule",       icon: BookMarked,        iconBg: "bg-teal-500" },
-  { to: "/hub",        name: "Sawtu",      role: "Radio Fulania Mauritanie", icon: Radio,             iconBg: "bg-red-500" },
+  { to: "/chat",       name: "Janngo",     role: "Assistant Pulaar",         icon: MessageSquareText, iconBg: "bg-earth" },
+  { to: "/dictionary", name: "Saggitorde", role: "Dictionnaire Pulaar",      icon: BookOpen,          iconBg: "bg-earth" },
+  { to: "/learn",      name: "Janngude",   role: "Cours interactifs",        icon: GraduationCap,     iconBg: "bg-earth" },
+  { to: "/translate",  name: "Firo",       role: "Traducteur multidialecte", icon: Languages,         iconBg: "bg-earth" },
+  { to: "/culture",    name: "Pulaaku",    role: "Culture & traditions",     icon: Library,           iconBg: "bg-earth" },
+  { to: "/library",    name: "Deftere",    role: "Bibliothèque peule",       icon: BookMarked,        iconBg: "bg-earth" },
+  { to: "/hub",        name: "Sawtu",      role: "Radio Fulania Mauritanie", icon: Radio,             iconBg: "bg-earth" },
 ];
 
 function Card({ tool }: { tool: Tool }) {
   const Icon = tool.icon;
   return (
     <Link to={tool.to} className="block">
-      <div className="flex w-[240px] shrink-0 items-center gap-3 rounded-2xl border border-border bg-card/90 px-4 py-3 shadow-sm backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:shadow-md">
-        <div className={`flex h-10 w-10 flex-none items-center justify-center rounded-xl ${tool.iconBg} text-cream shadow-sm`}>
+      <div className="flex w-[240px] shrink-0 items-center gap-3 rounded-2xl border border-border bg-card/90 px-4 py-3 shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--gold)]/50 hover:shadow-md">
+        <div className={`flex h-10 w-10 flex-none items-center justify-center rounded-xl ${tool.iconBg} text-gold shadow-sm`}>
           <Icon className="h-5 w-5" />
         </div>
         <div className="min-w-0">

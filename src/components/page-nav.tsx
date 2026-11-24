@@ -1,5 +1,6 @@
 import { Link, useRouter } from "@tanstack/react-router";
 import { ArrowLeft, Home, LayoutGrid } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage } from "@/hooks/use-language";
 
@@ -29,15 +30,15 @@ export function PageNav({ className = "" }: { className?: string }) {
       role="navigation"
       aria-label={t("nav.back")}
     >
-      <button
+      <Button variant="ghost"
         type="button"
         onClick={goBack}
         className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/80 px-2.5 py-1.5 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground"
         aria-label={t("nav.back")}
       >
         <ArrowLeft className="h-3.5 w-3.5" />
-        <span>{t("nav.back")}</span>
-      </button>
+        <span className="hidden sm:inline">{t("nav.back")}</span>
+      </Button>
       <Link
         to="/"
         className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/80 px-2.5 py-1.5 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground"
@@ -49,7 +50,7 @@ export function PageNav({ className = "" }: { className?: string }) {
       {user && (
         <Link
           to="/hub"
-          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/80 px-2.5 py-1.5 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground animate-pulse"
+          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/80 px-2.5 py-1.5 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground"
           aria-label={t("nav.hub")}
         >
           <LayoutGrid className="h-3.5 w-3.5" />

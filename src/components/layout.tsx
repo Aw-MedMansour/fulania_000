@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Check, ChevronDown, Globe, Heart, LogOut, Sparkles, User as UserIcon } from "lucide-react";
+import { Check, ChevronDown, Globe, Heart, LogOut, Sparkles, User as UserIcon, Menu, X, LayoutGrid, ArrowUpRight } from "lucide-react";
 import { SocialLinks } from "@/components/social-links";
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { DIALECTS, LANGUAGES, useLanguage } from "@/hooks/use-language";
+import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 import { DICTIONARY_DISABLED } from "@/lib/feature-flags";
 
 async function signOut() {
@@ -11,7 +13,7 @@ async function signOut() {
   await supabase.auth.signOut();
 }
 
-function LanguageSwitcher() {
+export function LanguageSwitcher() {
   const { lang, setLang, dialect, setDialect, dialectsOpen, setDialectsOpen, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -29,7 +31,7 @@ function LanguageSwitcher() {
 
   return (
     <div className="relative" ref={ref}>
-      <button
+      <Button variant="ghost"
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-1.5 rounded-md border border-border px-2.5 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
         aria-label={t("lang.switcher")}
@@ -42,7 +44,7 @@ function LanguageSwitcher() {
           <span className="ms-1 text-muted-foreground">· {currentDialect.code === "fouta_toro" ? "FT" : currentDialect.code === "fouta_djallon" ? "FJ" : currentDialect.code === "maasina" ? "MA" : "AD"}</span>
         </span>
         <ChevronDown className="h-3 w-3" />
-      </button>
+      </Button>
       {open && (
         <div
           className="absolute end-0 z-50 mt-2 w-64 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg"
@@ -52,7 +54,7 @@ function LanguageSwitcher() {
               const isPulaar = l.code === "ff";
               return (
                 <li key={l.code}>
-                  <button
+                  <Button variant="ghost"
                     role="option"
                     aria-selected={l.code === lang}
                     aria-expanded={isPulaar ? dialectsOpen : undefined}
@@ -73,12 +75,12 @@ function LanguageSwitcher() {
                       {isPulaar && <span aria-hidden className="text-muted-foreground">{dialectsOpen ? "▾" : "▸"}</span>}
                     </span>
                     {l.code === lang && <Check className="h-3.5 w-3.5 text-primary" />}
-                  </button>
+                  </Button>
                   {isPulaar && dialectsOpen && (
                     <ul role="listbox" aria-label="Dialecte Pulaar" className="border-t border-border bg-muted/40 px-2 py-1.5 space-y-0.5">
                       {DIALECTS.map((d) => (
                         <li key={d.code}>
-                          <button
+                          <Button variant="ghost"
                             role="option"
                             aria-selected={d.code === dialect}
                             onClick={() => { setDialect(d.code); setOpen(false); }}
@@ -86,7 +88,7 @@ function LanguageSwitcher() {
                           >
                             <span className="font-medium">{d.label}</span>
                             {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
-                          </button>
+                          </Button>
                         </li>
                       ))}
                     </ul>
@@ -104,87 +106,57 @@ function LanguageSwitcher() {
 export function SiteHeader() {
   const { user } = useAuth();
   const { t } = useLanguage();
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") setMenuOpen(false); };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [menuOpen]);
+
+  const navigation = (
+    <>
+      <a href="/#solution" onClick={() => setMenuOpen(false)}>{t("nav.solution")}</a>
+      <a href="/#piliers" onClick={() => setMenuOpen(false)}>{t("nav.pillars")}</a>
+      {!DICTIONARY_DISABLED && <Link to="/dictionary" onClick={() => setMenuOpen(false)}>{t("nav.dictionary")}</Link>}
+      <Link to="/learn" onClick={() => setMenuOpen(false)}>{t("nav.learn")}</Link>
+      <Link to="/culture" onClick={() => setMenuOpen(false)}>{t("nav.library")}</Link>
+      <a href="/#culture" onClick={() => setMenuOpen(false)}>{t("nav.culture")}</a>
+      <a href="/#vision" onClick={() => setMenuOpen(false)}>{t("nav.vision")}</a>
+      <Link to="/contact" onClick={() => setMenuOpen(false)}>{t("nav.contact")}</Link>
+    </>
+  );
+  const account = user ? (
+    <Button variant="ghost" size="icon" onClick={() => signOut()} aria-label={t("btn.signout")} title={t("btn.signout")}><LogOut /></Button>
+  ) : (
+    <Button asChild variant="ghost" size="icon"><Link to="/auth" aria-label={t("btn.signin")} title={t("btn.signin")}><UserIcon /></Link></Button>
+  );
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="group flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
-            <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
+    <header className="site-header sticky top-0 z-40 border-b border-border bg-background">
+      <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 xl:flex xl:justify-between xl:px-8">
+        <Link to="/" className="min-w-0 shrink-0" aria-label="FulanIA"><BrandLogo /></Link>
+        <nav className="desktop-navigation hidden min-w-0 items-center gap-3 text-xs font-semibold xl:flex" aria-label="Navigation principale">{navigation}</nav>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <div className="hidden items-center gap-1.5 md:flex">
+            <LanguageSwitcher />
+            <Button asChild variant="outline" size="sm" className="border-gold/40"><Link to="/support" aria-label="Soutenir FulanIA — faire un don"><Heart className="text-gold-ink" />Soutenir</Link></Button>
+            {account}
           </div>
-          <div className="flex flex-col leading-none">
-            <span className="font-display text-lg font-semibold tracking-tight text-earth">
-              FulanIA
-            </span>
-            <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
-              Pulaagu &amp; IA
-            </span>
-          </div>
-        </Link>
-
-        <nav className="hidden items-center gap-8 md:flex">
-          <a href="/#solution" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.solution")}</a>
-          <a href="/#piliers" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.pillars")}</a>
-          {!DICTIONARY_DISABLED && (
-            <Link to="/dictionary" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.dictionary")}</Link>
-          )}
-          <Link to="/learn" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.learn")}</Link>
-          <Link to="/culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.library")}</Link>
-          <a href="/#culture" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.culture")}</a>
-          <a href="/#vision" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.vision")}</a>
-          <Link to="/contact" className="text-sm font-medium text-foreground/80 hover:text-primary">{t("nav.contact")}</Link>
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Link
-            to="/support"
-            aria-label="Soutenir FulanIA — faire un don"
-            className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-earth px-3 py-2 text-xs font-semibold text-cream shadow-[0_1px_0_rgba(0,0,0,0.04),0_6px_16px_-8px_rgba(120,72,20,0.45)] ring-1 ring-[var(--gold)]/40 transition hover:-translate-y-0.5 hover:ring-[var(--gold)] sm:text-sm"
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-[var(--gold)]/25 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-            />
-            <span className="relative flex h-5 w-5 items-center justify-center">
-              <span
-                aria-hidden
-                className="absolute inset-0 rounded-full bg-[var(--gold)]/30 blur-[3px] animate-ping opacity-70"
-              />
-              <Heart className="relative h-3.5 w-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-            </span>
-            <span className="relative">Soutenir</span>
-          </Link>
-
-          <LanguageSwitcher />
-          {user ? (
-            <button
-              onClick={() => signOut()}
-              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              title={user.email ?? ""}
-              aria-label={t("btn.signout")}
-            >
-              <LogOut className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("btn.signout")}</span>
-            </button>
-          ) : (
-            <Link
-              to="/auth"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-2 text-xs font-medium text-foreground/80 hover:bg-accent"
-              aria-label={t("btn.signin")}
-            >
-              <UserIcon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{t("btn.signin")}</span>
-            </Link>
-          )}
-          <Link
-            to="/chat"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary/90"
-            aria-label={t("btn.try")}
-          >
-            <Sparkles className="h-4 w-4" />
-            <span className="hidden sm:inline">{t("btn.try")}</span>
-          </Link>
+          <Button asChild className="h-10 px-3 sm:px-4"><Link to="/chat" aria-label={t("btn.try")} title={t("btn.try")}><Sparkles /><span className="hidden sm:inline">{t("btn.try")}</span></Link></Button>
+          <Button variant="ghost" size="icon" className="h-10 w-10 xl:hidden" aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(v => !v)}>{menuOpen ? <X /> : <Menu />}</Button>
         </div>
       </div>
+      {menuOpen && (
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border bg-background px-5 pb-6 pt-4 shadow-lg xl:hidden">
+          <nav className="mobile-navigation mx-auto grid max-w-3xl grid-cols-2 gap-1 text-sm font-medium" aria-label="Navigation mobile">{navigation}</nav>
+          <div className="mx-auto mt-4 flex max-w-3xl items-center justify-between gap-2 border-t border-border pt-4">
+            <LanguageSwitcher />
+            <Button asChild variant="outline" size="sm"><Link to="/support"><Heart className="text-gold-ink" />Soutenir</Link></Button>
+            <Button asChild variant="ghost" size="icon"><Link to="/hub" aria-label={t("nav.hub")} title={t("nav.hub")}><LayoutGrid /></Link></Button>
+            {account}
+          </div>
+        </div>
+      )}
     </header>
   );
 }
@@ -193,14 +165,11 @@ export function SiteFooter() {
   const { t } = useLanguage();
   return (
     <footer className="border-t border-border/60 bg-earth text-cream">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-[var(--gold)] text-earth">
-                <span className="font-display text-lg font-bold">F</span>
-              </div>
-              <span className="font-display text-xl font-semibold">FulanIA</span>
+              <BrandLogo className="text-cream [&_.text-gold-ink]:text-gold" />
             </div>
             <p className="mt-4 max-w-xs text-sm text-cream/70">
               {t("footer.tagline")}

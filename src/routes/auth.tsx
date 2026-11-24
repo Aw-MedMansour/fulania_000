@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
+import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -185,14 +186,14 @@ function AuthPage() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
+    <div className="auth-page relative min-h-screen overflow-hidden bg-background">
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 opacity-[0.02]"
         style={{ backgroundImage: `url(${patternImg})`, backgroundSize: "420px" }}
         aria-hidden
       />
 
-      <div className="relative mx-auto grid min-h-screen max-w-7xl lg:grid-cols-[1.05fr_1fr]">
+      <div className="relative mx-auto grid min-h-screen lg:grid-cols-[0.95fr_1fr]">
         {/* LEFT — Brand panel */}
         <aside className="relative hidden overflow-hidden bg-earth text-cream lg:flex lg:flex-col lg:justify-between">
           <img src={portraitImg} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-25" />
@@ -205,13 +206,7 @@ function AuthPage() {
 
           <div className="relative z-10 flex items-center gap-2.5 p-10">
             <Link to="/" className="group flex items-center gap-2.5">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[var(--gold)] text-earth shadow-lg transition group-hover:scale-105">
-                <span className="font-display text-xl font-bold">F</span>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-display text-xl font-semibold tracking-tight">FulanIA</span>
-                <span className="text-[10px] uppercase tracking-[0.18em] text-cream/60">Pulaagu &amp; IA</span>
-              </div>
+              <BrandLogo className="text-cream [&_.text-gold-ink]:text-gold" />
             </Link>
           </div>
 
@@ -252,20 +247,17 @@ function AuthPage() {
         </aside>
 
         {/* RIGHT — Form panel */}
-        <main className="relative flex min-h-screen flex-col justify-between px-5 py-8 sm:px-10 sm:py-12 lg:px-14">
+        <main className="relative flex min-h-screen flex-col justify-between px-5 py-5 sm:px-10 sm:py-10 lg:px-20 lg:py-12">
           <div className="mb-8 flex items-center justify-between lg:hidden">
             <Link to="/" className="flex items-center gap-2.5" aria-label={t("auth.backHome")}>
-              <div className="flex h-9 w-9 items-center justify-center rounded-md bg-earth text-cream">
-                <span className="font-display text-lg font-bold text-[var(--gold)]">F</span>
-              </div>
-              <span className="font-display text-lg font-semibold text-earth">FulanIA</span>
+              <BrandLogo />
             </Link>
             <Link to="/" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground">
               <ArrowLeft className="h-3.5 w-3.5" /> {t("auth.home")}
             </Link>
           </div>
 
-          <div className="mx-auto w-full max-w-md flex-1">
+          <div className="mx-auto w-full max-w-md flex-1 lg:flex lg:flex-col lg:justify-center">
             <div className="text-center lg:text-left">
               <span className="text-xs uppercase tracking-[0.2em] text-primary">
                 {tab === "signin" ? t("auth.tab.signin") : t("auth.tab.signup")}
@@ -288,7 +280,7 @@ function AuthPage() {
                 setAuthError(null);
               }}
             >
-              <TabsList className="grid w-full grid-cols-2 bg-secondary/60">
+              <TabsList className="grid w-full grid-cols-2 mt-7 h-12 rounded-lg border border-border bg-secondary/60 p-1">
                 <TabsTrigger value="signin">{t("auth.tab.signin")}</TabsTrigger>
                 <TabsTrigger value="signup">{t("auth.tab.signup")}</TabsTrigger>
               </TabsList>
@@ -306,7 +298,7 @@ function AuthPage() {
                     autoComplete="current-password"
                     error={pwdError}
                   />
-                  <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
+                  <Button type="submit" disabled={loading} className="h-12 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>{t("auth.signinBtn")} <ArrowRight className="h-4 w-4" /></>}
                   </Button>
                 </form>
@@ -336,7 +328,7 @@ function AuthPage() {
                     autoComplete="new-password"
                     error={confirmError}
                   />
-                  <Button type="submit" disabled={loading} className="h-11 w-full gap-2 text-sm font-semibold">
+                  <Button type="submit" disabled={loading} className="h-12 w-full gap-2 text-sm font-semibold">
                     {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <>{t("auth.signupBtn")} <ArrowRight className="h-4 w-4" /></>}
                   </Button>
                   <p className="text-center text-xs text-muted-foreground">{t("auth.terms")}</p>
@@ -363,7 +355,7 @@ function AuthPage() {
 
             <Button
               variant="outline"
-              className="h-11 w-full gap-2 text-sm font-medium"
+              className="h-12 w-full gap-2 text-sm font-medium"
               onClick={() => navigate({ to: destination as "/hub", replace: true })}
             >
               {t("auth.continueGuest")} <ArrowRight className="h-4 w-4" />
@@ -373,7 +365,7 @@ function AuthPage() {
             </p>
 
             <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted-foreground">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-700" />
+              <ShieldCheck className="h-3.5 w-3.5 text-gold-ink" />
               {t("auth.privacy")}
             </div>
           </div>
@@ -418,7 +410,7 @@ function IdField({
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={invalid || undefined}
           aria-describedby={error ? "auth-id-msg" : undefined}
-          className={`h-11 pl-9 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
+          className={`h-12 pl-9 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
       </div>
       {error ? (
@@ -463,16 +455,16 @@ function PasswordField({
           onChange={(e) => onChange(e.target.value)}
           aria-invalid={invalid || undefined}
           aria-describedby={error || hint ? `${id}-msg` : undefined}
-          className={`h-11 pl-9 pr-10 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
+          className={`h-12 pl-9 pr-10 ${invalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         />
-        <button
+        <Button variant="ghost"
           type="button"
           onClick={onToggle}
           aria-label={show ? t("auth.pwdHide") : t("auth.pwdShow")}
           className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
         >
           {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-        </button>
+        </Button>
       </div>
       {(error || hint) && (
         <p

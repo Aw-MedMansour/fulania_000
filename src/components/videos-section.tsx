@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Radio, Download, Youtube } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Reveal } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
@@ -10,10 +11,10 @@ import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json
  * Section dédiée « FulanIA en vidéo » de la page d'accueil :
  * entretien L'Infos Plus, présentation par Meimouna Sy, passage Radio Mauritanie.
  */
-export function VideosSection() {
+export function VideosSection({ embedded = false }: { embedded?: boolean }) {
   return (
-    <section id="videos" className="bg-secondary/30 py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="videos" className={embedded ? "mt-16 border-t border-border pt-12" : "bg-secondary/30 py-16 sm:py-20"}>
+      <div className={embedded ? "" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"}>
         <Reveal className="mb-10 max-w-2xl">
           <Eyebrow>FulanIA en vidéo</Eyebrow>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-[1.1] tracking-[-0.01em] text-balance sm:text-4xl lg:text-5xl">
@@ -24,10 +25,10 @@ export function VideosSection() {
           </p>
         </Reveal>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid items-start gap-6 lg:grid-cols-[1.35fr_1fr_1fr]">
           {/* Entretien exclusif — vidéo principale */}
-          <Reveal className="lg:row-span-2">
-            <figure className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
+          <Reveal className="min-w-0">
+            <figure className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
               <LazyYouTube
                 videoId="XXDGAmGVJFU"
                 title="FulanIA : L'Entretien Exclusif avec L'Infos Plus"
@@ -48,7 +49,7 @@ export function VideosSection() {
 
           {/* Présentation par Meimouna Sy */}
           <Reveal delay={0.1}>
-            <figure className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
+            <figure className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
               <LazyYouTube
                 videoId="atXu0sjsEF4"
                 title="Présentation de FulanIA par Meimouna Sy"
@@ -69,7 +70,7 @@ export function VideosSection() {
 
           {/* Radio Mauritanie */}
           <Reveal delay={0.2}>
-            <figure className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
+            <figure className="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card">
               <LazyVideo
                 src={radioVideoAsset.url}
                 poster={radioCoverAsset.url}
@@ -137,11 +138,11 @@ function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
       {!loaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
 
       {inView && !activated && (
-        <button
+        <Button variant="ghost"
           type="button"
           onClick={() => setActivated(true)}
           aria-label={`Lire la vidéo : ${title}`}
-          className="group absolute inset-0 flex items-center justify-center"
+          className="group absolute inset-0 h-full w-full rounded-none p-0 flex items-center justify-center"
         >
           <img
             src={thumb}
@@ -151,11 +152,11 @@ function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
             onLoad={() => setLoaded(true)}
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
-          <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
+          <span className="absolute inset-0 bg-earth/20 transition-colors group-hover:bg-earth/30" />
+          <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-cream/20 transition-transform group-hover:scale-110">
             <Play className="h-7 w-7 translate-x-0.5 fill-current" />
           </span>
-        </button>
+        </Button>
       )}
 
       {activated && (
@@ -186,7 +187,7 @@ function LazyVideo({ src, poster, title }: { src: string; poster: string; title:
         playsInline
         preload="auto"
         poster={poster}
-        className="aspect-video w-full bg-black"
+        className="aspect-video w-full bg-earth"
         aria-label={title}
       >
         <source src={src} type="video/mp4" />
@@ -196,11 +197,11 @@ function LazyVideo({ src, poster, title }: { src: string; poster: string; title:
   }
 
   return (
-    <button
+    <Button variant="ghost"
       type="button"
       onClick={() => setActivated(true)}
       aria-label={`Lire la vidéo : ${title}`}
-      className="group relative block aspect-video w-full overflow-hidden bg-muted"
+      className="group relative block h-auto aspect-video w-full overflow-hidden rounded-none bg-muted p-0"
     >
       {!posterLoaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
       <img
@@ -211,12 +212,12 @@ function LazyVideo({ src, poster, title }: { src: string; poster: string; title:
         onLoad={() => setPosterLoaded(true)}
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
+      <span className="absolute inset-0 bg-earth/20 transition-colors group-hover:bg-earth/30" />
       <span className="absolute inset-0 flex items-center justify-center">
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
+        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-cream/20 transition-transform group-hover:scale-110">
           <Play className="h-7 w-7 translate-x-0.5 fill-current" />
         </span>
       </span>
-    </button>
+    </Button>
   );
 }

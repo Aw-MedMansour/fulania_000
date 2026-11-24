@@ -22,7 +22,12 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/dictionary-review")({
   head: () => ({
     meta: [
-      { title: "Revue du dictionnaire — Admin" },
+      { title: "Revue du dictionnaire — Administration FulanIA" },
+      { name: "description", content: "Espace de validation des entrées du dictionnaire FulanIA." },
+      { property: "og:title", content: "Revue du dictionnaire — Administration FulanIA" },
+      { property: "og:description", content: "Espace de validation des entrées du dictionnaire FulanIA." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),

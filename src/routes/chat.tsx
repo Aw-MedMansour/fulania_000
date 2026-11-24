@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Send, Sparkles, Loader2, Check, ChevronDown, Languages, Globe, Paperclip, X, FileText, Image as ImageIcon, ChevronRight, Plus, Camera, Search, Telescope, Copy, Volume2, ThumbsUp, ThumbsDown, Share, MoreHorizontal } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -8,6 +8,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { useGuestQuota } from "@/hooks/use-guest-quota";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ChatSidebar, SidebarToggle } from "@/components/chat-sidebar";
+import { BrandLogo } from "@/components/brand-logo";
+import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
 
 type Source = { title: string; url: string };
@@ -22,6 +24,8 @@ export const Route = createFileRoute("/chat")({
         { name: "description", content: tFor(l, "seo./chat.desc") },
         { property: "og:title", content: tFor(l, "seo./chat.title") },
         { property: "og:description", content: tFor(l, "seo./chat.desc") },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
         { property: "og:url", content: "https://fulania.com/chat" },
       ],
     };
@@ -313,28 +317,16 @@ function ChatPage() {
       />
 
       {/* Header */}
-      <header className="flex-none border-b border-border/60 bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
-          <div className="flex items-center gap-2">
+      <header className="flex-none border-b border-border bg-background">
+        <div className="mx-auto grid h-16 max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 sm:px-5">
+          <div className="flex min-w-0 items-center gap-2">
             <SidebarToggle onClick={() => setSidebarOpen(true)} />
-            <PageNav />
-          </div>
-
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-md bg-earth text-[var(--gold)]">
-              <span className="font-display text-base font-bold">F</span>
-            </div>
-            <div className="hidden flex-col leading-tight sm:flex">
-              <span className="font-display text-sm font-semibold">FulanIA</span>
-              <span className="text-[9px] uppercase tracking-[0.15em] text-muted-foreground">
-                {t("chat.subtitle")}
-              </span>
-            </div>
+            <Link to="/" className="min-w-0" aria-label="FulanIA"><BrandLogo className="[&_.brand-symbol]:h-8 [&_.brand-symbol]:w-8 [&>span:last-child]:text-base" /></Link>
+            <div className="hidden lg:block"><PageNav /></div>
           </div>
           <ChatLangSelector value={chatLang} onChange={setChatLang} dialect={dialect} onDialectChange={setDialect} label={t("chat.replyIn")} />
         </div>
       </header>
-
 
       {/* Messages — only scrollable area */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain">
@@ -342,16 +334,14 @@ function ChatPage() {
           <h1 className="sr-only">{t("chat.srTitle")}</h1>
           {messages.length === 0 ? (
             <div className="mx-auto max-w-2xl py-8 text-center sm:py-12">
-              <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <Sparkles className="h-7 w-7" />
-              </div>
+              <BrandLogo compact className="[&_.brand-symbol]:h-16 [&_.brand-symbol]:w-16" />
               <h2 className="mt-6 font-display text-2xl font-semibold sm:text-3xl">{t("chat.hello")}</h2>
               <p className="mt-3 text-muted-foreground">{t("chat.intro")}</p>
               <div className="mt-8 grid gap-2.5 sm:grid-cols-2">
                 {suggestions.map((s) => (
-                  <button key={s} onClick={() => send(s)} className="rounded-xl border border-border bg-card px-4 py-3 text-left text-sm text-foreground transition hover:border-primary/50 hover:bg-primary/5">
+                  <Button variant="ghost" key={s} onClick={() => send(s)} className="h-auto whitespace-normal rounded-lg border border-border bg-card px-4 py-4 text-left text-sm text-foreground transition hover:border-primary/50 hover:bg-primary/5">
                     {s}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -392,14 +382,14 @@ function ChatPage() {
                     <FileText className="h-4 w-4 text-muted-foreground" />
                   )}
                   <span className="max-w-[140px] truncate">{a.name}</span>
-                  <button
+                  <Button variant="ghost"
                     type="button"
                     onClick={() => removeAttachment(i)}
                     className="rounded-full p-0.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     aria-label={t("chat.remove")}
                   >
                     <X className="h-3.5 w-3.5" />
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -411,17 +401,17 @@ function ChatPage() {
               {webSearch && !deepSearch && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                   <Globe className="h-3.5 w-3.5" /> {t("chat.webSearch")}
-                  <button type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
+                  <Button variant="ghost" type="button" onClick={() => setWebSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
                     <X className="h-3 w-3" />
-                  </button>
+                  </Button>
                 </span>
               )}
               {deepSearch && (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                   <Telescope className="h-3.5 w-3.5" /> {t("chat.deepSearch")}
-                  <button type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
+                  <Button variant="ghost" type="button" onClick={() => setDeepSearch(false)} className="ml-0.5 rounded-full p-0.5 hover:bg-primary/20" aria-label={t("chat.disable")}>
                     <X className="h-3 w-3" />
-                  </button>
+                  </Button>
                 </span>
               )}
             </div>
@@ -453,7 +443,7 @@ function ChatPage() {
 
           {/* (+) menu : fichier, caméra, recherche, recherche approfondie */}
           <div className="relative" ref={plusRef}>
-            <button
+            <Button variant="ghost"
               type="button"
               onClick={() => setPlusOpen((v) => !v)}
               disabled={loading}
@@ -461,20 +451,20 @@ function ChatPage() {
               aria-expanded={plusOpen}
               aria-label={t("chat.add")}
               title={t("chat.addHint")}
-              className={`inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl border transition disabled:cursor-not-allowed disabled:opacity-50 ${
+              className={`inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-lg border transition disabled:cursor-not-allowed disabled:opacity-50 ${
                 plusOpen
                   ? "border-primary bg-primary/10 text-primary"
                   : "border-border bg-card text-muted-foreground hover:text-foreground"
               }`}
             >
               <Plus className={`h-5 w-5 transition-transform ${plusOpen ? "rotate-45" : ""}`} />
-            </button>
+            </Button>
             {plusOpen && (
               <div
                 role="menu"
                 className="absolute bottom-[60px] start-0 z-50 w-60 overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-lg"
               >
-                <button
+                <Button variant="ghost"
                   type="button"
                   role="menuitem"
                   disabled={attachments.length >= MAX_ATTACHMENTS}
@@ -483,8 +473,8 @@ function ChatPage() {
                 >
                   <Paperclip className="h-4 w-4 text-muted-foreground" />
                   <span>{t("chat.addFile")}</span>
-                </button>
-                <button
+                </Button>
+                <Button variant="ghost"
                   type="button"
                   role="menuitem"
                   disabled={attachments.length >= MAX_ATTACHMENTS}
@@ -493,9 +483,9 @@ function ChatPage() {
                 >
                   <Camera className="h-4 w-4 text-muted-foreground" />
                   <span>{t("chat.camera")}</span>
-                </button>
+                </Button>
                 <div className="my-1 h-px bg-border" />
-                <button
+                <Button variant="ghost"
                   type="button"
                   role="menuitemcheckbox"
                   aria-checked={webSearch && !deepSearch}
@@ -507,8 +497,8 @@ function ChatPage() {
                     <span>{t("chat.webSearch")}</span>
                   </span>
                   {webSearch && !deepSearch && <Check className="h-4 w-4 text-primary" />}
-                </button>
-                <button
+                </Button>
+                <Button variant="ghost"
                   type="button"
                   role="menuitemcheckbox"
                   aria-checked={deepSearch}
@@ -520,7 +510,7 @@ function ChatPage() {
                     <span>{t("chat.deepSearch")}</span>
                   </span>
                   {deepSearch && <Check className="h-4 w-4 text-primary" />}
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -541,16 +531,16 @@ function ChatPage() {
             placeholder={t("chat.placeholder")}
             aria-label={t("chat.aria.msg")}
             title={t("chat.enterHint")}
-            className="min-h-[52px] max-h-[200px] flex-1 resize-none rounded-2xl border border-border bg-card px-4 py-3.5 text-base leading-relaxed text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className="min-w-0 min-h-[52px] max-h-[200px] flex-1 resize-none rounded-lg border border-border bg-card px-4 py-3.5 text-base leading-relaxed text-foreground outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
           />
-          <button
+          <Button variant="default"
             type="submit"
             disabled={loading || (!input.trim() && attachments.length === 0)}
-            className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-2xl bg-primary text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex h-[52px] w-[52px] flex-none items-center justify-center rounded-lg bg-primary text-primary-foreground transition hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label={t("chat.send")}
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Send className="h-5 w-5" />}
-          </button>
+          </Button>
         </form>
       </div>
     </div>
@@ -582,7 +572,7 @@ function ChatLangSelector({
 
   return (
     <div className="relative" ref={ref}>
-      <button
+      <Button variant="ghost"
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-accent"
         aria-label={label}
@@ -593,7 +583,7 @@ function ChatLangSelector({
         <Languages className="h-3.5 w-3.5" />
         <span>{current.code.toUpperCase()}{value === "ff" ? ` · ${currentDialect.code.split("_").map((s) => s[0].toUpperCase()).join("")}` : ""}</span>
         <ChevronDown className="h-3 w-3" />
-      </button>
+      </Button>
       {open && (
         <div className="absolute end-0 z-50 mt-2 w-64 overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow-lg">
           <div className="border-b border-border px-3 py-1.5 text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -602,7 +592,7 @@ function ChatLangSelector({
           <ul role="listbox">
             {LANGUAGES.map((l) => (
               <li key={l.code}>
-                <button
+                <Button variant="ghost"
                   role="option"
                   aria-selected={l.code === value}
                   onClick={() => { onChange(l.code); if (l.code !== "ff") setOpen(false); }}
@@ -613,7 +603,7 @@ function ChatLangSelector({
                     <span>{l.native}</span>
                   </span>
                   {l.code === value && <Check className="h-3.5 w-3.5 text-primary" />}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -623,7 +613,7 @@ function ChatLangSelector({
           <ul role="listbox">
             {DIALECTS.map((d) => (
               <li key={d.code}>
-                <button
+                <Button variant="ghost"
                   role="option"
                   aria-selected={d.code === dialect}
                   onClick={() => { onDialectChange(d.code); setOpen(false); }}
@@ -634,7 +624,7 @@ function ChatLangSelector({
                     {d.region && <span className="text-[10px] text-muted-foreground">{d.region}</span>}
                   </span>
                   {d.code === dialect && <Check className="h-3.5 w-3.5 text-primary" />}
-                </button>
+                </Button>
               </li>
             ))}
           </ul>
@@ -687,25 +677,25 @@ function MessageActions({ content }: { content: string }) {
   const btn = "inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition hover:bg-accent hover:text-foreground";
 
   return (
-    <div className="mt-2 flex items-center gap-0.5 -ml-1">
-      <button type="button" onClick={copy} className={btn} aria-label="Copier" title="Copier">
+    <div className="mt-2 flex flex-wrap items-center gap-0.5 -ml-1">
+      <Button variant="ghost" type="button" onClick={copy} className={btn} aria-label="Copier" title="Copier">
         {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
-      </button>
-      <button type="button" onClick={speak} className={`${btn} ${speaking ? "text-primary" : ""}`} aria-label="Écouter" title="Écouter">
+      </Button>
+      <Button variant="ghost" type="button" onClick={speak} className={`${btn} ${speaking ? "text-primary" : ""}`} aria-label="Écouter" title="Écouter">
         <Volume2 className="h-4 w-4" />
-      </button>
-      <button type="button" onClick={() => setFeedback(feedback === "up" ? null : "up")} className={`${btn} ${feedback === "up" ? "text-primary" : ""}`} aria-label="J'aime" title="J'aime">
+      </Button>
+      <Button variant="ghost" type="button" onClick={() => setFeedback(feedback === "up" ? null : "up")} className={`${btn} ${feedback === "up" ? "text-primary" : ""}`} aria-label="J'aime" title="J'aime">
         <ThumbsUp className="h-4 w-4" />
-      </button>
-      <button type="button" onClick={() => setFeedback(feedback === "down" ? null : "down")} className={`${btn} ${feedback === "down" ? "text-primary" : ""}`} aria-label="Je n'aime pas" title="Je n'aime pas">
+      </Button>
+      <Button variant="ghost" type="button" onClick={() => setFeedback(feedback === "down" ? null : "down")} className={`${btn} ${feedback === "down" ? "text-primary" : ""}`} aria-label="Je n'aime pas" title="Je n'aime pas">
         <ThumbsDown className="h-4 w-4" />
-      </button>
-      <button type="button" onClick={share} className={btn} aria-label="Partager" title="Partager">
+      </Button>
+      <Button variant="ghost" type="button" onClick={share} className={btn} aria-label="Partager" title="Partager">
         <Share className="h-4 w-4" />
-      </button>
-      <button type="button" className={btn} aria-label="Plus" title="Plus">
+      </Button>
+      <Button variant="ghost" type="button" className={btn} aria-label="Plus" title="Plus">
         <MoreHorizontal className="h-4 w-4" />
-      </button>
+      </Button>
     </div>
   );
 }
@@ -716,12 +706,12 @@ function MessageBubble({ role, content, sources }: Msg) {
   const [showSources, setShowSources] = useState(false);
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex max-w-[88%] gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}>
-        <div className={`flex h-9 w-9 flex-none items-center justify-center rounded-full font-display text-sm font-bold ${isUser ? "bg-primary text-primary-foreground" : "bg-earth text-[var(--gold)]"}`}>
-          {isUser ? "Vo" : "F"}
+      <div className={`flex min-w-0 max-w-[96%] gap-2.5 sm:max-w-[88%] ${isUser ? "flex-row-reverse" : ""}`}>
+        <div className={`flex h-8 w-8 flex-none items-center justify-center rounded-md font-sans text-xs font-bold ${isUser ? "bg-primary text-primary-foreground" : "bg-earth text-[var(--gold)]"}`}>
+          {isUser ? "Vo" : <BrandLogo compact className="[&_.brand-symbol]:h-8 [&_.brand-symbol]:w-8" />}
         </div>
         <div
-          className={`rounded-2xl px-4 py-3 text-[15px] leading-relaxed ${
+          className={`min-w-0 break-words rounded-lg px-4 py-3 text-[15px] leading-relaxed ${
             isUser
               ? "bg-primary text-primary-foreground whitespace-pre-wrap"
               : "border border-border bg-card text-foreground shadow-sm"
@@ -739,7 +729,7 @@ function MessageBubble({ role, content, sources }: Msg) {
           {!isUser && content && <MessageActions content={content} />}
           {!isUser && sources && sources.length > 0 && (
             <div className="mt-3 border-t border-border/60 pt-2">
-              <button
+              <Button variant="ghost"
                 type="button"
                 onClick={() => setShowSources((v) => !v)}
                 className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background/50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground transition hover:border-primary/40 hover:text-foreground"
@@ -748,7 +738,7 @@ function MessageBubble({ role, content, sources }: Msg) {
                 <Globe className="h-3 w-3" />
                 <span>{sources.length} source{sources.length > 1 ? "s" : ""}</span>
                 <ChevronRight className={`h-3 w-3 transition-transform ${showSources ? "rotate-90" : ""}`} />
-              </button>
+              </Button>
               {showSources && (
                 <ol className={`mt-2 space-y-1.5 text-xs ${isMobile ? "max-h-44 overflow-y-auto pr-1" : ""}`}>
                   {sources.map((s, i) => {

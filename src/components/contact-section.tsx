@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail, MapPin, Phone, Send, User } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/eyebrow";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { SocialLinks } from "@/components/social-links";
@@ -49,16 +50,16 @@ export function ContactSection() {
                 <StaggerItem>
                   <a
                     href="mailto:contact.fulania@gmail.com"
-                    className="flex items-center gap-4 rounded-xl border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+                    className="flex items-center min-w-0 gap-3 rounded-lg border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
                   >
                     <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary/10 text-primary">
                       <Mail className="h-5 w-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                         {t("contact.email")}
                       </p>
-                      <p className="font-medium text-foreground">
+                      <p className="break-words text-sm font-medium text-foreground">
                         contact.fulania@gmail.com
                       </p>
                     </div>
@@ -68,16 +69,16 @@ export function ContactSection() {
                 <StaggerItem>
                   <a
                     href="tel:+22232256718"
-                    className="flex items-center gap-4 rounded-xl border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
+                    className="flex items-center min-w-0 gap-3 rounded-lg border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md"
                   >
                     <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary/10 text-primary">
                       <Phone className="h-5 w-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                         {t("contact.phone")}
                       </p>
-                      <p className="font-medium text-foreground">
+                      <p className="break-words text-sm font-medium text-foreground">
                         +222 32 25 67 18
                       </p>
                     </div>
@@ -85,15 +86,15 @@ export function ContactSection() {
                 </StaggerItem>
 
                 <StaggerItem>
-                  <div className="flex items-center gap-4 rounded-xl border border-border bg-card p-5">
+                  <div className="flex items-center min-w-0 gap-3 rounded-lg border border-border bg-card p-4">
                     <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-primary/10 text-primary">
                       <MapPin className="h-5 w-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
                         {t("contact.address")}
                       </p>
-                      <p className="font-medium text-foreground">
+                      <p className="break-words text-sm font-medium text-foreground">
                         {t("contact.location")}
                       </p>
                     </div>
@@ -115,7 +116,7 @@ export function ContactSection() {
           {/* Formulaire */}
           <div className="lg:col-span-7">
             <Reveal>
-              <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+              <div className="border-t border-border pt-6 sm:pt-8">
                 <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
                   {t("contact.formTitle")}
                 </h2>
@@ -125,19 +126,19 @@ export function ContactSection() {
 
                 {submitted ? (
                   <div className="mt-8 rounded-xl border border-primary/20 bg-primary/5 p-6 text-center">
-                    <p className="font-medium text-foreground">
+                    <p className="break-words text-sm font-medium text-foreground">
                       {t("contact.sentThanks")}
                     </p>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {t("contact.sentOpen")}
                     </p>
-                    <button
+                    <Button variant="ghost"
                       type="button"
                       onClick={() => setSubmitted(false)}
                       className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
                     >
                       {t("contact.sendAgain")}
-                    </button>
+                    </Button>
                   </div>
                 ) : (
                   <form
@@ -232,13 +233,13 @@ export function ContactSection() {
                       />
                     </div>
 
-                    <button
+                    <Button variant="default"
                       type="submit"
                       className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-md sm:w-auto"
                     >
                       {t("contact.send")}
                       <Send className="h-4 w-4 transition group-hover:translate-x-0.5" />
-                    </button>
+                    </Button>
                   </form>
                 )}
               </div>

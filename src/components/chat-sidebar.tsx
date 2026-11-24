@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Plus, MessageSquare, Trash2, PanelLeftOpen, PanelLeftClose, LogIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/hooks/use-language";
 import type { User } from "@supabase/supabase-js";
 
@@ -60,11 +61,11 @@ export function ChatSidebar({
     <>
       {/* Backdrop (mobile) */}
       {open && (
-        <button
+        <Button variant="ghost"
           type="button"
           aria-label={t("sb.close")}
           onClick={() => onOpenChange(false)}
-          className="fixed inset-0 z-30 bg-black/40 md:hidden"
+          className="fixed inset-0 z-30 h-full w-full rounded-none bg-earth/40 p-0 md:hidden"
         />
       )}
 
@@ -73,28 +74,29 @@ export function ChatSidebar({
           open ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-hidden={!open}
+        inert={!open}
       >
         <div className="flex h-14 flex-none items-center justify-between border-b border-border px-3">
           <span className="font-display text-sm font-semibold">{t("sb.title")}</span>
-          <button
+          <Button variant="ghost"
             type="button"
             onClick={() => onOpenChange(false)}
             className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
             aria-label={t("sb.close")}
           >
             <PanelLeftClose className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
 
         <div className="p-3">
-          <button
+          <Button variant="ghost"
             type="button"
             onClick={() => { onNew(); onOpenChange(false); }}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-sm font-medium text-primary-foreground transition hover:bg-primary/90"
           >
             <Plus className="h-4 w-4" />
             {t("sb.new")}
-          </button>
+          </Button>
         </div>
 
         <div className="flex-1 overflow-y-auto px-2 pb-3">
@@ -117,10 +119,10 @@ export function ChatSidebar({
             <ul className="space-y-1">
               {items.map((c) => (
                 <li key={c.id}>
-                  <button
+                  <Button variant="ghost"
                     type="button"
                     onClick={() => { onSelect(c.id); onOpenChange(false); }}
-                    className={`group flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition ${
+                    className={`group flex h-auto w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition ${
                       activeId === c.id
                         ? "bg-primary/10 text-foreground"
                         : "text-foreground/80 hover:bg-accent"
@@ -137,7 +139,7 @@ export function ChatSidebar({
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </span>
-                  </button>
+                  </Button>
                 </li>
               ))}
             </ul>
@@ -151,13 +153,13 @@ export function ChatSidebar({
 export function SidebarToggle({ onClick }: { onClick: () => void }) {
   const { t } = useLanguage();
   return (
-    <button
+    <Button variant="ghost" size="icon"
       type="button"
       onClick={onClick}
       aria-label={t("sb.open")}
       className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background/80 text-foreground/80 backdrop-blur hover:bg-accent hover:text-foreground"
     >
       <PanelLeftOpen className="h-4 w-4" />
-    </button>
+    </Button>
   );
 }

@@ -10,7 +10,6 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-const ogCover = "/og-cover.jpg";
 import { LanguageProvider, useLanguage } from "@/hooks/use-language";
 import { WhatsAppFloat } from "@/components/whatsapp-float";
 
@@ -72,7 +71,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#1a1410" },
+      { name: "theme-color", content: "#171614" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "FulanIA" },
@@ -85,26 +84,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://fulania.com" },
-      { property: "og:image", content: `https://fulania.com${ogCover}` },
-      { property: "og:image:width", content: "1216" },
-      { property: "og:image:height", content: "640" },
-      { property: "og:image:alt", content: "FulanIA — Pulaagu & IA" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "FulanIA — IA au service de la langue et de la culture Peules" },
       { name: "twitter:description", content: "FulanIA, le premier assistant intelligent dédié à la langue Pulaar/Fulfulde et à la culture Peule. Apprendre, traduire, préserver." },
-      { name: "twitter:image", content: `https://fulania.com${ogCover}` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/icons/apple-touch-icon.png" },
-      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icons/icon-192.png" },
-      { rel: "icon", type: "image/png", sizes: "512x512", href: "/icons/icon-512.png" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap",
       },
     ],
   }),
