@@ -24,11 +24,7 @@ import { Button } from "@/components/ui/button";
 
 import { ContactSection } from "@/components/contact-section";
 import { StudioGallery } from "@/components/studio-gallery";
-import assistantCapture from "@/assets/fulania-assistant-capture.jpg.asset.json";
-import dictionaryCapture from "@/assets/fulania-dictionary-capture.jpg.asset.json";
-import learningCapture from "@/assets/fulania-learning-capture.jpg.asset.json";
-import dialectsCapture from "@/assets/fulania-dialects-capture.jpg.asset.json";
-import libraryCapture from "@/assets/fulania-library-capture.jpg.asset.json";
+import { cn } from "@/lib/utils";
 
 
 
@@ -121,11 +117,11 @@ function Index() {
 
 
   const piliers = [
-    { to: "/chat", icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d"), capture: assistantCapture },
-    { to: "/dictionary", icon: BookOpen, title: t("pillar.dict.t"), desc: t("pillar.dict.d"), capture: dictionaryCapture },
-    { to: "/learn", icon: GraduationCap, title: t("pillar.learn.t"), desc: t("pillar.learn.d"), capture: learningCapture },
-    { to: "/translate", icon: Languages, title: t("hub.f4.title"), desc: t("hub.f4.desc"), capture: dialectsCapture },
-    { to: "/culture", icon: Library, title: t("pillar.lib.t"), desc: t("pillar.lib.d"), capture: libraryCapture },
+    { to: "/chat", icon: Bot, title: t("pillar.assistant.t"), desc: t("pillar.assistant.d") },
+    { to: "/dictionary", icon: BookOpen, title: t("pillar.dict.t"), desc: t("pillar.dict.d") },
+    { to: "/learn", icon: GraduationCap, title: t("pillar.learn.t"), desc: t("pillar.learn.d") },
+    { to: "/translate", icon: Languages, title: t("hub.f4.title"), desc: t("hub.f4.desc") },
+    { to: "/culture", icon: Library, title: t("pillar.lib.t"), desc: t("pillar.lib.d") },
   ];
 
   const publics = [
@@ -301,17 +297,16 @@ function Index() {
             <p className="mt-5 text-lg text-muted-foreground">{t("pillars.body")}</p>
           </Reveal>
 
-          <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {piliers.map(({ to, icon: Icon, title, desc, capture }, idx) => (
-              <StaggerItem key={title}><Button asChild variant="ghost" className="group relative block h-full whitespace-normal rounded-lg border border-border bg-card p-6 text-left hover:border-gold/60 hover:bg-card"><Link to={to}>
+          <StaggerGroup className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+            {piliers.map(({ to, icon: Icon, title, desc }, idx) => (
+              <StaggerItem key={title} className={cn("lg:col-span-2", idx >= 3 && "lg:col-span-3", idx === piliers.length - 1 && "sm:col-span-2")}><Button asChild variant="ghost" className="group relative block h-full whitespace-normal rounded-lg border border-border bg-card p-6 text-left hover:border-gold/60 hover:bg-card"><Link to={to} className="flex h-full flex-col">
                 <div className="absolute right-5 top-5 font-display text-5xl font-bold text-primary/10 transition group-hover:text-primary/20">0{idx + 1}</div>
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:scale-110 group-hover:bg-primary/15">
                   <Icon className="h-6 w-6" />
                 </div>
                 <h3 className="mt-5 font-display text-xl font-semibold">{title}</h3>
                 <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">{desc}</p>
-                <img src={capture.url} alt={title} loading="lazy" decoding="async" width={360} height={660} className="mx-auto mt-5 h-64 w-full rounded-md bg-secondary object-contain" />
-                <ArrowRight className="mt-5 text-gold-ink" />
+                <ArrowRight className="mt-auto pt-5 text-gold-ink" />
               </Link></Button></StaggerItem>
             ))}
           </StaggerGroup>
