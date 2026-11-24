@@ -1,9 +1,11 @@
 # Refonte visuelle FulanIA
 
-- [ ] Appliquer le logo officiel et harmoniser les couleurs et contrôles.
-- [ ] Recomposer la navigation ordinateur/mobile et le pied de page.
-- [ ] Réorganiser l’accueil : couverture, constat, réponse, plateforme et vidéos, Studio, culture, publics, vision, équipe, appel final.
-- [ ] Harmoniser connexion, inscription, hub et assistant sans changer leur fonctionnement.
-- [ ] Vérifier les pages, interactions, contenus conservés et affichages mobiles/ordinateur.
-- [ ] Utiliser les dix captures supplémentaires comme références des sections existantes, sans afficher les captures de navigation Safari sur le site.
-- [ ] Intégrer les textes approuvés et captures Studio — attend le PDF demandé à l’utilisateur.
+- [x] Appliquer le logo officiel et harmoniser les couleurs et contrôles.
+- [x] Recomposer la navigation ordinateur/mobile et le pied de page.
+- [x] Réorganiser l’accueil : couverture, constat, réponse, plateforme et vidéos, Studio, culture, publics, vision, équipe, appel final.
+- [x] Harmoniser connexion, inscription, hub et assistant sans changer leur fonctionnement.
+- [x] Vérifier les pages, interactions publiques, contenus conservés et affichages 360, 414, 768, 1280 et 1440 pixels ; 27 tests existants réussis.
+- [x] Utiliser les dix captures supplémentaires comme références des sections existantes, sans afficher les captures de navigation Safari sur le site.
+- [x] Vérifier les nouvelles références du menu, de la connexion et de l’inscription avec le logo officiel.
+- [ ] Intégrer le paragraphe approuvé et les captures réelles Studio — ces pièces n’ont pas été fournies ; seules des captures de l’accueil et de l’authentification ont été reçues.
+- [ ] Vérifier connexion et discussion avec un compte connecté — création du compte temporaire non autorisée ; les validations, l’affichage du mot de passe et l’accès invité ont été vérifiés.
