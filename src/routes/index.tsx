@@ -19,6 +19,7 @@ import { ToolsMarquee } from "@/components/tools-marquee";
 import { Reveal, StaggerGroup, StaggerItem } from "@/components/reveal";
 import { Eyebrow } from "@/components/eyebrow";
 import { PressBand } from "@/components/press-band";
+import { VideosSection } from "@/components/videos-section";
 import { HeroProductPreview } from "@/components/hero-product-preview";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ContactSection } from "@/components/contact-section";
@@ -232,6 +233,9 @@ function Index() {
 
       {/* PRESS BAND */}
       <PressBand />
+
+      {/* VIDEOS */}
+      <VideosSection />
 
       {/* TOOLS MARQUEE */}
 

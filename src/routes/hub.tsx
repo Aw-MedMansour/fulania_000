@@ -1,5 +1,4 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
 import {
   MessageSquareText,
   BookOpen,
@@ -9,20 +8,14 @@ import {
   ArrowRight,
   LogOut,
   Sparkles,
-  Play,
-  Radio,
-  Download,
   Home,
 } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/hooks/use-auth";
 import { useLanguage, getCurrentLang, tFor } from "@/hooks/use-language";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { PageNav } from "@/components/page-nav";
 import { ToolsMarquee } from "@/components/tools-marquee";
-import radioCoverAsset from "@/assets/fulania-radio-cover.png.asset.json";
-import radioVideoAsset from "@/assets/ali-diallo-radio-mauritanie.mp4.asset.json";
 import { SiteFooter } from "@/components/layout";
 import patternImg from "@/assets/pattern.jpg";
 
@@ -204,213 +197,9 @@ function HubPage() {
 
 
 
-        <section className="mt-16">
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
-              <Sparkles className="h-3 w-3" />
-              Entretien exclusif
-            </div>
-            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
-              FulanIA : L'Entretien Exclusif avec L'Infos Plus
-            </h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              L'équipe FulanIA revient sur la naissance, la mission et les ambitions de la première IA dédiée à la langue et à la culture peules.
-            </p>
-          </div>
-
-          <LazyYouTube
-            videoId="XXDGAmGVJFU"
-            title="FulanIA : L'Entretien Exclusif avec L'Infos Plus"
-          />
-        </section>
-
-        <section className="mt-16">
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
-              <Sparkles className="h-3 w-3" />
-              Présentation
-            </div>
-            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
-              Découvrez FulanIA en vidéo
-            </h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Par Meimouna Sy — Vice-présidente, Responsable communication & sensibilisation
-            </p>
-          </div>
-
-          <LazyYouTube
-            videoId="atXu0sjsEF4"
-            title="Présentation de FulanIA par Meimouna Sy"
-          />
-
-        </section>
-
-        <section className="mt-16">
-          <div className="mb-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/40 bg-[var(--gold)]/10 px-3 py-1 text-[10px] uppercase tracking-[0.18em] text-earth">
-              <Radio className="h-3 w-3" />
-              Radio Mauritanie
-            </div>
-            <h2 className="mt-3 font-display text-2xl font-semibold tracking-tight text-earth sm:text-3xl">
-              FulanIA à la Radio Mauritanie
-            </h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              Avec Ali Diallo — Co-fondateur, Responsable des partenariats
-            </p>
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10">
-            <LazyVideo
-              src={radioVideoAsset.url}
-              poster={radioCoverAsset.url}
-              title="Passage d'Ali Diallo à la Radio Mauritanie"
-            />
-            <div className="border-t border-border p-6 sm:p-8">
-              <p className="font-display text-lg font-semibold text-earth">
-                Interview à la Radio Mauritanie
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Ali Diallo présente la mission de FulanIA, ses partenariats et l'impact de l'IA au service de la langue pulaar.
-              </p>
-              <a
-                href={radioVideoAsset.url}
-                download="fulania-radio-mauritanie.mp4"
-                className="mt-4 inline-flex items-center gap-2 rounded-full bg-[var(--gold)] px-4 py-2 text-sm font-medium text-earth shadow-sm transition-transform hover:scale-[1.02]"
-              >
-                <Download className="h-4 w-4" />
-                Télécharger la vidéo
-              </a>
-            </div>
-          </div>
-        </section>
-
       </main>
 
       <SiteFooter />
     </div>
-  );
-}
-
-function LazyYouTube({ videoId, title }: { videoId: string; title: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
-  const [activated, setActivated] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            setInView(true);
-            io.disconnect();
-            break;
-          }
-        }
-      },
-      { rootMargin: "200px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  const thumb = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-lg ring-1 ring-[var(--gold)]/10"
-    >
-      <div className="relative aspect-video w-full bg-muted">
-        {!loaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
-
-        {inView && !activated && (
-          <button
-            type="button"
-            onClick={() => setActivated(true)}
-            aria-label={`Lire la vidéo : ${title}`}
-            className="group absolute inset-0 flex items-center justify-center"
-          >
-            <img
-              src={thumb}
-              alt={title}
-              loading="lazy"
-              decoding="async"
-              onLoad={() => setLoaded(true)}
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-            <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
-            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
-              <Play className="h-7 w-7 translate-x-0.5 fill-current" />
-            </span>
-          </button>
-        )}
-
-        {activated && (
-          <iframe
-            src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1&autoplay=1`}
-            title={title}
-            loading="lazy"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-            onLoad={() => setLoaded(true)}
-            className="absolute inset-0 h-full w-full"
-          />
-        )}
-      </div>
-    </div>
-  );
-}
-
-function LazyVideo({ src, poster, title }: { src: string; poster: string; title: string }) {
-  const [activated, setActivated] = useState(false);
-  const [posterLoaded, setPosterLoaded] = useState(false);
-
-  if (activated) {
-    return (
-      <video
-        controls
-        autoPlay
-        playsInline
-        preload="auto"
-        poster={poster}
-        className="aspect-video w-full bg-black"
-        aria-label={title}
-      >
-        <source src={src} type="video/mp4" />
-        Votre navigateur ne prend pas en charge la lecture vidéo.
-      </video>
-    );
-  }
-
-  return (
-    <button
-      type="button"
-      onClick={() => setActivated(true)}
-      aria-label={`Lire la vidéo : ${title}`}
-      className="group relative block aspect-video w-full overflow-hidden bg-muted"
-    >
-      {!posterLoaded && <Skeleton className="absolute inset-0 h-full w-full rounded-none" />}
-      <img
-        src={poster}
-        alt={title}
-        loading="lazy"
-        decoding="async"
-        onLoad={() => setPosterLoaded(true)}
-        className="absolute inset-0 h-full w-full object-cover"
-      />
-      <span className="absolute inset-0 bg-black/20 transition-colors group-hover:bg-black/30" />
-      <span className="absolute inset-0 flex items-center justify-center">
-        <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[var(--gold)] text-earth shadow-xl ring-4 ring-white/20 transition-transform group-hover:scale-110">
-          <Play className="h-7 w-7 translate-x-0.5 fill-current" />
-        </span>
-      </span>
-    </button>
   );
 }
